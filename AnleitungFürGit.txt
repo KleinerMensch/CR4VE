@@ -1,0 +1,8 @@
+
+How to Git:
+
+Step 1: Pull
+Step 2: Commit
+Step 3: Push
+
+:)
