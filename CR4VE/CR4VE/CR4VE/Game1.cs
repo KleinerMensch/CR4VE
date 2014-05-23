@@ -100,7 +100,7 @@ namespace CR4VE
         {
             //nur vorlaeufig, später kommen GameStates rein
             //bei false wird der Singleplayer gedrawt
-            if (false)
+            if (true)
             {
                 #region drawing background
                 spriteBatch.Begin();
@@ -156,7 +156,7 @@ namespace CR4VE
                 #endregion
             }
 
-            if (true)
+            if (false)
             {
                 Vector3 scale = new Vector3(1, 1, 1);
 
