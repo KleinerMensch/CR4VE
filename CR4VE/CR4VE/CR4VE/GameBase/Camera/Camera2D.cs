@@ -15,7 +15,6 @@ namespace CR4VE.GameBase.Camera
         private static Rectangle worldRec = new Rectangle(0, 0, 0, 0);
         #endregion
 
-
         #region Properties
         //Viewport Size
         public static int ViewPortWidth
@@ -54,8 +53,7 @@ namespace CR4VE.GameBase.Camera
         }
         #endregion
 
-
-        #region Public Methods
+        #region Methods
         public static void move(Vector2 offset)
         {
             Position += offset;

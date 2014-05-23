@@ -1,2 +1,3 @@
 c:\users\flori\documents\visual studio 2012\Projects\CR4VE\CR4VE\CR4VEContent\obj\x86\Debug\CR4VEContent.contentprojResolveAssemblyReference.cache
 C:\Users\Nameshiba\Desktop\CR4VE\CR4VE\CR4VE\CR4VEContent\obj\x86\Debug\CR4VEContent.contentprojResolveAssemblyReference.cache
+C:\Users\Flori\Dropbox\OVGU\3D-SoPro\CR4VE\CR4VE\CR4VEContent\obj\x86\Debug\CR4VEContent.contentprojResolveAssemblyReference.cache
