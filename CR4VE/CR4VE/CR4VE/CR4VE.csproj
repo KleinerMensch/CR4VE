@@ -78,6 +78,7 @@
     <Compile Include="GameBase\Camera\Camera2D.cs" />
     <Compile Include="GameBase\Camera\CameraArena.cs" />
     <Compile Include="GameBase\HUD\HUD.cs" />
+    <Compile Include="GameBase\Objects\Entity.cs" />
     <Compile Include="GameLogic\Controls\KeyboardControls.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
