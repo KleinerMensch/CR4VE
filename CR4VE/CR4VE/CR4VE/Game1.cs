@@ -136,6 +136,7 @@ namespace CR4VE
 
         protected override void Initialize()
         {
+            IsMouseVisible = true;
             //size of Game Window
             graphics.PreferredBackBufferWidth = 800;
             graphics.PreferredBackBufferHeight = 600;

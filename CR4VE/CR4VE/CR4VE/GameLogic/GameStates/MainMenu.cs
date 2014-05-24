@@ -30,13 +30,11 @@ namespace CR4VE.GameLogic.GameStates
         #region Init
         public void Initialize(ContentManager content)
         {
-            
-            //IsMouseVisible = true;
 
             graphics = CR4VE.Game1.graphics.GraphicsDevice;
             spriteBatch = CR4VE.Game1.spriteBatch;
 
-            background = content.Load<Texture2D>("Assets/Sprites/mainmenuscreen");
+            background = content.Load<Texture2D>("Assets/Sprites/doge");
 
             playButton = new Button(content.Load<Texture2D>("Assets/Sprites/ButtonPlay"), graphics);
             exitButton = new Button(content.Load<Texture2D>("Assets/Sprites/ButtonExit"), graphics);

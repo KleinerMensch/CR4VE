@@ -81,13 +81,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Sprites\mainmenuscreen.jpg">
-      <Name>mainmenuscreen</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Assets\Sprites\ButtonExit.png">
       <Name>ButtonExit</Name>
       <Importer>TextureImporter</Importer>
