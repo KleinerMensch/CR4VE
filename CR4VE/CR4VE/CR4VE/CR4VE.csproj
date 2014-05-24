@@ -79,6 +79,7 @@
     <Compile Include="GameBase\Camera\CameraArena.cs" />
     <Compile Include="GameBase\HUD\HUD.cs" />
     <Compile Include="GameBase\Objects\Entity.cs" />
+    <Compile Include="GameLogic\Controls\GamepadControls.cs" />
     <Compile Include="GameLogic\Controls\KeyboardControls.cs" />
     <Compile Include="GameLogic\GameStates\Continue.cs" />
     <Compile Include="GameLogic\GameStates\Credits.cs" />
