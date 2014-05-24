@@ -10,7 +10,7 @@ namespace CR4VE.GameBase.Camera
     public static class CameraArena
     {
         #region Attributes
-        private static Vector3 position;
+        private static Vector3 position = new Vector3(0, 50, 50);
         private static Vector2 viewportSize;
         #endregion
 

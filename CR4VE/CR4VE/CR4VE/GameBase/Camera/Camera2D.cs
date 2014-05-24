@@ -11,6 +11,7 @@ namespace CR4VE.GameBase.Camera
     {
         #region Attributes
         private static Vector2 position;
+        private static Vector3 position3D = new Vector3(0 , 0, 100);
         private static Vector2 viewPortSize;
         private static Rectangle worldRec = new Rectangle(0, 0, 0, 0);
         #endregion
@@ -28,7 +29,7 @@ namespace CR4VE.GameBase.Camera
             set { viewPortSize.Y = value; }
         }
 
-        //Camera Position
+        //Camera Positions
         public static Vector2 Position
         {
             get { return position; }
@@ -37,6 +38,12 @@ namespace CR4VE.GameBase.Camera
                 position = new Vector2(MathHelper.Clamp(value.X, worldRec.X, worldRec.Width - ViewPortWidth),
                                        MathHelper.Clamp(value.Y, worldRec.Y, worldRec.Height - ViewPortHeight));
             }
+        }
+        //wird zum drawn der 3D Objekte gebraucht
+        public static Vector3 Position3D
+        {
+            get { return position3D; }
+            set { position3D = value; }
         }
 
         //Rectangle representing Game World
