@@ -6,4 +6,9 @@ Content\Assets\Models\protoSphere.xnb
 Content\Assets\Models\protoTerrain.xnb
 Content\Assets\Fonts\HUDfont.xnb
 Content\Assets\Sprites\Startscreen.xnb
+Content\Assets\Sprites\mainmenuscreen.xnb
+Content\Assets\Sprites\ButtonExit.xnb
+Content\Assets\Sprites\ButtonPlay.xnb
 Content\Assets\Sprites\Startscreen.png
+Content\Assets\Sprites\ButtonExit.png
+Content\Assets\Sprites\ButtonPlay.png
