@@ -152,7 +152,7 @@ namespace CR4VE
 
             // Gamestate am Anfang
             // zum Testen jeweiligen GameState einsetzen
-            this.GameState = EGameState.StartScreen;
+            this.GameState = EGameState.Singleplayer;
         }
 
 
@@ -165,6 +165,7 @@ namespace CR4VE
         protected override void Update(GameTime gameTime)
         {
             KeyboardControls.update();
+            GamepadControls.update();
 
             #region Update of current GameState
             EGameState currentState;
