@@ -58,6 +58,10 @@ namespace CR4VE.GameBase.Objects
         #endregion
 
         #region Methods
+        public void move(Vector2 offset)
+        {
+            this.Position += new Vector3(offset, 0);
+        }
         public void move(Vector3 offset)
         {
             this.Position += offset;
@@ -66,7 +70,7 @@ namespace CR4VE.GameBase.Objects
         //zeichnet Objekt im Bezug auf den Viewport
         public void drawOn2DScreen(Vector3 scale)
         {
-            Matrix view = Matrix.CreateLookAt(Camera2D.Position3D, Vector3.Zero, Vector3.Up);
+            Matrix view = Matrix.CreateLookAt(Camera2D.CamPosition3D, Vector3.Zero, Vector3.Up);
             Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45f), 1, 10f, 1000);
             Matrix worldMatrix = Matrix.CreateScale(scale) * 1 * Matrix.CreateTranslation(this.position);
 
@@ -86,7 +90,7 @@ namespace CR4VE.GameBase.Objects
         //zeichnet Objekt in Bezug auf die Spielwelt
         public void drawIn2DWorld(Vector3 scale)
         { 
-            Matrix view = Matrix.CreateLookAt(Camera2D.Position3D, Vector3.Zero, Vector3.Up);
+            Matrix view = Matrix.CreateLookAt(Camera2D.CamPosition3D, Vector3.Zero, Vector3.Up);
             Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45f), 1, 10f, 1000);
             Matrix worldMatrix = Matrix.CreateScale(scale) * 1 * Matrix.CreateTranslation(Camera2D.transform3D(this.Position));
 

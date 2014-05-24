@@ -34,7 +34,6 @@ namespace CR4VE
         private Multiplayer multiPlayer = null;
         private Singleplayer singlePlayer = null;
         private StartScreen startScreen = null;
-        #endregion
 
         public enum EGameState
         {
@@ -47,6 +46,7 @@ namespace CR4VE
             Singleplayer,
             StartScreen,
         }
+        #endregion
 
         #region GameState
         public EGameState GameState
@@ -164,9 +164,6 @@ namespace CR4VE
 
         protected override void Update(GameTime gameTime)
         {
-            KeyboardControls.update();
-            GamepadControls.update();
-
             #region Update of current GameState
             EGameState currentState;
             switch (this.gameState)

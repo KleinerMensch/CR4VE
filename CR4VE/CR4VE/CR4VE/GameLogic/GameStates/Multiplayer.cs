@@ -1,14 +1,22 @@
-﻿using Microsoft.Xna.Framework.Content;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework;
+using CR4VE.GameLogic.Controls;
+using CR4VE.GameBase.Objects;
 
 namespace CR4VE.GameLogic.GameStates
 {
     // besser: uebergeordnete PlayMode Klasse fuer Single- und Multiplayer !
     class Multiplayer : GameStateInterface
     {
+        #region Attribute
+        public static Entity player;
+        Entity terrain;
+        #endregion
+
         #region Konstruktor
         public Multiplayer() { }
         #endregion
@@ -16,13 +24,16 @@ namespace CR4VE.GameLogic.GameStates
         #region Init
         public void Initialize(ContentManager content)
         {
-            //throw new NotImplementedException();
+            player = new Entity(new Vector3(0, 0, 0), "protoSphere", content);
+            terrain = new Entity(new Vector3(0, 0, 0), "protoTerrain", content);
         }
         #endregion
 
         #region Update
         public Game1.EGameState Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
+            KeyboardControls.updateMultiplayer();
+
             return Game1.EGameState.Multiplayer;
         }
         #endregion
@@ -30,7 +41,8 @@ namespace CR4VE.GameLogic.GameStates
         #region Draw
         public void Draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            //throw new NotImplementedException();
+            player.drawInArena(new Vector3(1, 1, 1));
+            terrain.drawInArena(new Vector3(1, 1, 1));
         }
         #endregion
 
@@ -45,4 +57,3 @@ namespace CR4VE.GameLogic.GameStates
         }
     }
 }
-
