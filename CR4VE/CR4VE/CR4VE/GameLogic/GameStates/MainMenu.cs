@@ -21,6 +21,7 @@ namespace CR4VE.GameLogic.GameStates
 
         Button playButton;
         Button exitButton;
+        Button creditsButton;
         #endregion
 
         #region Konstruktor
@@ -38,9 +39,11 @@ namespace CR4VE.GameLogic.GameStates
 
             playButton = new Button(content.Load<Texture2D>("Assets/Sprites/ButtonPlay"), graphics);
             exitButton = new Button(content.Load<Texture2D>("Assets/Sprites/ButtonExit"), graphics);
+            creditsButton = new Button(content.Load<Texture2D>("Assets/Sprites/ButtonExit"), graphics);
 
             playButton.setPosition(new Vector2(350, 300));
             exitButton.setPosition(new Vector2(350, 330));
+            creditsButton.setPosition(new Vector2(350, 360));
         }
         #endregion
 
@@ -51,12 +54,16 @@ namespace CR4VE.GameLogic.GameStates
 
             playButton.Update(mouseState);
             exitButton.Update(mouseState);
+            creditsButton.Update(mouseState);
 
             if (playButton.isClicked == true)
                 return Game1.EGameState.Singleplayer;
             if (exitButton.isClicked == true)
-                return Game1.EGameState.StartScreen;
+                return Game1.EGameState.GameOver;
+            if (creditsButton.isClicked == true)
+                return Game1.EGameState.Credits;
             return Game1.EGameState.MainMenu;
+            
         }
         #endregion
 
@@ -67,6 +74,7 @@ namespace CR4VE.GameLogic.GameStates
             spriteBatch.Draw(background, new Vector2(Camera2D.WorldRectangle.X, Camera2D.WorldRectangle.Y), new Rectangle((int)Camera2D.Position.X, (int)Camera2D.Position.Y, 800, 600), Color.White);
             playButton.Draw(spriteBatch);
             exitButton.Draw(spriteBatch);
+            creditsButton.Draw(spriteBatch);
             spriteBatch.End();
         }
         #endregion
