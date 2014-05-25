@@ -21,13 +21,20 @@ namespace CR4VE.GameLogic.Controls
         static KeyboardState currentKeyboard;
         static KeyboardState previousKeyboard;
 
-        private static float speed = 1;
+        private static float accel = 1;
+        private static float maxVelocity = 2.5f;
+        private static float velocityLeft = 0;
+        private static float velocityRight = 0;
 
         //Sprungparameter
-        private static float limit = 25;
+        private static readonly float G = 9.81f;
+        private static double startJumpTime;
+        private static double currentTime;
+        //private static
+        private static float limitJumpHeight = 25;
         private static float limitCheck = 0;
         private static bool isJumping = false;
-        private static bool limitReached = false;
+        private static bool grounded = false;
 
         //Grenzen fuer Kamerabewegung
         private static int topLimit = 20;
@@ -50,48 +57,84 @@ namespace CR4VE.GameLogic.Controls
             return currentKeyboard.IsKeyUp(key) && previousKeyboard.IsKeyDown(key);
         }
 
-        public static void updateSingleplayer()
+        public static void updateSingleplayer(GameTime gameTime)
         {
             previousKeyboard = currentKeyboard;
             currentKeyboard = Keyboard.GetState();
+            currentTime = gameTime.TotalGameTime.TotalSeconds;
              
             Vector2 moveVecCam = new Vector2(0, 0);
-            Vector2 moveVecPlayer = new Vector2(0, 0);
+            Vector3 moveVecPlayer = new Vector3(0, 0, 0);
 
             //moveVecCam berechnen, falls Spieler nahe am Bildschirmrand
-            if (Camera2D.transform3D(Singleplayer.player.Position).X > rightLimit) moveVecCam += new Vector2(speed, 0);
-            if (Camera2D.transform3D(Singleplayer.player.Position).X < leftLimit) moveVecCam += new Vector2(-speed, 0);
-            if (Camera2D.transform3D(Singleplayer.player.Position).Y > topLimit) moveVecCam += new Vector2(0, -speed);
-            if (Camera2D.transform3D(Singleplayer.player.Position).Y < botLimit) moveVecCam += new Vector2(0, speed);
+            if (Camera2D.transform3D(Singleplayer.player.Position).X > rightLimit) moveVecCam += new Vector2(accel, 0);
+            if (Camera2D.transform3D(Singleplayer.player.Position).X < leftLimit) moveVecCam += new Vector2(-accel, 0);
+            if (Camera2D.transform3D(Singleplayer.player.Position).Y > topLimit) moveVecCam += new Vector2(0, -accel);
+            if (Camera2D.transform3D(Singleplayer.player.Position).Y < botLimit) moveVecCam += new Vector2(0, accel);
 
             //moveVecPlayer berechnen
-            if (currentKeyboard.IsKeyDown(Keys.A)) moveVecPlayer += new Vector2(-speed, 0);
-            if (currentKeyboard.IsKeyDown(Keys.D)) moveVecPlayer += new Vector2(speed, 0);
-
-            #region jump
-            if (isClicked(Keys.Space) && !isJumping) isJumping = true;
-
-            if (isJumping && !limitReached)
+            if (currentKeyboard.IsKeyDown(Keys.A))
             {
-                moveVecPlayer += new Vector2(0, speed);
-                limitCheck += speed;
-                if (limitCheck == limit)
-                    limitReached = true;
+                if (velocityLeft < maxVelocity) velocityLeft += 0.5f;
+                moveVecPlayer += new Vector3(-accel, 0, 0);
             }
-            else if (limitReached)
+            if (currentKeyboard.IsKeyDown(Keys.D))
             {
-                moveVecPlayer -= new Vector2(0, speed);
-                limitCheck -= speed;
-                if (limitCheck == 0)
-                {
-                    limitReached = false;
-                    isJumping = false;
-                }
-            }            
+                if (velocityRight < maxVelocity) velocityRight += 0.5f;
+                moveVecPlayer += new Vector3(accel, 0, 0);
+            }
+
+            #region new jump
+            if (isClicked(Keys.Space))
+            {
+                isJumping = true;
+                startJumpTime = gameTime.TotalGameTime.TotalSeconds;
+                //moveVecPlayer += new Vector3(0, velocityRight, 0);
+            }
+
+            if (isJumping)
+            {
+                double deltaTime = currentTime - startJumpTime;
+                moveVecPlayer += new Vector3(0, velocityRight - (float)deltaTime * 5, 0);
+            }
+            else
+            { 
+                
+            }
             #endregion
+
+            Console.Clear();
+            Console.WriteLine(velocityRight - (float)currentTime - startJumpTime);
+            Console.WriteLine(velocityRight);
+
+            //#region jump
+            //if (isClicked(Keys.Space) && !isJumping) isJumping = true;
+
+            //if (isJumping && !limitReached)
+            //{
+            //    moveVecPlayer += new Vector3(0, accel, 0);
+            //    limitCheck += accel;
+            //    if (limitCheck == limitJumpHeight)
+            //        limitReached = true;
+            //}
+            //else if (limitReached)
+            //{
+            //    moveVecPlayer -= new Vector3(0, accel, 0);
+            //    limitCheck -= accel;
+            //    if (limitCheck == 0)
+            //    {
+            //        limitReached = false;
+            //        isJumping = false;
+            //    }
+            //}            
+            //#endregion
 
             Camera2D.move(moveVecCam);
             Singleplayer.player.move(moveVecPlayer);
+            if (Singleplayer.player.Position.Y < 0)
+            {
+                Singleplayer.player.Position = new Vector3(Singleplayer.player.Position.X, 0, 0);
+            }
         }
         
         public static void updateMultiplayer()
@@ -101,10 +144,10 @@ namespace CR4VE.GameLogic.Controls
 
             Vector3 moveVec3D = new Vector3(0, 0, 0);
 
-            if (currentKeyboard.IsKeyDown(Keys.W)) moveVec3D += new Vector3(0, 0, -speed);
-            if (currentKeyboard.IsKeyDown(Keys.A)) moveVec3D += new Vector3(-speed, 0, 0);
-            if (currentKeyboard.IsKeyDown(Keys.S)) moveVec3D += new Vector3(0, 0, speed);
-            if (currentKeyboard.IsKeyDown(Keys.D)) moveVec3D += new Vector3(speed, 0, 0);
+            if (currentKeyboard.IsKeyDown(Keys.W)) moveVec3D += new Vector3(0, 0, -accel);
+            if (currentKeyboard.IsKeyDown(Keys.A)) moveVec3D += new Vector3(-accel, 0, 0);
+            if (currentKeyboard.IsKeyDown(Keys.S)) moveVec3D += new Vector3(0, 0, accel);
+            if (currentKeyboard.IsKeyDown(Keys.D)) moveVec3D += new Vector3(accel, 0, 0);
 
             Multiplayer.player.move(moveVec3D);
         }

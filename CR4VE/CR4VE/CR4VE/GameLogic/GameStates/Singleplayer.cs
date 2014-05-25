@@ -64,7 +64,7 @@ namespace CR4VE.GameLogic.GameStates
         #region Update
         public Game1.EGameState Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            KeyboardControls.updateSingleplayer();
+            KeyboardControls.updateSingleplayer(gameTime);
 
             //notwendiger Rueckgabewert
             return Game1.EGameState.Singleplayer;
@@ -87,7 +87,7 @@ namespace CR4VE.GameLogic.GameStates
 
             #region 3D Objects
             player.drawIn2DWorld(new Vector3(1, 1, 1));
-            terrain.drawIn2DWorld(new Vector3(1, 1, 1));
+            //terrain.drawIn2DWorld(new Vector3(1, 1, 1));
             #endregion
 
             #region draw HUD
