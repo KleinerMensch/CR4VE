@@ -14,6 +14,10 @@ namespace CR4VE.GameLogic.GameStates
         #region Attribute
         SpriteBatch spriteBatch;
         Texture2D background;
+
+        // zum Test
+        bool firstupdate;
+        double starttime;
         #endregion
 
         #region Konstruktor
@@ -23,6 +27,7 @@ namespace CR4VE.GameLogic.GameStates
         #region Init
         public void Initialize(ContentManager content)
         {
+            firstupdate = true;
             spriteBatch = CR4VE.Game1.spriteBatch;
             background = content.Load<Texture2D>("Assets/Sprites/Startscreen");
         }
@@ -31,6 +36,17 @@ namespace CR4VE.GameLogic.GameStates
         #region Update
         public Game1.EGameState Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
+            if (firstupdate)
+            {
+                // einmalige Initialisierung zum Test
+                starttime = gameTime.TotalGameTime.TotalMilliseconds;
+                firstupdate = false;
+            }
+            // nach 2 Sek Wechsel in das Hauptmenue
+            if ((gameTime.TotalGameTime.TotalMilliseconds - starttime) > 2000)
+            {
+                return Game1.EGameState.MainMenu;
+            }
             return Game1.EGameState.StartScreen;
         }
         #endregion
