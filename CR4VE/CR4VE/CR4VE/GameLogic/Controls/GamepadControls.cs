@@ -15,6 +15,7 @@ namespace CR4VE.GameLogic.Controls
 {
     public static class GamepadControls
     {
+        #region Attributes
         static GamePadState currGamepad;
         static GamePadState prevGamepad;
 
@@ -23,7 +24,9 @@ namespace CR4VE.GameLogic.Controls
         private static float test = 0;
         private static bool isJumping = false;
         private static bool limitReached = false;
+        #endregion
 
+        #region Methods
         public static bool isPressed(Buttons button)
         {
             return currGamepad.IsButtonDown(button);
@@ -37,7 +40,7 @@ namespace CR4VE.GameLogic.Controls
             return currGamepad.IsButtonUp(button) && prevGamepad.IsButtonDown(button);
         }
 
-        public static void update()
+        public static void updateSingleplayer()
         {
             prevGamepad = currGamepad;
             currGamepad = GamePad.GetState(PlayerIndex.One); 
@@ -49,11 +52,7 @@ namespace CR4VE.GameLogic.Controls
             if (currGamepad.IsButtonDown(Buttons.DPadDown)) moveVec += new Vector2(0, speed);
             if (currGamepad.IsButtonDown(Buttons.DPadRight)) moveVec += new Vector2(speed, 0);
 
-            if (isClicked(Buttons.A) && !isJumping)
-            {
-                Console.WriteLine("asdasdas");
-                isJumping = true;
-            }
+            if (isClicked(Buttons.A) && !isJumping) isJumping = true;
 
             if (isJumping && !limitReached)
             {
@@ -73,16 +72,19 @@ namespace CR4VE.GameLogic.Controls
                 }
             }
             Camera2D.move(moveVec);
-
-            //multiplayer
-            //Vector3 moveVec3D = new Vector3(0, 0, 0);
-
-            //if (state.IsButtonDown(Buttons.DPadUp)) moveVec3D += new Vector3(0, 0, -speed);
-            //if (state.IsButtonDown(Buttons.DPadLeft)) moveVec3D += new Vector3(-speed, 0, 0);
-            //if (state.IsButtonDown(Buttons.DPadDown)) moveVec3D += new Vector3(0, 0, speed);
-            //if (state.IsButtonDown(Buttons.DPadRight)) moveVec3D += new Vector3(speed, 0, 0);
-
-            //CR4VE.Game1.playerPos += moveVec3D;
         }
+
+        public static void updateMultiplayer()
+        {
+            Vector3 moveVec3D = new Vector3(0, 0, 0);
+
+            if (currGamepad.IsButtonDown(Buttons.DPadUp)) moveVec3D += new Vector3(0, 0, -speed);
+            if (currGamepad.IsButtonDown(Buttons.DPadLeft)) moveVec3D += new Vector3(-speed, 0, 0);
+            if (currGamepad.IsButtonDown(Buttons.DPadDown)) moveVec3D += new Vector3(0, 0, speed);
+            if (currGamepad.IsButtonDown(Buttons.DPadRight)) moveVec3D += new Vector3(speed, 0, 0);
+
+        }
+        #endregion
+
     }
 }
