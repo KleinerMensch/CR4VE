@@ -55,7 +55,7 @@ namespace CR4VE.GameLogic.GameStates
             if (playButton.isClicked == true)
                 return Game1.EGameState.Singleplayer;
             if (exitButton.isClicked == true)
-                return Game1.EGameState.StartScreen;
+                return Game1.EGameState.GameOver;
             return Game1.EGameState.MainMenu;
         }
         #endregion
