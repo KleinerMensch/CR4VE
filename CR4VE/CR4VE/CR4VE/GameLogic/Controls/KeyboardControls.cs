@@ -30,7 +30,6 @@ namespace CR4VE.GameLogic.Controls
         private static readonly float G = 9.81f;
         private static double startJumpTime;
         private static double currentTime;
-        //private static
         private static float limitJumpHeight = 25;
         private static float limitCheck = 0;
         private static bool isJumping = false;
@@ -41,6 +40,7 @@ namespace CR4VE.GameLogic.Controls
         private static int botLimit = -20;
         private static int leftLimit = -20;
         private static int rightLimit = 20;
+        private static Vector3 deltaPosition;
         #endregion
 
         #region Methods
@@ -66,13 +66,7 @@ namespace CR4VE.GameLogic.Controls
             Vector2 moveVecCam = new Vector2(0, 0);
             Vector3 moveVecPlayer = new Vector3(0, 0, 0);
 
-            //moveVecCam berechnen, falls Spieler nahe am Bildschirmrand
-            if (Camera2D.transform3D(Singleplayer.player.Position).X > rightLimit) moveVecCam += new Vector2(accel, 0);
-            if (Camera2D.transform3D(Singleplayer.player.Position).X < leftLimit) moveVecCam += new Vector2(-accel, 0);
-            if (Camera2D.transform3D(Singleplayer.player.Position).Y > topLimit) moveVecCam += new Vector2(0, -accel);
-            if (Camera2D.transform3D(Singleplayer.player.Position).Y < botLimit) moveVecCam += new Vector2(0, accel);
-
-            //moveVecPlayer berechnen
+            //calculate moveVecPlayer
             if (currentKeyboard.IsKeyDown(Keys.A))
             {
                 if (velocityLeft < maxVelocity) velocityLeft += 0.5f;
@@ -84,14 +78,15 @@ namespace CR4VE.GameLogic.Controls
                 moveVecPlayer += new Vector3(accel, 0, 0);
             }
 
-            #region new jump
-            if (isClicked(Keys.Space))
+            #region jump
+            //initialize jump if space was pressed
+            if (isClicked(Keys.Space) && !isJumping)
             {
                 isJumping = true;
                 startJumpTime = gameTime.TotalGameTime.TotalSeconds;
-                //moveVecPlayer += new Vector3(0, velocityRight, 0);
             }
 
+            //calculate moveVecPlayer with influence of jump
             if (isJumping)
             {
                 double deltaTime = currentTime - startJumpTime;
@@ -103,37 +98,36 @@ namespace CR4VE.GameLogic.Controls
             }
             #endregion
 
+            //debug
             Console.Clear();
-            Console.WriteLine(velocityRight - (float)currentTime - startJumpTime);
-            Console.WriteLine(velocityRight);
+            Console.WriteLine(moveVecPlayer);
+            Console.WriteLine(moveVecCam);
 
-            //#region jump
-            //if (isClicked(Keys.Space) && !isJumping) isJumping = true;
-
-            //if (isJumping && !limitReached)
-            //{
-            //    moveVecPlayer += new Vector3(0, accel, 0);
-            //    limitCheck += accel;
-            //    if (limitCheck == limitJumpHeight)
-            //        limitReached = true;
-            //}
-            //else if (limitReached)
-            //{
-            //    moveVecPlayer -= new Vector3(0, accel, 0);
-            //    limitCheck -= accel;
-            //    if (limitCheck == 0)
-            //    {
-            //        limitReached = false;
-            //        isJumping = false;
-            //    }
-            //}            
-            //#endregion
-
-            Camera2D.move(moveVecCam);
+            Vector3 temp = Singleplayer.player.Position;
+            
             Singleplayer.player.move(moveVecPlayer);
-            if (Singleplayer.player.Position.Y < 0)
+
+            //calculate moveVecCam if player reaches screen limit
+            //if (Camera2D.transform3D(Singleplayer.player.Position).X > rightLimit) moveVecCam += new Vector2(accel, 0);
+            //if (Camera2D.transform3D(Singleplayer.player.Position).X < leftLimit) moveVecCam += new Vector2(-accel, 0);
+            //if (Camera2D.transform3D(Singleplayer.player.Position).Y > topLimit) moveVecCam += new Vector2(0, -accel);
+            //if (Camera2D.transform3D(Singleplayer.player.Position).Y < botLimit) moveVecCam += new Vector2(0, accel);
+            if (Camera2D.transform3D(Singleplayer.player.Position).X >= rightLimit)
+            {
+                Camera2D.move(new Vector2(moveVecPlayer.X, 0));
+            }
+            if (Camera2D.transform3D(Singleplayer.player.Position).X < leftLimit) moveVecCam += new Vector2(-accel, 0);
+            if (Camera2D.transform3D(Singleplayer.player.Position).Y > topLimit) moveVecCam += new Vector2(0, -accel);
+            if (Camera2D.transform3D(Singleplayer.player.Position).Y < botLimit) moveVecCam += new Vector2(0, accel);
+            
+            Camera2D.move(moveVecCam);
+
+            //reset jump parameters
+            //(Positionsabfrage spaeter noch durch Kollision ersetzen)
+            if (Singleplayer.player.Position.Y < 0 && isJumping)
             {
                 Singleplayer.player.Position = new Vector3(Singleplayer.player.Position.X, 0, 0);
+                isJumping = false;
             }
         }
         
