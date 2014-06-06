@@ -13,15 +13,10 @@ namespace CR4VE
         #region Attributes
         private GraphicsDeviceManager graphics;
 
-        private Texture2D healthContainer, healthBar;
-        private Texture2D powerContainer, powerBar;
+        private Texture2D opheliaHealthContainer, opheliaHealthBar;
         private SpriteFont font;
 
-        private Vector2 healthBarPosition, powerBarPosition;
-        private Vector2 trialsPosition;
-
-        public float fullHealth, currentHealth;
-        public float fullPower, currentPower;
+        private Vector2 opheliaBarPosition, trialsPosition;
 
         public int trialsLeft;
         #endregion
@@ -32,14 +27,8 @@ namespace CR4VE
             graphics = manager;
             LoadContent(content);
 
-            healthBarPosition = new Vector2(10, 10);
-            powerBarPosition = new Vector2(10, 10 + healthBar.Height + 5);
+            opheliaBarPosition = new Vector2(0,graphics.PreferredBackBufferHeight-90);
             trialsPosition = new Vector2(graphics.PreferredBackBufferWidth - 200, 10);
-
-            fullHealth = healthBar.Width;
-            currentHealth = fullHealth;
-            fullPower = powerBar.Width;
-            currentPower = fullPower;
 
             trialsLeft = 3;
         }
@@ -51,22 +40,19 @@ namespace CR4VE
 
         private void LoadContent(ContentManager content)
         {
-            healthContainer = content.Load<Texture2D>("Assets/Sprites/LifeContainer");
-            healthBar = content.Load<Texture2D>("Assets/Sprites/LifeBar");
-
-            powerContainer = content.Load<Texture2D>("Assets/Sprites/LifeContainer");
-            powerBar = content.Load<Texture2D>("Assets/Sprites/LifeBar");
+            opheliaHealthContainer = content.Load<Texture2D>("Assets/Sprites/OpheliaHPBar");
+            opheliaHealthBar = content.Load<Texture2D>("Assets/Sprites/HealthLiquid");
 
             font = content.Load<SpriteFont>("Assets/Fonts/HUDfont");
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(healthBar, healthBarPosition, new Rectangle((int)healthBarPosition.X, (int)healthBarPosition.Y, (int)currentHealth, (int)healthBar.Height), Color.Red);
-            spriteBatch.Draw(healthContainer, healthBarPosition, Color.White);
-
-            spriteBatch.Draw(powerBar, powerBarPosition, new Rectangle((int)powerBarPosition.X, (int)powerBarPosition.Y, (int)currentPower, (int)powerBar.Height), Color.DarkTurquoise);
-            spriteBatch.Draw(powerContainer, powerBarPosition, Color.White);
+            // Healthbar von Ophelia
+            // 3.Argument ist SourceRectangle -> null = ganzes Sprite wird gezeichnet
+            // Teil der ausgeblendet wird noch falsch !
+            spriteBatch.Draw(opheliaHealthBar, opheliaBarPosition, new Rectangle(0,0,opheliaHealthBar.Width, (int)(opheliaHealthBar.Height*0.5)), Color.White, 0f, opheliaBarPosition, 0.3f, SpriteEffects.None, 0);
+            spriteBatch.Draw(opheliaHealthContainer,opheliaBarPosition,null,Color.White,0f,opheliaBarPosition,0.3f,SpriteEffects.None,0);
 
             spriteBatch.DrawString(font, "Continues left: " + trialsLeft.ToString(), trialsPosition, Color.White);
         }
