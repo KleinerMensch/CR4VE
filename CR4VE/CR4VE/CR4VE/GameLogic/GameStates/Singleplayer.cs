@@ -65,6 +65,7 @@ namespace CR4VE.GameLogic.GameStates
         public Game1.EGameState Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
             KeyboardControls.updateSingleplayer(gameTime);
+            hud.Update();
 
             //notwendiger Rueckgabewert
             return Game1.EGameState.Singleplayer;
