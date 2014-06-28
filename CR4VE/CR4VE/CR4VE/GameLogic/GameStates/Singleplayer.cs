@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Media;
 using CR4VE.GameBase.Camera;
 using CR4VE.GameBase.Objects;
 using CR4VE.GameLogic.Controls;
+using CR4VE.GameBase.Terrain;
 
 namespace CR4VE.GameLogic.GameStates
 {
@@ -20,6 +21,8 @@ namespace CR4VE.GameLogic.GameStates
         #region Attribute
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+
+        Tilemap map;
 
         Texture2D background;
         Texture2D testTex;
@@ -39,6 +42,22 @@ namespace CR4VE.GameLogic.GameStates
         #region Init
         public void Initialize(ContentManager content)
         {
+            //terrain
+            map = new Tilemap();
+            Tiles.Content = content;
+            map.Generate(new int[,]{
+                {0,0,0,4,0,0,0,0,0,0,0,0,0},
+                {0,4,4,3,4,0,0,4,4,4,4,0,0},
+                {4,3,3,3,3,4,4,3,3,3,3,4,4},
+                {1,1,1,1,1,1,1,1,1,1,1,1,1},
+                {1,1,1,1,1,1,1,1,1,1,1,1,1},
+                {1,1,1,1,1,1,1,1,1,1,1,1,1},
+                {1,1,1,1,1,1,2,1,1,2,2,1,1},
+                {1,1,1,2,2,2,2,2,2,2,2,2,2},
+                {2,2,2,2,2,2,2,2,2,2,2,2,2},
+                {2,2,2,2,2,2,2,2,2,2,2,2,2},
+            }, 64);
+
             // Zugriff auf Attribute der Game1 Klasse
             spriteBatch = CR4VE.Game1.spriteBatch;
             graphics = CR4VE.Game1.graphics;
@@ -77,7 +96,8 @@ namespace CR4VE.GameLogic.GameStates
         {
             #region draw background
             spriteBatch.Begin();
-            spriteBatch.Draw(background, new Vector2(Camera2D.WorldRectangle.X, Camera2D.WorldRectangle.Y), new Rectangle((int)Camera2D.Position.X, (int)Camera2D.Position.Y, 800, 600), Color.White);
+            map.Draw(spriteBatch);
+            //spriteBatch.Draw(background, new Vector2(Camera2D.WorldRectangle.X, Camera2D.WorldRectangle.Y), new Rectangle((int)Camera2D.Position.X, (int)Camera2D.Position.Y, 800, 600), Color.White);
             //spriteBatch.Draw(testTex, Camera2D.transform2D(new Vector2(200, 200)), Color.White);
             spriteBatch.End();
 
