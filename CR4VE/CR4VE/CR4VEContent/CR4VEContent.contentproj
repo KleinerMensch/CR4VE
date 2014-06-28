@@ -35,8 +35,8 @@
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
-    <Compile Include="Assets\Models\protoTerrain.FBX">
-      <Name>protoTerrain</Name>
+    <Compile Include="Assets\Models\protoTerrain1.FBX">
+      <Name>protoTerrain1</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>

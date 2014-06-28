@@ -96,8 +96,8 @@ namespace CR4VE.GameLogic.GameStates
         {
             #region draw background
             spriteBatch.Begin();
-            map.Draw(spriteBatch);
-            //spriteBatch.Draw(background, new Vector2(Camera2D.WorldRectangle.X, Camera2D.WorldRectangle.Y), new Rectangle((int)Camera2D.Position.X, (int)Camera2D.Position.Y, 800, 600), Color.White);
+           // map.Draw(spriteBatch);
+            spriteBatch.Draw(background, new Vector2(Camera2D.WorldRectangle.X, Camera2D.WorldRectangle.Y), new Rectangle((int)Camera2D.Position.X, (int)Camera2D.Position.Y, 800, 600), Color.White);
             //spriteBatch.Draw(testTex, Camera2D.transform2D(new Vector2(200, 200)), Color.White);
             spriteBatch.End();
 

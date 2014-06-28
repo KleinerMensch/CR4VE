@@ -1,5 +1,4 @@
 Content\Assets\Models\protoSphere.xnb
-Content\Assets\Models\protoTerrain.xnb
 Content\Assets\Sprites\1397342868251.xnb
 Content\Assets\Sprites\doge.xnb
 Content\Assets\Sprites\Startscreen.xnb
@@ -15,6 +14,7 @@ Content\Assets\Sprites\Tile1.xnb
 Content\Assets\Sprites\Tile2.xnb
 Content\Assets\Sprites\Tile3.xnb
 Content\Assets\Sprites\Tile4.xnb
+Content\Assets\Models\protoTerrain1.xnb
 Content\Assets\Sprites\Startscreen.png
 Content\Assets\Sprites\ButtonExit.png
 Content\Assets\Sprites\ButtonPlay.png
