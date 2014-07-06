@@ -16,24 +16,21 @@ using CR4VE.GameBase.Terrain;
 
 namespace CR4VE.GameBase.Terrain
 {
-    class Tiles
+    class Tiles : Entity
     {
-        #region Field Region
-        protected Model model;
+        #region Attributes
+        //protected Model model;
         private Rectangle rectangle;
+        private static ContentManager content;
         #endregion
 
-
-
-        #region property region
-        // wir haben allgemein einen array von Rectangles
+        #region Properties
+        //wir haben allgemein ein Array von Rectangles
         public Rectangle Rectangle
         {
             get { return rectangle; }
             protected set { rectangle = value; }
         }
-
-        private static ContentManager content;
 
         public static ContentManager Content
         {
@@ -42,36 +39,41 @@ namespace CR4VE.GameBase.Terrain
         }
         #endregion
 
-         #region Draw
-          public void Draw(SpriteBatch spriteBtach)
-          {
-       //  spriteBtach.Draw(texture, rectangle, Color.White);
-
-          }
-          }
-             #endregion
-
-        #region class ColTiles, LOAD
-        // 2DTexturen werden hier runtergeladen
-        //wichtig: "tile"+1, dh bildformate nummerieren
-        // hier müssen dann die 3D objekte hochgeladen werden
-
-        class ColTiles : Tiles
-        {
-            public ColTiles(int i, Rectangle newRectangle)
-            {
-                model = Content.Load<Model>("Assets/Models/protoTerrain1" + i);
-                //texture = Content.Load<Texture2D>("Assets/Sprites/Tile" + i);
-
-
-                this.Rectangle = newRectangle;
-            }
-
+        #region Constructorss
         #endregion
 
-        }
+        #region Methods
+        /*public void Draw(Vector3 scale)
+        {
+            //spriteBtach.Draw(texture, rectangle, Color.White);
+            this.drawIn2DWorld(scale);
+        }*/
+        #endregion
     }
 
 
-        
-    
+
+        #region ColTiles Class, LOAD
+        //2D Texturen werden hier runtergeladen
+        //wichtig: "tile"+1, d.h. Dateinamen entsprechend nummerieren
+        //hier müssen dann die 3D Objekte hochgeladen werden
+        class ColTiles : Tiles
+        {
+            /*public ColTiles(int i, Rectangle newRectangle)
+            {
+                this.model = Content.Load<Model>("Assets/Models/protoTerrain" + i);
+                //texture = Content.Load<Texture2D>("Assets/Sprites/Tile" + i);
+
+                this.Rectangle = newRectangle;
+            }*/
+
+            public ColTiles(String type, int i, Vector3 pos)
+            {
+                this.position = pos;
+                this.model = Content.Load<Model>("Assets/Models/" + type + i);
+                //texture = Content.Load<Texture2D>("Assets/Sprites/Tile" + i);
+            }
+        }
+        #endregion
+
+}

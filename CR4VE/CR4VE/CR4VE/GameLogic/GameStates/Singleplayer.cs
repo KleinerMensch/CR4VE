@@ -42,11 +42,16 @@ namespace CR4VE.GameLogic.GameStates
         #region Init
         public void Initialize(ContentManager content)
         {
-            /*
-            //terrain
+            //Terrain
             map = new Tilemap();
             Tiles.Content = content;
-            map.Generate(new int[,]{
+            map.Generate(new int[,] {
+                {0,0,0,0,0,0},
+                {1,1,0,0,1,1},
+                {0,1,0,1,1,1},
+                {0,1,0,0,0,0},
+                {0,1,1,1,1,1}}, 5);
+            /*map.Generate(new int[,]{
                 {0,0,0,4,0,0,0,0,0,0,0,0,0},
                 {0,4,4,3,4,0,0,4,4,4,4,0,0},
                 {4,3,3,3,3,4,4,3,3,3,3,4,4},
@@ -63,7 +68,7 @@ namespace CR4VE.GameLogic.GameStates
             spriteBatch = CR4VE.Game1.spriteBatch;
             graphics = CR4VE.Game1.graphics;
 
-            //initializing Camera Class
+            //initialize Camera Class
             Camera2D.WorldRectangle = new Rectangle(0, 0, 1920, 1080);
             Camera2D.ViewPortWidth = 800;
             Camera2D.ViewPortHeight = 600;
@@ -73,7 +78,7 @@ namespace CR4VE.GameLogic.GameStates
             testTex = content.Load<Texture2D>("Assets/Sprites/doge");
 
             //load models
-            player = new Entity(new Vector3(0, 0, 0), "enemySpinningAnim2", content);
+            player = new Entity(new Vector3(0, 0, 0), "protoSphere", content);
             terrain = new Entity(new Vector3(0, 0, 0), "protoTerrain1", content);
 
             //HUD
@@ -108,8 +113,9 @@ namespace CR4VE.GameLogic.GameStates
             #endregion
 
             #region 3D Objects
-            player.drawIn2DWorld(new Vector3(0.1f, 0.1f, 0.1f), MathHelper.ToRadians(90));
+            player.drawIn2DWorld(new Vector3(1, 1, 1));
             //terrain.drawIn2DWorld(new Vector3(1, 1, 1));
+            map.Draw();
             #endregion
 
             #region draw HUD

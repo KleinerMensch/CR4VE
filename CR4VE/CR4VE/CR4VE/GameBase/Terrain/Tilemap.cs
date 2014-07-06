@@ -9,15 +9,18 @@ namespace CR4VE.GameBase.Terrain
 {
     class Tilemap
     {
-        // list von coltiles
+        #region Attributes
         private List<ColTiles> colTiles = new List<ColTiles>();
+        private int width;
+        private int height;
+        #endregion
 
-        #region property  region
+        #region Properties
         public List<ColTiles> ColTiles
         {
             get { return colTiles; }
         }
-        private int width, height;
+        
         public int Width
         {
             get { return width; }
@@ -28,32 +31,35 @@ namespace CR4VE.GameBase.Terrain
         }
         #endregion
 
-        #region constructor region
+        #region Constructors
         public Tilemap() { }
-
-        public void Generate(int[,] map, int size) // size von block
-        {
-            for (int x = 0; x < map.GetLength(1); x++)
-                for (int y = 0; y < map.GetLength(0); y++)
-                {
-                    int number = map[y, x];
-
-                    if (number > 0)
-                        colTiles.Add(new ColTiles(number, new Rectangle(x * size, y * size, size, size))); // position von rectangle(size)
-
-                    //x+1/y+1 da wir bei 0 starten
-                    width = (x + 1) * size;
-                    height = (y + 1) * size;
-                }
         #endregion
 
-        }
-
-        #region Draw
-        public void Draw(SpriteBatch spriteBatch)
+        #region Methods
+        //(laeuft, ist aber noch verbesserungswuerdig: Implementierung zu verschachtelt)
+        //map = Anordnung der Tiles
+        //size = Groeße eines einzelnen Tiles
+        public void Generate(int[,] map, int size)
         {
-            foreach (ColTiles tile in colTiles)
-                tile.Draw(spriteBatch);
+            for (int x = 0; x < map.GetLength(1); x++)
+            {
+                for (int y = 0; y < map.GetLength(0); y++)
+                {
+                    //Zahl an Stelle (x,y) in der Tilemap
+                    int number = map[y,x];
+
+                    //Wenn ungleich 0, colTile erstellen und adden
+                    if (number != 0)
+                        colTiles.Add(new ColTiles("protoBox", number, new Vector3(x*size, -y*size, 0)));
+                }
+            }
+        }
+       
+
+        public void Draw()
+        {
+            foreach (ColTiles cT in colTiles)
+                cT.drawIn2DWorld(new Vector3(1,1,1));
         }
         #endregion
     }

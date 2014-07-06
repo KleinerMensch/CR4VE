@@ -118,22 +118,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Models\enemySpinningNoAnim.FBX">
-      <Name>enemySpinningNoAnim</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Assets\Models\enemySpinningAnim.FBX">
-      <Name>enemySpinningAnim</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Assets\Models\enemySpinningAnim2.FBX">
-      <Name>enemySpinningAnim2</Name>
+    <Compile Include="Assets\Models\protoBox1.FBX">
+      <Name>protoBox1</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
