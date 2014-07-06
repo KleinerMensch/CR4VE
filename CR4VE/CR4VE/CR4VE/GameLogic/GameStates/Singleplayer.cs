@@ -42,10 +42,16 @@ namespace CR4VE.GameLogic.GameStates
         #region Init
         public void Initialize(ContentManager content)
         {
-            //terrain
+            //Terrain
             map = new Tilemap();
             Tiles.Content = content;
-            map.Generate(new int[,]{
+            map.Generate(new int[,] {
+                {0,0,0,0,0,0},
+                {1,1,0,0,1,1},
+                {0,1,0,1,1,1},
+                {0,1,0,0,0,0},
+                {0,1,1,1,1,1}}, 5);
+            /*map.Generate(new int[,]{
                 {0,0,0,4,0,0,0,0,0,0,0,0,0},
                 {0,4,4,3,4,0,0,4,4,4,4,0,0},
                 {4,3,3,3,3,4,4,3,3,3,3,4,4},
@@ -56,13 +62,13 @@ namespace CR4VE.GameLogic.GameStates
                 {1,1,1,2,2,2,2,2,2,2,2,2,2},
                 {2,2,2,2,2,2,2,2,2,2,2,2,2},
                 {2,2,2,2,2,2,2,2,2,2,2,2,2},
-            }, 64);
+            }, 64);*/
 
             // Zugriff auf Attribute der Game1 Klasse
             spriteBatch = CR4VE.Game1.spriteBatch;
             graphics = CR4VE.Game1.graphics;
 
-            //initializing Camera Class
+            //initialize Camera Class
             Camera2D.WorldRectangle = new Rectangle(0, 0, 1920, 1080);
             Camera2D.ViewPortWidth = 800;
             Camera2D.ViewPortHeight = 600;
@@ -73,7 +79,7 @@ namespace CR4VE.GameLogic.GameStates
 
             //load models
             player = new Entity(new Vector3(0, 0, 0), "protoSphere", content);
-            terrain = new Entity(new Vector3(0, 0, 0), "protoTerrain", content);
+            terrain = new Entity(new Vector3(0, 0, 0), "protoTerrain1", content);
 
             //HUD
             hud = new HUD(content, graphics);
@@ -96,8 +102,8 @@ namespace CR4VE.GameLogic.GameStates
         {
             #region draw background
             spriteBatch.Begin();
-            map.Draw(spriteBatch);
-            //spriteBatch.Draw(background, new Vector2(Camera2D.WorldRectangle.X, Camera2D.WorldRectangle.Y), new Rectangle((int)Camera2D.Position.X, (int)Camera2D.Position.Y, 800, 600), Color.White);
+           // map.Draw(spriteBatch);
+            spriteBatch.Draw(background, new Vector2(Camera2D.WorldRectangle.X, Camera2D.WorldRectangle.Y), new Rectangle((int)Camera2D.Position.X, (int)Camera2D.Position.Y, 800, 600), Color.White);
             //spriteBatch.Draw(testTex, Camera2D.transform2D(new Vector2(200, 200)), Color.White);
             spriteBatch.End();
 
@@ -109,6 +115,7 @@ namespace CR4VE.GameLogic.GameStates
             #region 3D Objects
             player.drawIn2DWorld(new Vector3(1, 1, 1));
             //terrain.drawIn2DWorld(new Vector3(1, 1, 1));
+            map.Draw();
             #endregion
 
             #region draw HUD

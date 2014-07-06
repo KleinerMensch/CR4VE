@@ -25,7 +25,7 @@ namespace CR4VE.GameLogic.GameStates
         public void Initialize(ContentManager content)
         {
             player = new Entity(new Vector3(0, 0, 0), "protoSphere", content);
-            terrain = new Entity(new Vector3(0, 0, 0), "protoTerrain", content);
+            terrain = new Entity(new Vector3(0, 0, 0), "protoTerrain1", content);
         }
         #endregion
 

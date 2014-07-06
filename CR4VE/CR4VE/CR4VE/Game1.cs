@@ -154,7 +154,7 @@ namespace CR4VE
 
             // Gamestate am Anfang
             // zum Testen jeweiligen GameState einsetzen
-            this.GameState = EGameState.StartScreen;
+            this.GameState = EGameState.Singleplayer;
         }
 
 

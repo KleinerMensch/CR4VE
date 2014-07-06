@@ -17,12 +17,13 @@ namespace CR4VE.GameBase.Objects
     public class Entity
     {
         #region Attributes
-        private Vector3 position;
-        private Model model;
-        private BoundingBox boundary;
+        public Vector3 position;
+        public Model model;
+        public BoundingBox boundary;
         #endregion
 
         #region Constructors
+        public Entity() { }
         //Konstruktor laedt das Modell anhand eines Strings aus dem Model-Verzeichnis
         public Entity(Vector3 pos, String modelName, ContentManager cm)
         {
