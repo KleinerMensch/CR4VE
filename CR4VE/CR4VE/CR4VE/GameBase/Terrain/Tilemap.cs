@@ -59,7 +59,7 @@ namespace CR4VE.GameBase.Terrain
         public void Draw()
         {
             foreach (ColTiles cT in colTiles)
-                cT.drawIn2DWorld(new Vector3(1,1,1));
+                cT.drawIn2DWorld(new Vector3(1,1,1), 1);
         }
         #endregion
     }
