@@ -42,6 +42,7 @@ namespace CR4VE.GameLogic.GameStates
         #region Init
         public void Initialize(ContentManager content)
         {
+            /*
             //terrain
             map = new Tilemap();
             Tiles.Content = content;
@@ -56,7 +57,7 @@ namespace CR4VE.GameLogic.GameStates
                 {1,1,1,2,2,2,2,2,2,2,2,2,2},
                 {2,2,2,2,2,2,2,2,2,2,2,2,2},
                 {2,2,2,2,2,2,2,2,2,2,2,2,2},
-            }, 64);
+            }, 64);*/
 
             // Zugriff auf Attribute der Game1 Klasse
             spriteBatch = CR4VE.Game1.spriteBatch;
@@ -72,8 +73,8 @@ namespace CR4VE.GameLogic.GameStates
             testTex = content.Load<Texture2D>("Assets/Sprites/doge");
 
             //load models
-            player = new Entity(new Vector3(0, 0, 0), "protoSphere", content);
-            terrain = new Entity(new Vector3(0, 0, 0), "protoTerrain", content);
+            player = new Entity(new Vector3(0, 0, 0), "enemySpinningAnim2", content);
+            terrain = new Entity(new Vector3(0, 0, 0), "protoTerrain1", content);
 
             //HUD
             hud = new HUD(content, graphics);
@@ -107,7 +108,7 @@ namespace CR4VE.GameLogic.GameStates
             #endregion
 
             #region 3D Objects
-            player.drawIn2DWorld(new Vector3(1, 1, 1));
+            player.drawIn2DWorld(new Vector3(0.1f, 0.1f, 0.1f), MathHelper.ToRadians(90));
             //terrain.drawIn2DWorld(new Vector3(1, 1, 1));
             #endregion
 
