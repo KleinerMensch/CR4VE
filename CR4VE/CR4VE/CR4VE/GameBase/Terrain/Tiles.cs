@@ -60,7 +60,7 @@ namespace CR4VE.GameBase.Terrain
         {
             public ColTiles(int i, Rectangle newRectangle)
             {
-                model = Content.Load<Model>("Assets/Models/protoTerrain" + i);
+                model = Content.Load<Model>("Assets/Models/protoTerrain1" + i);
                 //texture = Content.Load<Texture2D>("Assets/Sprites/Tile" + i);
 
 
