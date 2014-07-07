@@ -114,7 +114,7 @@ namespace CR4VE.GameLogic.GameStates
 
             #region 3D Objects
             player.drawIn2DWorld(new Vector3(1, 1, 1), 1);
-            //terrain.drawIn2DWorld(new Vector3(1, 1, 1));
+            //terrain.drawIn2DWorld(new Vector3(1, 1, 1),1);
             map.Draw();
             #endregion
 
