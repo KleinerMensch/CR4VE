@@ -19,19 +19,10 @@ namespace CR4VE.GameBase.Terrain
     class Tiles : Entity
     {
         #region Attributes
-        //protected Model model;
-        private Rectangle rectangle;
         private static ContentManager content;
         #endregion
 
         #region Properties
-        //wir haben allgemein ein Array von Rectangles
-        public Rectangle Rectangle
-        {
-            get { return rectangle; }
-            protected set { rectangle = value; }
-        }
-
         public static ContentManager Content
         {
             protected get { return content; }
@@ -39,15 +30,10 @@ namespace CR4VE.GameBase.Terrain
         }
         #endregion
 
-        #region Constructorss
+        #region Constructors
         #endregion
 
         #region Methods
-        /*public void Draw(Vector3 scale)
-        {
-            //spriteBtach.Draw(texture, rectangle, Color.White);
-            this.drawIn2DWorld(scale);
-        }*/
         #endregion
     }
 
@@ -59,20 +45,13 @@ namespace CR4VE.GameBase.Terrain
         //hier müssen dann die 3D Objekte hochgeladen werden
         class ColTiles : Tiles
         {
-            /*public ColTiles(int i, Rectangle newRectangle)
-            {
-                this.model = Content.Load<Model>("Assets/Models/protoTerrain" + i);
-                //texture = Content.Load<Texture2D>("Assets/Sprites/Tile" + i);
-
-                this.Rectangle = newRectangle;
-            }*/
-
+            #region Constructors
             public ColTiles(String type, int i, Vector3 pos)
             {
                 this.position = pos;
                 this.model = Content.Load<Model>("Assets/Models/" + type + i);
-                //texture = Content.Load<Texture2D>("Assets/Sprites/Tile" + i);
             }
+            #endregion
         }
         #endregion
 

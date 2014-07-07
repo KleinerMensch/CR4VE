@@ -22,13 +22,13 @@ namespace CR4VE.GameLogic.GameStates
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        Tilemap map;
+        Tilemap terrainMap;
 
         Texture2D background;
         Texture2D testTex;
 
         public static Entity player;
-        Entity terrain;
+        //Entity terrain;
 
         HUD hud;
         #endregion
@@ -43,14 +43,14 @@ namespace CR4VE.GameLogic.GameStates
         public void Initialize(ContentManager content)
         {
             //Terrain
-            map = new Tilemap();
+            terrainMap = new Tilemap();
             Tiles.Content = content;
-            map.Generate(new int[,] {
-                {0,0,0,0,0,0},
-                {1,1,0,0,1,1},
-                {0,1,0,1,1,1},
+            terrainMap.Generate(new int[,] {
                 {0,1,0,0,0,0},
-                {0,1,1,1,1,1}}, 5);
+                {0,1,0,1,0,1},
+                {0,1,0,0,0,0},
+                {0,1,0,0,0,0},
+                {0,1,1,1,1,0}}, 5);
             /*map.Generate(new int[,]{
                 {0,0,0,4,0,0,0,0,0,0,0,0,0},
                 {0,4,4,3,4,0,0,4,4,4,4,0,0},
@@ -79,7 +79,7 @@ namespace CR4VE.GameLogic.GameStates
 
             //load models
             player = new Entity(new Vector3(0, 0, 0), "protoSphere", content);
-            terrain = new Entity(new Vector3(0, 0, 0), "protoTerrain1", content);
+            //terrain = new Entity(new Vector3(0, 0, 0), "protoTerrain1", content);
 
             //HUD
             hud = new HUD(content, graphics);
@@ -102,9 +102,10 @@ namespace CR4VE.GameLogic.GameStates
         {
             #region draw background
             spriteBatch.Begin();
-           // map.Draw(spriteBatch);
+
             spriteBatch.Draw(background, new Vector2(Camera2D.WorldRectangle.X, Camera2D.WorldRectangle.Y), new Rectangle((int)Camera2D.Position.X, (int)Camera2D.Position.Y, 800, 600), Color.White);
             //spriteBatch.Draw(testTex, Camera2D.transform2D(new Vector2(200, 200)), Color.White);
+
             spriteBatch.End();
 
             //GraphicsDevice auf default setzen
@@ -113,14 +114,15 @@ namespace CR4VE.GameLogic.GameStates
             #endregion
 
             #region 3D Objects
-            player.drawIn2DWorld(new Vector3(1, 1, 1), 1);
-            //terrain.drawIn2DWorld(new Vector3(1, 1, 1),1);
-            map.Draw();
+            player.drawIn2DWorld(new Vector3(1, 1, 1), 0, 0, 0);
+            terrainMap.Draw(new Vector3(1, 1, 1), 0, 0, 0);
             #endregion
 
             #region draw HUD
             spriteBatch.Begin();
+
             hud.Draw(spriteBatch);
+
             spriteBatch.End();
             #endregion
         }
@@ -140,4 +142,3 @@ namespace CR4VE.GameLogic.GameStates
         }
     }
 }
-

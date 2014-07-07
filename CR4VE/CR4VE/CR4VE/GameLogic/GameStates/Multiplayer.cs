@@ -41,8 +41,8 @@ namespace CR4VE.GameLogic.GameStates
         #region Draw
         public void Draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            player.drawInArena(new Vector3(1, 1, 1));
-            terrain.drawInArena(new Vector3(1, 1, 1));
+            player.drawInArena(new Vector3(1, 1, 1), 0, 0, 0);
+            terrain.drawInArena(new Vector3(1, 1, 1), 0, 0, 0);
         }
         #endregion
 
