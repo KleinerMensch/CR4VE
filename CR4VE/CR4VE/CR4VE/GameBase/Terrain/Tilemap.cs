@@ -11,23 +11,13 @@ namespace CR4VE.GameBase.Terrain
     {
         #region Attributes
         private List<ColTiles> colTiles = new List<ColTiles>();
-        private int width;
-        private int height;
+        bool test = true;
         #endregion
 
         #region Properties
         public List<ColTiles> ColTiles
         {
             get { return colTiles; }
-        }
-        
-        public int Width
-        {
-            get { return width; }
-        }
-        public int Height
-        {
-            get { return height; }
         }
         #endregion
 
@@ -56,10 +46,15 @@ namespace CR4VE.GameBase.Terrain
         }
        
 
-        public void Draw()
+        public void Draw(Vector3 scale, float rotX, float rotY, float rotZ)
         {
             foreach (ColTiles cT in colTiles)
-                cT.drawIn2DWorld(new Vector3(1,1,1));
+            {
+                cT.drawIn2DWorld(scale, rotX, rotY, rotZ);
+                if (test)
+                    Console.WriteLine(cT.position);
+            }
+            test = false;
         }
         #endregion
     }
