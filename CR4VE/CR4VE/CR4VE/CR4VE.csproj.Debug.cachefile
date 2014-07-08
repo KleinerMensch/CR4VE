@@ -1,14 +1,12 @@
-Content\Assets\Sprites\LifeBar.xnb
-Content\Assets\Sprites\LifeContainer.xnb
 Content\Assets\Sprites\1397342868251.xnb
 Content\Assets\Sprites\doge.xnb
+Content\Assets\Models\protoSphere.xnb
+Content\Assets\Models\protoTerrain.xnb
+Content\Assets\Fonts\HUDfont.xnb
 Content\Assets\Sprites\Startscreen.xnb
 Content\Assets\Sprites\ButtonExit.xnb
 Content\Assets\Sprites\ButtonPlay.xnb
 Content\Assets\Sprites\FloFace.xnb
-Content\Assets\Models\protoSphere.xnb
-Content\Assets\Models\protoTerrain.xnb
-Content\Assets\Fonts\HUDfont.xnb
 Content\Assets\Fonts\GameOverFlo.xnb
 Content\Assets\Sprites\HealthLiquid.xnb
 Content\Assets\Sprites\OpheliaHPBar.xnb
