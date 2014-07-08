@@ -39,20 +39,20 @@ namespace CR4VE.GameBase.Terrain
 
 
 
-        #region ColTiles Class, LOAD
-        //2D Texturen werden hier runtergeladen
-        //wichtig: "tile"+1, d.h. Dateinamen entsprechend nummerieren
-        //hier müssen dann die 3D Objekte hochgeladen werden
-        class ColTiles : Tiles
+    #region ColTiles Class, LOAD
+    //2D Texturen werden hier runtergeladen
+    //wichtig: "tile"+1, d.h. Dateinamen entsprechend nummerieren
+    //hier müssen dann die 3D Objekte hochgeladen werden
+    class ColTiles : Tiles
+    {
+        #region Constructors
+        public ColTiles(String type, int i, Vector3 pos)
         {
-            #region Constructors
-            public ColTiles(String type, int i, Vector3 pos)
-            {
-                this.position = pos;
-                this.model = Content.Load<Model>("Assets/Models/" + type + i);
-            }
-            #endregion
+            this.position = pos;
+            this.model = Content.Load<Model>("Assets/Models/" + type + i);
         }
         #endregion
+    }
+    #endregion
 
 }

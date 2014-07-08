@@ -46,11 +46,11 @@ namespace CR4VE.GameLogic.GameStates
             terrainMap = new Tilemap();
             Tiles.Content = content;
             terrainMap.Generate(new int[,] {
-                {0,1,0,0,0,0},
-                {0,1,0,1,0,1},
-                {0,1,0,0,0,0},
-                {0,1,0,0,0,0},
-                {0,1,1,1,1,0}}, 5);
+                {1,0,0,0,0}}/*,
+                {0,0,1,0,1},
+                {0,0,0,0,0},
+                {1,0,0,0,0},
+                {1,1,1,1,0}}*/, 5);
             /*map.Generate(new int[,]{
                 {0,0,0,4,0,0,0,0,0,0,0,0,0},
                 {0,4,4,3,4,0,0,4,4,4,4,0,0},
@@ -79,7 +79,6 @@ namespace CR4VE.GameLogic.GameStates
 
             //load models
             player = new Entity(new Vector3(0, 0, 0), "protoSphere", content);
-            //terrain = new Entity(new Vector3(0, 0, 0), "protoTerrain1", content);
 
             //HUD
             hud = new HUD(content, graphics);
@@ -91,6 +90,10 @@ namespace CR4VE.GameLogic.GameStates
         {
             KeyboardControls.updateSingleplayer(gameTime);
             hud.Update();
+
+            //player.pos debug
+            /*Console.Clear();
+            Console.WriteLine(player.Position);*/
 
             //notwendiger Rueckgabewert
             return Game1.EGameState.Singleplayer;

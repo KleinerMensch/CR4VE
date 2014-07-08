@@ -26,7 +26,6 @@ namespace CR4VE.GameBase.Terrain
         #endregion
 
         #region Methods
-        //(laeuft, ist aber noch verbesserungswuerdig: Implementierung zu verschachtelt)
         //map = Anordnung der Tiles
         //size = Groeße eines einzelnen Tiles
         public void Generate(int[,] map, int size)
@@ -51,10 +50,7 @@ namespace CR4VE.GameBase.Terrain
             foreach (ColTiles cT in colTiles)
             {
                 cT.drawIn2DWorld(scale, rotX, rotY, rotZ);
-                if (test)
-                    Console.WriteLine(cT.position);
             }
-            test = false;
         }
         #endregion
     }

@@ -92,7 +92,6 @@ namespace CR4VE.GameBase.Objects
         }
 
         //zeichnet Objekt in Bezug auf die Spielwelt
-        //public void drawIn2DWorld(Vector3 scale, float rotation)
         public void drawIn2DWorld(Vector3 scale, float rotX, float rotY, float rotZ)
         {
             // http://gamedev.stackexchange.com/questions/38637/models-from-3ds-max-lose-their-transformations-when-input-into-xna
@@ -100,7 +99,7 @@ namespace CR4VE.GameBase.Objects
             model.CopyAbsoluteBoneTransformsTo(transforms); 
 
             Matrix view = Matrix.CreateLookAt(Camera2D.CamPosition3D, Vector3.Zero, Vector3.Up);
-            Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45f), 1, 10f, 1000);
+            Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45f), (float)8/6, 10f, 1000);
 
             Matrix rotationMatrix = Matrix.CreateRotationX(rotX)*Matrix.CreateRotationY(rotY)*Matrix.CreateRotationZ(rotZ);
             
@@ -123,6 +122,7 @@ namespace CR4VE.GameBase.Objects
         {
             Matrix view = Matrix.CreateLookAt(CameraArena.Position, Vector3.Zero, Vector3.Up);
             Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45f), 1, 10f, 1000);
+            
 
             Matrix rotationMatrix = Matrix.CreateRotationX(rotX) * Matrix.CreateRotationY(rotY) * Matrix.CreateRotationZ(rotZ);
 
