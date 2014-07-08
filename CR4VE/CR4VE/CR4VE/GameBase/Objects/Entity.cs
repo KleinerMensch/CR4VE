@@ -100,10 +100,9 @@ namespace CR4VE.GameBase.Objects
             model.CopyAbsoluteBoneTransformsTo(transforms); 
 
             Matrix view = Matrix.CreateLookAt(Camera2D.CamPosition3D, Vector3.Zero, Vector3.Up);
-            Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45f), 1, 10f, 1000);
+            Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45f), 8/6f, 10f, 1000);
 
             Matrix rotationMatrix = Matrix.CreateRotationX(rotX)*Matrix.CreateRotationY(rotY)*Matrix.CreateRotationZ(rotZ);
-            
 
             foreach (ModelMesh mesh in this.model.Meshes)
             {

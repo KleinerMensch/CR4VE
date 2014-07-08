@@ -23,6 +23,7 @@ namespace CR4VE
 
         public int healthLeft, fullHealth;
         public int trialsLeft;
+        public bool isDead = false;
         #endregion
 
         #region Constructor
@@ -50,6 +51,11 @@ namespace CR4VE
             // fuer erste Tests
             if(CR4VE.GameLogic.Controls.KeyboardControls.isPressed(Microsoft.Xna.Framework.Input.Keys.Down))
                 healthLeft -= (int)(fullHealth*0.01);
+            if (healthLeft == fullHealth * 0)
+            {
+                isDead = true;
+            }
+
             // Fadingeffekt
             if(opheliaPowerColor.A < 255 && powerIsDown == false)
                 opheliaPowerColor.A += 1;

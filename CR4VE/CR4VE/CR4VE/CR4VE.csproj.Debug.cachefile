@@ -12,6 +12,10 @@ Content\Assets\Sprites\HealthLiquidPrismatic.xnb
 Content\Assets\Sprites\OpheliaPower.xnb
 Content\Assets\Models\protoTerrain1.xnb
 Content\Assets\Models\protoBox1.xnb
+Content\Assets\Models\enemySpinningNoAnim.xnb
+Content\Assets\Models\EnemyEye.xnb
+Content\Assets\Models\red_eye.xnb
+Content\Assets\Models\red_eye_0.xnb
 Content\Assets\Sprites\Startscreen.png
 Content\Assets\Sprites\ButtonExit.png
 Content\Assets\Sprites\ButtonPlay.png
