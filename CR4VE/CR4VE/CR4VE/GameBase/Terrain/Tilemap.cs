@@ -10,14 +10,13 @@ namespace CR4VE.GameBase.Terrain
     class Tilemap
     {
         #region Attributes
-        private List<ColTiles> colTiles = new List<ColTiles>();
-        bool test = true;
+        private List<Tile> Tiles = new List<Tile>();
         #endregion
 
         #region Properties
-        public List<ColTiles> ColTiles
+        public List<Tile> TilesList
         {
-            get { return colTiles; }
+            get { return Tiles; }
         }
         #endregion
 
@@ -37,9 +36,14 @@ namespace CR4VE.GameBase.Terrain
                     //Zahl an Stelle (x,y) in der Tilemap
                     int number = map[y,x];
 
-                    //Wenn ungleich 0, colTile erstellen und adden
+                    //Wenn ungleich 0, Tile erstellen und adden
                     if (number != 0)
-                        colTiles.Add(new ColTiles("protoBox", number, new Vector3(x*size, -y*size, 0)));
+                    {
+                        Vector3 position = new Vector3(x*size, -y*size, 0);
+                        BoundingBox bound = new BoundingBox(position + new Vector3(-size, 0, 0), position + new Vector3(0, size, size));
+
+                        Tiles.Add(new Tile("protoBox", number, position, bound));
+                    }
                 }
             }
         }
@@ -47,9 +51,9 @@ namespace CR4VE.GameBase.Terrain
 
         public void Draw(Vector3 scale, float rotX, float rotY, float rotZ)
         {
-            foreach (ColTiles cT in colTiles)
+            foreach (Tile t in Tiles)
             {
-                cT.drawIn2DWorld(scale, rotX, rotY, rotZ);
+                t.drawIn2DWorld(scale, rotX, rotY, rotZ);
             }
         }
         #endregion

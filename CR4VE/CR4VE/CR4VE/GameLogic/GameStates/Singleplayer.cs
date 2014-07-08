@@ -18,53 +18,38 @@ namespace CR4VE.GameLogic.GameStates
 {
     class Singleplayer : GameStateInterface
     {
-        #region Attribute
+        #region Attributes
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        Tilemap terrainMap;
+        public static Tilemap terrainMap;
+        public static Entity player;
 
         Texture2D background;
         Texture2D testTex;
 
-        public static Entity player;
-        //Entity terrain;
-
         HUD hud;
         #endregion
 
-        #region Konstruktor
+        #region Constructors
         // im Konstruktor braucht nichts veraendert werden
         public Singleplayer() { }
         #endregion
 
-        // Contents werden hier reingeladen
-        #region Init
+        #region Methods
         public void Initialize(ContentManager content)
         {
             //Terrain
             terrainMap = new Tilemap();
-            Tiles.Content = content;
+            Tile.Content = content;
             terrainMap.Generate(new int[,] {
-                {1,0,0,0,0}}/*,
-                {0,0,1,0,1},
+                {2,0,0,2,0},
+                {0,0,2,0,2},
                 {0,0,0,0,0},
-                {1,0,0,0,0},
-                {1,1,1,1,0}}*/, 5);
-            /*map.Generate(new int[,]{
-                {0,0,0,4,0,0,0,0,0,0,0,0,0},
-                {0,4,4,3,4,0,0,4,4,4,4,0,0},
-                {4,3,3,3,3,4,4,3,3,3,3,4,4},
-                {1,1,1,1,1,1,1,1,1,1,1,1,1},
-                {1,1,1,1,1,1,1,1,1,1,1,1,1},
-                {1,1,1,1,1,1,1,1,1,1,1,1,1},
-                {1,1,1,1,1,1,2,1,1,2,2,1,1},
-                {1,1,1,2,2,2,2,2,2,2,2,2,2},
-                {2,2,2,2,2,2,2,2,2,2,2,2,2},
-                {2,2,2,2,2,2,2,2,2,2,2,2,2},
-            }, 64);*/
+                {2,0,0,0,0},
+                {2,2,2,2,0}}, 10);
 
-            // Zugriff auf Attribute der Game1 Klasse
+            //Zugriff auf Attribute der Game1 Klasse
             spriteBatch = CR4VE.Game1.spriteBatch;
             graphics = CR4VE.Game1.graphics;
 
@@ -78,36 +63,31 @@ namespace CR4VE.GameLogic.GameStates
             testTex = content.Load<Texture2D>("Assets/Sprites/doge");
 
             //load models
-            player = new Entity(new Vector3(0, 0, 0), "protoSphere", content);
+            //(BoundingBox ist noch hard gecoded auf Durchmesser = 10)
+            player = new Entity(new Vector3(0, 0, 0), "sphereR5", content, new BoundingBox(new Vector3(-5, -5, -5), new Vector3(5, 5, 5)));
 
             //HUD
             hud = new HUD(content, graphics);
         }
-        #endregion
 
-        #region Update
         public Game1.EGameState Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
             KeyboardControls.updateSingleplayer(gameTime);
             hud.Update();
 
             //player.pos debug
-            /*Console.Clear();
-            Console.WriteLine(player.Position);*/
+            Console.WriteLine(player.Position);
 
             //notwendiger Rueckgabewert
             return Game1.EGameState.Singleplayer;
         }
-        #endregion
 
-        #region Draw
         public void Draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            #region draw background
+            #region background
             spriteBatch.Begin();
 
             spriteBatch.Draw(background, new Vector2(Camera2D.WorldRectangle.X, Camera2D.WorldRectangle.Y), new Rectangle((int)Camera2D.Position.X, (int)Camera2D.Position.Y, 800, 600), Color.White);
-            //spriteBatch.Draw(testTex, Camera2D.transform2D(new Vector2(200, 200)), Color.White);
 
             spriteBatch.End();
 
@@ -117,11 +97,11 @@ namespace CR4VE.GameLogic.GameStates
             #endregion
 
             #region 3D Objects
-            player.drawIn2DWorld(new Vector3(1, 1, 1), 0, 0, 0);
+            player.drawIn2DWorld(new Vector3(0.4f, 0.4f, 0.4f), 0, 0, 0);
             terrainMap.Draw(new Vector3(1, 1, 1), 0, 0, 0);
             #endregion
 
-            #region draw HUD
+            #region HUD
             spriteBatch.Begin();
 
             hud.Draw(spriteBatch);
@@ -129,7 +109,7 @@ namespace CR4VE.GameLogic.GameStates
             spriteBatch.End();
             #endregion
         }
-        #endregion
+        
 
         // loeschen aller grafischen Elemente
         public void Unload()
@@ -143,5 +123,6 @@ namespace CR4VE.GameLogic.GameStates
         {
             //throw new NotImplementedException();
         }
+        #endregion
     }
 }

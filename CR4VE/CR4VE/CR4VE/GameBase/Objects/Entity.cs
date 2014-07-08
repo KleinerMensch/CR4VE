@@ -11,7 +11,6 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using CR4VE.GameBase.Camera;
 
-
 namespace CR4VE.GameBase.Objects
 {
     public class Entity
@@ -24,12 +23,14 @@ namespace CR4VE.GameBase.Objects
 
         #region Constructors
         public Entity() { }
+
         //Konstruktor laedt das Modell anhand eines Strings aus dem Model-Verzeichnis
         public Entity(Vector3 pos, String modelName, ContentManager cm)
         {
             this.position = pos;
             this.model = cm.Load<Model>("Assets/Models/" + modelName);
         }
+
         public Entity(Vector3 pos, String modelName, ContentManager cm, BoundingBox bound)
         {
             this.position = pos;
@@ -94,11 +95,13 @@ namespace CR4VE.GameBase.Objects
         //zeichnet Objekt in Bezug auf die Spielwelt
         public void drawIn2DWorld(Vector3 scale, float rotX, float rotY, float rotZ)
         {
-            // http://gamedev.stackexchange.com/questions/38637/models-from-3ds-max-lose-their-transformations-when-input-into-xna
+            //http://gamedev.stackexchange.com/questions/38637/models-from-3ds-max-lose-their-transformations-when-input-into-xna
             Matrix[] transforms = new Matrix[model.Bones.Count];
             model.CopyAbsoluteBoneTransformsTo(transforms); 
 
             Matrix view = Matrix.CreateLookAt(Camera2D.CamPosition3D, Vector3.Zero, Vector3.Up);
+
+            //AspectRatio spaeter noch an Auflösung binden
             Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45f), (float)8/6, 10f, 1000);
 
             Matrix rotationMatrix = Matrix.CreateRotationX(rotX)*Matrix.CreateRotationY(rotY)*Matrix.CreateRotationZ(rotZ);
