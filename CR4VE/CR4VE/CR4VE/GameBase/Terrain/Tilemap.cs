@@ -40,7 +40,7 @@ namespace CR4VE.GameBase.Terrain
 
                     //Wenn ungleich 0, colTile erstellen und adden
                     if (number != 0)
-                        colTiles.Add(new ColTiles("protoBox", number, new Vector3(x*size, -y*size, 0)));
+                        colTiles.Add(new ColTiles("Box", number, new Vector3(x*size, -y*size, 0)));
                 }
             }
         }
