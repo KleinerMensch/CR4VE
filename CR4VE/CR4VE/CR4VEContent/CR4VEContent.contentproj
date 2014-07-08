@@ -125,22 +125,50 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Models\enemySpinningNoAnim.FBX">
-      <Name>enemySpinningNoAnim</Name>
+    <Compile Include="Assets\Models\Box1.FBX">
+      <Name>Box1</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Models\EnemyEye.FBX">
-      <Name>EnemyEye</Name>
+    <Compile Include="Assets\Models\Box2.FBX">
+      <Name>Box2</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Models\red_eye.bmp">
-      <Name>red_eye</Name>
+    <Compile Include="Assets\Models\Box3.FBX">
+      <Name>Box3</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Models\Box4.FBX">
+      <Name>Box4</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Sprites\fire.png">
+      <Name>fire</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Sprites\fire2.bmp">
+      <Name>fire2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Sprites\stone.jpg">
+      <Name>stone</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
