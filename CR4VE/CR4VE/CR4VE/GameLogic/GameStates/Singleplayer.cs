@@ -13,6 +13,7 @@ using CR4VE.GameBase.Camera;
 using CR4VE.GameBase.Objects;
 using CR4VE.GameLogic.Controls;
 using CR4VE.GameBase.Terrain;
+using CR4VE.GameLogic.AI;
 
 namespace CR4VE.GameLogic.GameStates
 {
@@ -30,6 +31,7 @@ namespace CR4VE.GameLogic.GameStates
         public static Entity player;
         //Entity terrain;
 
+        EnemyRedEye eye;
         HUD hud;
         #endregion
 
@@ -46,14 +48,15 @@ namespace CR4VE.GameLogic.GameStates
             terrainMap = new Tilemap();
             Tiles.Content = content;
             terrainMap.Generate(new int[,] {
-                {0,0,0,0,0,3,3,0,0,0,0,0,0},
-                {3,3,0,0,0,0,0,0,0,0,0,0,0},
-                {2,2,3,3,0,0,0,0,0,0,3,3,3},
-                {0,2,2,3,0,0,0,0,0,3,0,0,0},
-                {0,0,2,3,0,0,0,0,0,0,0,0,0},
-                {0,0,2,2,3,0,0,0,0,0,0,0,0},
-                {0,2,2,2,2,3,0,0,3,3,0,3,3},
-                {0,1,1,1,1,2,4,4,2,2,4,2,2}}, 10);
+                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0},
+                {0,0,0,0,0,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                {3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,3,3,0,0,0,0,0,0,0,0,0,0},
+                {2,2,3,3,0,0,0,0,0,0,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                {0,2,2,3,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                {0,0,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0},
+                {0,0,2,2,3,0,0,0,0,0,0,0,0,0,0,3,0,0,3,3,0,0,3,0,0,0,0},
+                {0,2,2,2,2,3,0,0,3,3,0,0,3,3,3,2,3,3,2,2,4,4,4,2,3,0,0},
+                {0,1,1,1,1,2,4,4,2,2,4,4,2,2,2,2,2,1,1,1,2,2,2,2,4,4,0}}, 10);
             /*map.Generate(new int[,]{
                 {0,0,0,4,0,0,0,0,0,0,0,0,0},
                 {0,4,4,3,4,0,0,4,4,4,4,0,0},
@@ -77,12 +80,16 @@ namespace CR4VE.GameLogic.GameStates
             Camera2D.ViewPortHeight = 600;
 
             //load textures
-            background = content.Load<Texture2D>("Assets/Sprites/1397342868251");
+            background = content.Load<Texture2D>("Assets/Sprites/stone");
             testTex = content.Load<Texture2D>("Assets/Sprites/doge");
 
             //load models
             player = new Entity(new Vector3(0, 0, 0), "protoSphere", content);
             //terrain = new Entity(new Vector3(0, 0, 0), "protoTerrain1", content);
+
+            // AI
+            eye = new EnemyRedEye(new Vector3(80, 0, 0));
+            eye.Initialize(content);
 
             //HUD
             hud = new HUD(content, graphics);
@@ -94,6 +101,12 @@ namespace CR4VE.GameLogic.GameStates
         {
             KeyboardControls.updateSingleplayer(gameTime);
             hud.Update();
+            eye.Update(gameTime);
+
+            if (hud.isDead)
+            {
+                return Game1.EGameState.GameOver;
+            }
 
             //notwendiger Rueckgabewert
             return Game1.EGameState.Singleplayer;
@@ -119,6 +132,7 @@ namespace CR4VE.GameLogic.GameStates
             #region 3D Objects
             player.drawIn2DWorld(new Vector3(1, 1, 1), 0, 0, 0);
             terrainMap.Draw(new Vector3(1, 1, 1), 0, 0, 0);
+            eye.Draw(gameTime);
             #endregion
 
             #region draw HUD
