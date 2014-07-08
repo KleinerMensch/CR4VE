@@ -17,12 +17,13 @@ namespace CR4VE.GameBase.Objects
     public class Entity
     {
         #region Attributes
-        private Vector3 position;
-        private Model model;
-        private BoundingBox boundary;
+        public Vector3 position;
+        public Model model;
+        public BoundingBox boundary;
         #endregion
 
         #region Constructors
+        public Entity() { }
         //Konstruktor laedt das Modell anhand eines Strings aus dem Model-Verzeichnis
         public Entity(Vector3 pos, String modelName, ContentManager cm)
         {
@@ -68,11 +69,14 @@ namespace CR4VE.GameBase.Objects
         }
 
         //zeichnet Objekt im Bezug auf den Viewport
-        public void drawOn2DScreen(Vector3 scale)
+        public void drawOn2DScreen(Vector3 scale, float rotX, float rotY, float rotZ)
         {
             Matrix view = Matrix.CreateLookAt(Camera2D.CamPosition3D, Vector3.Zero, Vector3.Up);
             Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45f), 1, 10f, 1000);
-            Matrix worldMatrix = Matrix.CreateScale(scale) * 1 * Matrix.CreateTranslation(this.position);
+
+            Matrix rotationMatrix = Matrix.CreateRotationX(rotX) * Matrix.CreateRotationY(rotY) * Matrix.CreateRotationZ(rotZ);
+
+            Matrix worldMatrix = Matrix.CreateScale(scale) * rotationMatrix * Matrix.CreateTranslation(this.position);
 
             foreach (ModelMesh mesh in this.model.Meshes)
             {
@@ -88,11 +92,18 @@ namespace CR4VE.GameBase.Objects
         }
 
         //zeichnet Objekt in Bezug auf die Spielwelt
-        public void drawIn2DWorld(Vector3 scale)
-        { 
+        //public void drawIn2DWorld(Vector3 scale, float rotation)
+        public void drawIn2DWorld(Vector3 scale, float rotX, float rotY, float rotZ)
+        {
+            // http://gamedev.stackexchange.com/questions/38637/models-from-3ds-max-lose-their-transformations-when-input-into-xna
+            Matrix[] transforms = new Matrix[model.Bones.Count];
+            model.CopyAbsoluteBoneTransformsTo(transforms); 
+
             Matrix view = Matrix.CreateLookAt(Camera2D.CamPosition3D, Vector3.Zero, Vector3.Up);
             Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45f), 1, 10f, 1000);
-            Matrix worldMatrix = Matrix.CreateScale(scale) * 1 * Matrix.CreateTranslation(Camera2D.transform3D(this.Position));
+
+            Matrix rotationMatrix = Matrix.CreateRotationX(rotX)*Matrix.CreateRotationY(rotY)*Matrix.CreateRotationZ(rotZ);
+            
 
             foreach (ModelMesh mesh in this.model.Meshes)
             {
@@ -100,7 +111,7 @@ namespace CR4VE.GameBase.Objects
                 {
                     effect.View = view;
                     effect.Projection = projection;
-                    effect.World = worldMatrix;
+                    effect.World = transforms[mesh.ParentBone.Index] * Matrix.CreateScale(scale) * rotationMatrix * Matrix.CreateTranslation(Camera2D.transform3D(this.Position));
                     effect.EnableDefaultLighting();
                 }
                 mesh.Draw();
@@ -108,11 +119,14 @@ namespace CR4VE.GameBase.Objects
         }
 
         //zeichnet Objekt in Bezug auf die Arenakamera
-        public void drawInArena(Vector3 scale)
+        public void drawInArena(Vector3 scale, float rotX, float rotY, float rotZ)
         {
             Matrix view = Matrix.CreateLookAt(CameraArena.Position, Vector3.Zero, Vector3.Up);
             Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45f), 1, 10f, 1000);
-            Matrix worldMatrix = Matrix.CreateScale(scale) * 1 * Matrix.CreateTranslation(this.Position);
+
+            Matrix rotationMatrix = Matrix.CreateRotationX(rotX) * Matrix.CreateRotationY(rotY) * Matrix.CreateRotationZ(rotZ);
+
+            Matrix worldMatrix = Matrix.CreateScale(scale) * rotationMatrix * Matrix.CreateTranslation(this.Position);
 
             foreach (ModelMesh mesh in this.model.Meshes)
             {
