@@ -84,8 +84,10 @@
     <Compile Include="GameBase\Terrain\Tiles.cs" />
     <Compile Include="GameLogic\AI\AIInterface.cs" />
     <Compile Include="GameLogic\AI\EnemyRedEye.cs" />
+    <Compile Include="GameLogic\AI\EnemySkull.cs" />
     <Compile Include="GameLogic\Controls\GamepadControls.cs" />
     <Compile Include="GameLogic\Controls\KeyboardControls.cs" />
+    <Compile Include="GameLogic\GameStates\Arena.cs" />
     <Compile Include="GameLogic\GameStates\Continue.cs" />
     <Compile Include="GameLogic\GameStates\Credits.cs" />
     <Compile Include="GameLogic\GameStates\GameOver.cs" />

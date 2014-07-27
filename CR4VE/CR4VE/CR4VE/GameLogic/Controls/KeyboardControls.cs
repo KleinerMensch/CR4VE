@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using CR4VE.GameBase.Camera;
 using CR4VE.GameLogic.GameStates;
+using CR4VE.GameBase.Objects;
 
 
 namespace CR4VE.GameLogic.Controls
@@ -61,6 +62,7 @@ namespace CR4VE.GameLogic.Controls
         //update methods
         public static void updateSingleplayer(GameTime gameTime)
         {
+
             //get currently and previously pressed buttons
             previousKeyboard = currentKeyboard;
             currentKeyboard = Keyboard.GetState();
@@ -125,11 +127,13 @@ namespace CR4VE.GameLogic.Controls
 
             //reset jump parameters
             //(Positionsabfrage spaeter noch durch Kollision ersetzen)
-            if (Singleplayer.player.Position.Y < 0 && isJumping)
+            // Positions abfrage Y= -35 fuer Meilenstein3
+            if (Singleplayer.player.Position.Y < -45 && isJumping)
             {
                 isJumping = false;
-                Singleplayer.player.Position = new Vector3(Singleplayer.player.Position.X, 0, 0);                
+                Singleplayer.player.Position = new Vector3(Singleplayer.player.Position.X, -45 , 0);                
             }
+            
         }
         
         public static void updateMultiplayer(GameTime gameTime)

@@ -7,7 +7,7 @@ using System.Text;
 
 namespace CR4VE.GameLogic.AI
 {
-    class EnemyRedEye : AIInterface
+    class EnemySkull : AIInterface
     {
         #region Attributes
         public Entity enemy;
@@ -16,37 +16,39 @@ namespace CR4VE.GameLogic.AI
         Random random = new Random();
         float move;
         float rotationY;
+        float rotationX;
         #endregion
 
-        public EnemyRedEye(Vector3 position)
+        public EnemySkull(Vector3 position)
         {
             this.enemyPosition = position;
             move = -0.5f;
+            rotationX = 0.4f;
             rotationY = MathHelper.ToRadians(-90);
         }
 
         public void Initialize(Microsoft.Xna.Framework.Content.ContentManager content)
         {
-            enemy = new Entity(enemyPosition, "EnemyEye", content);
+            enemy = new Entity(enemyPosition, "enemySpinningNoAnim", content);
         }
 
         public void Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            
             enemy.position.X += move;
-            if (enemy.position.X < 50 || enemy.position.X > 130)
+
+            rotationX -= 0.1f;
+
+            if (enemy.position.X < 230 || enemy.position.X > 280)
             {
                 move *= -1;
+                rotationX *= -1;
                 rotationY += MathHelper.ToRadians(180);
             }
-
-            // Position zum Test abfragen
-            //Console.WriteLine(enemy.position);
         }
 
         public void Draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            enemy.drawIn2DWorld(new Vector3(0.5f, 0.5f, 0.5f), 0, rotationY, 0);
+            enemy.drawIn2DWorld(new Vector3(0.1f, 0.1f, 0.1f), 0, rotationY + rotationX, 0);
         }
     }
 }

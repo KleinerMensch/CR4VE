@@ -31,7 +31,7 @@ namespace CR4VE.GameBase.Camera
         }
         public static Vector3 ViewportCenter
         {
-            get { return new Vector3 (position,0) + new Vector3(ViewPortWidth / 2, ViewPortHeight / 2, 0); }
+            get { return new Vector3 (position,0) + new Vector3(ViewPortWidth / 2,ViewPortHeight / 2, 0); }
         }
 
         //Camera Positions
@@ -89,7 +89,8 @@ namespace CR4VE.GameBase.Camera
 
         public static Vector3 transform3D(Vector3 point)
         {
-            return point - new Vector3(Position.X, -Position.Y, 0);
+            // + 50 und -50 nur fuer meilenstein3
+            return point - new Vector3(Position.X+50, -Position.Y-35, 0);
         }
         #endregion
     }

@@ -1,15 +1,14 @@
-﻿using Microsoft.Xna.Framework.Content;
+﻿using CR4VE.GameBase.Camera;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CR4VE.GameBase.Camera;
 
 namespace CR4VE.GameLogic.GameStates
 {
-    class GameOver : GameStateInterface
+    class Arena : GameStateInterface
     {
         SpriteBatch spriteBatch;
         Texture2D background;
@@ -17,41 +16,31 @@ namespace CR4VE.GameLogic.GameStates
         private Vector2 fontPosition;
         private GraphicsDeviceManager graphics;
 
-        #region Konstruktor
-        public GameOver() 
-        {
-           
-        }
-        #endregion
+        public Arena() { }
 
-        #region Init
-        public void Initialize(ContentManager content)
+        public void Initialize(Microsoft.Xna.Framework.Content.ContentManager content)
         {
             graphics = CR4VE.Game1.graphics;
             spriteBatch = CR4VE.Game1.spriteBatch;
-            background = content.Load<Texture2D>("Assets/Sprites/TryAgain");
-            font = content.Load<SpriteFont>("Assets/Fonts/GameOverFlo");
-            fontPosition = new Vector2(graphics.PreferredBackBufferWidth/2, graphics.PreferredBackBufferHeight/2);
-            //throw new NotImplementedException();
-        }
-        #endregion
 
-        #region Update
+            font = content.Load<SpriteFont>("Assets/Fonts/HUDfont");
+            fontPosition = new Vector2(graphics.PreferredBackBufferWidth - 300, graphics.PreferredBackBufferHeight - 150);
+        }
+
         public Game1.EGameState Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            return Game1.EGameState.GameOver;
+            //throw new NotImplementedException();
+            return Game1.EGameState.Arena;
         }
-        #endregion
 
-        #region Draw
         public void Draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
             graphics.GraphicsDevice.Clear(Color.Black);
+
             spriteBatch.Begin();
-            spriteBatch.DrawString(font, "GAME OVER"/*"Game Over Flo"*/, fontPosition, Color.White);
+            spriteBatch.DrawString(font, "..ENTERING ARENA", fontPosition, Color.White);
             spriteBatch.End();
         }
-        #endregion
 
         public void Unload()
         {

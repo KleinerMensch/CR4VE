@@ -51,7 +51,13 @@ namespace CR4VE
             // fuer erste Tests
             if(CR4VE.GameLogic.Controls.KeyboardControls.isPressed(Microsoft.Xna.Framework.Input.Keys.Down))
                 healthLeft -= (int)(fullHealth*0.01);
-            if (healthLeft == fullHealth * 0)
+
+            if (healthLeft == fullHealth * 0){
+                    trialsLeft -= 1;
+                    healthLeft = fullHealth;
+            }
+
+            if (trialsLeft < 0)
             {
                 isDead = true;
             }

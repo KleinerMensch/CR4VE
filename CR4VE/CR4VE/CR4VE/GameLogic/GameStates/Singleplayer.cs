@@ -20,6 +20,7 @@ namespace CR4VE.GameLogic.GameStates
     class Singleplayer : GameStateInterface
     {
         #region Attribute
+        ContentManager cont;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
@@ -29,9 +30,15 @@ namespace CR4VE.GameLogic.GameStates
         Texture2D testTex;
 
         public static Entity player;
-        //Entity terrain;
+        public List<Entity> laserList = new List<Entity>();
+        float spawn = 0;
 
-        EnemyRedEye eye;
+        EnemyRedEye redEye;
+        EnemySkull skull;
+
+        BoundingSphere eyeBS, skullBS, playerBS;
+        Vector3 eyeBSpos, skullBSpos, playerBSpos;
+        //List<EnemyRedEye> redEyeList;
         HUD hud;
         #endregion
 
@@ -44,31 +51,21 @@ namespace CR4VE.GameLogic.GameStates
         #region Init
         public void Initialize(ContentManager content)
         {
+            #region Terrain
             //Terrain
             terrainMap = new Tilemap();
             Tiles.Content = content;
             terrainMap.Generate(new int[,] {
-                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0},
-                {0,0,0,0,0,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                {3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,3,3,0,0,0,0,0,0,0,0,0,0},
-                {2,2,3,3,0,0,0,0,0,0,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                {0,2,2,3,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                {0,0,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0},
-                {0,0,2,2,3,0,0,0,0,0,0,0,0,0,0,3,0,0,3,3,0,0,3,0,0,0,0},
-                {0,2,2,2,2,3,0,0,3,3,0,0,3,3,3,2,3,3,2,2,4,4,4,2,3,0,0},
-                {0,1,1,1,1,2,4,4,2,2,4,4,2,2,2,2,2,1,1,1,2,2,2,2,4,4,0}}, 10);
-            /*map.Generate(new int[,]{
-                {0,0,0,4,0,0,0,0,0,0,0,0,0},
-                {0,4,4,3,4,0,0,4,4,4,4,0,0},
-                {4,3,3,3,3,4,4,3,3,3,3,4,4},
-                {1,1,1,1,1,1,1,1,1,1,1,1,1},
-                {1,1,1,1,1,1,1,1,1,1,1,1,1},
-                {1,1,1,1,1,1,1,1,1,1,1,1,1},
-                {1,1,1,1,1,1,2,1,1,2,2,1,1},
-                {1,1,1,2,2,2,2,2,2,2,2,2,2},
-                {2,2,2,2,2,2,2,2,2,2,2,2,2},
-                {2,2,2,2,2,2,2,2,2,2,2,2,2},
-            }, 64);*/
+                {3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3},
+                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,3,0,0,0,0,0,0,0,0,0,0,3,3},
+                {0,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,3,3,2,2},
+                {3,2,2,2,2,3,0,0,3,3,0,0,3,3,3,3,3,3,3,3,0,0,0,0,3,3,3,3,3,3,2,2,2,1,1},
+                {2,1,1,1,1,2,4,4,2,2,4,4,2,2,2,2,2,2,2,2,4,4,4,4,2,2,2,2,2,2,2,1,1,4,4},
+                {2,4,4,4,4,2,4,4,2,2,4,4,2,2,2,2,2,1,1,1,4,4,4,4,1,1,1,1,1,1,1,4,4,4,4}}, 10);
+            #endregion
 
             // Zugriff auf Attribute der Game1 Klasse
             spriteBatch = CR4VE.Game1.spriteBatch;
@@ -84,15 +81,28 @@ namespace CR4VE.GameLogic.GameStates
             testTex = content.Load<Texture2D>("Assets/Sprites/doge");
 
             //load models
-            player = new Entity(new Vector3(0, 0, 0), "protoSphere", content);
+            player = new Entity(new Vector3(1,1,1), "protoSphere", content);
+            player.position = new Vector3(5, -35, 0);
             //terrain = new Entity(new Vector3(0, 0, 0), "protoTerrain1", content);
 
             // AI
-            eye = new EnemyRedEye(new Vector3(80, 0, 0));
-            eye.Initialize(content);
+            redEye = new EnemyRedEye(new Vector3(60, 3-45, 0));
+            redEye.Initialize(content);
+            skull = new EnemySkull(new Vector3(260, 2-45, 0));
+            skull.Initialize(content);
+
+            playerBSpos = player.position;
+            eyeBSpos = redEye.enemyPosition;
+            skullBSpos = skull.enemyPosition;
+
+            playerBS = new BoundingSphere(playerBSpos,3);
+            eyeBS = new BoundingSphere(eyeBSpos, 3);
+            skullBS = new BoundingSphere(skullBSpos, 3);
 
             //HUD
             hud = new HUD(content, graphics);
+
+            this.cont = content;
         }
         #endregion
 
@@ -100,16 +110,69 @@ namespace CR4VE.GameLogic.GameStates
         public Game1.EGameState Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
             KeyboardControls.updateSingleplayer(gameTime);
-            hud.Update();
-            eye.Update(gameTime);
 
+            spawn += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            foreach (Entity laser in laserList)
+            {
+                BoundingSphere laserBS = new BoundingSphere(laser.position, 2);
+
+                if (playerBS.Intersects(laserBS))
+                {
+                    hud.healthLeft -= (int)(hud.fullHealth * 0.01);
+                    Console.WriteLine("intersection with laser");
+                }
+                laser.position.X -= 0.7f;
+            }
+            LoadEnemies(redEye.enemy.position, cont);
+
+            // fuer meilenstein3
+            Console.WriteLine(player.position.X);
+
+            hud.Update();
             if (hud.isDead)
             {
                 return Game1.EGameState.GameOver;
             }
 
+            playerBS.Center = player.position;
+            redEye.Update(gameTime);
+            eyeBS.Center = redEye.enemy.position;
+            skull.Update(gameTime);
+            skullBS.Center = skull.enemy.position;
+
+            if (playerBS.Intersects(eyeBS) || playerBS.Intersects(skullBS))
+            {
+                Console.WriteLine("intersection");
+                hud.healthLeft -= (int) (hud.fullHealth * 0.01);
+            }
+
+            if (player.position.X >= 310)
+                return Game1.EGameState.Arena;
+
             //notwendiger Rueckgabewert
             return Game1.EGameState.Singleplayer;
+        }
+        #endregion
+
+        #region meilenstein3
+        public void LoadEnemies(Vector3 EyePosition, ContentManager content)
+        {
+            if (spawn > 1)
+            {
+                spawn = 0;
+                if (laserList.Count() < 10)
+                    laserList.Add(new Entity(EyePosition, "ImaFirinMahLaserr", content));
+            }
+            for (int i = 0; i < laserList.Count; i++)
+            {
+                // wenn laser zu weit weg, dann verschwindet er
+                if (laserList[i].position.X < 50 || laserList[i].position.X > 150)
+                {
+                    laserList.RemoveAt(i);
+                    i--;
+                }
+            }
         }
         #endregion
 
@@ -132,7 +195,13 @@ namespace CR4VE.GameLogic.GameStates
             #region 3D Objects
             player.drawIn2DWorld(new Vector3(1, 1, 1), 0, 0, 0);
             terrainMap.Draw(new Vector3(1, 1, 1), 0, 0, 0);
-            eye.Draw(gameTime);
+            redEye.Draw(gameTime);
+            skull.Draw(gameTime);
+
+            foreach (Entity laser in laserList)
+            {
+                laser.drawIn2DWorld(new Vector3(0.5f, 0.5f, 0.5f), 0, 0, MathHelper.ToRadians(90));
+            }
             #endregion
 
             #region draw HUD
