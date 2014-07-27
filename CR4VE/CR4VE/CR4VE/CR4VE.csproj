@@ -81,7 +81,9 @@
     <Compile Include="GameBase\Objects\Entity.cs" />
     <Compile Include="GameBase\Screens\Button.cs" />
     <Compile Include="GameBase\Terrain\Tilemap.cs" />
-    <Compile Include="GameBase\Terrain\Tile.cs" />
+    <Compile Include="GameBase\Terrain\Tiles.cs" />
+    <Compile Include="GameLogic\AI\AIInterface.cs" />
+    <Compile Include="GameLogic\AI\EnemyRedEye.cs" />
     <Compile Include="GameLogic\Controls\GamepadControls.cs" />
     <Compile Include="GameLogic\Controls\KeyboardControls.cs" />
     <Compile Include="GameLogic\GameStates\Continue.cs" />
@@ -131,7 +133,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="GameLogic\Collision\" />
     <Folder Include="Help\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
