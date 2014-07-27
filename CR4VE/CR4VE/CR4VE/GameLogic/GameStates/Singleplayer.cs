@@ -54,7 +54,7 @@ namespace CR4VE.GameLogic.GameStates
             #region Terrain
             //Terrain
             terrainMap = new Tilemap();
-            Tiles.Content = content;
+            Tile.Content = content;
             terrainMap.Generate(new int[,] {
                 {3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3},
                 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
