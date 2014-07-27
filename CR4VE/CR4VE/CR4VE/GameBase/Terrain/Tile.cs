@@ -16,7 +16,7 @@ using CR4VE.GameBase.Terrain;
 
 namespace CR4VE.GameBase.Terrain
 {
-    class Tiles : Entity
+    class Tile : Entity
     {
         #region Attributes
         private static ContentManager content;
@@ -31,28 +31,15 @@ namespace CR4VE.GameBase.Terrain
         #endregion
 
         #region Constructors
+        public Tile(String modelType, int modelNumber, Vector3 pos, BoundingBox bound)
+        {
+            this.position = pos;
+            this.model = Content.Load<Model>("Assets/Models/" + modelType + modelNumber);
+            this.boundary = bound;
+        }
         #endregion
 
         #region Methods
         #endregion
     }
-
-
-
-        #region ColTiles Class, LOAD
-        //2D Texturen werden hier runtergeladen
-        //wichtig: "tile"+1, d.h. Dateinamen entsprechend nummerieren
-        //hier müssen dann die 3D Objekte hochgeladen werden
-        class ColTiles : Tiles
-        {
-            #region Constructors
-            public ColTiles(String type, int i, Vector3 pos)
-            {
-                this.position = pos;
-                this.model = Content.Load<Model>("Assets/Models/" + type + i);
-            }
-            #endregion
-        }
-        #endregion
-
 }
