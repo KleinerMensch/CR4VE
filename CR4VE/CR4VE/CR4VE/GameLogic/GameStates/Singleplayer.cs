@@ -43,11 +43,11 @@ namespace CR4VE.GameLogic.GameStates
             terrainMap = new Tilemap();
             Tile.Content = content;
             terrainMap.Generate(new int[,] {
-                {2,0,0,2,0},
-                {0,0,2,0,2},
+                {1,0,0,1,0},
+                {0,0,1,0,1},
                 {0,0,0,0,0},
-                {2,0,0,0,0},
-                {2,2,2,2,0}}, 10);
+                {1,0,0,0,0},
+                {1,1,1,1,0}}, 4);
 
             //Zugriff auf Attribute der Game1 Klasse
             spriteBatch = CR4VE.Game1.spriteBatch;

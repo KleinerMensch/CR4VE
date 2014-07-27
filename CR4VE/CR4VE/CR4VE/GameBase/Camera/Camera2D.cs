@@ -13,7 +13,7 @@ namespace CR4VE.GameBase.Camera
         private static Vector2 position;
         private static Vector3 camPosition3D = new Vector3(0 , 0, 100);
         private static Vector2 viewPortSize;
-        private static Vector3 viewPortCenter;
+        //private static Vector3 viewPortCenter;
         private static Rectangle worldRec = new Rectangle(0, 0, 0, 0);
         #endregion
 
