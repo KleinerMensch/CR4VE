@@ -42,7 +42,7 @@ namespace CR4VE.GameBase.Terrain
                         Vector3 position = new Vector3(x*size, -y*size, 0);
                         BoundingBox bound = new BoundingBox(position + new Vector3(-size, 0, 0), position + new Vector3(0, size, size));
 
-                        Tiles.Add(new Tile("Box", number, position, bound));
+                        Tiles.Add(new Tile("Box" /*"4x4x4Qube"*/, number, position, bound));
                     }
                 }
             }

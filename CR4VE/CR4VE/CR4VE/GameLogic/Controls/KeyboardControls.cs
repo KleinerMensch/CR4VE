@@ -10,8 +10,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using CR4VE.GameBase.Camera;
+using CR4VE.GameBase.Terrain;
 using CR4VE.GameLogic.GameStates;
-using CR4VE.GameBase.Objects;
 
 
 namespace CR4VE.GameLogic.Controls
@@ -95,6 +95,11 @@ namespace CR4VE.GameLogic.Controls
             if (isClicked(Keys.Space) && !isJumping)
             {
                 isJumping = true;
+
+                //minimum jump
+                if (velocityLeft < 0.5f && velocityRight < 0.5f)
+                    moveVecPlayer += new Vector3(0, 2, 0);
+
                 startJumpTime = gameTime.TotalGameTime.TotalSeconds;
             }
 
@@ -107,7 +112,25 @@ namespace CR4VE.GameLogic.Controls
             }
             #endregion
             
+            //update Playerposition
             Singleplayer.player.move(moveVecPlayer);
+
+            //update bounding box
+            Singleplayer.player.boundary.Min = Singleplayer.player.Position + new Vector3(-5, -5, -5);
+            Singleplayer.player.boundary.Max = Singleplayer.player.Position + new Vector3(5, 5, 5);
+
+            /*debug erstmal auskommentiert, da nicht benoetigt
+            //debug
+            Console.Clear();
+            foreach (Tile t in Singleplayer.terrainMap.TilesList)
+            {
+                //Console.WriteLine(t.boundary.Intersects(new BoundingBox(new Vector3(1,1,0), new Vector3(0))));
+                //Console.WriteLine(t.Boundary.Min + " " + t.Boundary.Max);
+                //Console.WriteLine(Singleplayer.player.boundary.Intersects(t.boundary) + " " + t.boundary.Min + " " + t.boundary.Max);
+                //Console.WriteLine(Singleplayer.player.boundary.Min + " " + Singleplayer.player.boundary.Max);
+            }
+            //Console.WriteLine(Singleplayer.player.boundary.Min + " " + Singleplayer.player.boundary.Max);
+            */
 
             //calculate moveVecCam if player reaches screen limit
             //(using absolute values because of reversed Y movement for 2D objects)
@@ -127,8 +150,9 @@ namespace CR4VE.GameLogic.Controls
 
             //reset jump parameters
             //(Positionsabfrage spaeter noch durch Kollision ersetzen)
-            // Positions abfrage Y= -35 fuer Meilenstein3
-            if (Singleplayer.player.Position.Y < -45 && isJumping)
+            //(Y-Wert geht noch minimal unter 0, vielleicht doch noch Rundungswerte benutzen)
+            // 45, da fuer den Meilenstein3 benoetigt
+            if (Singleplayer.player.Position.Y <= -45 && isJumping)
             {
                 isJumping = false;
                 Singleplayer.player.Position = new Vector3(Singleplayer.player.Position.X, -45 , 0);                

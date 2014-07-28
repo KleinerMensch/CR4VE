@@ -24,7 +24,7 @@ namespace CR4VE.GameLogic.GameStates
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        Tilemap terrainMap;
+        public static Tilemap terrainMap;
 
         Texture2D background;
         Texture2D testTex;
@@ -36,6 +36,7 @@ namespace CR4VE.GameLogic.GameStates
         EnemyRedEye redEye;
         EnemySkull skull;
 
+        //BoundingSpheres noch durch BoundingBoxes zu ersetzen
         BoundingSphere eyeBS, skullBS, playerBS;
         Vector3 eyeBSpos, skullBSpos, playerBSpos;
         //List<EnemyRedEye> redEyeList;
@@ -82,10 +83,12 @@ namespace CR4VE.GameLogic.GameStates
 
             //load models
             player = new Entity(new Vector3(1,1,1), "protoSphere", content);
+            // -35 war fuer den Meilenstein wichtig
             player.position = new Vector3(5, -35, 0);
             //terrain = new Entity(new Vector3(0, 0, 0), "protoTerrain1", content);
 
             // AI
+            // auch hier die Werte fuer den Meilenstein angepasst
             redEye = new EnemyRedEye(new Vector3(60, 3-45, 0));
             redEye.Initialize(content);
             skull = new EnemySkull(new Vector3(260, 2-45, 0));
@@ -95,7 +98,7 @@ namespace CR4VE.GameLogic.GameStates
             eyeBSpos = redEye.enemyPosition;
             skullBSpos = skull.enemyPosition;
 
-            playerBS = new BoundingSphere(playerBSpos,3);
+            playerBS = new BoundingSphere(playerBSpos,4);
             eyeBS = new BoundingSphere(eyeBSpos, 3);
             skullBS = new BoundingSphere(skullBSpos, 3);
 
@@ -141,6 +144,15 @@ namespace CR4VE.GameLogic.GameStates
             skull.Update(gameTime);
             skullBS.Center = skull.enemy.position;
 
+            foreach (Tile t in terrainMap.TilesList)
+            {
+                if (playerBS.Intersects(t.boundary))
+                    Console.WriteLine("terrainintersection");
+            }
+            
+            //noch wird Kollision mit Gegnern per BoundingSphere berechnet
+            //noch zu aendern in Bounding Box
+            //if(player.boundary.Intersects(redEye.enemy.boundary) || player.boundary.Intersects(skull.enemy.boundary))
             if (playerBS.Intersects(eyeBS) || playerBS.Intersects(skullBS))
             {
                 Console.WriteLine("intersection");
@@ -155,7 +167,8 @@ namespace CR4VE.GameLogic.GameStates
         }
         #endregion
 
-        #region meilenstein3
+        #region Laser vom Auge
+        //bisher nur einzelne Nadeln gespawnt
         public void LoadEnemies(Vector3 EyePosition, ContentManager content)
         {
             if (spawn > 1)
@@ -167,6 +180,7 @@ namespace CR4VE.GameLogic.GameStates
             for (int i = 0; i < laserList.Count; i++)
             {
                 // wenn laser zu weit weg, dann verschwindet er
+                // 'laser' verschwindet nocht nicht, wenn er den Spieler beruehrt
                 if (laserList[i].position.X < 50 || laserList[i].position.X > 150)
                 {
                     laserList.RemoveAt(i);
