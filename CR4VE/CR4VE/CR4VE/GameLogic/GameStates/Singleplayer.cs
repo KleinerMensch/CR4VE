@@ -35,10 +35,11 @@ namespace CR4VE.GameLogic.GameStates
 
         EnemyRedEye redEye;
         EnemySkull skull;
+        EnemySpinningCrystal spinningCrystal;
 
         //BoundingSpheres noch durch BoundingBoxes zu ersetzen
-        BoundingSphere eyeBS, skullBS, playerBS;
-        Vector3 eyeBSpos, skullBSpos, playerBSpos;
+        BoundingSphere eyeBS, skullBS, playerBS, crystalBS;
+        Vector3 eyeBSpos, skullBSpos, playerBSpos, crystalBSpos;
         //List<EnemyRedEye> redEyeList;
         HUD hud;
         #endregion
@@ -93,14 +94,18 @@ namespace CR4VE.GameLogic.GameStates
             redEye.Initialize(content);
             skull = new EnemySkull(new Vector3(260, 2-45, 0));
             skull.Initialize(content);
+            spinningCrystal = new EnemySpinningCrystal(new Vector3(120, 2-45, 0));
+            spinningCrystal.Initialize(content);
 
             playerBSpos = player.position;
             eyeBSpos = redEye.enemyPosition;
             skullBSpos = skull.enemyPosition;
+            crystalBSpos = spinningCrystal.enemyPosition;
 
             playerBS = new BoundingSphere(playerBSpos,4);
             eyeBS = new BoundingSphere(eyeBSpos, 3);
             skullBS = new BoundingSphere(skullBSpos, 3);
+            crystalBS = new BoundingSphere(crystalBSpos, 3);
 
             //HUD
             hud = new HUD(content, graphics);
@@ -143,6 +148,8 @@ namespace CR4VE.GameLogic.GameStates
             eyeBS.Center = redEye.enemy.position;
             skull.Update(gameTime);
             skullBS.Center = skull.enemy.position;
+            spinningCrystal.Update(gameTime);
+            crystalBS.Center = spinningCrystal.enemy.position;
 
             foreach (Tile t in terrainMap.TilesList)
             {
@@ -153,7 +160,7 @@ namespace CR4VE.GameLogic.GameStates
             //noch wird Kollision mit Gegnern per BoundingSphere berechnet
             //noch zu aendern in Bounding Box
             //if(player.boundary.Intersects(redEye.enemy.boundary) || player.boundary.Intersects(skull.enemy.boundary))
-            if (playerBS.Intersects(eyeBS) || playerBS.Intersects(skullBS))
+            if (playerBS.Intersects(eyeBS) || playerBS.Intersects(skullBS) || playerBS.Intersects(crystalBS))
             {
                 Console.WriteLine("intersection");
                 hud.healthLeft -= (int) (hud.fullHealth * 0.01);
@@ -211,6 +218,7 @@ namespace CR4VE.GameLogic.GameStates
             terrainMap.Draw(new Vector3(1, 1, 1), 0, 0, 0);
             redEye.Draw(gameTime);
             skull.Draw(gameTime);
+            spinningCrystal.Draw(gameTime);
 
             foreach (Entity laser in laserList)
             {

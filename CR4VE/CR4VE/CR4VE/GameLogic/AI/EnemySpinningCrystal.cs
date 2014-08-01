@@ -7,7 +7,7 @@ using System.Text;
 
 namespace CR4VE.GameLogic.AI
 {
-    class EnemySkull : AIInterface
+    class EnemySpinningCrystal : AIInterface
     {
         #region Attributes
         public Entity enemy;
@@ -19,7 +19,7 @@ namespace CR4VE.GameLogic.AI
         float rotationX;
         #endregion
 
-        public EnemySkull(Vector3 position)
+        public EnemySpinningCrystal(Vector3 position)
         {
             this.enemyPosition = position;
             move = -0.5f;
@@ -29,7 +29,7 @@ namespace CR4VE.GameLogic.AI
 
         public void Initialize(Microsoft.Xna.Framework.Content.ContentManager content)
         {
-            enemy = new Entity(enemyPosition, "skull"/*"enemySpinningNoAnim"*/, content);
+            enemy = new Entity(enemyPosition, "enemySpinningNoAnim", content);
         }
 
         public void Update(Microsoft.Xna.Framework.GameTime gameTime)
@@ -38,7 +38,7 @@ namespace CR4VE.GameLogic.AI
 
             rotationX -= 0.1f;
 
-            if (enemy.position.X < 230 || enemy.position.X > 280)
+            if (enemy.position.X < 115 || enemy.position.X > 180)
             {
                 move *= -1;
                 rotationX *= -1;
@@ -48,7 +48,7 @@ namespace CR4VE.GameLogic.AI
 
         public void Draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            enemy.drawIn2DWorld(new Vector3(0.05f, 0.05f, 0.05f), 0, rotationY , rotationX);
+            enemy.drawIn2DWorld(new Vector3(0.1f, 0.1f, 0.1f), 0, rotationY+rotationX, 0);
         }
     }
 }

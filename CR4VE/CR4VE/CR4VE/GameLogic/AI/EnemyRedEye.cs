@@ -27,14 +27,14 @@ namespace CR4VE.GameLogic.AI
 
         public void Initialize(Microsoft.Xna.Framework.Content.ContentManager content)
         {
-            enemy = new Entity(enemyPosition, "EnemyEye", content);
+            enemy = new Entity(enemyPosition,"EnemyEye", content);
         }
 
         public void Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
             
             enemy.position.X += move;
-            if (enemy.position.X < 50 || enemy.position.X > 130)
+            if (enemy.position.X < 50 || enemy.position.X > 105)
             {
                 move *= -1;
                 rotationY += MathHelper.ToRadians(180);
