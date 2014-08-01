@@ -27,6 +27,7 @@ namespace CR4VE
         private EGameState gameState;
 
         // Erstellung der Objekte aus den GameState Klassen
+        private Arena arena = null;
         private MainMenu menu = null;
         private Continue cont = null;
         private Credits credits = null;
@@ -37,6 +38,7 @@ namespace CR4VE
 
         public enum EGameState
         {
+            Arena,
             Continue,
             Credits,
             GameOver,
@@ -83,6 +85,9 @@ namespace CR4VE
                     case EGameState.Credits:
                         this.credits.Unload();
                         break;
+                    case EGameState.Arena:
+                        this.arena.Unload();
+                        break;
                 }
 
                 //load new content
@@ -113,6 +118,9 @@ namespace CR4VE
                     case EGameState.Credits:
                         this.credits.Initialize(Content);
                         break;
+                    case EGameState.Arena:
+                        this.arena.Initialize(Content);
+                        break;
                 }
                 #endregion
             }
@@ -131,6 +139,7 @@ namespace CR4VE
             this.multiPlayer = new Multiplayer();
             this.singlePlayer = new Singleplayer();
             this.startScreen = new StartScreen();
+            this.arena = new Arena();
         }
 
 
@@ -154,7 +163,7 @@ namespace CR4VE
 
             // Gamestate am Anfang
             // zum Testen jeweiligen GameState einsetzen
-            this.GameState = EGameState.Singleplayer;
+            this.GameState = EGameState.MainMenu;
         }
 
 
@@ -208,6 +217,11 @@ namespace CR4VE
                     if (currentState != EGameState.Credits)
                         this.GameState = currentState;
                     break;
+                case EGameState.Arena:
+                    currentState = this.arena.Update(gameTime);
+                    if (currentState != EGameState.Arena)
+                        this.GameState = currentState;
+                    break;
             }
             #endregion
 
@@ -242,6 +256,9 @@ namespace CR4VE
                     break;
                 case EGameState.Credits:
                     this.credits.Draw(gameTime);
+                    break;
+                case EGameState.Arena:
+                    this.arena.Draw(gameTime);
                     break;
             }
             #endregion
