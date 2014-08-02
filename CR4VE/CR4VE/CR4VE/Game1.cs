@@ -23,6 +23,7 @@ namespace CR4VE
         #region Variables
         public static GraphicsDeviceManager graphics;
         public static SpriteBatch spriteBatch;
+        public static Game1 game = new Game1();
 
         private EGameState gameState;
 

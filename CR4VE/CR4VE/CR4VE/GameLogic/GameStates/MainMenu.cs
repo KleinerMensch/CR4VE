@@ -56,10 +56,11 @@ namespace CR4VE.GameLogic.GameStates
             exitButton.Update(mouseState);
             //creditsButton.Update(mouseState);
 
-            if (playButton.isClicked == true)
+            if (playButton.isClicked)
                 return Game1.EGameState.Singleplayer;
-            if (exitButton.isClicked == true)
-                return Game1.EGameState.MainMenu;
+            if (exitButton.isClicked)
+                //Gamestate Nothing beendet einfach das Spiel
+                return Game1.EGameState.Nothing;
             //if (creditsButton.isClicked == true)
             //    return Game1.EGameState.Credits;
             return Game1.EGameState.MainMenu;
