@@ -202,13 +202,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Sprites\FireIceWallpaper.jpg">
-      <Name>FireIceWallpaper</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Assets\Models\ImaFirinMahLaserr.FBX">
       <Name>ImaFirinMahLaserr</Name>
       <Importer>FbxImporter</Importer>
