@@ -151,11 +151,10 @@ namespace CR4VE.GameLogic.Controls
             //reset jump parameters
             //(Positionsabfrage spaeter noch durch Kollision ersetzen)
             //(Y-Wert geht noch minimal unter 0, vielleicht doch noch Rundungswerte benutzen)
-            // 45, da fuer den Meilenstein3 benoetigt
-            if (Singleplayer.player.Position.Y <= -45 && isJumping)
+            if (Singleplayer.player.Position.Y <= 0 && isJumping)
             {
                 isJumping = false;
-                Singleplayer.player.Position = new Vector3(Singleplayer.player.Position.X, -45 , 0);                
+                Singleplayer.player.Position = new Vector3(Singleplayer.player.Position.X, 0 , 0);                
             }
             
         }

@@ -89,8 +89,7 @@ namespace CR4VE.GameBase.Camera
 
         public static Vector3 transform3D(Vector3 point)
         {
-            // + 50 und -50 nur fuer meilenstein3
-            return point - new Vector3(Position.X+50, -Position.Y-35, 0);
+            return point - new Vector3(Position.X, -Position.Y, 0);
         }
         #endregion
     }
