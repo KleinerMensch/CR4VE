@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+
+
 namespace CR4VE.GameLogic.AI
 {
     class EnemySpinningCrystal : AIInterface
@@ -34,18 +36,35 @@ namespace CR4VE.GameLogic.AI
 
         public void Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            enemy.position.X += move;
+            Vector3 playerPos = CR4VE.GameLogic.GameStates.Singleplayer.player.position;
+
+            
 
             rotationX -= 0.1f;
 
-            if (enemy.position.X < 115 || enemy.position.X > 180)
+            Vector3 direction = enemy.position - playerPos;
+            float distance = direction.Length();
+
+
+            if (distance < 50)
             {
-                move *= -1;
-                rotationX *= -1;
-                rotationY += MathHelper.ToRadians(180);
+                direction.Normalize();
+                direction = move * direction;
+                enemy.position += direction;
+            }
+
+            else
+            {
+                enemy.position.X += move;
+
+                if (enemy.position.X < 115 || enemy.position.X > 180)
+                {
+                    move *= -1;
+                    rotationX *= -1;
+                    rotationY += MathHelper.ToRadians(180);
+                }
             }
         }
-
         public void Draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
             enemy.drawIn2DWorld(new Vector3(0.1f, 0.1f, 0.1f), 0, rotationY+rotationX, 0);
