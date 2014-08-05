@@ -1,9 +1,12 @@
 ﻿using CR4VE.GameBase.Objects;
+using CR4VE.GameLogic.GameStates;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
+
 
 namespace CR4VE.GameLogic.AI
 {
@@ -34,15 +37,35 @@ namespace CR4VE.GameLogic.AI
 
         public void Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            enemy.position.X += move;
-
             rotationX -= 0.1f;
 
-            if (enemy.position.X < 115 || enemy.position.X > 180)
+            Vector3 playerPos = Singleplayer.player.position;
+            Vector3 direction = enemy.position - playerPos;
+            float distance = direction.Length();
+
+            if (distance < 50)
             {
-                move *= -1;
-                rotationX *= -1;
-                rotationY += MathHelper.ToRadians(180);
+                direction.Normalize();
+                direction = move * direction;
+                enemy.position += direction;
+            } else {
+                //noch zu aendern, was passiert, wenn player nicht mehr in der AggroRange
+                enemy.position.X += move;
+                if (enemy.position.X < 115 || enemy.position.X > 180)
+                {
+                    move *= -1;
+                    rotationX *= -1;
+                    rotationY += MathHelper.ToRadians(180);
+                }
+            }
+
+            //updating bounding box & check collision
+            enemy.boundary.Min = enemy.position + new Vector3(-3, -3, -3);
+            enemy.boundary.Max = enemy.position + new Vector3(3, 3, 3);
+
+            if (Singleplayer.player.boundary.Intersects(enemy.boundary))
+            {
+                Singleplayer.hud.healthLeft -= (int)(Singleplayer.hud.fullHealth * 0.01);
             }
         }
 

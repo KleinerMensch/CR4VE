@@ -1,4 +1,5 @@
 ﻿using CR4VE.GameBase.Objects;
+using CR4VE.GameLogic.GameStates;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -14,9 +15,9 @@ namespace CR4VE.GameLogic.AI
         public Vector3 enemyPosition;
 
         Random random = new Random();
-        float move;
         float rotationY;
         float rotationX;
+        float move;
         #endregion
 
         public EnemySkull(Vector3 position)
@@ -29,13 +30,13 @@ namespace CR4VE.GameLogic.AI
 
         public void Initialize(Microsoft.Xna.Framework.Content.ContentManager content)
         {
-            enemy = new Entity(enemyPosition, "skull"/*"enemySpinningNoAnim"*/, content);
+            enemy = new Entity(enemyPosition, "skull", content);
         }
 
         public void Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
+            //skull rolling over the floor
             enemy.position.X += move;
-
             rotationX -= 0.1f;
 
             if (enemy.position.X < 230 || enemy.position.X > 280)
@@ -43,6 +44,15 @@ namespace CR4VE.GameLogic.AI
                 move *= -1;
                 rotationX *= -1;
                 rotationY += MathHelper.ToRadians(180);
+            }
+
+            //updating bounding box
+            enemy.boundary.Min = enemy.position + new Vector3(-3, -3, -3);
+            enemy.boundary.Max = enemy.position + new Vector3(3, 3, 3);
+
+            if (Singleplayer.player.boundary.Intersects(enemy.boundary))
+            {
+                Singleplayer.hud.healthLeft -= (int)(Singleplayer.hud.fullHealth * 0.01);
             }
         }
 
