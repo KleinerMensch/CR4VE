@@ -80,8 +80,8 @@
     <Compile Include="GameBase\HUD\HUD.cs" />
     <Compile Include="GameBase\Objects\Entity.cs" />
     <Compile Include="GameBase\Screens\Button.cs" />
-    <Compile Include="GameBase\Terrain\Tile.cs" />
-    <Compile Include="GameBase\Terrain\Tilemap.cs" />
+    <Compile Include="GameBase\Objects\Terrain\Tile.cs" />
+    <Compile Include="GameBase\Objects\Terrain\Tilemap.cs" />
     <Compile Include="GameLogic\AI\AIInterface.cs" />
     <Compile Include="GameLogic\AI\EnemyRedEye.cs" />
     <Compile Include="GameLogic\AI\EnemySkull.cs" />

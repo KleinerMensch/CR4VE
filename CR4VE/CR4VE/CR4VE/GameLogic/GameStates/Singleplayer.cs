@@ -11,8 +11,8 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using CR4VE.GameBase.Camera;
 using CR4VE.GameBase.Objects;
+using CR4VE.GameBase.Objects.Terrain;
 using CR4VE.GameLogic.Controls;
-using CR4VE.GameBase.Terrain;
 using CR4VE.GameLogic.AI;
 
 namespace CR4VE.GameLogic.GameStates
@@ -40,7 +40,7 @@ namespace CR4VE.GameLogic.GameStates
         //BoundingSpheres noch durch BoundingBoxes zu ersetzen
         BoundingSphere eyeBS, skullBS, playerBS, crystalBS;
         Vector3 eyeBSpos, skullBSpos, playerBSpos, crystalBSpos;
-        //List<EnemyRedEye> redEyeList;
+
         HUD hud;
         #endregion
 
@@ -54,19 +54,19 @@ namespace CR4VE.GameLogic.GameStates
         public void Initialize(ContentManager content)
         {
             #region Terrain
-            //Terrain
             terrainMap = new Tilemap();
+
             Tile.Content = content;
-            terrainMap.Generate(new int[,] {
-                {3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3},
-                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,3,0,0,0,0,0,0,0,0,0,0,3,3},
-                {0,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,3,3,2,2},
-                {3,2,2,2,2,3,0,0,3,3,0,0,3,3,3,3,3,3,3,3,0,0,0,0,3,3,3,3,3,3,2,2,2,1,1},
-                {2,1,1,1,1,2,4,4,2,2,4,4,2,2,2,2,2,2,2,2,4,4,4,4,2,2,2,2,2,2,2,1,1,4,4},
-                {2,4,4,4,4,2,4,4,2,2,4,4,2,2,2,2,2,1,1,1,4,4,4,4,1,1,1,1,1,1,1,4,4,4,4}}, 10);
+
+            int[,] layout = new int[,] {
+                {1,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                {0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
+
+            int boxSize = 10;
+
+            terrainMap.Generate(layout, boxSize);
             #endregion
 
             // Zugriff auf Attribute der Game1 Klasse
@@ -78,23 +78,24 @@ namespace CR4VE.GameLogic.GameStates
             Camera2D.ViewPortWidth = 800;
             Camera2D.ViewPortHeight = 600;
 
-            //load textures
-            background = content.Load<Texture2D>("Assets/Sprites/stone");
-            testTex = content.Load<Texture2D>("Assets/Sprites/doge");
+            Matrix camView = Matrix.CreateLookAt(Camera2D.CamPosition3D, Camera2D.CamTarget, Vector3.Up);
+            Matrix camProjection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45f), (float)8 / 6, 1f, 1000);
 
-            //load models
-            player = new Entity(new Vector3(1,1,1), "protoSphere", content);
-            // -35 war fuer den Meilenstein wichtig
-            player.position = new Vector3(5, -35, 0);
-            //terrain = new Entity(new Vector3(0, 0, 0), "protoTerrain1", content);
+            Camera2D.BoundFrustum = new BoundingFrustum(camView * camProjection);
+
+            //load 2D textures
+            background = content.Load<Texture2D>("Assets/Sprites/stone");
+
+            //initialize player entity
+            player = new Entity(new Vector3(0, 0, 0), "sphereD5", content);
 
             // AI
             // auch hier die Werte fuer den Meilenstein angepasst
-            redEye = new EnemyRedEye(new Vector3(60, 3-45, 0));
+            redEye = new EnemyRedEye(new Vector3(60, 0, 0));
             redEye.Initialize(content);
-            skull = new EnemySkull(new Vector3(260, 2-45, 0));
+            skull = new EnemySkull(new Vector3(260, 0, 0));
             skull.Initialize(content);
-            spinningCrystal = new EnemySpinningCrystal(new Vector3(120, 2-45, 0));
+            spinningCrystal = new EnemySpinningCrystal(new Vector3(120, 0, 0));
             spinningCrystal.Initialize(content);
 
             playerBSpos = player.position;
@@ -117,7 +118,16 @@ namespace CR4VE.GameLogic.GameStates
         #region Update
         public Game1.EGameState Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
+            Console.Clear();
             KeyboardControls.updateSingleplayer(gameTime);
+
+            List<Tile> test = terrainMap.getVisibleTiles();
+            
+            Console.WriteLine("Anzahl sichtbarer Tiles = " + test.Count);
+            Console.WriteLine("CamTarget = " +  Camera2D.CamTarget);
+            Console.WriteLine("Frustum-Player-Intersect: " + Camera2D.BoundFrustum.Intersects(player.Boundary));
+            Console.WriteLine(Camera2D.BoundFrustum.Left);
+            Console.WriteLine(Camera2D.BoundFrustum.Right);
 
             spawn += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
@@ -128,14 +138,10 @@ namespace CR4VE.GameLogic.GameStates
                 if (playerBS.Intersects(laserBS))
                 {
                     hud.healthLeft -= (int)(hud.fullHealth * 0.01);
-                    Console.WriteLine("intersection with laser");
                 }
                 laser.position.X -= 0.7f;
             }
             LoadEnemies(redEye.enemy.position, cont);
-
-            // fuer meilenstein3
-            Console.WriteLine(player.position.X);
 
             hud.Update();
             if (hud.isDead)
@@ -150,24 +156,17 @@ namespace CR4VE.GameLogic.GameStates
             skullBS.Center = skull.enemy.position;
             spinningCrystal.Update(gameTime);
             crystalBS.Center = spinningCrystal.enemy.position;
-
-            foreach (Tile t in terrainMap.TilesList)
-            {
-                if (playerBS.Intersects(t.boundary))
-                    Console.WriteLine("terrainintersection");
-            }
             
             //noch wird Kollision mit Gegnern per BoundingSphere berechnet
             //noch zu aendern in Bounding Box
             //if(player.boundary.Intersects(redEye.enemy.boundary) || player.boundary.Intersects(skull.enemy.boundary))
             if (playerBS.Intersects(eyeBS) || playerBS.Intersects(skullBS) || playerBS.Intersects(crystalBS))
             {
-                Console.WriteLine("intersection");
                 hud.healthLeft -= (int) (hud.fullHealth * 0.01);
             }
 
-            if (player.position.X >= 310)
-                return Game1.EGameState.Arena;
+            /*if (player.position.X >= 310)
+                return Game1.EGameState.Arena;*/
 
             //notwendiger Rueckgabewert
             return Game1.EGameState.Singleplayer;
@@ -200,11 +199,10 @@ namespace CR4VE.GameLogic.GameStates
         #region Draw
         public void Draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            #region draw background
+            #region Background
             spriteBatch.Begin();
 
             spriteBatch.Draw(background, new Vector2(Camera2D.WorldRectangle.X, Camera2D.WorldRectangle.Y), new Rectangle((int)Camera2D.Position.X, (int)Camera2D.Position.Y, 800, 600), Color.White);
-            //spriteBatch.Draw(testTex, Camera2D.transform2D(new Vector2(200, 200)), Color.White);
 
             spriteBatch.End();
 
@@ -214,8 +212,13 @@ namespace CR4VE.GameLogic.GameStates
             #endregion
 
             #region 3D Objects
+            //Player
             player.drawIn2DWorld(new Vector3(1, 1, 1), 0, 0, 0);
+            
+            //Terrain
             terrainMap.Draw(new Vector3(1, 1, 1), 0, 0, 0);
+
+            //Enemies
             redEye.Draw(gameTime);
             skull.Draw(gameTime);
             spinningCrystal.Draw(gameTime);
@@ -226,7 +229,7 @@ namespace CR4VE.GameLogic.GameStates
             }
             #endregion
 
-            #region draw HUD
+            #region HUD
             spriteBatch.Begin();
 
             hud.Draw(spriteBatch);

@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using CR4VE.GameBase.Camera;
-using CR4VE.GameBase.Terrain;
+using CR4VE.GameBase.Objects.Terrain;
 using CR4VE.GameLogic.GameStates;
 
 
@@ -62,7 +62,6 @@ namespace CR4VE.GameLogic.Controls
         //update methods
         public static void updateSingleplayer(GameTime gameTime)
         {
-
             //get currently and previously pressed buttons
             previousKeyboard = currentKeyboard;
             currentKeyboard = Keyboard.GetState();
@@ -71,7 +70,8 @@ namespace CR4VE.GameLogic.Controls
             Vector2 moveVecCam = new Vector2(0, 0);
             Vector3 moveVecPlayer = new Vector3(0, 0, 0);
 
-            //calculate moveVecPlayer
+            #region calculate moveVecPlayer
+            
             if (currentKeyboard.IsKeyDown(Keys.A))
             {
                 if (velocityLeft < maxVelocity) velocityLeft += velocityGain;
@@ -111,27 +111,8 @@ namespace CR4VE.GameLogic.Controls
                 moveVecPlayer += new Vector3(0, Math.Max(velocityRight, velocityLeft) - (float)deltaTime * G, 0);
             }
             #endregion
-            
-            //update Playerposition
-            Singleplayer.player.move(moveVecPlayer);
 
-            //update bounding box
-            Singleplayer.player.boundary.Min = Singleplayer.player.Position + new Vector3(-5, -5, -5);
-            Singleplayer.player.boundary.Max = Singleplayer.player.Position + new Vector3(5, 5, 5);
-
-            /*debug erstmal auskommentiert, da nicht benoetigt
-            //debug
-            Console.Clear();
-            foreach (Tile t in Singleplayer.terrainMap.TilesList)
-            {
-                //Console.WriteLine(t.boundary.Intersects(new BoundingBox(new Vector3(1,1,0), new Vector3(0))));
-                //Console.WriteLine(t.Boundary.Min + " " + t.Boundary.Max);
-                //Console.WriteLine(Singleplayer.player.boundary.Intersects(t.boundary) + " " + t.boundary.Min + " " + t.boundary.Max);
-                //Console.WriteLine(Singleplayer.player.boundary.Min + " " + Singleplayer.player.boundary.Max);
-            }
-            //Console.WriteLine(Singleplayer.player.boundary.Min + " " + Singleplayer.player.boundary.Max);
-            */
-
+            #region screen Limit
             //calculate moveVecCam if player reaches screen limit
             //(using absolute values because of reversed Y movement for 2D objects)
             if (Camera2D.transform3D(Singleplayer.player.Position).X > rightLimit)
@@ -145,19 +126,54 @@ namespace CR4VE.GameLogic.Controls
 
             if (Camera2D.transform3D(Singleplayer.player.Position).Y < botLimit)
                 moveVecCam += new Vector2(0, Math.Abs(moveVecPlayer.Y));
-            
-            Camera2D.move(moveVecCam);
+            #endregion
+
+            #endregion
+
+            //update Playerposition
+            Singleplayer.player.move(moveVecPlayer);
+
+            //update bounding box
+            //new Vectors noch durch allgemeine boundary Berechnung ersetzen
+            Singleplayer.player.boundary.Min = Singleplayer.player.Position + new Vector3(-5, -5, -5);
+            Singleplayer.player.boundary.Max = Singleplayer.player.Position + new Vector3(5, 5, 5);
+
+            //move camera and realign Boundingfrustum
+            //screen limits noch implemenieren
+            Camera2D.movePosition(moveVecCam);
+            Camera2D.moveTarget(new Vector3(moveVecCam, 0));
+
+            Matrix camView = Matrix.CreateLookAt(Camera2D.CamTarget + new Vector3(0,0,100), Camera2D.CamTarget, Vector3.Up);
+            Matrix camProjection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45f), (float)8 / 6, 1f, 1000);
+
+            Camera2D.BoundFrustum = new BoundingFrustum(camView * camProjection);
+
 
             //reset jump parameters
             //(Positionsabfrage spaeter noch durch Kollision ersetzen)
             //(Y-Wert geht noch minimal unter 0, vielleicht doch noch Rundungswerte benutzen)
-            // 45, da fuer den Meilenstein3 benoetigt
-            if (Singleplayer.player.Position.Y <= -45 && isJumping)
+            if (Singleplayer.player.Position.Y <= 0 && isJumping)
             {
                 isJumping = false;
-                Singleplayer.player.Position = new Vector3(Singleplayer.player.Position.X, -45 , 0);                
+                Singleplayer.player.Position = new Vector3(Singleplayer.player.Position.X, 0, 0);
             }
-            
+
+
+            #region [DEBUG]
+            /*debug erstmal auskommentiert, da nicht benoetigt
+            //debug
+            Console.Clear();
+            foreach (Tile t in Singleplayer.terrainMap.TilesList)
+            {
+                //Console.WriteLine(t.boundary.Intersects(new BoundingBox(new Vector3(1,1,0), new Vector3(0))));
+                //Console.WriteLine(t.Boundary.Min + " " + t.Boundary.Max);
+                //Console.WriteLine(Singleplayer.player.boundary.Intersects(t.boundary) + " " + t.boundary.Min + " " + t.boundary.Max);
+                //Console.WriteLine(Singleplayer.player.boundary.Min + " " + Singleplayer.player.boundary.Max);
+            }
+            //Console.WriteLine(Singleplayer.player.boundary.Min + " " + Singleplayer.player.boundary.Max);
+            */
+            #endregion
+
         }
         
         public static void updateMultiplayer(GameTime gameTime)
