@@ -95,210 +95,202 @@ namespace CR4VE.GameBase.Objects
             }
         }
 
-        public static void getTerrainCollisions(Entity entity)
-        {
-            Vector3[] boundCornEnt = entity.Boundary.GetCorners();
-
-            List<Tile> visibles = Tilemap.getVisibleTiles();
-
-            List<String> collisions = new List<String>();
-
-            foreach (Tile t in visibles)
-            {
-                if (entity.Boundary.Intersects(t.Boundary))
-                {
-                    //relative Position bestimmen (Tile im Bezug auf die Entity)
-                    String relativePos = "";
-
-                    if (entity.Position.X < t.Position.X)
-                        relativePos = "right";
-                    else if (entity.Position.X > t.Position.X)
-                        relativePos = "left";
-
-                    if (!collisions.Contains(relativePos))
-                    {
-                        collisions.Add(relativePos);
-                    }
-
-                    if (entity.Position.Y < t.Position.Y)
-                        relativePos = "above";
-                    else if (entity.Position.Y > t.Position.Y)
-                        relativePos = "beneath";
-
-                    if (!collisions.Contains(relativePos))
-                        collisions.Add(relativePos);
-
-                    Vector3[] boundCornTile = t.Boundary.GetCorners();
-
-                    //right
-                    if (boundCornEnt[1].X >= boundCornTile[0].X && relativePos.Contains("right"))
-                    {
-                        KeyboardControls.borderedRight = true;
-
-                        float deltaX = Math.Abs(boundCornEnt[1].X - boundCornTile[0].X);
-                        entity.move(new Vector3(-deltaX, 0, 0));
-                    }
-                    //left
-                    if (boundCornEnt[0].X <= boundCornTile[1].X && relativePos.Contains("left"))
-                    {
-                        KeyboardControls.borderedLeft = true;
-
-                        float deltaX = Math.Abs(boundCornEnt[0].X - boundCornTile[1].X);
-                        entity.move(new Vector3(deltaX, 0, 0));
-                    }
-
-                    //above
-                    if (boundCornEnt[0].Y >= boundCornTile[2].Y && relativePos.Contains("above"))
-                    {
-                        KeyboardControls.borderedTop = true;
-
-                        float deltaY = Math.Abs(boundCornEnt[0].Y - boundCornTile[2].Y);
-                        entity.move(new Vector3(0, -deltaY, 0));
-                    }
-                    //beneath
-                    if (boundCornEnt[2].Y <= boundCornTile[0].Y && relativePos.Contains("beneath"))
-                    {
-                        KeyboardControls.borderedBottom = true;
-                        KeyboardControls.borderedTop = false;
-
-                        KeyboardControls.isJumping = false;
-                        KeyboardControls.isFalling = false;
-
-                        float deltaY = Math.Abs(boundCornEnt[2].Y - boundCornTile[0].Y);
-                        entity.move(new Vector3(0, deltaY, 0));
-                    }
-                }
-            }
-
-            //return collisions;
-        }
-        public static Vector3 influenceMovementByTerrainCollisions(Vector3 moveVecEntity, Entity ent)
+        public bool getTerrainCollisionInDirection(String direction, Vector3 moveVecEntity)
         {
             List<Tile> visibles = Tilemap.getVisibleTiles();
 
-            Vector3 result = moveVecEntity;
-
-            foreach (Tile t in visibles)
+            switch (direction)
             {
-                if (ent.Boundary.Intersects(t.Boundary))
-                {
-                    //relative Position bestimmen (Tile im Bezug auf die Entity)
-                    String relaPos = "";
-
-                    if (ent.Position.X < t.Position.X)
-                        relaPos += "right";
-                    else if (ent.Position.X > t.Position.X)
-                        relaPos += "left";
-
-                    if (ent.Position.Y < t.Position.Y)
-                        relaPos += "above";
-                    else if (ent.Position.Y > t.Position.Y)
-                        relaPos += "beneath";
-
-                    //get corners of entity and tile boundaries
-                    Vector3[] boundCornEnt = ent.Boundary.GetCorners();
-                    Vector3[] boundCornTile = t.Boundary.GetCorners();
-
-                    //Entity Planes
-                    Plane entLeft = new Plane(boundCornEnt[0], boundCornEnt[3], boundCornEnt[4]);
-                    Plane entRight = new Plane(boundCornEnt[1], boundCornEnt[2], boundCornEnt[5]);
-                    Plane entTop = new Plane(boundCornEnt[0], boundCornEnt[1], boundCornEnt[4]);
-                    Plane entBottom = new Plane(boundCornEnt[2], boundCornEnt[3], boundCornEnt[7]);
-                    //Tile Planes
-                    Plane tileLeft = new Plane(boundCornTile[0], boundCornTile[3], boundCornTile[4]);
-                    Plane tileRight = new Plane(boundCornTile[1], boundCornTile[2], boundCornTile[5]);
-                    Plane tileTop = new Plane(boundCornTile[0], boundCornTile[1], boundCornTile[4]);
-                    Plane tileBottom = new Plane(boundCornTile[2], boundCornTile[3], boundCornTile[7]);
-
-                    //influence moveVecPlayer according to plane collisions
-                    //left
-                    if (tileRight.Equals(entLeft) && relaPos.Contains("left"))
-                        if (result.X < 0) result.X = 0;
-                    //right
-                    if (tileLeft.Equals(entRight) && relaPos.Contains("right"))
-                        if (result.X > 0) result.X = 0;
-                    //beneath
-                    if (tileTop.Equals(entBottom) && relaPos.Contains("beneath"))
+                #region left
+                case "left":
                     {
-                        //isJumping = false;
-                        if (result.Y < 0) result.Y = 0;
-                    }
-                    //above
-                    if (tileBottom.Equals(entTop) && relaPos.Contains("above"))
-                        if (result.Y > 0) result.Y = 0;
-                }
+                        List<Tile> possibleCollisions = new List<Tile>();
+
+                        foreach (Tile t in visibles)
+                        {
+                            Vector3[] boundCornTile = t.Boundary.GetCorners();
+                            Vector3[] boundCornEnt = this.Boundary.GetCorners();
+
+                            if (boundCornTile[1].X < boundCornEnt[0].X && boundCornTile[0].Y > boundCornEnt[2].Y && boundCornTile[2].Y < boundCornEnt[0].Y)
+                                possibleCollisions.Add(t);
+                        }
+
+                        if (possibleCollisions.Count != 0)
+                        {
+                            List<Tile> collisions = new List<Tile>();
+
+                            foreach (Tile t in possibleCollisions)
+                            {
+                                Vector3[] boundCornTile = t.Boundary.GetCorners();
+
+                                Plane rightTilePlane = new Plane(boundCornTile[1], boundCornTile[2], boundCornTile[5]);
+
+                                if (rightTilePlane.Intersects(this.Boundary) == PlaneIntersectionType.Front)
+                                {
+                                    BoundingBox newBound = new BoundingBox(this.Boundary.Min + moveVecEntity, this.Boundary.Max + moveVecEntity);
+
+                                    if (rightTilePlane.Intersects(newBound) == PlaneIntersectionType.Intersecting)
+                                    {
+                                        collisions.Add(t);
+
+                                        float deltaX = Math.Abs(t.Boundary.Max.X - this.Boundary.Min.X);
+
+                                        this.move(new Vector3(-deltaX,0,0));
+                                    }
+                                }
+                            }
+
+                            if (collisions.Count != 0)
+                                return true;
+                            else
+                                return false;
+                        }
+                    } break;
+                #endregion
+
+                #region right
+                case "right":
+                    {
+                        List<Tile> possibleCollisions = new List<Tile>();
+
+                        foreach (Tile t in visibles)
+                        {
+                            Vector3[] boundCornTile = t.Boundary.GetCorners();
+                            Vector3[] boundCornEnt = this.Boundary.GetCorners();
+
+                            if (boundCornTile[0].X > boundCornEnt[1].X && boundCornTile[0].Y > boundCornEnt[2].Y && boundCornTile[2].Y < boundCornEnt[0].Y)
+                                possibleCollisions.Add(t);
+                        }
+
+                        if (possibleCollisions.Count != 0)
+                        {
+                            List<Tile> collisions = new List<Tile>();
+
+                            foreach (Tile t in possibleCollisions)
+                            {
+                                Vector3[] boundCornTile = t.Boundary.GetCorners();
+
+                                Plane leftTilePlane = new Plane(boundCornTile[0], boundCornTile[3], boundCornTile[4]);
+
+                                if (leftTilePlane.Intersects(this.Boundary) == PlaneIntersectionType.Back)
+                                {
+                                    BoundingBox newBound = new BoundingBox(this.Boundary.Min + moveVecEntity, this.Boundary.Max + moveVecEntity);
+
+                                    if (leftTilePlane.Intersects(newBound) == PlaneIntersectionType.Intersecting)
+                                    {
+                                        collisions.Add(t);
+
+                                        float deltaX = Math.Abs(t.Boundary.Min.X - this.Boundary.Max.X);
+
+                                        this.move(new Vector3(deltaX, 0, 0));
+                                    }
+                                }
+                            }
+
+                            if (collisions.Count != 0)
+                                return true;
+                            else
+                                return false;
+                        }
+                    } break;
+                #endregion
+
+                #region up
+                case "up":
+                    {
+                        List<Tile> possibleCollisions = new List<Tile>();
+
+                        foreach (Tile t in visibles)
+                        {
+                            Vector3[] boundCornTile = t.Boundary.GetCorners();
+                            Vector3[] boundCornEnt = this.Boundary.GetCorners();
+
+                            if (boundCornTile[2].Y > boundCornEnt[0].Y && boundCornTile[1].X > boundCornEnt[0].X && boundCornTile[0].X < boundCornEnt[1].X)
+                                possibleCollisions.Add(t);
+                        }
+
+                        if (possibleCollisions.Count != 0)
+                        {
+                            List<Tile> collisions = new List<Tile>();
+                            
+                            foreach (Tile t in possibleCollisions)
+                            {
+                                Vector3[] boundCornTile = t.Boundary.GetCorners();
+
+                                Plane bottomTilePlane = new Plane(boundCornTile[3], boundCornTile[7], boundCornTile[2]);
+
+                                if (bottomTilePlane.Intersects(this.Boundary) == PlaneIntersectionType.Back)
+                                {
+                                    BoundingBox newBound = new BoundingBox(this.Boundary.Min + moveVecEntity, this.Boundary.Max + moveVecEntity);
+
+                                    if (bottomTilePlane.Intersects(newBound) == PlaneIntersectionType.Intersecting)
+                                    {
+                                        collisions.Add(t);
+
+                                        float deltaY = Math.Abs(t.Boundary.Min.Y - this.Boundary.Max.Y);
+
+                                        this.move(new Vector3(0, deltaY, 0));
+                                    }
+                                }
+                            }
+
+                            if (collisions.Count != 0)
+                                return true;
+                            else
+                                return false;
+                        }
+                    } break;
+                #endregion
+
+                #region down
+                case "down":
+                    {
+                        List<Tile> possibleCollisions = new List<Tile>();
+
+                        foreach (Tile t in visibles)
+                        {
+                            Vector3[] boundCornTile = t.Boundary.GetCorners();
+                            Vector3[] boundCornEnt = this.Boundary.GetCorners();
+
+                            if (boundCornTile[0].Y < boundCornEnt[2].Y && boundCornTile[1].X > boundCornEnt[0].X && boundCornTile[0].X < boundCornEnt[1].X)
+                                possibleCollisions.Add(t);
+                        }
+
+                        if (possibleCollisions.Count != 0)
+                        {
+                            List<Tile> collisions = new List<Tile>();
+
+                            foreach (Tile t in possibleCollisions)
+                            {
+                                Vector3[] boundCornTile = t.Boundary.GetCorners();
+
+                                Plane topTilePlane = new Plane(boundCornTile[0], boundCornTile[1], boundCornTile[4]);
+
+                                if (topTilePlane.Intersects(this.Boundary) == PlaneIntersectionType.Front)
+                                {
+                                    BoundingBox newBound = new BoundingBox(this.Boundary.Min + moveVecEntity, this.Boundary.Max + moveVecEntity);
+
+                                    if (topTilePlane.Intersects(newBound) == PlaneIntersectionType.Intersecting)
+                                    {
+                                        collisions.Add(t);
+
+                                        float deltaY = Math.Abs(t.Boundary.Max.Y - this.Boundary.Min.Y);
+
+                                        this.move(new Vector3(0, -deltaY, 0));
+                                    }
+                                }
+                            }
+
+                            if (collisions.Count != 0)
+                                return true;
+                            else
+                                return false;
+                        }
+                    } break;
+                #endregion
             }
 
-            return result;
-        }
-        public static Vector3 influenceMovementByTerrainCollisions2(Vector3 moveVecEntity, Entity ent)
-        {
-            List<Tile> visibles = Tilemap.getVisibleTiles();
-
-            Vector3 result = moveVecEntity;
-
-            foreach (Tile t in visibles)
-            {
-                if (ent.Boundary.Intersects(t.Boundary))
-                {
-                    //relative Position bestimmen (Tile im Bezug auf die Entity)
-                    String relaPos = "";
-
-                    if (ent.Position.X < t.Position.X)
-                        relaPos += "right";
-                    else if (ent.Position.X > t.Position.X)
-                        relaPos += "left";
-
-                    if (ent.Position.Y < t.Position.Y)
-                        relaPos += "above";
-                    else if (ent.Position.Y > t.Position.Y)
-                        relaPos += "beneath";
-
-                    //get corners of entity and tile boundaries
-                    Vector3[] boundCornEnt = ent.Boundary.GetCorners();
-                    Vector3[] boundCornTile = t.Boundary.GetCorners();
-
-                    //Entity Planes
-                    Plane entLeft = new Plane(boundCornEnt[0], boundCornEnt[3], boundCornEnt[4]);
-                    Plane entRight = new Plane(boundCornEnt[1], boundCornEnt[2], boundCornEnt[5]);
-                    Plane entTop = new Plane(boundCornEnt[0], boundCornEnt[1], boundCornEnt[4]);
-                    Plane entBottom = new Plane(boundCornEnt[2], boundCornEnt[3], boundCornEnt[7]);
-                    //Tile Planes
-                    Plane tileLeft = new Plane(boundCornTile[0], boundCornTile[3], boundCornTile[4]);
-                    Plane tileRight = new Plane(boundCornTile[1], boundCornTile[2], boundCornTile[5]);
-                    Plane tileTop = new Plane(boundCornTile[0], boundCornTile[1], boundCornTile[4]);
-                    Plane tileBottom = new Plane(boundCornTile[2], boundCornTile[3], boundCornTile[7]);
-
-                    //influence moveVecPlayer according to plane collisions
-                    //left
-                    if (tileRight.Intersects(ent.Boundary) == PlaneIntersectionType.Intersecting && relaPos.Contains("left"))
-                    {
-                        KeyboardControls.borderedLeft = true;
-                        if (result.X < 0) result.X = 0;
-                    }
-                    //right
-                    else if (tileLeft.Intersects(ent.Boundary) == PlaneIntersectionType.Intersecting && relaPos.Contains("right"))
-                    {
-                        KeyboardControls.borderedRight = true;
-                        if (result.X > 0) result.X = 0;
-                    }
-                    //beneath
-                    if (tileTop.Intersects(ent.Boundary) == PlaneIntersectionType.Intersecting && relaPos.Contains("beneath"))
-                    {
-                        KeyboardControls.borderedBottom = true;
-                        KeyboardControls.isJumping = false;
-                        if (result.Y < 0) result.Y = 0;
-                    }
-                    //above
-                    else if (tileBottom.Intersects(ent.Boundary) == PlaneIntersectionType.Intersecting && relaPos.Contains("above"))
-                    {
-                        KeyboardControls.borderedTop = true;
-                        if (result.Y > 0) result.Y = 0;
-                    }
-                }
-            }
-            Console.WriteLine(result);
-            return result;
+            return false;
         }
 
         #region DRAW Methods

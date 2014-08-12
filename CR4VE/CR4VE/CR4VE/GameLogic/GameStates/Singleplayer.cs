@@ -54,6 +54,8 @@ namespace CR4VE.GameLogic.GameStates
             int[,] layout = new int[,] {
                 {0,1,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1},
                 {0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                {0,1,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                {0,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0},
                 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0}};
 
             int boxSize = 10;
@@ -73,7 +75,7 @@ namespace CR4VE.GameLogic.GameStates
 
             //load models
             //Charaktere erben von Character && Character erbt von Entity
-            player = new CharacterSeraphin(new Vector3(0, 0, 0), "skull"/*"protoSphere"*/, content);
+            player = new CharacterSeraphin(new Vector3(0, 0, 0), "sphereD5", content, new BoundingBox(new Vector3(-2.5f, -2.5f, -2.5f), new Vector3(2.5f, 2.5f, 2.5f)));
             //animatedEnemy = new AnimatedEntity(new Vector3(20, 0, 0), "enemySpinningAnim", content, new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
             
             #region Loading AI
@@ -104,13 +106,16 @@ namespace CR4VE.GameLogic.GameStates
 
             KeyboardControls.updateSingleplayer(gameTime);
 
+            Plane test = new Plane(new Vector3(35,5,0), new Vector3(35,5,1), new Vector3(45,5,0));
+            Console.WriteLine(test.Intersects(player.Boundary));
+
             #region Updating HUD
             hud.Update();
-            hud.UpdateMana();
+            /*hud.UpdateMana();
             if (hud.isDead)
             {
                 return Game1.EGameState.GameOver;
-            }
+            }*/
             #endregion
 
             //updating Characters
@@ -153,7 +158,10 @@ namespace CR4VE.GameLogic.GameStates
             #endregion
 
             #region 3D Objects
-            player.drawIn2DWorld(new Vector3(0.1f, 0.1f, 0.1f), 0, MathHelper.ToRadians(90)*player.viewingDirection.X, 0);
+            terrainMap.Draw(Vector3.One, 0, 0, 0);
+
+            player.drawIn2DWorldWithoutBones(Vector3.One, 0, MathHelper.ToRadians(90) * player.viewingDirection.X, 0);
+            //player.drawIn2DWorld(new Vector3(0.1f, 0.1f, 0.1f), 0, MathHelper.ToRadians(90)*player.viewingDirection.X, 0);
             //animatedEnemy.Draw(gameTime);
 
             //enemies

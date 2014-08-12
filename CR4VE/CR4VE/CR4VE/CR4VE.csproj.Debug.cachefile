@@ -10,6 +10,9 @@ Content\Assets\Models\sphereR5.xnb
 Content\Assets\Models\enemySpinningNoAnim.xnb
 Content\Assets\Models\ImaFirinMahLaserr.xnb
 Content\Assets\Models\skull.xnb
+Content\Assets\Models\10x10x10Box1.xnb
+Content\Assets\Models\5x5x5Box1.xnb
+Content\Assets\Models\sphereD5.xnb
 Content\Assets\Models\enemySpinningAnim.xnb
 Content\Assets\Sprites\1397342868251.xnb
 Content\Assets\Sprites\doge.xnb
@@ -35,9 +38,6 @@ Content\lava_texture_stock_by_mavrosh_st_0.xnb
 Content\red_brown_up_0.xnb
 Content\lava_0.xnb
 Content\red_eye_0.xnb
-Content\Assets\Models\10x10x10Box1.xnb
-Content\Assets\Models\5x5x5Box1.xnb
-Content\Assets\Models\sphereD5.xnb
 Content\Assets\Sprites\Startscreen.png
 Content\Assets\Sprites\ButtonExit.png
 Content\Assets\Sprites\ButtonPlay.png

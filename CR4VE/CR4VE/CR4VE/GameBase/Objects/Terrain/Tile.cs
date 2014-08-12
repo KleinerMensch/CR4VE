@@ -15,7 +15,7 @@ using CR4VE.GameLogic.Controls;
 
 namespace CR4VE.GameBase.Objects.Terrain
 {
-    class Tile : Entity
+    public class Tile : Entity
     {
         #region Attributes
         private static ContentManager content;

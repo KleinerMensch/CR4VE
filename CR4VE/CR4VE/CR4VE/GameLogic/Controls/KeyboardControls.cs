@@ -20,7 +20,7 @@ namespace CR4VE.GameLogic.Controls
     public static class KeyboardControls
     {
         #region Attributes
-        //Keyboardparameter
+        //Keyboard- und Mausparameter
         static KeyboardState currentKeyboard;
         static KeyboardState previousKeyboard;
         static MouseState currentMouseState;
@@ -44,7 +44,6 @@ namespace CR4VE.GameLogic.Controls
         private static double currentTime;
         
         public static bool isJumping = false;
-        public static bool isFalling = true;
         
         private static float velocityLeft = 0;
         private static float velocityRight = 0;
@@ -85,24 +84,23 @@ namespace CR4VE.GameLogic.Controls
         //update methods
         public static void updateSingleplayer(GameTime gameTime)
         {
-            //get currently and previously pressed buttons
+            //get currently and previously pressed keys and mouse buttons
             previousKeyboard = currentKeyboard;
             currentKeyboard = Keyboard.GetState();
+
             previousMouseState = currentMouseState;
             currentMouseState = Mouse.GetState();
 
             Vector3 moveVecPlayer = new Vector3(0, 0, 0);
 
-            //Entity.getTerrainCollisions(Singleplayer.player);
-
             #region calculate moveVecPlayer
             if (currentKeyboard.IsKeyDown(Keys.A) && !borderedLeft)
             {
-                borderedRight = false;
-
                 if (velocityLeft < maxVelocity) velocityLeft += velocityGain;
                 velocityRight = 0;
                 moveVecPlayer += new Vector3(-accel, 0, 0);
+
+                borderedRight = false;
 
                 //richtung = links
                 Singleplayer.player.viewingDirection.X = -1;
@@ -112,11 +110,11 @@ namespace CR4VE.GameLogic.Controls
 
             if (currentKeyboard.IsKeyDown(Keys.D) && !borderedRight)
             {
-                borderedLeft = false;
-
                 if (velocityRight < maxVelocity) velocityRight += velocityGain;
                 velocityLeft = 0;
                 moveVecPlayer += new Vector3(accel, 0, 0);
+
+                borderedLeft = false;
 
                 //richtung = rechts
                 Singleplayer.player.viewingDirection.X = 1;
@@ -130,15 +128,13 @@ namespace CR4VE.GameLogic.Controls
             if (isClicked(Keys.Space) && !isJumping)
             {
                 isJumping = true;
-                isFalling = true;
+                borderedBottom = false;
 
                 //minimum jump
-                if (velocityLeft < 0.5f && velocityRight < 0.5f && isClicked(Keys.Space))
-                    moveVecPlayer += new Vector3(0, 2, 0);
+                if (velocityLeft < 0.5f && velocityRight < 0.5f)
+                    moveVecPlayer += new Vector3(0, 2.5f, 0);
 
                 startJumpTime = gameTime.TotalGameTime.TotalSeconds;
-
-                borderedBottom = false;
             }
 
             //calculate moveVecPlayer influenced by jumping
@@ -152,6 +148,43 @@ namespace CR4VE.GameLogic.Controls
             #endregion
 
             #endregion
+
+            //Collision
+            Vector3 temp = moveVecPlayer;
+
+            /*Console.WriteLine("left: " + Singleplayer.player.getTerrainCollisionInDirection("left", moveVecPlayer));
+            Console.WriteLine("right: " + Singleplayer.player.getTerrainCollisionInDirection("right", moveVecPlayer));
+            Console.WriteLine("up: " + Singleplayer.player.getTerrainCollisionInDirection("up", moveVecPlayer));
+            Console.WriteLine("down: " + Singleplayer.player.getTerrainCollisionInDirection("down", moveVecPlayer));*/
+
+            Console.WriteLine("bLeft: " + borderedLeft);
+            Console.WriteLine("bRight: " + borderedRight);
+            Console.WriteLine("bTop: " + borderedTop);
+            Console.WriteLine("bBottom: " + borderedBottom);
+            
+            if (Singleplayer.player.getTerrainCollisionInDirection("left", moveVecPlayer))
+            {
+                if (temp.X < 0) temp.X = 0;
+                borderedLeft = true;
+            }
+            if (Singleplayer.player.getTerrainCollisionInDirection("right", moveVecPlayer))
+            {
+                if (temp.X > 0) temp.X = 0;
+                borderedRight = true;
+            }
+            if (Singleplayer.player.getTerrainCollisionInDirection("up", moveVecPlayer))
+            {
+                if (temp.Y > 0) temp.Y = 0;
+                borderedTop = true;
+            }
+            if (Singleplayer.player.getTerrainCollisionInDirection("down", moveVecPlayer))
+            {
+                if (temp.Y < 0) temp.Y = 0;
+                isJumping = false;
+                borderedBottom = true;
+            }
+
+            moveVecPlayer = temp;
 
             //updating Playerposition
             Singleplayer.player.move(moveVecPlayer);
@@ -180,7 +213,7 @@ namespace CR4VE.GameLogic.Controls
                 playerCastedToCharacter.SpecialAttack(gameTime);
             }
             #endregion
-}
+        }
 
         public static void updateMultiplayer(GameTime gameTime)
         {
