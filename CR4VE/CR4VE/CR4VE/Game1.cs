@@ -14,7 +14,6 @@ using CR4VE.GameLogic.Controls;
 using CR4VE.GameLogic.GameStates;
 #endregion
 
-
 namespace CR4VE
 {
 
@@ -24,8 +23,9 @@ namespace CR4VE
         public static GraphicsDeviceManager graphics;
         public static SpriteBatch spriteBatch;
         public static Game1 game = new Game1();
-
+        
         private EGameState gameState;
+        public static EGameState currentState;
 
         // Erstellung der Objekte aus den GameState Klassen
         private Arena arena = null;
@@ -132,7 +132,7 @@ namespace CR4VE
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-
+            
             this.cont = new Continue();
             this.credits = new Credits();
             this.gameOver = new GameOver();
@@ -177,7 +177,6 @@ namespace CR4VE
         protected override void Update(GameTime gameTime)
         {
             #region Update of current GameState
-            EGameState currentState;
             switch (this.gameState)
             {
                 case EGameState.Nothing:

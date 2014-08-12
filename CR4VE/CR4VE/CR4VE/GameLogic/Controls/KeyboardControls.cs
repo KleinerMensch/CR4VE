@@ -10,9 +10,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using CR4VE.GameBase.Camera;
+using CR4VE.GameBase.Objects;
 using CR4VE.GameBase.Objects.Terrain;
 using CR4VE.GameLogic.GameStates;
-
 
 namespace CR4VE.GameLogic.Controls
 {
@@ -24,24 +24,27 @@ namespace CR4VE.GameLogic.Controls
         static KeyboardState previousKeyboard;
 
         //Bewegungsparameter
-        private static float accel = 1;
+        private static readonly float accel = 1;
+
+        public static bool borderedLeft = false;
+        public static bool borderedRight = false;
+        public static bool borderedTop = false;
+        public static bool borderedBottom = false;
 
         //Sprungparameter
         private static readonly float G = 9.81f;
+        private static readonly float velocityGain = 0.2f;
+        private static readonly float maxVelocity = 2.5f;
+        private static readonly float maxFallSpeed = 3f;
+
         private static double startJumpTime;
         private static double currentTime;
-        private static bool isJumping = false;
-        private static float maxVelocity = 2.5f;
-        private static float velocityGain = 0.2f;
+        
+        public static bool isJumping = false;
+        public static bool isFalling = true;
+        
         private static float velocityLeft = 0;
         private static float velocityRight = 0;
-
-        //Grenzen fuer Kamerabewegung
-        //(spaeter noch durch prozentuale Angaben zu ersetzen)
-        private static int topLimit = 20;
-        private static int botLimit = -20;
-        private static int leftLimit = -20;
-        private static int rightLimit = 20;
         #endregion
 
         #region Methods
@@ -66,14 +69,15 @@ namespace CR4VE.GameLogic.Controls
             previousKeyboard = currentKeyboard;
             currentKeyboard = Keyboard.GetState();
 
-            //initialize move vectors
-            Vector2 moveVecCam = new Vector2(0, 0);
             Vector3 moveVecPlayer = new Vector3(0, 0, 0);
 
+            //Entity.getTerrainCollisions(Singleplayer.player);
+
             #region calculate moveVecPlayer
-            
-            if (currentKeyboard.IsKeyDown(Keys.A))
+            if (currentKeyboard.IsKeyDown(Keys.A) && !borderedLeft)
             {
+                borderedRight = false;
+
                 if (velocityLeft < maxVelocity) velocityLeft += velocityGain;
                 velocityRight = 0;
                 moveVecPlayer += new Vector3(-accel, 0, 0);
@@ -81,8 +85,10 @@ namespace CR4VE.GameLogic.Controls
             else
                 velocityLeft = MathHelper.Clamp(velocityLeft -= velocityGain, 0, maxVelocity);
 
-            if (currentKeyboard.IsKeyDown(Keys.D))
+            if (currentKeyboard.IsKeyDown(Keys.D) && !borderedRight)
             {
+                borderedLeft = false;
+
                 if (velocityRight < maxVelocity) velocityRight += velocityGain;
                 velocityLeft = 0;
                 moveVecPlayer += new Vector3(accel, 0, 0);
@@ -91,41 +97,29 @@ namespace CR4VE.GameLogic.Controls
                 velocityRight = MathHelper.Clamp(velocityRight -= velocityGain, 0, maxVelocity);
 
             #region jump
-            //initialize jump if space was pressed
+            //initialize airborne influence
             if (isClicked(Keys.Space) && !isJumping)
             {
                 isJumping = true;
+                isFalling = true;
 
                 //minimum jump
-                if (velocityLeft < 0.5f && velocityRight < 0.5f)
+                if (velocityLeft < 0.5f && velocityRight < 0.5f && isClicked(Keys.Space))
                     moveVecPlayer += new Vector3(0, 2, 0);
 
                 startJumpTime = gameTime.TotalGameTime.TotalSeconds;
+
+                borderedBottom = false;
             }
 
             //calculate moveVecPlayer influenced by jumping
             if (isJumping)
             {
                 currentTime = gameTime.TotalGameTime.TotalSeconds;
+
                 double deltaTime = currentTime - startJumpTime;
                 moveVecPlayer += new Vector3(0, Math.Max(velocityRight, velocityLeft) - (float)deltaTime * G, 0);
             }
-            #endregion
-
-            #region screen Limit
-            //calculate moveVecCam if player reaches screen limit
-            //(using absolute values because of reversed Y movement for 2D objects)
-            if (Camera2D.transform3D(Singleplayer.player.Position).X > rightLimit)
-                moveVecCam += new Vector2(Math.Abs(moveVecPlayer.X), 0);
-
-            if (Camera2D.transform3D(Singleplayer.player.Position).X < leftLimit)
-                moveVecCam -= new Vector2(Math.Abs(moveVecPlayer.X), 0);
-
-            if (Camera2D.transform3D(Singleplayer.player.Position).Y > topLimit)
-                moveVecCam -= new Vector2(0, Math.Abs(moveVecPlayer.Y));
-
-            if (Camera2D.transform3D(Singleplayer.player.Position).Y < botLimit)
-                moveVecCam += new Vector2(0, Math.Abs(moveVecPlayer.Y));
             #endregion
 
             #endregion
@@ -133,62 +127,24 @@ namespace CR4VE.GameLogic.Controls
             //update Playerposition
             Singleplayer.player.move(moveVecPlayer);
 
-            //update bounding box
-            //new Vectors noch durch allgemeine boundary Berechnung ersetzen
-            Singleplayer.player.boundary.Min = Singleplayer.player.Position + new Vector3(-5, -5, -5);
-            Singleplayer.player.boundary.Max = Singleplayer.player.Position + new Vector3(5, 5, 5);
-
-            //move camera and realign Boundingfrustum
-            //screen limits noch implemenieren
-            Camera2D.movePosition(moveVecCam);
-            Camera2D.moveTarget(new Vector3(moveVecCam, 0));
-
-            Matrix camView = Matrix.CreateLookAt(Camera2D.CamTarget + new Vector3(0,0,100), Camera2D.CamTarget, Vector3.Up);
-            Matrix camProjection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45f), (float)8 / 6, 1f, 1000);
-
-            Camera2D.BoundFrustum = new BoundingFrustum(camView * camProjection);
-
-
-            //reset jump parameters
-            //(Positionsabfrage spaeter noch durch Kollision ersetzen)
-            //(Y-Wert geht noch minimal unter 0, vielleicht doch noch Rundungswerte benutzen)
-            if (Singleplayer.player.Position.Y <= 0 && isJumping)
-            {
-                isJumping = false;
-                Singleplayer.player.Position = new Vector3(Singleplayer.player.Position.X, 0, 0);
-            }
-
-
-            #region [DEBUG]
-            /*debug erstmal auskommentiert, da nicht benoetigt
-            //debug
-            Console.Clear();
-            foreach (Tile t in Singleplayer.terrainMap.TilesList)
-            {
-                //Console.WriteLine(t.boundary.Intersects(new BoundingBox(new Vector3(1,1,0), new Vector3(0))));
-                //Console.WriteLine(t.Boundary.Min + " " + t.Boundary.Max);
-                //Console.WriteLine(Singleplayer.player.boundary.Intersects(t.boundary) + " " + t.boundary.Min + " " + t.boundary.Max);
-                //Console.WriteLine(Singleplayer.player.boundary.Min + " " + Singleplayer.player.boundary.Max);
-            }
-            //Console.WriteLine(Singleplayer.player.boundary.Min + " " + Singleplayer.player.boundary.Max);
-            */
-            #endregion
-
+            //move camera and realign BoundingFrustum
+            Camera2D.realign(moveVecPlayer, Singleplayer.player.Position);
         }
+
         
         public static void updateMultiplayer(GameTime gameTime)
         {
             previousKeyboard = currentKeyboard;
             currentKeyboard = Keyboard.GetState();
 
-            Vector3 moveVec3D = new Vector3(0, 0, 0);
+            Vector3 moveVecPlayer = new Vector3(0, 0, 0);
 
-            if (currentKeyboard.IsKeyDown(Keys.W)) moveVec3D += new Vector3(0, 0, -accel);
-            if (currentKeyboard.IsKeyDown(Keys.A)) moveVec3D += new Vector3(-accel, 0, 0);
-            if (currentKeyboard.IsKeyDown(Keys.S)) moveVec3D += new Vector3(0, 0, accel);
-            if (currentKeyboard.IsKeyDown(Keys.D)) moveVec3D += new Vector3(accel, 0, 0);
+            if (currentKeyboard.IsKeyDown(Keys.W)) moveVecPlayer += new Vector3(0, 0, -accel);
+            if (currentKeyboard.IsKeyDown(Keys.A)) moveVecPlayer += new Vector3(-accel, 0, 0);
+            if (currentKeyboard.IsKeyDown(Keys.S)) moveVecPlayer += new Vector3(0, 0, accel);
+            if (currentKeyboard.IsKeyDown(Keys.D)) moveVecPlayer += new Vector3(accel, 0, 0);
 
-            Multiplayer.player.move(moveVec3D);
+            Multiplayer.player.move(moveVecPlayer);
         }
         #endregion
     }

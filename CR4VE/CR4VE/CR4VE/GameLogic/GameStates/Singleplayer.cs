@@ -11,8 +11,8 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using CR4VE.GameBase.Camera;
 using CR4VE.GameBase.Objects;
+using CR4VE.GameBase.Objects.Terrain;
 using CR4VE.GameLogic.Controls;
-using CR4VE.GameBase.Terrain;
 using CR4VE.GameLogic.AI;
 
 namespace CR4VE.GameLogic.GameStates
@@ -25,7 +25,6 @@ namespace CR4VE.GameLogic.GameStates
         SpriteBatch spriteBatch;
 
         Texture2D background;
-        Texture2D testTex;
 
         public static Tilemap terrainMap;
         public static Entity player;
@@ -47,19 +46,18 @@ namespace CR4VE.GameLogic.GameStates
         public void Initialize(ContentManager content)
         {
             #region Terrain
-            //Terrain
             terrainMap = new Tilemap();
+            
             Tile.Content = content;
-            terrainMap.Generate(new int[,] {
-                {3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3},
-                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,3,0,0,0,0,0,0,0,0,0,0,3,3},
-                {0,3,3,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,3,3,2,2},
-                {3,2,2,2,2,3,0,0,3,3,0,0,3,3,3,3,3,3,3,3,0,0,0,0,3,3,3,3,3,3,2,2,2,1,1},
-                {2,1,1,1,1,2,4,4,2,2,4,4,2,2,2,2,2,2,2,2,4,4,4,4,2,2,2,2,2,2,2,1,1,4,4},
-                {2,4,4,4,4,2,4,4,2,2,4,4,2,2,2,2,2,1,1,1,4,4,4,4,1,1,1,1,1,1,1,4,4,4,4}}, 10);
+
+            int[,] layout = new int[,] {
+                {0,1,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1},
+                {0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0}};
+
+            int boxSize = 10;
+
+            terrainMap.Generate(layout, boxSize);
             #endregion
 
             //Zugriff auf Attribute der Game1 Klasse
@@ -67,16 +65,14 @@ namespace CR4VE.GameLogic.GameStates
             graphics = CR4VE.Game1.graphics;
 
             //initialize Camera Class
-            Camera2D.WorldRectangle = new Rectangle(0, 0, 1920, 1080);
-            Camera2D.ViewPortWidth = 800;
-            Camera2D.ViewPortHeight = 600;
+            Camera2D.Initialize(800, 600);
 
             //load textures
             background = content.Load<Texture2D>("Assets/Sprites/stone");
-            testTex = content.Load<Texture2D>("Assets/Sprites/doge");
 
-            //load models
-            player = new Entity(new Vector3(0,0,0), "protoSphere", content);
+            //initialize models
+            player = new Entity(new Vector3(0,0,0), "sphereD5", content);
+            player.Boundary = new BoundingBox(player.Position + new Vector3(-2.5f, -2.5f, -2.5f), player.Position + new Vector3(2.5f, 2.5f, 2.5f));
 
             #region Loading AI
             //set Positions
@@ -104,6 +100,8 @@ namespace CR4VE.GameLogic.GameStates
         #region Update
         public Game1.EGameState Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
+            Console.Clear();
+
             KeyboardControls.updateSingleplayer(gameTime);
 
             #region Updating HUD
@@ -131,12 +129,11 @@ namespace CR4VE.GameLogic.GameStates
         #region Draw
         public void Draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            #region draw background
+            #region Background
             spriteBatch.Begin();
 
-            spriteBatch.Draw(background, new Vector2(Camera2D.WorldRectangle.X, Camera2D.WorldRectangle.Y), new Rectangle((int)Camera2D.Position.X, (int)Camera2D.Position.Y, 800, 600), Color.White);
-            //spriteBatch.Draw(testTex, Camera2D.transform2D(new Vector2(200, 200)), Color.White);
-
+            spriteBatch.Draw(background, new Vector2(Camera2D.WorldRectangle.X, Camera2D.WorldRectangle.Y), new Rectangle((int)Camera2D.Position2D.X, (int)Camera2D.Position2D.Y, 800, 600), Color.White);
+            
             spriteBatch.End();
 
             //GraphicsDevice auf default setzen
@@ -145,8 +142,13 @@ namespace CR4VE.GameLogic.GameStates
             #endregion
 
             #region 3D Objects
-            player.drawIn2DWorld(new Vector3(1, 1, 1), 0, 0, 0);
-            //terrainMap.Draw(new Vector3(1, 1, 1), 0, 0, 0);
+            //Terrain
+            terrainMap.Draw(new Vector3(1, 1, 1), 0, 0, 0);
+
+            //Player
+            player.drawIn2DWorldWithoutBones(new Vector3(1, 1, 1), 0, 0, 0);            
+            
+            //Enemies
             redEye.Draw(gameTime);
             skull.Draw(gameTime);
             spinningCrystal.Draw(gameTime);
@@ -157,7 +159,7 @@ namespace CR4VE.GameLogic.GameStates
             }
             #endregion
 
-            #region draw HUD
+            #region HUD
             spriteBatch.Begin();
 
             hud.Draw(spriteBatch);
