@@ -14,7 +14,6 @@ using CR4VE.GameLogic.Controls;
 using CR4VE.GameLogic.GameStates;
 #endregion
 
-
 namespace CR4VE
 {
 
@@ -24,7 +23,7 @@ namespace CR4VE
         public static GraphicsDeviceManager graphics;
         public static SpriteBatch spriteBatch;
         public static Game1 game = new Game1();
-
+        
         private EGameState gameState;
         public static EGameState currentState;
 
@@ -133,7 +132,7 @@ namespace CR4VE
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-
+            
             this.cont = new Continue();
             this.credits = new Credits();
             this.gameOver = new GameOver();

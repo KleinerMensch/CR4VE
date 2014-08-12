@@ -12,9 +12,8 @@ using Microsoft.Xna.Framework.Media;
 using CR4VE.GameBase.Camera;
 using CR4VE.GameBase.Objects;
 using CR4VE.GameLogic.Controls;
-using CR4VE.GameBase.Terrain;
 
-namespace CR4VE.GameBase.Terrain
+namespace CR4VE.GameBase.Objects.Terrain
 {
     class Tile : Entity
     {

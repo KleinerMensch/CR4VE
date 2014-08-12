@@ -71,7 +71,7 @@ namespace CR4VE.GameLogic.Controls
                     isJumping = false;
                 }
             }
-            Camera2D.move(moveVec);
+            Camera2D.movePosition(moveVec);
         }
 
         public static void updateMultiplayer()
