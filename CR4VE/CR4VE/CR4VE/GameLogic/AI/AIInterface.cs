@@ -9,7 +9,6 @@ namespace CR4VE.GameLogic.AI
 {
     interface AIInterface
     {
-        void Initialize(ContentManager content);
         void Update(GameTime gameTime);
         void Draw(GameTime gameTime);
     }

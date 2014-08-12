@@ -9,46 +9,40 @@ using System.Text;
 
 namespace CR4VE.GameLogic.AI
 {
-    class EnemyRedEye : AIInterface
+    class EnemyRedEye : Enemy
     {
         #region Attributes
-        public Entity enemy;
-        public Vector3 enemyPosition;
         public static List<Entity> laserList = new List<Entity>();
-
         Random random = new Random();
-        float move;
-        float rotationY;
-        public float spawn = 0;
+        float moveSpeed = -0.5f;
+        float rotationY = MathHelper.ToRadians(-90);
+        float spawn = 0;
         #endregion
 
-        public EnemyRedEye(Vector3 position)
-        {
-            this.enemyPosition = position;
-            move = -0.5f;
-            rotationY = MathHelper.ToRadians(-90);
-        }
+        #region inherited Constructors
+        public EnemyRedEye():base() { }
+        public EnemyRedEye(Vector3 pos, String modelName, ContentManager cm) : base(pos, modelName, cm) { }
+        public EnemyRedEye(Vector3 pos, String modelName, ContentManager cm, BoundingBox bound) : base(pos, modelName, cm) { }
+        #endregion
 
-        public void Initialize(Microsoft.Xna.Framework.Content.ContentManager content)
-        {
-            enemy = new Entity(enemyPosition,"EnemyEye", content);
-        }
-
-        public void Update(Microsoft.Xna.Framework.GameTime gameTime)
+        public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
             spawn += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            enemy.position.X += move;
-            if (enemy.position.X < 50 || enemy.position.X > 105)
+            this.position.X += moveSpeed;
+            if (this.position.X < 50 || this.position.X > 105)
             {
-                move *= -1;
+                moveSpeed *= -1;
                 rotationY += MathHelper.ToRadians(180);
             }
 
-            //updating bounding box
-            enemy.boundary.Min = enemy.position + new Vector3(-3, -3, -3);
-            enemy.boundary.Max = enemy.position + new Vector3(3, 3, 3);
+            //updating laserList
+            this.LoadEnemies(this.position, Singleplayer.cont);
 
-            if (Singleplayer.player.boundary.Intersects(enemy.boundary))
+            //updating bounding box
+            this.boundary.Min = this.position + new Vector3(-3, -3, -3);
+            this.boundary.Max = this.position + new Vector3(3, 3, 3);
+
+            if (Singleplayer.player.boundary.Intersects(this.boundary))
             {
                 Singleplayer.hud.healthLeft -= (int)(Singleplayer.hud.fullHealth * 0.01);
             }
@@ -90,9 +84,14 @@ namespace CR4VE.GameLogic.AI
         }
         #endregion
 
-        public void Draw(Microsoft.Xna.Framework.GameTime gameTime)
+        public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            enemy.drawIn2DWorld(new Vector3(0.5f, 0.5f, 0.5f), 0, rotationY, 0);
+            this.drawIn2DWorld(new Vector3(0.5f, 0.5f, 0.5f), 0, rotationY, 0);
+        }
+
+        public override void Destroy()
+        {
+            laserList.RemoveRange(0, laserList.Count);
         }
     }
 }

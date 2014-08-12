@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Media;
 using CR4VE.GameBase.Camera;
 using CR4VE.GameBase.Terrain;
 using CR4VE.GameLogic.GameStates;
+using CR4VE.GameLogic.Characters;
 
 
 namespace CR4VE.GameLogic.Controls
@@ -22,6 +23,8 @@ namespace CR4VE.GameLogic.Controls
         //Keyboardparameter
         static KeyboardState currentKeyboard;
         static KeyboardState previousKeyboard;
+        static MouseState currentMouseState;
+        static MouseState previousMouseState;
 
         //Bewegungsparameter
         private static float accel = 1;
@@ -45,7 +48,9 @@ namespace CR4VE.GameLogic.Controls
         #endregion
 
         #region Methods
-        //help methods
+
+        #region Help Methods
+        //help methods for Keyboard
         public static bool isPressed(Keys key)
         {
             return currentKeyboard.IsKeyDown(key);
@@ -59,14 +64,31 @@ namespace CR4VE.GameLogic.Controls
             return currentKeyboard.IsKeyUp(key) && previousKeyboard.IsKeyDown(key);
         }
 
+        //help methods for Mouse
+        public static bool leftClick(MouseState current, MouseState previous)
+        {
+            return (current.LeftButton == ButtonState.Pressed) && (previous.LeftButton == ButtonState.Released);
+        }
+        public static bool rightClick(MouseState current, MouseState previous)
+        {
+            return (current.RightButton == ButtonState.Pressed) && (previous.RightButton == ButtonState.Released);
+        }
+        public static bool middleClick(MouseState current, MouseState previous)
+        {
+            return (current.MiddleButton == ButtonState.Pressed) && (previous.MiddleButton == ButtonState.Released);
+        }
+        #endregion
+
         //update methods
         public static void updateSingleplayer(GameTime gameTime)
         {
-
             //get currently and previously pressed buttons
             previousKeyboard = currentKeyboard;
             currentKeyboard = Keyboard.GetState();
+            previousMouseState = currentMouseState;
+            currentMouseState = Mouse.GetState();
 
+            #region calculations for movement
             //initialize move vectors
             Vector2 moveVecCam = new Vector2(0, 0);
             Vector3 moveVecPlayer = new Vector3(0, 0, 0);
@@ -77,6 +99,9 @@ namespace CR4VE.GameLogic.Controls
                 if (velocityLeft < maxVelocity) velocityLeft += velocityGain;
                 velocityRight = 0;
                 moveVecPlayer += new Vector3(-accel, 0, 0);
+
+                //richtung = links
+                Singleplayer.player.viewingDirection.X = -1;
             }
             else
                 velocityLeft = MathHelper.Clamp(velocityLeft -= velocityGain, 0, maxVelocity);
@@ -86,9 +111,13 @@ namespace CR4VE.GameLogic.Controls
                 if (velocityRight < maxVelocity) velocityRight += velocityGain;
                 velocityLeft = 0;
                 moveVecPlayer += new Vector3(accel, 0, 0);
+
+                //richtung = rechts
+                Singleplayer.player.viewingDirection.X = 1;
             }
             else
                 velocityRight = MathHelper.Clamp(velocityRight -= velocityGain, 0, maxVelocity);
+            #endregion
 
             #region jump
             //initialize jump if space was pressed
@@ -112,26 +141,35 @@ namespace CR4VE.GameLogic.Controls
             }
             #endregion
             
-            //update Playerposition
+            //updating Playerposition
             Singleplayer.player.move(moveVecPlayer);
 
-            //update bounding box
+            //updating bounding box
             Singleplayer.player.boundary.Min = Singleplayer.player.Position + new Vector3(-5, -5, -5);
             Singleplayer.player.boundary.Max = Singleplayer.player.Position + new Vector3(5, 5, 5);
 
-            /*debug erstmal auskommentiert, da nicht benoetigt
-            //debug
-            Console.Clear();
-            foreach (Tile t in Singleplayer.terrainMap.TilesList)
+            #region Updating attacks
+            if (leftClick(currentMouseState, previousMouseState))
             {
-                //Console.WriteLine(t.boundary.Intersects(new BoundingBox(new Vector3(1,1,0), new Vector3(0))));
-                //Console.WriteLine(t.Boundary.Min + " " + t.Boundary.Max);
-                //Console.WriteLine(Singleplayer.player.boundary.Intersects(t.boundary) + " " + t.boundary.Min + " " + t.boundary.Max);
-                //Console.WriteLine(Singleplayer.player.boundary.Min + " " + Singleplayer.player.boundary.Max);
+                //Nahangriff
+                Character playerCastedToCharacter = (Character)Singleplayer.player;
+                playerCastedToCharacter.MeleeAttack(gameTime);
             }
-            //Console.WriteLine(Singleplayer.player.boundary.Min + " " + Singleplayer.player.boundary.Max);
-            */
+            else if (rightClick(currentMouseState, previousMouseState))
+            {
+                //Fernangriff
+                Character playerCastedToCharacter = (Character)Singleplayer.player;
+                playerCastedToCharacter.RangedAttack(gameTime);
+            }
+            else if (middleClick(currentMouseState, previousMouseState))
+            {
+                //Spezialangriff
+                Character playerCastedToCharacter = (Character)Singleplayer.player;
+                playerCastedToCharacter.SpecialAttack(gameTime);
+            }
+            #endregion
 
+            #region calculations for follow camera
             //calculate moveVecCam if player reaches screen limit
             //(using absolute values because of reversed Y movement for 2D objects)
             if (Camera2D.transform3D(Singleplayer.player.Position).X > rightLimit)
@@ -147,6 +185,7 @@ namespace CR4VE.GameLogic.Controls
                 moveVecCam += new Vector2(0, Math.Abs(moveVecPlayer.Y));
             
             Camera2D.move(moveVecCam);
+            #endregion
 
             //reset jump parameters
             //(Positionsabfrage spaeter noch durch Kollision ersetzen)
@@ -171,7 +210,11 @@ namespace CR4VE.GameLogic.Controls
             if (currentKeyboard.IsKeyDown(Keys.S)) moveVec3D += new Vector3(0, 0, accel);
             if (currentKeyboard.IsKeyDown(Keys.D)) moveVec3D += new Vector3(accel, 0, 0);
 
-            Multiplayer.player.move(moveVec3D);
+            //noch nicht richtig
+            Vector3 recentPlayerPosition = Arena.player.position;
+            Vector3 newPlayerPosition = Arena.player.position + moveVec3D;
+            Arena.player.viewingDirection = recentPlayerPosition - newPlayerPosition;
+            Arena.player.move(moveVec3D);
         }
         #endregion
     }

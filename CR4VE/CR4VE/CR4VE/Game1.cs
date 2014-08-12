@@ -26,6 +26,7 @@ namespace CR4VE
         public static Game1 game = new Game1();
 
         private EGameState gameState;
+        public static EGameState currentState;
 
         // Erstellung der Objekte aus den GameState Klassen
         private Arena arena = null;
@@ -164,7 +165,7 @@ namespace CR4VE
 
             // Gamestate am Anfang
             // zum Testen jeweiligen GameState einsetzen
-            this.GameState = EGameState.MainMenu;
+            this.GameState = EGameState.Singleplayer;
         }
 
 
@@ -177,7 +178,6 @@ namespace CR4VE
         protected override void Update(GameTime gameTime)
         {
             #region Update of current GameState
-            EGameState currentState;
             switch (this.gameState)
             {
                 case EGameState.Nothing:

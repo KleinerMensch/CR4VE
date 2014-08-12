@@ -19,6 +19,9 @@ namespace CR4VE.GameBase.Objects
         public Vector3 position;
         public Model model;
         public BoundingBox boundary;
+
+        //Blickrunchtung fuer Angriffe
+        public Vector3 viewingDirection = new Vector3(0,0,0);
         #endregion
 
         #region Constructors
@@ -124,7 +127,7 @@ namespace CR4VE.GameBase.Objects
         public void drawInArena(Vector3 scale, float rotX, float rotY, float rotZ)
         {
             Matrix view = Matrix.CreateLookAt(CameraArena.Position, Vector3.Zero, Vector3.Up);
-            Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45f), 1, 10f, 1000);
+            Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45f), 8/6f, 10f, 1000);
             
 
             Matrix rotationMatrix = Matrix.CreateRotationX(rotX) * Matrix.CreateRotationY(rotY) * Matrix.CreateRotationZ(rotZ);

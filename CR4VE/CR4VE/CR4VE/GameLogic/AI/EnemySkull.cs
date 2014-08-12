@@ -1,6 +1,7 @@
 ﻿using CR4VE.GameBase.Objects;
 using CR4VE.GameLogic.GameStates;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,57 +9,47 @@ using System.Text;
 
 namespace CR4VE.GameLogic.AI
 {
-    class EnemySkull : AIInterface
+    class EnemySkull : Enemy
     {
         #region Attributes
-        public Entity enemy;
-        public Vector3 enemyPosition;
-
         Random random = new Random();
-        float rotationY;
-        float rotationX;
-        float move;
+        float moveSpeed = -0.5f;
+        float rotationX = 0.4f;
+        float rotationY = MathHelper.ToRadians(-90);
         #endregion
 
-        public EnemySkull(Vector3 position)
-        {
-            this.enemyPosition = position;
-            move = -0.5f;
-            rotationX = 0.4f;
-            rotationY = MathHelper.ToRadians(-90);
-        }
+        #region inherited Constructors
+        public EnemySkull():base() { }
+        public EnemySkull(Vector3 pos, String modelName, ContentManager cm) : base(pos, modelName, cm) { }
+        public EnemySkull(Vector3 pos, String modelName, ContentManager cm, BoundingBox bound) : base(pos, modelName, cm) { }
+        #endregion
 
-        public void Initialize(Microsoft.Xna.Framework.Content.ContentManager content)
-        {
-            enemy = new Entity(enemyPosition, "skull", content);
-        }
-
-        public void Update(Microsoft.Xna.Framework.GameTime gameTime)
+        public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
             //skull rolling over the floor
-            enemy.position.X += move;
+            this.position.X += moveSpeed;
             rotationX -= 0.1f;
 
-            if (enemy.position.X < 230 || enemy.position.X > 280)
+            if (this.position.X < 230 || this.position.X > 280)
             {
-                move *= -1;
+                moveSpeed *= -1;
                 rotationX *= -1;
                 rotationY += MathHelper.ToRadians(180);
             }
 
             //updating bounding box
-            enemy.boundary.Min = enemy.position + new Vector3(-3, -3, -3);
-            enemy.boundary.Max = enemy.position + new Vector3(3, 3, 3);
+            this.boundary.Min = this.position + new Vector3(-3, -3, -3);
+            this.boundary.Max = this.position + new Vector3(3, 3, 3);
 
-            if (Singleplayer.player.boundary.Intersects(enemy.boundary))
+            if (Singleplayer.player.boundary.Intersects(this.boundary))
             {
                 Singleplayer.hud.healthLeft -= (int)(Singleplayer.hud.fullHealth * 0.01);
             }
         }
 
-        public void Draw(Microsoft.Xna.Framework.GameTime gameTime)
+        public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            enemy.drawIn2DWorld(new Vector3(0.05f, 0.05f, 0.05f), 0, rotationY , rotationX);
+            this.drawIn2DWorld(new Vector3(0.05f, 0.05f, 0.05f), 0, rotationY , rotationX);
         }
     }
 }

@@ -3,20 +3,46 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CR4VE", "CR4VE\CR4VE\CR4VE.csproj", "{BF6C4C31-B3D9-4C19-956B-1C95CC59EA65}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "CR4VEContent", "CR4VE\CR4VEContent\CR4VEContent.contentproj", "{B4D5A356-5EE2-44BA-9B75-BBDD6C5299E2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CR4VEContent", "CR4VE\CR4VEContent\CR4VEContent.contentproj", "{B4D5A356-5EE2-44BA-9B75-BBDD6C5299E2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkinnedModelWindows", "CR4VE\SkinnedModel\SkinnedModelWindows.csproj", "{0D41E29B-829F-4255-BCA5-64DC2677DA6D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkinnedModelPipeline", "CR4VE\SkinnedModelPipeline\SkinnedModelPipeline.csproj", "{4636C7E1-B845-4B83-B96D-64A11B8A4515}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
+		Debug|Xbox 360 = Debug|Xbox 360
 		Release|x86 = Release|x86
+		Release|Xbox 360 = Release|Xbox 360
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{BF6C4C31-B3D9-4C19-956B-1C95CC59EA65}.Debug|x86.ActiveCfg = Debug|x86
 		{BF6C4C31-B3D9-4C19-956B-1C95CC59EA65}.Debug|x86.Build.0 = Debug|x86
+		{BF6C4C31-B3D9-4C19-956B-1C95CC59EA65}.Debug|Xbox 360.ActiveCfg = Debug|x86
 		{BF6C4C31-B3D9-4C19-956B-1C95CC59EA65}.Release|x86.ActiveCfg = Release|x86
 		{BF6C4C31-B3D9-4C19-956B-1C95CC59EA65}.Release|x86.Build.0 = Release|x86
+		{BF6C4C31-B3D9-4C19-956B-1C95CC59EA65}.Release|Xbox 360.ActiveCfg = Release|x86
 		{B4D5A356-5EE2-44BA-9B75-BBDD6C5299E2}.Debug|x86.ActiveCfg = Debug|x86
+		{B4D5A356-5EE2-44BA-9B75-BBDD6C5299E2}.Debug|Xbox 360.ActiveCfg = Debug|x86
 		{B4D5A356-5EE2-44BA-9B75-BBDD6C5299E2}.Release|x86.ActiveCfg = Release|x86
+		{B4D5A356-5EE2-44BA-9B75-BBDD6C5299E2}.Release|Xbox 360.ActiveCfg = Release|x86
+		{0D41E29B-829F-4255-BCA5-64DC2677DA6D}.Debug|x86.ActiveCfg = Debug|x86
+		{0D41E29B-829F-4255-BCA5-64DC2677DA6D}.Debug|x86.Build.0 = Debug|x86
+		{0D41E29B-829F-4255-BCA5-64DC2677DA6D}.Debug|Xbox 360.ActiveCfg = Debug|Xbox 360
+		{0D41E29B-829F-4255-BCA5-64DC2677DA6D}.Debug|Xbox 360.Build.0 = Debug|Xbox 360
+		{0D41E29B-829F-4255-BCA5-64DC2677DA6D}.Release|x86.ActiveCfg = Release|x86
+		{0D41E29B-829F-4255-BCA5-64DC2677DA6D}.Release|x86.Build.0 = Release|x86
+		{0D41E29B-829F-4255-BCA5-64DC2677DA6D}.Release|Xbox 360.ActiveCfg = Release|Xbox 360
+		{0D41E29B-829F-4255-BCA5-64DC2677DA6D}.Release|Xbox 360.Build.0 = Release|Xbox 360
+		{4636C7E1-B845-4B83-B96D-64A11B8A4515}.Debug|x86.ActiveCfg = Debug|x86
+		{4636C7E1-B845-4B83-B96D-64A11B8A4515}.Debug|x86.Build.0 = Debug|x86
+		{4636C7E1-B845-4B83-B96D-64A11B8A4515}.Debug|Xbox 360.ActiveCfg = Debug|x86
+		{4636C7E1-B845-4B83-B96D-64A11B8A4515}.Debug|Xbox 360.Build.0 = Debug|x86
+		{4636C7E1-B845-4B83-B96D-64A11B8A4515}.Release|x86.ActiveCfg = Debug|x86
+		{4636C7E1-B845-4B83-B96D-64A11B8A4515}.Release|x86.Build.0 = Debug|x86
+		{4636C7E1-B845-4B83-B96D-64A11B8A4515}.Release|Xbox 360.ActiveCfg = Debug|x86
+		{4636C7E1-B845-4B83-B96D-64A11B8A4515}.Release|Xbox 360.Build.0 = Debug|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

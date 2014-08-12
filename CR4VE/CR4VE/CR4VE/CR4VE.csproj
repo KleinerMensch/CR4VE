@@ -64,9 +64,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
+    <Reference Include="Microsoft.Xna.Framework.Avatar, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="Microsoft.Xna.Framework.GamerServices, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
+    <Reference Include="Microsoft.Xna.Framework.Input.Touch, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Xna.Framework.Net, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Xna.Framework.Storage, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Xna.Framework.Video, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Xna.Framework.Xact, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.Xml" />
@@ -77,15 +83,24 @@
   <ItemGroup>
     <Compile Include="GameBase\Camera\Camera2D.cs" />
     <Compile Include="GameBase\Camera\CameraArena.cs" />
-    <Compile Include="GameBase\HUD\HUD.cs" />
+    <Compile Include="GameBase\HeadUpDisplay\HUD.cs" />
+    <Compile Include="GameBase\HeadUpDisplay\KazumiHUD.cs" />
+    <Compile Include="GameBase\HeadUpDisplay\OpheliaHUD.cs" />
+    <Compile Include="GameBase\Objects\AnimatedEntity.cs" />
     <Compile Include="GameBase\Objects\Entity.cs" />
     <Compile Include="GameBase\Screens\Button.cs" />
     <Compile Include="GameBase\Terrain\Tile.cs" />
     <Compile Include="GameBase\Terrain\Tilemap.cs" />
     <Compile Include="GameLogic\AI\AIInterface.cs" />
+    <Compile Include="GameLogic\AI\Enemy.cs" />
     <Compile Include="GameLogic\AI\EnemyRedEye.cs" />
     <Compile Include="GameLogic\AI\EnemySkull.cs" />
     <Compile Include="GameLogic\AI\EnemySpinningCrystal.cs" />
+    <Compile Include="GameLogic\Characters\Character.cs" />
+    <Compile Include="GameLogic\Characters\CharacterFractus.cs" />
+    <Compile Include="GameLogic\Characters\CharacterKazumi.cs" />
+    <Compile Include="GameLogic\Characters\CharacterOphelia.cs" />
+    <Compile Include="GameLogic\Characters\CharacterSeraphin.cs" />
     <Compile Include="GameLogic\Controls\GamepadControls.cs" />
     <Compile Include="GameLogic\Controls\KeyboardControls.cs" />
     <Compile Include="GameLogic\GameStates\Arena.cs" />
@@ -111,6 +126,10 @@
     <ProjectReference Include="..\CR4VEContent\CR4VEContent.contentproj">
       <Name>CR4VEContent</Name>
       <XnaReferenceType>Content</XnaReferenceType>
+    </ProjectReference>
+    <ProjectReference Include="..\SkinnedModel\SkinnedModelWindows.csproj">
+      <Project>{0d41e29b-829f-4255-bca5-64dc2677da6d}</Project>
+      <Name>SkinnedModelWindows</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
