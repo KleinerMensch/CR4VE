@@ -158,7 +158,7 @@ namespace CR4VE.GameLogic.Controls
 
             //move camera and realign BoundingFrustum
             Camera2D.realign(moveVecPlayer, Singleplayer.player.Position);
-        }
+        
 
             #region Updating attacks
             if (leftClick(currentMouseState, previousMouseState))
@@ -180,7 +180,8 @@ namespace CR4VE.GameLogic.Controls
                 playerCastedToCharacter.SpecialAttack(gameTime);
             }
             #endregion
-        
+}
+
         public static void updateMultiplayer(GameTime gameTime)
         {
             previousKeyboard = currentKeyboard;
@@ -195,10 +196,10 @@ namespace CR4VE.GameLogic.Controls
 
             //noch nicht richtig
             Vector3 recentPlayerPosition = Arena.player.position;
-            Vector3 newPlayerPosition = Arena.player.position + moveVec3D;
+            Vector3 newPlayerPosition = Arena.player.position + moveVecPlayer;
             Arena.player.viewingDirection = recentPlayerPosition - newPlayerPosition;
-            Arena.player.move(moveVec3D);
+            Arena.player.move(moveVecPlayer);
         }
-        #endregion
+        
     }
 }

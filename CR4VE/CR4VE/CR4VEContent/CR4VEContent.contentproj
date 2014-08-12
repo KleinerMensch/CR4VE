@@ -236,7 +236,7 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-  <ItemGroup>
+
     <Compile Include="Assets\Models\10x10x10Box1.FBX">
       <Name>10x10x10Box1</Name>
       <Importer>FbxImporter</Importer>
@@ -256,7 +256,6 @@
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
-  </ItemGroup>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SkinnedModelPipeline\SkinnedModelPipeline.csproj">

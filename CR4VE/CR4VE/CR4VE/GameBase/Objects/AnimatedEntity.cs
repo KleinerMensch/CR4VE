@@ -70,7 +70,7 @@ namespace CR4VE.GameBase.Objects
                 {
                     effect.SetBoneTransforms(bones);
 
-                    effect.View = Matrix.CreateLookAt(Camera2D.CamPosition3D, Vector3.Zero, Vector3.Up);
+                    effect.View = Matrix.CreateLookAt(Camera2D.Position3D, Vector3.Zero, Vector3.Up);
                     effect.Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45f), (float)8 / 6, 10f, 1000);
 
                     effect.EnableDefaultLighting();
