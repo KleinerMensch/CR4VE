@@ -30,7 +30,7 @@ namespace CR4VE.GameLogic.GameStates
 
         public static Tilemap terrainMap;
         public static Character player;
-        //public static AnimatedEntity animatedEnemy;
+        public static AnimatedEntity animatedEnemy;
 
         public static List<Enemy> enemyList = new List<Enemy>();
 
@@ -74,7 +74,7 @@ namespace CR4VE.GameLogic.GameStates
             //load models
             //Charaktere erben von Character && Character erbt von Entity
             player = new CharacterSeraphin(new Vector3(0, 0, 0), "skull"/*"protoSphere"*/, content);
-            //animatedEnemy = new AnimatedEntity(new Vector3(20, 0, 0), "enemySpinningAnim", content, new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
+            animatedEnemy = new AnimatedEntity(new Vector3(20, 0, 0), "enemySpinningAnimTest", content, new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
             
             #region Loading AI
             EnemyRedEye redEye;
@@ -115,7 +115,8 @@ namespace CR4VE.GameLogic.GameStates
 
             //updating Characters
             player.Update(gameTime);
-            //animatedEnemy.Update(gameTime);
+            animatedEnemy.Update(gameTime);
+            Console.WriteLine(animatedEnemy.Position);
 
             //Updating Enemies
             foreach (Enemy enemy in enemyList)
@@ -154,7 +155,8 @@ namespace CR4VE.GameLogic.GameStates
 
             #region 3D Objects
             player.drawIn2DWorld(new Vector3(0.1f, 0.1f, 0.1f), 0, MathHelper.ToRadians(90)*player.viewingDirection.X, 0);
-            //animatedEnemy.Draw(gameTime);
+            //wird noch nicht gezeichnet
+            animatedEnemy.Draw(gameTime, new Vector3(1f, 1f, 1f), 0,MathHelper.ToRadians(90), 0);
 
             //enemies
             foreach (AIInterface enemy in enemyList)

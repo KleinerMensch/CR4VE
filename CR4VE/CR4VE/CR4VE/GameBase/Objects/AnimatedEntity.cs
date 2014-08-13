@@ -31,7 +31,7 @@ namespace CR4VE.GameBase.Objects
             // Create an animation player, and start decoding an animation clip.
             animationPlayer = new AnimationPlayer(skinningData);
 
-            AnimationClip clip = skinningData.AnimationClips["Take 001"];
+            AnimationClip clip = skinningData.AnimationClips["Take 001"/*Name der Animation*/];
 
             animationPlayer.StartClip(clip);
         }
@@ -48,7 +48,7 @@ namespace CR4VE.GameBase.Objects
             // Create an animation player, and start decoding an animation clip.
             animationPlayer = new AnimationPlayer(skinningData);
 
-            AnimationClip clip = skinningData.AnimationClips["Take 001"];
+            AnimationClip clip = skinningData.AnimationClips["Take 001"/*Name der Animation*/];
 
             animationPlayer.StartClip(clip);
         }
@@ -59,9 +59,13 @@ namespace CR4VE.GameBase.Objects
             animationPlayer.Update(gameTime.ElapsedGameTime, true, Matrix.Identity);
         }
 
-        public void Draw(GameTime gameTime)
+        public void Draw(GameTime gameTime, Vector3 scale, float rotX, float rotY, float rotZ)
         {
             Matrix[] bones = animationPlayer.GetSkinTransforms();
+            Matrix rotation = Matrix.CreateRotationX(rotX) * Matrix.CreateRotationY(rotY) * Matrix.CreateRotationZ(rotZ);
+            Matrix translation = Matrix.CreateTranslation(Camera2D.transform3D(this.Position));
+
+            Matrix world = Matrix.CreateScale(scale) * rotation * translation;
 
             // Render the skinned mesh.
             foreach (ModelMesh mesh in model.Meshes)
@@ -72,6 +76,7 @@ namespace CR4VE.GameBase.Objects
 
                     effect.View = Matrix.CreateLookAt(Camera2D.Position3D, Vector3.Zero, Vector3.Up);
                     effect.Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45f), (float)8 / 6, 10f, 1000);
+                    effect.World = world;
 
                     effect.EnableDefaultLighting();
 

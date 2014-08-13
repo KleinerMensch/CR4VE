@@ -180,7 +180,7 @@ namespace CR4VE.GameLogic.Controls
                 playerCastedToCharacter.SpecialAttack(gameTime);
             }
             #endregion
-}
+        }
 
         public static void updateMultiplayer(GameTime gameTime)
         {
@@ -188,15 +188,17 @@ namespace CR4VE.GameLogic.Controls
             currentKeyboard = Keyboard.GetState();
 
             Vector3 moveVecPlayer = new Vector3(0, 0, 0);
+            //noch nicht richtig
 
             if (currentKeyboard.IsKeyDown(Keys.W)) moveVecPlayer += new Vector3(0, 0, -accel);
             if (currentKeyboard.IsKeyDown(Keys.A)) moveVecPlayer += new Vector3(-accel, 0, 0);
             if (currentKeyboard.IsKeyDown(Keys.S)) moveVecPlayer += new Vector3(0, 0, accel);
             if (currentKeyboard.IsKeyDown(Keys.D)) moveVecPlayer += new Vector3(accel, 0, 0);
 
-            //noch nicht richtig
-            Vector3 recentPlayerPosition = Arena.player.position;
-            Vector3 newPlayerPosition = Arena.player.position + moveVecPlayer;
+            Vector3 recentPlayerPosition = Arena.player.Position;
+            Vector3 newPlayerPosition = Arena.player.Position + moveVecPlayer;
+
+            //viewingdirection immer (0,0,0)
             Arena.player.viewingDirection = recentPlayerPosition - newPlayerPosition;
             Arena.player.move(moveVecPlayer);
         }

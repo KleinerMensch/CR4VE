@@ -28,16 +28,8 @@ namespace CR4VE.GameLogic.GameStates
         public Game1.EGameState Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
             KeyboardControls.updateMultiplayer(gameTime);
-
-            //Winkel zwischen 2 Vektoren
-            //Anfangsblickrichtung
-            Vector3 startViewingDirection = new Vector3(1, 0, 0);
-            float a = Vector3.Dot(startViewingDirection, player.viewingDirection);
-            startViewingDirection.Normalize();
-            player.viewingDirection.Normalize();
-            float b = Vector3.Dot(startViewingDirection, player.viewingDirection);
-            blickWinkel = a / b;
-
+            blickWinkel = (float) Math.Atan2(player.viewingDirection.Z, player.viewingDirection.X);
+            Console.WriteLine(player.position + " " + player.viewingDirection + " " + blickWinkel);
             //throw new NotImplementedException();
             return Game1.EGameState.Arena;
         }
@@ -45,7 +37,7 @@ namespace CR4VE.GameLogic.GameStates
         public void Draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
             //graphics.GraphicsDevice.Clear(Color.Black);
-            player.drawInArena(new Vector3(1, 1, 1), 0,0/*blickWinkel*/, 0);
+            player.drawInArena(new Vector3(1, 1, 1), 0, blickWinkel, 0);
         }
 
         public void Unload()
