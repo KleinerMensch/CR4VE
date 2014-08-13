@@ -42,8 +42,12 @@ namespace CR4VE.GameLogic.Controls
 
         private static double startJumpTime;
         private static double currentTime;
+
+        private static double startAirTime;
+        private static double currentTime2;
         
         public static bool isJumping = false;
+        public static bool isAirborne = true;
         
         private static float velocityLeft = 0;
         private static float velocityRight = 0;
@@ -91,9 +95,10 @@ namespace CR4VE.GameLogic.Controls
             previousMouseState = currentMouseState;
             currentMouseState = Mouse.GetState();
 
+            #region Calculate moveVecPlayer
             Vector3 moveVecPlayer = new Vector3(0, 0, 0);
 
-            #region calculate moveVecPlayer
+            #region left and right movement
             if (currentKeyboard.IsKeyDown(Keys.A) && !borderedLeft)
             {
                 if (velocityLeft < maxVelocity) velocityLeft += velocityGain;
@@ -125,7 +130,7 @@ namespace CR4VE.GameLogic.Controls
 
             #region jump
             //initialize airborne influence
-            if (isClicked(Keys.Space) && !isJumping)
+            /*if (isClicked(Keys.Space) && !isJumping)
             {
                 isJumping = true;
                 borderedBottom = false;
@@ -144,47 +149,84 @@ namespace CR4VE.GameLogic.Controls
 
                 double deltaTime = currentTime - startJumpTime;
                 moveVecPlayer += new Vector3(0, Math.Max(velocityRight, velocityLeft) - (float)deltaTime * G, 0);
+            }*/
+            #endregion
+
+            #region airborne influence
+            //being airborne by jumping
+            if (isClicked(Keys.Space) && !isAirborne)
+            {
+                isAirborne = true;
+                borderedBottom = false;
+
+                //minimum jump
+                if (velocityLeft < 0.5f && velocityRight < 0.5f)
+                    moveVecPlayer += new Vector3(0, 2.5f, 0);
+
+                startAirTime = gameTime.TotalGameTime.TotalSeconds;
             }
-            #endregion
-
-            #endregion
-
-            //Collision
-            Vector3 temp = moveVecPlayer;
-
-            /*Console.WriteLine("left: " + Singleplayer.player.getTerrainCollisionInDirection("left", moveVecPlayer));
-            Console.WriteLine("right: " + Singleplayer.player.getTerrainCollisionInDirection("right", moveVecPlayer));
-            Console.WriteLine("up: " + Singleplayer.player.getTerrainCollisionInDirection("up", moveVecPlayer));
-            Console.WriteLine("down: " + Singleplayer.player.getTerrainCollisionInDirection("down", moveVecPlayer));*/
-
-            Console.WriteLine("bLeft: " + borderedLeft);
-            Console.WriteLine("bRight: " + borderedRight);
-            Console.WriteLine("bTop: " + borderedTop);
-            Console.WriteLine("bBottom: " + borderedBottom);
             
-            if (Singleplayer.player.getTerrainCollisionInDirection("left", moveVecPlayer))
+            //calculate gravity influence
+            if (isAirborne && !borderedBottom)
+            {
+                currentTime2 = gameTime.TotalGameTime.TotalSeconds;
+
+                double deltaTime = currentTime2 - startAirTime;
+                moveVecPlayer += new Vector3(0, Math.Max(velocityRight, velocityLeft) - (float)deltaTime * G, 0);
+            }
+            
+            Console.WriteLine("footing: " + Singleplayer.player.checkFooting(moveVecPlayer));
+            //Console.WriteLine(isAirborne == true && Singleplayer.player.checkFooting(moveVecPlayer) == false);
+            //being airborne by falling
+            if (!isAirborne && !Singleplayer.player.checkFooting(moveVecPlayer))
+            {
+
+            }
+
+            //limit fall speed
+            /*if (Math.Abs(moveVecPlayer.Y) > maxFallSpeed)
+                moveVecPlayer.Y = -maxFallSpeed;*/
+            #endregion
+            
+            #region collision
+            Vector3 temp = moveVecPlayer;
+            
+            if (Singleplayer.player.handleTerrainCollisionInDirection("left", moveVecPlayer))
             {
                 if (temp.X < 0) temp.X = 0;
                 borderedLeft = true;
             }
-            if (Singleplayer.player.getTerrainCollisionInDirection("right", moveVecPlayer))
+            if (Singleplayer.player.handleTerrainCollisionInDirection("right", moveVecPlayer))
             {
                 if (temp.X > 0) temp.X = 0;
                 borderedRight = true;
             }
-            if (Singleplayer.player.getTerrainCollisionInDirection("up", moveVecPlayer))
+            if (Singleplayer.player.handleTerrainCollisionInDirection("up", moveVecPlayer))
             {
                 if (temp.Y > 0) temp.Y = 0;
                 borderedTop = true;
             }
-            if (Singleplayer.player.getTerrainCollisionInDirection("down", moveVecPlayer))
+            if (Singleplayer.player.handleTerrainCollisionInDirection("down", moveVecPlayer))
             {
                 if (temp.Y < 0) temp.Y = 0;
-                isJumping = false;
+                //isJumping = false;
                 borderedBottom = true;
             }
 
+            if (moveVecPlayer.Y < 0) borderedTop = false;
+
+            if (moveVecPlayer.Y < 0 && temp.Y == 0) isAirborne = false;
+
             moveVecPlayer = temp;
+            #endregion
+            #endregion
+
+            //DEBUG
+            Console.WriteLine("borderedBot " + borderedBottom);
+            Console.WriteLine("borderedTop " + borderedTop);
+            Console.WriteLine("borderedLeft " + borderedLeft);
+            Console.WriteLine("borderedRight " + borderedRight);
+            Console.WriteLine("isAirborne " + isAirborne);
 
             //updating Playerposition
             Singleplayer.player.move(moveVecPlayer);
@@ -227,12 +269,28 @@ namespace CR4VE.GameLogic.Controls
             if (currentKeyboard.IsKeyDown(Keys.S)) moveVecPlayer += new Vector3(0, 0, accel);
             if (currentKeyboard.IsKeyDown(Keys.D)) moveVecPlayer += new Vector3(accel, 0, 0);
 
+            Multiplayer.player.move(moveVecPlayer);
+        }
+
+        public static void updateArena(GameTime gameTime)
+        {
+            previousKeyboard = currentKeyboard;
+            currentKeyboard = Keyboard.GetState();
+
+            Vector3 moveVecPlayer = new Vector3(0, 0, 0);
+
+            if (currentKeyboard.IsKeyDown(Keys.W)) moveVecPlayer += new Vector3(0, 0, -accel);
+            if (currentKeyboard.IsKeyDown(Keys.A)) moveVecPlayer += new Vector3(-accel, 0, 0);
+            if (currentKeyboard.IsKeyDown(Keys.S)) moveVecPlayer += new Vector3(0, 0, accel);
+            if (currentKeyboard.IsKeyDown(Keys.D)) moveVecPlayer += new Vector3(accel, 0, 0);
+
             //noch nicht richtig
-            Vector3 recentPlayerPosition = Arena.player.position;
+            /*Vector3 recentPlayerPosition = Arena.player.position;
             Vector3 newPlayerPosition = Arena.player.position + moveVecPlayer;
-            Arena.player.viewingDirection = recentPlayerPosition - newPlayerPosition;
+            Arena.player.viewingDirection = recentPlayerPosition - newPlayerPosition;*/
+            
             Arena.player.move(moveVecPlayer);
         }
-        
+        #endregion
     }
 }

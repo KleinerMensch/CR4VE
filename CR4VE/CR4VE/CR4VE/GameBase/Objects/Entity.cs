@@ -95,7 +95,50 @@ namespace CR4VE.GameBase.Objects
             }
         }
 
-        public bool getTerrainCollisionInDirection(String direction, Vector3 moveVecEntity)
+        public bool checkFooting(Vector3 moveVecEntity)
+        {
+            List<Tile> visibles = Tilemap.getVisibleTiles();
+
+            List<Tile> possibleCollisions = new List<Tile>();
+
+            foreach (Tile t in visibles)
+            {
+                Vector3[] boundCornTile = t.Boundary.GetCorners();
+                Vector3[] boundCornEnt = this.Boundary.GetCorners();
+
+                if (boundCornTile[0].Y < boundCornEnt[2].Y && boundCornTile[1].X > boundCornEnt[0].X && boundCornTile[0].X < boundCornEnt[1].X)
+                    possibleCollisions.Add(t);
+             }
+
+             if (possibleCollisions.Count != 0)
+             {
+                List<Tile> collisions = new List<Tile>();
+
+                foreach (Tile t in possibleCollisions)
+                {
+                    Vector3[] boundCornTile = t.Boundary.GetCorners();
+
+                    Plane topTilePlane = new Plane(boundCornTile[0], boundCornTile[1], boundCornTile[4]);
+
+                    if (topTilePlane.Intersects(this.Boundary) == PlaneIntersectionType.Front)
+                    {
+                        BoundingBox newBound = new BoundingBox(this.Boundary.Min + moveVecEntity, this.Boundary.Max + moveVecEntity);
+
+                        if (topTilePlane.Intersects(newBound) == PlaneIntersectionType.Intersecting)
+                            collisions.Add(t);
+                    }
+                 }
+
+                 if (collisions.Count != 0)
+                    return true;
+                 else
+                    return false;
+              }           
+
+            return false;
+        }
+        //checks if entity collides with terrain in specified direction and sets it back accordingly
+        public bool handleTerrainCollisionInDirection(String direction, Vector3 moveVecEntity)
         {
             List<Tile> visibles = Tilemap.getVisibleTiles();
 
@@ -219,7 +262,7 @@ namespace CR4VE.GameBase.Objects
 
                                 Plane bottomTilePlane = new Plane(boundCornTile[3], boundCornTile[7], boundCornTile[2]);
 
-                                if (bottomTilePlane.Intersects(this.Boundary) == PlaneIntersectionType.Back)
+                                if (bottomTilePlane.Intersects(this.Boundary) == PlaneIntersectionType.Front)
                                 {
                                     BoundingBox newBound = new BoundingBox(this.Boundary.Min + moveVecEntity, this.Boundary.Max + moveVecEntity);
 
@@ -227,9 +270,9 @@ namespace CR4VE.GameBase.Objects
                                     {
                                         collisions.Add(t);
 
-                                        float deltaY = Math.Abs(t.Boundary.Min.Y - this.Boundary.Max.Y);
+                                        //float deltaY = Math.Abs(t.Boundary.Min.Y - this.Boundary.Max.Y);
 
-                                        this.move(new Vector3(0, deltaY, 0));
+                                        //this.move(new Vector3(0, deltaY, 0));
                                     }
                                 }
                             }
@@ -365,13 +408,34 @@ namespace CR4VE.GameBase.Objects
         }
 
         //zeichnet 3D Objekt in Bezug auf die Arenakamera
+        public void drawInArenaWithoutBones(Vector3 scale, float rotX, float rotY, float rotZ)
+        {
+            Matrix view = CameraArena.ViewMatrix;
+            Matrix projection = CameraArena.ProjectionMatrix;
+            Matrix rotation = Matrix.CreateRotationX(rotX) * Matrix.CreateRotationY(rotY) * Matrix.CreateRotationZ(rotZ);
+            Matrix translation = Matrix.CreateTranslation(this.Position);
+
+            Matrix world = Matrix.CreateScale(scale) * rotation * translation;
+
+            foreach (ModelMesh mesh in this.model.Meshes)
+            {
+                foreach (BasicEffect effect in mesh.Effects)
+                {
+                    effect.View = view;
+                    effect.Projection = projection;
+                    effect.World = world;
+                    effect.EnableDefaultLighting();
+                }
+                mesh.Draw();
+            }
+        }
         public void drawInArena(Vector3 scale, float rotX, float rotY, float rotZ)
         {
             Matrix[] transforms = new Matrix[model.Bones.Count];
             model.CopyAbsoluteBoneTransformsTo(transforms);
 
-            Matrix view = Camera2D.ViewMatrix;
-            Matrix projection = Camera2D.ProjectionMatrix;
+            Matrix view = CameraArena.ViewMatrix;
+            Matrix projection = CameraArena.ProjectionMatrix;
             Matrix rotation = Matrix.CreateRotationX(rotX) * Matrix.CreateRotationY(rotY) * Matrix.CreateRotationZ(rotZ);
             Matrix translation = Matrix.CreateTranslation(this.Position);
 
