@@ -52,8 +52,10 @@ namespace CR4VE.GameLogic.GameStates
             Tile.Content = content;
 
             int[,] layout = new int[,] {
-                {0,1,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1},
-                {0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1},
+                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                {1,1,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                {1,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0},
                 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0}};
 
             int boxSize = 10;
@@ -73,8 +75,8 @@ namespace CR4VE.GameLogic.GameStates
 
             //load models
             //Charaktere erben von Character && Character erbt von Entity
-            player = new CharacterSeraphin(new Vector3(0, 0, 0), "skull"/*"protoSphere"*/, content);
-            animatedEnemy = new AnimatedEntity(new Vector3(20, 0, 0), "enemySpinningAnimTest", content, new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
+            player = new CharacterSeraphin(new Vector3(0, 0, 0), "sphereD5", content, new BoundingBox(new Vector3(-2.5f, -2.5f, -2.5f), new Vector3(2.5f, 2.5f, 2.5f)));
+            animatedEnemy = new AnimatedEntity(new Vector3(20, 0, 0), "dude", content, new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
             
             #region Loading AI
             EnemyRedEye redEye;
@@ -104,24 +106,26 @@ namespace CR4VE.GameLogic.GameStates
 
             KeyboardControls.updateSingleplayer(gameTime);
 
+            Plane test = new Plane(new Vector3(35,5,0), new Vector3(35,5,1), new Vector3(45,5,0));
+            Console.WriteLine(test.Intersects(player.Boundary));
+
             #region Updating HUD
             hud.Update();
-            hud.UpdateMana();
+            /*hud.UpdateMana();
             if (hud.isDead)
             {
                 return Game1.EGameState.GameOver;
-            }
+            }*/
             #endregion
 
             //updating Characters
             player.Update(gameTime);
             animatedEnemy.Update(gameTime);
-            Console.WriteLine(animatedEnemy.Position);
 
             //Updating Enemies
             foreach (Enemy enemy in enemyList)
             {
-                enemy.Update(gameTime);
+                enemy.UpdateSingleplayer(gameTime);
             }
             //aktualisieren der lebenden Gegner
             for (int i = 0; i < enemyList.Count; i++)
@@ -154,9 +158,11 @@ namespace CR4VE.GameLogic.GameStates
             #endregion
 
             #region 3D Objects
-            player.drawIn2DWorld(new Vector3(0.1f, 0.1f, 0.1f), 0, MathHelper.ToRadians(90)*player.viewingDirection.X, 0);
-            //wird noch nicht gezeichnet
-            animatedEnemy.Draw(gameTime, new Vector3(1f, 1f, 1f), 0,MathHelper.ToRadians(90), 0);
+            terrainMap.Draw(Vector3.One, 0, 0, 0);
+
+            player.drawIn2DWorldWithoutBones(Vector3.One, 0, MathHelper.ToRadians(90) * player.viewingDirection.X, 0);
+            //player.drawIn2DWorld(new Vector3(0.1f, 0.1f, 0.1f), 0, MathHelper.ToRadians(90)*player.viewingDirection.X, 0);
+            animatedEnemy.Draw(gameTime, new Vector3(0.5f,0.5f,0.5f),0,MathHelper.ToRadians(180),0);
 
             //enemies
             foreach (AIInterface enemy in enemyList)

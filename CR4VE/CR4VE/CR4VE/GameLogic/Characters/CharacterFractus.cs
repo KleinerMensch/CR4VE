@@ -32,30 +32,62 @@ namespace CR4VE.GameLogic.Characters
         {
             foreach (Entity crystal in crystalList)
             {
-                crystal.boundary = new BoundingBox(crystal.position + new Vector3(-2, -2, -2), crystal.position + new Vector3(2, 2, 2));
-                float minDistance = float.MaxValue;
-
-                foreach (Enemy enemy in Singleplayer.enemyList)
+                if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
                 {
-                    float distance = (crystal.position - enemy.position).Length();
-                    if (distance < minDistance)
+                    crystal.boundary = new BoundingBox(crystal.position + new Vector3(-2, -2, -2), crystal.position + new Vector3(2, 2, 2));
+                    float minDistance = float.MaxValue;
+
+                    foreach (Enemy enemy in Singleplayer.enemyList)
                     {
-                        minDistance = distance;
-                        nearestEnemy = enemy;
+                        float distance = (crystal.position - enemy.position).Length();
+                        if (distance < minDistance)
+                        {
+                            minDistance = distance;
+                            nearestEnemy = enemy;
+                        }
+                    }
+
+                    foreach (Entity healthAbsorbingCrystal in crystalList)
+                    {
+                        //absorbs health of nearest enemy if enemy is in range of effect
+                        if ((healthAbsorbingCrystal.position - nearestEnemy.position).Length() < 50 && nearestEnemy.health > 0)
+                        {
+                            Console.WriteLine(nearestEnemy.health + " Fractus hit enemy by SpecialAttack");
+                            nearestEnemy.health -= 0.01f;
+
+                            //transfers health to Fractus
+                            if (Singleplayer.hud.trialsLeft <= 3 && Singleplayer.hud.healthLeft < Singleplayer.hud.fullHealth)
+                                Singleplayer.hud.healthLeft += (int)(Singleplayer.hud.fullHealth * 0.01f);
+                        }
                     }
                 }
-
-                foreach (Entity healthAbsorbingCrystal in crystalList)
+                else if (Game1.currentState.Equals(Game1.EGameState.Arena))
                 {
-                    //absorbs health of nearest enemy if enemy is in range of effect
-                    if ((healthAbsorbingCrystal.position - nearestEnemy.position).Length() < 50 && nearestEnemy.health > 0)
-                    {
-                        Console.WriteLine(nearestEnemy.health +" Fractus hit enemy by SpecialAttack");
-                        nearestEnemy.health -= 0.01f;
+                    crystal.boundary = new BoundingBox(crystal.position + new Vector3(-2, -2, -2), crystal.position + new Vector3(2, 2, 2));
+                    float minDistance = float.MaxValue;
 
-                        //transfers health to Fractus
-                        if(Singleplayer.hud.trialsLeft <= 3 && Singleplayer.hud.healthLeft < Singleplayer.hud.fullHealth)
-                            Singleplayer.hud.healthLeft += (int)(Singleplayer.hud.fullHealth*0.01f);
+                    foreach (Enemy enemy in Arena.enemyList)
+                    {
+                        float distance = (crystal.position - enemy.position).Length();
+                        if (distance < minDistance)
+                        {
+                            minDistance = distance;
+                            nearestEnemy = enemy;
+                        }
+                    }
+
+                    foreach (Entity healthAbsorbingCrystal in crystalList)
+                    {
+                        //absorbs health of nearest enemy if enemy is in range of effect
+                        if ((healthAbsorbingCrystal.position - nearestEnemy.position).Length() < 50 && nearestEnemy.health > 0)
+                        {
+                            Console.WriteLine(nearestEnemy.health + " Fractus hit enemy by SpecialAttack");
+                            nearestEnemy.health -= 0.01f;
+
+                            //transfers health to Fractus in Arena
+                            if (Arena.hud.trialsLeft <= 3 && Arena.hud.healthLeft < Arena.hud.fullHealth)
+                                Arena.hud.healthLeft += (int)(Arena.hud.fullHealth * 0.01f);
+                        }
                     }
                 }
             }
@@ -63,45 +95,104 @@ namespace CR4VE.GameLogic.Characters
 
         public override void MeleeAttack(GameTime time)
         {
-            BoundingBox crystalShield = new BoundingBox(this.position + new Vector3(-10, -3, -10), this.position + new Vector3(10, 3, 10));
-            foreach (Enemy enemy in Singleplayer.enemyList)
+            if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
             {
-                if (crystalShield.Intersects(enemy.boundary))
+                Entity crystalShield = new Entity(this.position, "5x5x5Box1", Singleplayer.cont);
+                crystalShield.boundary = new BoundingBox(this.position + new Vector3(-10, -3, -10), this.position + new Vector3(10, 3, 10));
+                crystalShield.drawInArena(new Vector3(1, 1, 1), 0, 0, 0);
+
+                foreach (Enemy enemy in Singleplayer.enemyList)
                 {
-                    enemy.health -= 1;
-                    Console.WriteLine("Fractus hit enemy by crystalShield");
+                    if (crystalShield.boundary.Intersects(enemy.boundary))
+                    {
+                        enemy.health -= 1;
+                        Console.WriteLine("Fractus hit enemy by crystalShield");
+                    }
+                }
+            }
+            else if (Game1.currentState.Equals(Game1.EGameState.Arena))
+            {
+                Entity crystalShield = new Entity(this.position, "5x5x5Box1", Arena.cont);
+                crystalShield.boundary = new BoundingBox(this.position + new Vector3(-10, -3, -10), this.position + new Vector3(10, 3, 10));
+                crystalShield.drawInArena(new Vector3(1, 1, 1), 0, 0, 0);
+
+                foreach (Enemy enemy in Arena.enemyList)
+                {
+                    if (crystalShield.boundary.Intersects(enemy.boundary))
+                    {
+                        enemy.health -= 1;
+                        Console.WriteLine("Fractus hit enemy by crystalShield");
+                    }
                 }
             }
         }
 
         public override void RangedAttack(GameTime time)
         {
-            //bisher nur fuer den Singleplayer
-            BoundingBox crystals = new BoundingBox(this.position + new Vector3(-3, -3, -3), this.position + new Vector3(3, 3, 3));
-
-            //Kristallschauer verschwindet nach 50 Einheiten oder wenn er mit etwas kollidiert
-            while (crystals.Min.X != this.position.X + 50*viewingDirection.X)
+            if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
             {
-                if (enemyHit) break;
-                foreach (Enemy enemy in Singleplayer.enemyList)
+                Entity crystals = new Entity(this.position, "skull", Singleplayer.cont);
+                crystals.boundary = new BoundingBox(this.position + new Vector3(-3, -3, -3), this.position + new Vector3(3, 3, 3));
+
+                //Feuerball verschwindet nach 50 Einheiten oder wenn er mit etwas kollidiert
+                while (crystals.position != this.position + 50 * viewingDirection)
                 {
                     if (enemyHit) break;
-                    if (crystals.Intersects(enemy.boundary))
+                    foreach (Enemy enemy in Singleplayer.enemyList)
                     {
-                        enemy.health -= 1;
-                        enemyHit = true;
-                        Console.WriteLine("Fractus hit enemy by RangedAttack");
+                        if (enemyHit) break;
+                        if (crystals.boundary.Intersects(enemy.boundary))
+                        {
+                            enemy.health -= 1;
+                            enemyHit = true;
+                            Console.WriteLine("Fractus hit enemy by RangedAttack");
+                        }
                     }
+                    crystals.position += speed * viewingDirection;
+                    crystals.boundary.Min += speed * viewingDirection;
+                    crystals.boundary.Max += speed * viewingDirection;
+                    crystals.drawInArena(new Vector3(0.01f, 0.01f, 0.01f), 0, 0, 0);
                 }
-                crystals.Min += new Vector3(speed*viewingDirection.X, 0, 0);
-                crystals.Max += new Vector3(speed*viewingDirection.X, 0, 0);
+                enemyHit = false;
             }
-            enemyHit = false;
+            else if (Game1.currentState.Equals(Game1.EGameState.Arena))
+            {
+                Entity crystals = new Entity(this.position, "skull", Arena.cont);
+                crystals.boundary = new BoundingBox(this.position + new Vector3(-3, -3, -3), this.position + new Vector3(3, 3, 3));
+
+                //Feuerball verschwindet nach 50 Einheiten oder wenn er mit etwas kollidiert
+                while (crystals.position != this.position + 50 * viewingDirection)
+                {
+                    if (enemyHit) break;
+                    foreach (Enemy enemy in Arena.enemyList)
+                    {
+                        if (enemyHit) break;
+                        if (crystals.boundary.Intersects(enemy.boundary))
+                        {
+                            enemy.health -= 1;
+                            enemyHit = true;
+                            Console.WriteLine("Fractus hit enemy by RangedAttack");
+                        }
+                    }
+                    crystals.position += speed * viewingDirection;
+                    crystals.boundary.Min += speed * viewingDirection;
+                    crystals.boundary.Max += speed * viewingDirection;
+                    crystals.drawInArena(new Vector3(0.01f, 0.01f, 0.01f), 0, 0, 0);
+                }
+                enemyHit = false;
+            }
         }
 
         public override void SpecialAttack(GameTime time)
         {
-            crystalList.Add(new Entity(this.position, "enemySpinningNoAnim", CR4VE.GameLogic.GameStates.Singleplayer.cont));
+            if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
+            {
+                crystalList.Add(new Entity(this.position, "enemySpinningNoAnim", CR4VE.GameLogic.GameStates.Singleplayer.cont));
+            }
+            else if (Game1.currentState.Equals(Game1.EGameState.Arena))
+            {
+                crystalList.Add(new Entity(this.position, "enemySpinningNoAnim", CR4VE.GameLogic.GameStates.Arena.cont));
+            }
 
             //mehr als 2 Kristalle nicht moeglich
             if (crystalList.Count > 2)

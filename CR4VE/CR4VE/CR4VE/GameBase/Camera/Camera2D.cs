@@ -95,12 +95,10 @@ namespace CR4VE.GameBase.Camera
         public static Vector3 FrustumPosition
         {
             get { return frustumPos; }
-            //set { frustumPos = new Vector3(MathHelper.Clamp(value.X, 0, 0), MathHelper.Clamp(value.Y, 0, 0), Position3D.Z); }
         }
         public static Vector3 FrustumTarget
         {
             get { return frustumTarget; }
-            //set { frustumTarget = new Vector3(MathHelper.Clamp(value.X, 0, 0), MathHelper.Clamp(value.Y, 0, 0), Position3D.Z); }
         }
 
         //Viewport Matrices
@@ -165,6 +163,7 @@ namespace CR4VE.GameBase.Camera
             BoundFrustum = new BoundingFrustum(view * projMatr);
         }
 
+        //moves Position2D of camera and BoundingFrustum accordingly
         public static void realign(Vector3 moveVecPlayer, Vector3 playerPos)
         {
             Vector2 moveVecCam = Vector2.Zero;

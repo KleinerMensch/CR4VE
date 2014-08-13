@@ -16,7 +16,7 @@ namespace CR4VE.GameLogic.Characters
         public static List<Entity> minionList = new List<Entity>();
         TimeSpan timeSpan = TimeSpan.FromSeconds(10);
 
-        float offset = 8;
+        Vector3 offset = new Vector3(8,8,8);
         float speed = 1;
         float moveSpeed = -0.2f;
         float spawn = 0;
@@ -65,6 +65,17 @@ namespace CR4VE.GameLogic.Characters
                         minDistance = distance;
                     }
                 }
+                //checks which enemy is next to it
+                foreach (Enemy enemy in Arena.enemyList)
+                {
+                    Vector3 dir = minion.position - enemy.position;
+                    float distance = dir.Length();
+                    if (distance < minDistance)
+                    {
+                        direction = dir;
+                        minDistance = distance;
+                    }
+                }
                 direction.Normalize();
                 direction = moveSpeed * direction;
                 minion.position += direction;
@@ -82,21 +93,50 @@ namespace CR4VE.GameLogic.Characters
 
         public override void MeleeAttack(GameTime time)
         {
-            BoundingBox algaWhip = new BoundingBox(this.position + new Vector3(-1 + offset*viewingDirection.X, -1, -1), this.position + new Vector3(1 + offset*viewingDirection.X, 1, 1));
-            foreach (Enemy enemy in Singleplayer.enemyList)
+            if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
             {
-                if (algaWhip.Intersects(enemy.boundary))
+                Vector3 algaWhipPosition = Singleplayer.player.Position + viewingDirection * offset;
+                Entity algaWhip = new Entity(algaWhipPosition, "5x5x5Box1", Singleplayer.cont);
+                algaWhip.boundary = new BoundingBox(this.position + new Vector3(-2.5f, -2.5f, -2.5f) + viewingDirection * offset, this.position + new Vector3(2.5f, 2.5f, 2.5f) + viewingDirection * offset);
+                algaWhip.drawInArena(new Vector3(1, 1, 1), 0, 0, 0);
+
+                foreach (Enemy enemy in Singleplayer.enemyList)
                 {
-                    enemy.health -= 1;
-                    Console.WriteLine("Seraphin hit enemy by MeleeAttack");
+                    if (algaWhip.boundary.Intersects(enemy.boundary))
+                    {
+                        enemy.health -= 1;
+                        Console.WriteLine("Seraphin hit enemy by MeleeAttack");
+                    }
+                }
+            }
+            else if (Game1.currentState.Equals(Game1.EGameState.Arena))
+            {
+                Vector3 algaWhipPosition = Arena.player.Position + viewingDirection * offset;
+                Entity algaWhip = new Entity(algaWhipPosition, "5x5x5Box1", Arena.cont);
+                algaWhip.boundary = new BoundingBox(this.position + new Vector3(-2.5f, -2.5f, -2.5f) + viewingDirection * offset, this.position + new Vector3(2.5f, 2.5f, 2.5f) + viewingDirection * offset);
+                algaWhip.drawInArena(new Vector3(1, 1, 1), 0, 0, 0);
+
+                foreach (Enemy enemy in Arena.enemyList)
+                {
+                    if (algaWhip.boundary.Intersects(enemy.boundary))
+                    {
+                        enemy.health -= 1;
+                        Console.WriteLine("Seraphin hit enemy by MeleeAttack");
+                    }
                 }
             }
         }
 
         public override void RangedAttack(GameTime time)
         {
-            minionList.Add(new Entity(this.position, "EnemyEye", CR4VE.GameLogic.GameStates.Singleplayer.cont));
-
+            if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
+            {
+                minionList.Add(new Entity(this.position, "EnemyEye", CR4VE.GameLogic.GameStates.Singleplayer.cont));
+            }
+            else if (Game1.currentState.Equals(Game1.EGameState.Arena))
+            {
+                minionList.Add(new Entity(this.position, "EnemyEye", CR4VE.GameLogic.GameStates.Arena.cont));
+            }
             //max. 3 minions can be spawned
             if (minionList.Count > 3)
                 minionList.RemoveAt(0);
@@ -104,27 +144,58 @@ namespace CR4VE.GameLogic.Characters
 
         public override void SpecialAttack(GameTime time)
         {
-            //bisher nur fuer den Singleplayer
-            BoundingBox laser = new BoundingBox(this.position + new Vector3(-3, -3, -3), this.position + new Vector3(3, 3, 3));
-
-            //Laser verschwindet nach 50 Einheiten oder wenn er mit etwas kollidiert
-            while (laser.Min.X != this.position.X + 50*viewingDirection.X)
+            if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
             {
-                if (enemyHit) break;
-                foreach (Enemy enemy in Singleplayer.enemyList)
+                Entity laser = new Entity(this.position, "skull", Singleplayer.cont);
+                laser.boundary = new BoundingBox(this.position + new Vector3(-3, -3, -3), this.position + new Vector3(3, 3, 3));
+
+                //Feuerball verschwindet nach 50 Einheiten oder wenn er mit etwas kollidiert
+                while (laser.position != this.position + 50 * viewingDirection)
                 {
                     if (enemyHit) break;
-                    if (laser.Intersects(enemy.boundary))
+                    foreach (Enemy enemy in Singleplayer.enemyList)
                     {
-                        enemy.health -= 1;
-                        enemyHit = true;
-                        Console.WriteLine("Seraphin hit enemy by SpecialAttack");
+                        if (enemyHit) break;
+                        if (laser.boundary.Intersects(enemy.boundary))
+                        {
+                            enemy.health -= 1;
+                            enemyHit = true;
+                            Console.WriteLine("Seraphin hit enemy by RangedAttack");
+                        }
                     }
+                    laser.position += speed * viewingDirection;
+                    laser.boundary.Min += speed * viewingDirection;
+                    laser.boundary.Max += speed * viewingDirection;
+                    laser.drawInArena(new Vector3(0.01f, 0.01f, 0.01f), 0, 0, 0);
                 }
-                laser.Min += new Vector3(speed*viewingDirection.X, 0, 0);
-                laser.Max += new Vector3(speed*viewingDirection.X, 0, 0);
+                enemyHit = false;
             }
-            enemyHit = false;
+            else if (Game1.currentState.Equals(Game1.EGameState.Arena))
+            {
+                Entity laser = new Entity(this.position, "skull", Arena.cont);
+                laser.boundary = new BoundingBox(this.position + new Vector3(-3, -3, -3), this.position + new Vector3(3, 3, 3));
+
+                //Feuerball verschwindet nach 50 Einheiten oder wenn er mit etwas kollidiert
+                while (laser.position != this.position + 50 * viewingDirection)
+                {
+                    if (enemyHit) break;
+                    foreach (Enemy enemy in Arena.enemyList)
+                    {
+                        if (enemyHit) break;
+                        if (laser.boundary.Intersects(enemy.boundary))
+                        {
+                            enemy.health -= 1;
+                            enemyHit = true;
+                            Console.WriteLine("Seraphin hit enemy by RangedAttack");
+                        }
+                    }
+                    laser.position += speed * viewingDirection;
+                    laser.boundary.Min += speed * viewingDirection;
+                    laser.boundary.Max += speed * viewingDirection;
+                    laser.drawInArena(new Vector3(0.01f, 0.01f, 0.01f), 0, 0, 0);
+                }
+                enemyHit = false;
+            }
         }
         #endregion
     }

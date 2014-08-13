@@ -9,7 +9,9 @@ namespace CR4VE.GameLogic.AI
 {
     interface AIInterface
     {
-        void Update(GameTime gameTime);
+        void UpdateSingleplayer(GameTime gameTime);
+        void UpdateArena(GameTime gameTime);
         void Draw(GameTime gameTime);
+        void DrawInArena(GameTime gameTime);
     }
 }
