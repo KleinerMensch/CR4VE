@@ -10,8 +10,8 @@ namespace CR4VE.GameBase.Camera
     public static class CameraArena
     {
         #region Attributes
-        private static Vector3 position = new Vector3(0, 50, 50);
-        private static Vector3 target = new Vector3(0, 0, 0);
+        private static Vector3 position = new Vector3(0, 75, 100);
+        private static Vector3 target = new Vector3(0, 0, 25);
         private static Vector2 viewportSize;
         private static float ratio;
 
@@ -96,7 +96,7 @@ namespace CR4VE.GameBase.Camera
 
             //Viewport Matrices
             viewMatr = Matrix.CreateLookAt(CamPosition, CamTarget, Vector3.Up);
-            projMatr = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45f), AspectRatio, 10f, 1500);
+            projMatr = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45f), AspectRatio, 1, 1500);
 
             //Viewport BoundingFrustum
             BoundingFrustum = new BoundingFrustum(ViewMatrix * ProjectionMatrix);

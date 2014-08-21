@@ -38,16 +38,14 @@ namespace CR4VE.GameLogic.Controls
         private static readonly float G = 9.81f;
         private static readonly float velocityGain = 0.2f;
         private static readonly float maxVelocity = 2.5f;
-        private static readonly float maxFallSpeed = 3f;
 
+        private static double startFallTime;
         private static double startJumpTime;
         private static double currentTime;
-
-        private static double startAirTime;
-        private static double currentTime2;
         
         public static bool isJumping = false;
         public static bool isAirborne = true;
+        public static bool isFalling = true;
         
         private static float velocityLeft = 0;
         private static float velocityRight = 0;
@@ -128,9 +126,9 @@ namespace CR4VE.GameLogic.Controls
                 velocityRight = MathHelper.Clamp(velocityRight -= velocityGain, 0, maxVelocity);
             #endregion
 
-            #region jump
-            //initialize airborne influence
-            /*if (isClicked(Keys.Space) && !isJumping)
+            #region airborne influence
+            //being airborne by jumping
+            if (isClicked(Keys.Space) && !isJumping && !isFalling)
             {
                 isJumping = true;
                 borderedBottom = false;
@@ -142,50 +140,31 @@ namespace CR4VE.GameLogic.Controls
                 startJumpTime = gameTime.TotalGameTime.TotalSeconds;
             }
 
-            //calculate moveVecPlayer influenced by jumping
-            if (isJumping)
+            //being airborne by falling
+            if (!isFalling && !isJumping && !Singleplayer.player.checkFooting())
+            {
+                isFalling = true;
+                borderedBottom = false;
+
+                startFallTime = gameTime.TotalGameTime.TotalSeconds;
+            }
+
+            //calculate gravity influence if airborne by falling
+            if (isFalling && !borderedBottom)
+            {
+                currentTime = gameTime.TotalGameTime.TotalSeconds;
+
+                double deltaTime = currentTime - startFallTime;
+                moveVecPlayer += new Vector3(0, (float) -deltaTime * G, 0);
+            }
+            //calculate gravity influence if airborne by jumping
+            if (isJumping && !borderedBottom)
             {
                 currentTime = gameTime.TotalGameTime.TotalSeconds;
 
                 double deltaTime = currentTime - startJumpTime;
                 moveVecPlayer += new Vector3(0, Math.Max(velocityRight, velocityLeft) - (float)deltaTime * G, 0);
-            }*/
-            #endregion
-
-            #region airborne influence
-            //being airborne by jumping
-            if (isClicked(Keys.Space) && !isAirborne)
-            {
-                isAirborne = true;
-                borderedBottom = false;
-
-                //minimum jump
-                if (velocityLeft < 0.5f && velocityRight < 0.5f)
-                    moveVecPlayer += new Vector3(0, 2.5f, 0);
-
-                startAirTime = gameTime.TotalGameTime.TotalSeconds;
             }
-            
-            //calculate gravity influence
-            if (isAirborne && !borderedBottom)
-            {
-                currentTime2 = gameTime.TotalGameTime.TotalSeconds;
-
-                double deltaTime = currentTime2 - startAirTime;
-                moveVecPlayer += new Vector3(0, Math.Max(velocityRight, velocityLeft) - (float)deltaTime * G, 0);
-            }
-            
-            Console.WriteLine("footing: " + Singleplayer.player.checkFooting(moveVecPlayer));
-            //Console.WriteLine(isAirborne == true && Singleplayer.player.checkFooting(moveVecPlayer) == false);
-            //being airborne by falling
-            if (!isAirborne && !Singleplayer.player.checkFooting(moveVecPlayer))
-            {
-
-            }
-
-            //limit fall speed
-            /*if (Math.Abs(moveVecPlayer.Y) > maxFallSpeed)
-                moveVecPlayer.Y = -maxFallSpeed;*/
             #endregion
             
             #region collision
@@ -209,24 +188,21 @@ namespace CR4VE.GameLogic.Controls
             if (Singleplayer.player.handleTerrainCollisionInDirection("down", moveVecPlayer))
             {
                 if (temp.Y < 0) temp.Y = 0;
-                //isJumping = false;
+                isJumping = false;
                 borderedBottom = true;
             }
 
             if (moveVecPlayer.Y < 0) borderedTop = false;
 
-            if (moveVecPlayer.Y < 0 && temp.Y == 0) isAirborne = false;
+            if (moveVecPlayer.Y < 0 && temp.Y == 0)
+            {
+                isAirborne = false;
+                isFalling = false;
+            }
 
             moveVecPlayer = temp;
             #endregion
             #endregion
-
-            //DEBUG
-            Console.WriteLine("borderedBot " + borderedBottom);
-            Console.WriteLine("borderedTop " + borderedTop);
-            Console.WriteLine("borderedLeft " + borderedLeft);
-            Console.WriteLine("borderedRight " + borderedRight);
-            Console.WriteLine("isAirborne " + isAirborne);
 
             //updating Playerposition
             Singleplayer.player.move(moveVecPlayer);
@@ -255,6 +231,7 @@ namespace CR4VE.GameLogic.Controls
                 playerCastedToCharacter.SpecialAttack(gameTime);
             }
             #endregion
+
         }
 
         public static void updateMultiplayer(GameTime gameTime)

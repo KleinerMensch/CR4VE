@@ -1,4 +1,3 @@
-#region using Statements
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +11,7 @@ using Microsoft.Xna.Framework.Media;
 using CR4VE.GameBase.Camera;
 using CR4VE.GameLogic.Controls;
 using CR4VE.GameLogic.GameStates;
-#endregion
+using CR4VE.GameLogic;
 
 namespace CR4VE
 {
@@ -26,7 +25,7 @@ namespace CR4VE
         
         private EGameState gameState;
         public static EGameState currentState;
-
+        
         // Erstellung der Objekte aus den GameState Klassen
         private Arena arena = null;
         private MainMenu menu = null;
@@ -153,6 +152,8 @@ namespace CR4VE
             graphics.PreferredBackBufferHeight = 600;
             graphics.ApplyChanges();
 
+            SaveGame.Load();
+
             base.Initialize();
         }
 
@@ -164,7 +165,7 @@ namespace CR4VE
 
             // Gamestate am Anfang
             // zum Testen jeweiligen GameState einsetzen
-            this.GameState = EGameState.Arena;
+            this.GameState = EGameState.Singleplayer;
         }
 
 

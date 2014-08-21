@@ -30,6 +30,10 @@ namespace CR4VE.GameLogic.GameStates
 
         public static Tilemap terrainMap;
         public static Character player;
+
+        public static Entity checkpoint;
+        public static Entity testStone;
+
         //public static AnimatedEntity animatedEnemy;
 
         public static List<Enemy> enemyList = new List<Enemy>();
@@ -76,6 +80,7 @@ namespace CR4VE.GameLogic.GameStates
             //load models
             //Charaktere erben von Character && Character erbt von Entity
             player = new CharacterSeraphin(new Vector3(0, 0, 0), "sphereD5", content, new BoundingBox(new Vector3(-2.5f, -2.5f, -2.5f), new Vector3(2.5f, 2.5f, 2.5f)));
+            
             //animatedEnemy = new AnimatedEntity(new Vector3(20, 0, 0), "enemySpinningAnim", content, new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
             
             #region Loading AI
@@ -106,8 +111,7 @@ namespace CR4VE.GameLogic.GameStates
 
             KeyboardControls.updateSingleplayer(gameTime);
 
-            Plane test = new Plane(new Vector3(35,5,0), new Vector3(35,5,1), new Vector3(45,5,0));
-            Console.WriteLine(test.Intersects(player.Boundary));
+            Console.WriteLine(player.boundary);
 
             #region Updating HUD
             hud.Update();

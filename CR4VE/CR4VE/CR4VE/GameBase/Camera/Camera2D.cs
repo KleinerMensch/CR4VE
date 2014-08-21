@@ -128,7 +128,7 @@ namespace CR4VE.GameBase.Camera
 
             //Viewport Matrices
             viewMatr = Matrix.CreateLookAt(Position3D, CamTarget, Vector3.Up);
-            projMatr = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45f), AspectRatio, 50f, 150);
+            projMatr = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45f), AspectRatio, 10f, 150);
 
             //Viewport BoundingFrustum
             BoundFrustum = new BoundingFrustum(viewMatr * projMatr);

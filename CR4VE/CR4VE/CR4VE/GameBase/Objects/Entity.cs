@@ -78,11 +78,12 @@ namespace CR4VE.GameBase.Objects
             //(noch hart gecoded fuer sphereD5)
             if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
             {
+                //Console.WriteLine(this.Boundary);
                 this.boundary.Min = this.Position + new Vector3(-2.5f, -2.5f, -2.5f);
                 this.boundary.Max = this.Position + new Vector3(2.5f, 2.5f, 2.5f);
             }
         }
-        public void moveTo(Vector3 destination)
+        /*public void moveTo(Vector3 destination)
         {
             this.Position = destination;
 
@@ -93,9 +94,10 @@ namespace CR4VE.GameBase.Objects
                 this.boundary.Min = this.Position + new Vector3(-2.5f, -2.5f, -2.5f);
                 this.boundary.Max = this.Position + new Vector3(2.5f, 2.5f, 2.5f);
             }
-        }
+        }*/
 
-        public bool checkFooting(Vector3 moveVecEntity)
+        //checks if entity boundary intersects with terrain tile boundary top plane beneath it
+        public bool checkFooting()
         {
             List<Tile> visibles = Tilemap.getVisibleTiles();
 
@@ -106,35 +108,25 @@ namespace CR4VE.GameBase.Objects
                 Vector3[] boundCornTile = t.Boundary.GetCorners();
                 Vector3[] boundCornEnt = this.Boundary.GetCorners();
 
-                if (boundCornTile[0].Y < boundCornEnt[2].Y && boundCornTile[1].X > boundCornEnt[0].X && boundCornTile[0].X < boundCornEnt[1].X)
+                if (boundCornTile[0].Y <= boundCornEnt[2].Y && boundCornTile[1].X > boundCornEnt[0].X && boundCornTile[0].X < boundCornEnt[1].X)
                     possibleCollisions.Add(t);
-             }
+            }
 
-             if (possibleCollisions.Count != 0)
-             {
-                List<Tile> collisions = new List<Tile>();
-
+            if (possibleCollisions.Count != 0)
+            {
                 foreach (Tile t in possibleCollisions)
                 {
                     Vector3[] boundCornTile = t.Boundary.GetCorners();
 
                     Plane topTilePlane = new Plane(boundCornTile[0], boundCornTile[1], boundCornTile[4]);
 
-                    if (topTilePlane.Intersects(this.Boundary) == PlaneIntersectionType.Front)
+                    if (topTilePlane.Intersects(this.Boundary) == PlaneIntersectionType.Intersecting)
                     {
-                        BoundingBox newBound = new BoundingBox(this.Boundary.Min + moveVecEntity, this.Boundary.Max + moveVecEntity);
-
-                        if (topTilePlane.Intersects(newBound) == PlaneIntersectionType.Intersecting)
-                            collisions.Add(t);
+                        return true;
                     }
-                 }
-
-                 if (collisions.Count != 0)
-                    return true;
-                 else
-                    return false;
-              }           
-
+                }
+            }           
+            
             return false;
         }
         //checks if entity collides with terrain in specified direction and sets it back accordingly
@@ -441,6 +433,8 @@ namespace CR4VE.GameBase.Objects
 
             Matrix world = Matrix.CreateScale(scale) * rotation * translation;
 
+            Vector3 lightPos0 = new Vector3(-50,-50,50);
+
             foreach (ModelMesh mesh in this.model.Meshes)
             {
                 foreach (BasicEffect effect in mesh.Effects)
@@ -449,6 +443,17 @@ namespace CR4VE.GameBase.Objects
                     effect.Projection = projection;
                     effect.World = transforms[mesh.ParentBone.Index] * world;
                     effect.EnableDefaultLighting();
+
+                    //Advanced Lighting Parameters
+                    effect.DirectionalLight0.Enabled = true;
+                    effect.DirectionalLight0.Direction = lightPos0;
+
+                    effect.DirectionalLight1.Enabled = false;
+                    effect.DirectionalLight2.Enabled = false;
+                    Console.Clear();
+                    Console.WriteLine("0: " + effect.DirectionalLight0.Direction);
+                    Console.WriteLine("1: " + effect.DirectionalLight1.Direction);
+                    Console.WriteLine("2: " + effect.DirectionalLight2.Direction);
                 }
                 mesh.Draw();
             }
