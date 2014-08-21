@@ -24,7 +24,7 @@ namespace CR4VE.GameBase.Objects
         public BoundingBox boundary;
 
         //Blickrichtung fuer Angriffe
-        public Vector3 viewingDirection = new Vector3(0, 0, 0);
+        public Vector3 viewingDirection = new Vector3(1, 0, 0);
         #endregion
 
         #region Constructors
@@ -79,6 +79,11 @@ namespace CR4VE.GameBase.Objects
             if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
             {
                 //Console.WriteLine(this.Boundary);
+                this.boundary.Min = this.Position + new Vector3(-2.5f, -2.5f, -2.5f);
+                this.boundary.Max = this.Position + new Vector3(2.5f, 2.5f, 2.5f);
+            }
+            if (Game1.currentState.Equals(Game1.EGameState.Arena))
+            {
                 this.boundary.Min = this.Position + new Vector3(-2.5f, -2.5f, -2.5f);
                 this.boundary.Max = this.Position + new Vector3(2.5f, 2.5f, 2.5f);
             }

@@ -215,20 +215,17 @@ namespace CR4VE.GameLogic.Controls
             if (leftClick(currentMouseState, previousMouseState))
             {
                 //Nahangriff
-                Character playerCastedToCharacter = (Character)Singleplayer.player;
-                playerCastedToCharacter.MeleeAttack(gameTime);
+                Singleplayer.player.MeleeAttack(gameTime);
             }
             else if (rightClick(currentMouseState, previousMouseState))
             {
                 //Fernangriff
-                Character playerCastedToCharacter = (Character)Singleplayer.player;
-                playerCastedToCharacter.RangedAttack(gameTime);
+                Singleplayer.player.RangedAttack(gameTime);
             }
             else if (middleClick(currentMouseState, previousMouseState))
             {
                 //Spezialangriff
-                Character playerCastedToCharacter = (Character)Singleplayer.player;
-                playerCastedToCharacter.SpecialAttack(gameTime);
+                Singleplayer.player.SpecialAttack(gameTime);
             }
             #endregion
 
@@ -254,6 +251,27 @@ namespace CR4VE.GameLogic.Controls
             previousKeyboard = currentKeyboard;
             currentKeyboard = Keyboard.GetState();
 
+            previousMouseState = currentMouseState;
+            currentMouseState = Mouse.GetState();
+
+            #region Updating attacks
+            if (leftClick(currentMouseState, previousMouseState))
+            {
+                //Nahangriff
+                Arena.player.MeleeAttack(gameTime);
+            }
+            else if (rightClick(currentMouseState, previousMouseState))
+            {
+                //Fernangriff
+                Arena.player.RangedAttack(gameTime);
+            }
+            else if (middleClick(currentMouseState, previousMouseState))
+            {
+                //Spezialangriff
+                Arena.player.SpecialAttack(gameTime);
+            }
+            #endregion
+
             Vector3 moveVecPlayer = new Vector3(0, 0, 0);
 
             if (currentKeyboard.IsKeyDown(Keys.W)) moveVecPlayer += new Vector3(0, 0, -accel);
@@ -261,10 +279,13 @@ namespace CR4VE.GameLogic.Controls
             if (currentKeyboard.IsKeyDown(Keys.S)) moveVecPlayer += new Vector3(0, 0, accel);
             if (currentKeyboard.IsKeyDown(Keys.D)) moveVecPlayer += new Vector3(accel, 0, 0);
 
-            //noch nicht richtig
-            /*Vector3 recentPlayerPosition = Arena.player.position;
-            Vector3 newPlayerPosition = Arena.player.position + moveVecPlayer;
-            Arena.player.viewingDirection = recentPlayerPosition - newPlayerPosition;*/
+            if (moveVecPlayer != new Vector3(0, 0, 0))
+            {
+                Vector3 recentPlayerPosition = Arena.player.position;
+                Vector3 newPlayerPosition = Arena.player.position + moveVecPlayer;
+                Arena.player.viewingDirection = newPlayerPosition - recentPlayerPosition;
+                Arena.blickWinkel = (float)Math.Atan2(-Arena.player.viewingDirection.Z, Arena.player.viewingDirection.X);
+            }
             
             Arena.player.move(moveVecPlayer);
         }

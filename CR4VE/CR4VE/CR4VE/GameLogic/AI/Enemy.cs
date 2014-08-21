@@ -19,8 +19,10 @@ namespace CR4VE.GameLogic.AI
         public Enemy(Vector3 pos, String modelName, ContentManager cm, BoundingBox bound) : base(pos, modelName, cm) { }
         #endregion
 
-        public virtual void Update(Microsoft.Xna.Framework.GameTime gameTime) { }
+        public virtual void UpdateSingleplayer(Microsoft.Xna.Framework.GameTime gameTime) { }
+        public virtual void UpdateArena(Microsoft.Xna.Framework.GameTime gameTime) { }
         public virtual void Draw(Microsoft.Xna.Framework.GameTime gameTime) { }
+        public virtual void DrawInArena(Microsoft.Xna.Framework.GameTime gameTime) { }
         public virtual void Destroy() { }
     }
 }

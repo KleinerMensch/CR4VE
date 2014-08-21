@@ -1,5 +1,7 @@
 ﻿using CR4VE.GameBase.Camera;
+using CR4VE.GameBase.HeadUpDisplay;
 using CR4VE.GameBase.Objects;
+using CR4VE.GameLogic.AI;
 using CR4VE.GameLogic.Characters;
 using CR4VE.GameLogic.Controls;
 using Microsoft.Xna.Framework;
@@ -18,11 +20,13 @@ namespace CR4VE.GameLogic.GameStates
         public static ContentManager cont;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+
+        public static HUD hud;
         
         public static Character player;
-        Entity terrain;
+        public static List<Enemy> enemyList = new List<Enemy>();
 
-        float blickWinkel;
+        public static float blickWinkel;
         #endregion
 
         #region Konstruktor
@@ -38,33 +42,80 @@ namespace CR4VE.GameLogic.GameStates
 
             CameraArena.Initialize(800, 600);
 
-            player = new CharacterOphelia(new Vector3(0, 0, 0), "skull", content);
+            player = new CharacterFractus(new Vector3(0, 0, 0), "skull", content);
 
-            terrain = new Entity(new Vector3(0, 0, 0), "protoTerrain1", content);
+            EnemyRedEye redEye;
+            redEye = new EnemyRedEye(new Vector3(10, 0, 0), "EnemyEye", content, new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
+            enemyList.Add(redEye);
+
+            //HUD
+            hud = new OpheliaHUD(content, graphics);
+            cont = content;
         }
 
         public Game1.EGameState Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
             KeyboardControls.updateArena(gameTime);
+            player.Update(gameTime);
 
-            //Winkel zwischen 2 Vektoren
-            //Anfangsblickrichtung
-            Vector3 startViewingDirection = new Vector3(1, 0, 0);
-            float a = Vector3.Dot(startViewingDirection, player.viewingDirection);
-            startViewingDirection.Normalize();
-            player.viewingDirection.Normalize();
-            float b = Vector3.Dot(startViewingDirection, player.viewingDirection);
-            blickWinkel = a / b;
+            #region Updating HUD
+            hud.Update();
+            /*hud.UpdateMana();
+            if (hud.isDead)
+            {
+                return Game1.EGameState.GameOver;
+            }*/
+            #endregion
 
+            //Updating Enemies
+            foreach (Enemy enemy in enemyList)
+            {
+                enemy.UpdateArena(gameTime);
+            }
+            //aktualisieren der lebenden Gegner
+            for (int i = 0; i < enemyList.Count; i++)
+            {
+                if (enemyList.ElementAt(i).health <= 0)
+                {
+                    enemyList.ElementAt(i).Destroy();
+                    enemyList.Remove(enemyList.ElementAt(i));
+                }
+            }
             return Game1.EGameState.Arena;
         }
 
         public void Draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            terrain.drawInArenaWithoutBones(Vector3.One, 0, 0, 0);
+            //enemies
+            foreach (AIInterface enemy in enemyList)
+            {
+                enemy.DrawInArena(gameTime);
+            }
 
-            //graphics.GraphicsDevice.Clear(Color.Black);
-            player.drawInArena(new Vector3(1, 1, 1), 0, 0/*blickWinkel*/, 0);
+            //minions etc.
+            foreach (Entity laser in CR4VE.GameLogic.AI.EnemyRedEye.laserList)
+            {
+                laser.drawInArena(new Vector3(0.5f, 0.5f, 0.5f), 0, 0, MathHelper.ToRadians(90));
+            }
+            foreach (Entity minion in CR4VE.GameLogic.Characters.CharacterSeraphin.minionList)
+            {
+                minion.drawInArena(new Vector3(0.5f, 0.5f, 0.5f), 0, 0, 0);
+            }
+            foreach (Entity crystal in CR4VE.GameLogic.Characters.CharacterFractus.crystalList)
+            {
+                crystal.drawInArena(new Vector3(0.1f, 0.1f, 0.1f), 0, 0, 0);
+            }
+
+            player.drawInArena(new Vector3(0.05f, 0.05f, 0.05f), 0, MathHelper.ToRadians(90) + blickWinkel, 0);
+
+            #region HUD
+            spriteBatch.Begin();
+
+            hud.DrawGenerals(spriteBatch);
+            hud.Draw(spriteBatch);
+
+            spriteBatch.End();
+            #endregion
         }
 
         public void Unload()

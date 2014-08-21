@@ -25,7 +25,7 @@ namespace CR4VE.GameLogic.AI
         public EnemyRedEye(Vector3 pos, String modelName, ContentManager cm, BoundingBox bound) : base(pos, modelName, cm) { }
         #endregion
 
-        public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
+        public override void UpdateSingleplayer(Microsoft.Xna.Framework.GameTime gameTime)
         {
             spawn += (float)gameTime.ElapsedGameTime.TotalSeconds;
             this.position.X += moveSpeed;
@@ -60,6 +60,41 @@ namespace CR4VE.GameLogic.AI
             #endregion
         }
 
+        public override void UpdateArena(GameTime gameTime)
+        {
+            spawn += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            this.position.X += moveSpeed;
+            if (this.position.X < 0 || this.position.X > 30)
+            {
+                moveSpeed *= -1;
+                rotationY += MathHelper.ToRadians(180);
+            }
+
+            //updating laserList
+            this.LoadEnemies(this.position, Arena.cont);
+
+            //updating bounding box
+            this.boundary.Min = this.position + new Vector3(-3, -3, -3);
+            this.boundary.Max = this.position + new Vector3(3, 3, 3);
+
+            if (Arena.player.boundary.Intersects(this.boundary))
+            {
+                Arena.hud.healthLeft -= (int)(Arena.hud.fullHealth * 0.01);
+            }
+
+            #region Collision with Laser
+            foreach (Entity laser in laserList)
+            {
+                laser.boundary = new BoundingBox(laser.position + new Vector3(-2, -2, -2), laser.position + new Vector3(2, 2, 2));
+                if (Arena.player.boundary.Intersects(laser.boundary))
+                {
+                    Arena.hud.healthLeft -= (int)(Arena.hud.fullHealth * 0.01);
+                }
+                laser.position.X -= 0.7f;
+            }
+            #endregion
+        }
+
         #region Laser vom Auge
         //bisher nur einzelne Nadeln gespawnt
         public void LoadEnemies(Vector3 EyePosition, ContentManager content)
@@ -87,6 +122,11 @@ namespace CR4VE.GameLogic.AI
         public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
             this.drawIn2DWorld(new Vector3(0.5f, 0.5f, 0.5f), 0, rotationY, 0);
+        }
+
+        public override void DrawInArena(GameTime gameTime)
+        {
+            this.drawInArena(new Vector3(0.5f, 0.5f, 0.5f), 0, rotationY, 0);
         }
 
         public override void Destroy()
