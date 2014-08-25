@@ -17,6 +17,7 @@ namespace CR4VE.GameLogic.AI
         float moveSpeed = -0.5f;
         float rotationY = MathHelper.ToRadians(-90);
         float spawn = 0;
+        Vector3 viewingDirection = new Vector3(-1, 0, 0);
         #endregion
 
         #region inherited Constructors
@@ -62,10 +63,13 @@ namespace CR4VE.GameLogic.AI
 
         public override void UpdateArena(GameTime gameTime)
         {
+            Console.WriteLine(this.viewingDirection);
             spawn += (float)gameTime.ElapsedGameTime.TotalSeconds;
             this.position.X += moveSpeed;
+            
             if (this.position.X < 0 || this.position.X > 30)
             {
+                this.viewingDirection.X *= -1;
                 moveSpeed *= -1;
                 rotationY += MathHelper.ToRadians(180);
             }
@@ -85,12 +89,13 @@ namespace CR4VE.GameLogic.AI
             #region Collision with Laser
             foreach (Entity laser in laserList)
             {
+                Vector3 direction = this.viewingDirection;
                 laser.boundary = new BoundingBox(laser.position + new Vector3(-2, -2, -2), laser.position + new Vector3(2, 2, 2));
                 if (Arena.player.boundary.Intersects(laser.boundary))
                 {
                     Arena.hud.healthLeft -= (int)(Arena.hud.fullHealth * 0.01);
                 }
-                laser.position.X -= 0.7f;
+                laser.position.X -= 0.7f * direction.X;
             }
             #endregion
         }
