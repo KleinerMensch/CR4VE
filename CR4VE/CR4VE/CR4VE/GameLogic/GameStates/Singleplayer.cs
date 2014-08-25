@@ -110,7 +110,7 @@ namespace CR4VE.GameLogic.GameStates
         {
             Console.Clear();
 
-            Controls.Controls.updateSingleplayer(gameTime);
+            GameControls.updateSingleplayer(gameTime);
 
             Console.WriteLine(player.boundary);
 

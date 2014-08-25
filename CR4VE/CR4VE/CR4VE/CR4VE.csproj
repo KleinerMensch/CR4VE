@@ -102,7 +102,7 @@
     <Compile Include="GameLogic\Characters\CharacterKazumi.cs" />
     <Compile Include="GameLogic\Characters\CharacterOphelia.cs" />
     <Compile Include="GameLogic\Characters\CharacterSeraphin.cs" />
-    <Compile Include="GameLogic\Controls\Controls.cs" />
+    <Compile Include="GameLogic\Controls\GameControls.cs" />
     <Compile Include="GameLogic\GameStates\Arena.cs" />
     <Compile Include="GameLogic\GameStates\Continue.cs" />
     <Compile Include="GameLogic\GameStates\Credits.cs" />

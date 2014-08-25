@@ -266,7 +266,7 @@ namespace CR4VE.GameLogic.Controls
             if (currentKeyboard.IsKeyDown(Keys.S) || currGamepad.IsButtonDown(Buttons.DPadDown)) moveVecPlayer += new Vector3(0, 0, accel);
             if (currentKeyboard.IsKeyDown(Keys.D) || currGamepad.IsButtonDown(Buttons.DPadRight)) moveVecPlayer += new Vector3(accel, 0, 0);
 
-            Multiplayer.player.move(moveVecPlayer);
+            Multiplayer.player1.move(moveVecPlayer);
         }
 
         public static void updateArena(GameTime gameTime)
