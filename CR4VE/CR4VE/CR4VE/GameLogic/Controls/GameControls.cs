@@ -109,7 +109,9 @@ namespace CR4VE.GameLogic.Controls
 
             prevGamepad = currGamepad;
             currGamepad = GamePad.GetState(PlayerIndex.One);
-            
+
+            //visible tiles (potential collisions)
+            List<Tile> visibles = Tilemap.getVisibleTiles();
 
             #region Calculate moveVecPlayer
             Vector3 moveVecPlayer = new Vector3(0, 0, 0);
@@ -147,7 +149,7 @@ namespace CR4VE.GameLogic.Controls
             }
 
             //being airborne by falling
-            if (!isFalling && !isJumping && !Singleplayer.player.checkFooting())
+            if (!isFalling && !isJumping && !Singleplayer.player.checkFooting(visibles))
             {
                 isFalling = true;
                 borderedBottom = false;
@@ -175,23 +177,23 @@ namespace CR4VE.GameLogic.Controls
             
             #region collision
             Vector3 temp = moveVecPlayer;
-            
-            if (Singleplayer.player.handleTerrainCollisionInDirection("left", moveVecPlayer))
+
+            if (Singleplayer.player.handleTerrainCollisionInDirection("left", moveVecPlayer, visibles))
             {
                 if (temp.X < 0) temp.X = 0;
                 borderedLeft = true;
             }
-            if (Singleplayer.player.handleTerrainCollisionInDirection("right", moveVecPlayer))
+            if (Singleplayer.player.handleTerrainCollisionInDirection("right", moveVecPlayer, visibles))
             {
                 if (temp.X > 0) temp.X = 0;
                 borderedRight = true;
             }
-            if (Singleplayer.player.handleTerrainCollisionInDirection("up", moveVecPlayer))
+            if (Singleplayer.player.handleTerrainCollisionInDirection("up", moveVecPlayer, visibles))
             {
                 if (temp.Y > 0) temp.Y = 0;
                 borderedTop = true;
             }
-            if (Singleplayer.player.handleTerrainCollisionInDirection("down", moveVecPlayer))
+            if (Singleplayer.player.handleTerrainCollisionInDirection("down", moveVecPlayer, visibles))
             {
                 if (temp.Y < 0) temp.Y = 0;
                 isJumping = false;
@@ -210,7 +212,7 @@ namespace CR4VE.GameLogic.Controls
             #endregion
             #endregion
 
-            //updating Playerposition
+            //update Playerposition
             Singleplayer.player.move(moveVecPlayer);
 
             //move camera and realign BoundingFrustum
@@ -235,6 +237,8 @@ namespace CR4VE.GameLogic.Controls
             }
             #endregion
 
+            borderedRight = Singleplayer.player.checkRightBorder(visibles);
+            borderedLeft = Singleplayer.player.checkLeftBorder(visibles);
         }
 
         public static void updateMultiplayer(GameTime gameTime)

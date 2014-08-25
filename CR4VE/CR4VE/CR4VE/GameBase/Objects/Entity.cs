@@ -88,7 +88,7 @@ namespace CR4VE.GameBase.Objects
                 this.boundary.Max = this.Position + new Vector3(2.5f, 2.5f, 2.5f);
             }
         }
-        /*public void moveTo(Vector3 destination)
+        public void moveTo(Vector3 destination)
         {
             this.Position = destination;
 
@@ -99,13 +99,11 @@ namespace CR4VE.GameBase.Objects
                 this.boundary.Min = this.Position + new Vector3(-2.5f, -2.5f, -2.5f);
                 this.boundary.Max = this.Position + new Vector3(2.5f, 2.5f, 2.5f);
             }
-        }*/
+        }
 
-        //checks if entity boundary intersects with terrain tile boundary top plane beneath it
-        public bool checkFooting()
+        //checks if entity boundary intersects with terrain tile boundary
+        public bool checkFooting(List<Tile> visibles)
         {
-            List<Tile> visibles = Tilemap.getVisibleTiles();
-
             List<Tile> possibleCollisions = new List<Tile>();
 
             foreach (Tile t in visibles)
@@ -130,15 +128,74 @@ namespace CR4VE.GameBase.Objects
                         return true;
                     }
                 }
-            }           
+            }
             
             return false;
         }
-        //checks if entity collides with terrain in specified direction and sets it back accordingly
-        public bool handleTerrainCollisionInDirection(String direction, Vector3 moveVecEntity)
+        public bool checkRightBorder(List<Tile> visibles)
         {
-            List<Tile> visibles = Tilemap.getVisibleTiles();
+            List<Tile> possibleCollisions = new List<Tile>();
 
+            foreach (Tile t in visibles)
+            {
+                Vector3[] boundCornTile = t.Boundary.GetCorners();
+                Vector3[] boundCornEnt = this.Boundary.GetCorners();
+
+                if (boundCornTile[0].X <= boundCornEnt[1].X && boundCornTile[0].Y > boundCornEnt[2].Y && boundCornTile[2].Y < boundCornEnt[1].Y)
+                    possibleCollisions.Add(t);
+            }
+
+            if (possibleCollisions.Count != 0)
+            {
+                foreach (Tile t in possibleCollisions)
+                {
+                    Vector3[] boundCornTile = t.Boundary.GetCorners();
+
+                    Plane leftTilePlane = new Plane(boundCornTile[0], boundCornTile[3], boundCornTile[4]);
+
+                    if (leftTilePlane.Intersects(this.Boundary) == PlaneIntersectionType.Intersecting)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+        public bool checkLeftBorder(List<Tile> visibles)
+        {
+            List<Tile> possibleCollisions = new List<Tile>();
+
+            foreach (Tile t in visibles)
+            {
+                Vector3[] boundCornTile = t.Boundary.GetCorners();
+                Vector3[] boundCornEnt = this.Boundary.GetCorners();
+
+                if (boundCornTile[1].X >= boundCornEnt[0].X && boundCornTile[0].Y > boundCornEnt[2].Y && boundCornTile[2].Y < boundCornEnt[1].Y)
+                    possibleCollisions.Add(t);
+            }
+
+            if (possibleCollisions.Count != 0)
+            {
+                foreach (Tile t in possibleCollisions)
+                {
+                    Vector3[] boundCornTile = t.Boundary.GetCorners();
+
+                    Plane rightTilePlane = new Plane(boundCornTile[1], boundCornTile[2], boundCornTile[5]);
+
+                    if (rightTilePlane.Intersects(this.Boundary) == PlaneIntersectionType.Intersecting)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        //checks if entity collides with terrain in specified direction and sets it back accordingly
+        public bool handleTerrainCollisionInDirection(String direction, Vector3 moveVecEntity, List<Tile> visibles)
+        {
             switch (direction)
             {
                 #region left
