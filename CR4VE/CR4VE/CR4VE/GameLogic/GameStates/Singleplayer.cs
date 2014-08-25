@@ -33,9 +33,7 @@ namespace CR4VE.GameLogic.GameStates
 
         public static Entity checkpoint;
         public static Entity powerup_health;
-
-        //public static AnimatedEntity animatedEnemy;
-
+        
         public static List<Enemy> enemyList = new List<Enemy>();
 
         public static HUD hud;
@@ -85,8 +83,7 @@ namespace CR4VE.GameLogic.GameStates
             //Charaktere erben von Character && Character erbt von Entity
             player = new CharacterSeraphin(new Vector3(0, 0, 0), "sphereD5", content, new BoundingBox(new Vector3(-2.5f, -2.5f, -2.5f), new Vector3(2.5f, 2.5f, 2.5f)));
 
-            powerup_health = new Entity(new Vector3(10,0,0), "powerup_hell_health", content);
-            //animatedEnemy = new AnimatedEntity(new Vector3(20, 0, 0), "enemySpinningAnim", content, new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
+            powerup_health = new Entity(new Vector3(10,0,0), "Powerups/powerup_hell_health", content);
             
             #region Loading AI
             EnemyRedEye redEye;
