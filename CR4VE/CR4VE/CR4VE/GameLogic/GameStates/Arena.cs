@@ -52,11 +52,7 @@ namespace CR4VE.GameLogic.GameStates
             lava = new Entity(new Vector3(0, -50, -30), "lavafloor", content);
 
             //moveable Entities
-            player = new Character(new Vector3(0, 0, 0), "sphereD5", content);
-
-            EnemyRedEye redEye;
-            redEye = new EnemyRedEye(new Vector3(10, 0, 0), "EnemyEye", content, new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
-            enemyList.Add(redEye);
+            player = new CharacterSeraphin(new Vector3(0, 0, 0), "sphereD5", content);
 
             //HUD
             hud = new OpheliaHUD(content, graphics);
@@ -77,20 +73,6 @@ namespace CR4VE.GameLogic.GameStates
             }*/
             #endregion
 
-            //Updating Enemies
-            foreach (Enemy enemy in enemyList)
-            {
-                enemy.UpdateArena(gameTime);
-            }
-            //aktualisieren der lebenden Gegner
-            for (int i = 0; i < enemyList.Count; i++)
-            {
-                if (enemyList.ElementAt(i).health <= 0)
-                {
-                    enemyList.ElementAt(i).Destroy();
-                    enemyList.Remove(enemyList.ElementAt(i));
-                }
-            }
             return Game1.EGameState.Arena;
         }
 
@@ -107,10 +89,6 @@ namespace CR4VE.GameLogic.GameStates
             }
 
             //minions etc.
-            foreach (Entity laser in EnemyRedEye.laserList)
-            {
-                laser.drawInArena(new Vector3(0.5f, 0.5f, 0.5f), 0, 0, MathHelper.ToRadians(90));
-            }
             foreach (Entity minion in CharacterSeraphin.minionList)
             {
                 minion.drawInArena(new Vector3(0.5f, 0.5f, 0.5f), 0, 0, 0);

@@ -17,6 +17,7 @@ namespace CR4VE.GameLogic.AI
         float moveSpeed = -0.5f;
         float rotationY = MathHelper.ToRadians(-90);
         float spawn = 0;
+        public new Vector3 viewingDirection = new Vector3(-1, 0, 0);
         #endregion
 
         #region inherited Constructors
@@ -32,6 +33,7 @@ namespace CR4VE.GameLogic.AI
             if (this.position.X < 50 || this.position.X > 105)
             {
                 moveSpeed *= -1;
+                viewingDirection.X *= -1;
                 rotationY += MathHelper.ToRadians(180);
             }
 
@@ -51,46 +53,11 @@ namespace CR4VE.GameLogic.AI
             foreach (Entity laser in laserList)
             {
                 laser.boundary = new BoundingBox(laser.position + new Vector3(-2, -2, -2), laser.position + new Vector3(2, 2, 2));
+                laser.position.X += laser.viewingDirection.X;
                 if (Singleplayer.player.boundary.Intersects(laser.boundary))
                 {
                     Singleplayer.hud.healthLeft -= (int)(Singleplayer.hud.fullHealth * 0.01);
                 }
-                laser.position.X -= 0.7f;
-            }
-            #endregion
-        }
-
-        public override void UpdateArena(GameTime gameTime)
-        {
-            spawn += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            this.position.X += moveSpeed;
-            if (this.position.X < 0 || this.position.X > 30)
-            {
-                moveSpeed *= -1;
-                rotationY += MathHelper.ToRadians(180);
-            }
-
-            //updating laserList
-            this.LoadEnemies(this.position, Arena.cont);
-
-            //updating bounding box
-            this.boundary.Min = this.position + new Vector3(-3, -3, -3);
-            this.boundary.Max = this.position + new Vector3(3, 3, 3);
-
-            if (Arena.player.boundary.Intersects(this.boundary))
-            {
-                Arena.hud.healthLeft -= (int)(Arena.hud.fullHealth * 0.01);
-            }
-
-            #region Collision with Laser
-            foreach (Entity laser in laserList)
-            {
-                laser.boundary = new BoundingBox(laser.position + new Vector3(-2, -2, -2), laser.position + new Vector3(2, 2, 2));
-                if (Arena.player.boundary.Intersects(laser.boundary))
-                {
-                    Arena.hud.healthLeft -= (int)(Arena.hud.fullHealth * 0.01);
-                }
-                laser.position.X -= 0.7f;
             }
             #endregion
         }
@@ -105,12 +72,13 @@ namespace CR4VE.GameLogic.AI
                 spawn = 0;
                 if (laserList.Count() < 10)
                     laserList.Add(new Entity(EyePosition, "ImaFirinMahLaserr", content));
+                laserList.Last().viewingDirection = this.viewingDirection;
             }
             for (int i = 0; i < laserList.Count; i++)
             {
                 // wenn laser zu weit weg, dann verschwindet er
                 // 'laser' verschwindet nocht nicht, wenn er den Spieler beruehrt
-                if (laserList[i].position.X < 10 || laserList[i].position.X > 150)
+                if (laserList[i].position.X >= this.position.X + 50 || laserList[i].position.X <= this.position.X - 50)
                 {
                     laserList.RemoveAt(i);
                     i--;
@@ -122,11 +90,6 @@ namespace CR4VE.GameLogic.AI
         public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
             this.drawIn2DWorld(new Vector3(0.5f, 0.5f, 0.5f), 0, rotationY, 0);
-        }
-
-        public override void DrawInArena(GameTime gameTime)
-        {
-            this.drawInArena(new Vector3(0.5f, 0.5f, 0.5f), 0, rotationY, 0);
         }
 
         public override void Destroy()
