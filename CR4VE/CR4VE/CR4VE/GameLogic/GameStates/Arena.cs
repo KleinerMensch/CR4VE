@@ -48,8 +48,8 @@ namespace CR4VE.GameLogic.GameStates
             CameraArena.Initialize(800, 600);
 
             //Terrain
-            terrain = new Entity(new Vector3(4, -20, -5), "arena_hell_textured", content);
-            lava = new Entity(new Vector3(0, -50, -30), "lavafloor", content);
+            terrain = new Entity(new Vector3(4, -20, -5), "Terrain/arena_hell", content);
+            lava = new Entity(new Vector3(0, -50, -30), "Terrain/lavafloor", content);
 
             //moveable Entities
             player = new CharacterSeraphin(new Vector3(0, 0, 0), "sphereD5", content);

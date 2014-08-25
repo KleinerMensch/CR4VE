@@ -8,7 +8,7 @@ Content\Assets\Sprites\HealthLiquidPrismatic.xnb
 Content\Assets\Sprites\OpheliaHPBar.xnb
 Content\Assets\Sprites\OpheliaPower.xnb
 Content\Assets\Sprites\stone.xnb
-Content\Assets\Models\red_eye.xnb
+Content\Assets\Models\Enemies\red_eye.xnb
 Content\Assets\Sprites\TryAgain.xnb
 Content\Assets\Sprites\Winscreen.xnb
 Content\Assets\Sprites\KazumiHPBar.xnb
@@ -17,31 +17,39 @@ Content\Assets\Sprites\KazumiPower_MiddleTail.xnb
 Content\Assets\Sprites\KazumiPower_RightTail.xnb
 Content\Assets\Fonts\HUDfont.xnb
 Content\Assets\Fonts\GameOverFlo.xnb
-Content\Assets\Models\Box1.xnb
-Content\Assets\Models\Box2.xnb
-Content\Assets\Models\Box3.xnb
-Content\Assets\Models\Box4.xnb
-Content\Assets\Models\EnemyEye.xnb
-Content\Assets\Models\sphereR5.xnb
-Content\Assets\Models\enemySpinningNoAnim.xnb
-Content\Assets\Models\ImaFirinMahLaserr.xnb
-Content\Assets\Models\skull.xnb
-Content\Assets\Models\10x10x10Box1.xnb
-Content\Assets\Models\sphereD5.xnb
-Content\Assets\Models\enemySpinningAnim.xnb
-Content\Assets\Models\powerup_hell_health.xnb
-Content\Assets\Models\arena_hell_textured.xnb
-Content\Assets\Models\lavafloor.xnb
-Content\523157609_3bee3ec485_o2 - Kopie _0.xnb
-Content\lava_texture_stock_by_mavrosh_st_0.xnb
-Content\red_brown_up_0.xnb
-Content\lava_0.xnb
-Content\red_eye_0.xnb
-Content\Assets\Models\Textures\gold_256x256_0.xnb
-Content\Assets\Models\Textures\rock_dark4_2048x2048_0.xnb
-Content\Assets\Models\UV Maps\hell_altar_silver2_0.xnb
-Content\Assets\Models\Textures\seamless\lava_bright2_1024x1024_0.xnb
+Content\Assets\Models\Enemies\EnemyEye.xnb
+Content\Assets\Models\Players\sphereR5.xnb
+Content\Assets\Models\Enemies\enemySpinningNoAnim.xnb
+Content\Assets\Models\Enemies\ImaFirinMahLaserr.xnb
+Content\Assets\Models\Enemies\skull.xnb
+Content\Assets\Models\Terrain\10x10x10Box1.xnb
+Content\Assets\Models\Players\sphereD5.xnb
+Content\Assets\Models\Enemies\enemySpinningAnim.xnb
+Content\Assets\Models\Powerups\powerup_hell_health.xnb
+Content\Assets\Models\Terrain\lavafloor.xnb
+Content\Assets\Models\Terrain\arena_hell.xnb
+Content\Assets\Models\Terrain\Box1.xnb
+Content\Assets\Models\Terrain\Box3.xnb
+Content\Assets\Models\Terrain\Box4.xnb
+Content\Assets\Models\Terrain\Box2.xnb
+Content\Assets\Models\Terrain\Box5.xnb
+Content\Assets\Models\Terrain\Box6.xnb
+Content\Assets\Models\Terrain\Box7.xnb
+Content\Assets\Models\Terrain\Box8.xnb
 Content\Assets\Models\5x5x5Box1.xnb
+Content\red_eye_0.xnb
+Content\Assets\Models\Powerups\Textures\gold_256x256_0.xnb
+Content\Assets\Models\Terrain\Textures\seamless\lava_bright2_1024x1024_0.xnb
+Content\Assets\Models\Terrain\Textures\rock_dark4_2048x2048_0.xnb
+Content\Assets\Models\Terrain\UV Maps\hell_altar_silver2_0.xnb
+Content\grass_grass_0105_02_preview_0.xnb
+Content\Dirt cracked 00 seamless_0.xnb
+Content\WaterSurface.png4fbdf4a2-e7ef-4d_0.xnb
+Content\ground_0.xnb
+Content\Dirt 1_0.xnb
+Content\Dirt 2_0.xnb
+Content\Grass 1_0.xnb
+Content\fountain-water-texture_0.xnb
 Content\Assets\Sprites\Startscreen.png
 Content\Assets\Sprites\ButtonExit.png
 Content\Assets\Sprites\ButtonPlay.png

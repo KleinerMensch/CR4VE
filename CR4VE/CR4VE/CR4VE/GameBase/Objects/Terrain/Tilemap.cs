@@ -46,7 +46,7 @@ namespace CR4VE.GameBase.Objects.Terrain
                         BoundingBox boundary = new BoundingBox(position + new Vector3(-size / 2, -size / 2, -size / 2), position + new Vector3(size / 2, size / 2, size / 2));
                         
                         //harten String noch ersetzen
-                        Tiles.Add(new Tile("10x10x10Box", number, position, boundary));
+                        Tiles.Add(new Tile("Box", number, position, boundary));
                     }
                 }
             }
