@@ -48,11 +48,11 @@ namespace CR4VE.GameLogic.GameStates
             CameraArena.Initialize(800, 600);
 
             //Terrain
-            terrain = new Entity(new Vector3(4, -20, -5), "arena_hell_textured", content);
-            lava = new Entity(new Vector3(0, -50, -30), "lavafloor", content);
+            terrain = new Entity(new Vector3(4, -20, -5), "Terrain/arena_hell", content);
+            lava = new Entity(new Vector3(0, -50, -30), "Terrain/lavafloor", content);
 
             //moveable Entities
-            player = new Character(new Vector3(0, 0, 0), "sphereD5", content);
+            player = new CharacterOphelia(new Vector3(0, 0, 0), "sphereD5", content);
 
             EnemyRedEye redEye;
             redEye = new EnemyRedEye(new Vector3(10, 0, 0), "EnemyEye", content, new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));

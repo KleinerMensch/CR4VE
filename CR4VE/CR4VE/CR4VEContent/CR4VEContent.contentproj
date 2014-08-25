@@ -106,34 +106,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Models\Box1.FBX">
-      <Name>Box1</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Assets\Models\Box2.FBX">
-      <Name>Box2</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Assets\Models\Box3.FBX">
-      <Name>Box3</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Assets\Models\Box4.FBX">
-      <Name>Box4</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Assets\Sprites\stone.jpg">
       <Name>stone</Name>
       <Importer>TextureImporter</Importer>
@@ -141,28 +113,28 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Models\EnemyEye.FBX">
+    <Compile Include="Assets\Models\Enemies\EnemyEye.FBX">
       <Name>EnemyEye</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Models\red_eye.bmp">
+    <Compile Include="Assets\Models\Enemies\red_eye.bmp">
       <Name>red_eye</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Models\sphereR5.FBX">
+    <Compile Include="Assets\Models\Players\sphereR5.FBX">
       <Name>sphereR5</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Models\enemySpinningNoAnim.FBX">
+    <Compile Include="Assets\Models\Enemies\enemySpinningNoAnim.FBX">
       <Name>enemySpinningNoAnim</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
@@ -183,14 +155,14 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Models\ImaFirinMahLaserr.FBX">
+    <Compile Include="Assets\Models\Enemies\ImaFirinMahLaserr.FBX">
       <Name>ImaFirinMahLaserr</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Models\skull.FBX">
+    <Compile Include="Assets\Models\Enemies\skull.FBX">
       <Name>skull</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
@@ -217,14 +189,14 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Assets\Models\10x10x10Box1.FBX">
+    <Compile Include="Assets\Models\Terrain\10x10x10Box1.FBX">
       <Name>10x10x10Box1</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Models\sphereD5.FBX">
+    <Compile Include="Assets\Models\Players\sphereD5.FBX">
       <Name>sphereD5</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
@@ -237,29 +209,29 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Models\enemySpinningAnim.FBX">
+    <Compile Include="Assets\Models\Enemies\enemySpinningAnim.FBX">
       <Name>enemySpinningAnim</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Models\powerup_hell_health.FBX">
+    <Compile Include="Assets\Models\Powerups\powerup_hell_health.FBX">
       <Name>powerup_hell_health</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Models\arena_hell_textured.FBX">
-      <Name>arena_hell_textured</Name>
+    <Compile Include="Assets\Models\Terrain\lavafloor.FBX">
+      <Name>lavafloor</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Models\lavafloor.FBX">
-      <Name>lavafloor</Name>
+    <Compile Include="Assets\Models\Terrain\arena_hell.FBX">
+      <Name>arena_hell</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>

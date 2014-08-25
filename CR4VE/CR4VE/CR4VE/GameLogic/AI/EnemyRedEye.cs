@@ -20,7 +20,7 @@ namespace CR4VE.GameLogic.AI
         #endregion
 
         #region inherited Constructors
-        public EnemyRedEye():base() { }
+        public EnemyRedEye() : base() { }
         public EnemyRedEye(Vector3 pos, String modelName, ContentManager cm) : base(pos, modelName, cm) { }
         public EnemyRedEye(Vector3 pos, String modelName, ContentManager cm, BoundingBox bound) : base(pos, modelName, cm) { }
         #endregion
@@ -104,7 +104,7 @@ namespace CR4VE.GameLogic.AI
             {
                 spawn = 0;
                 if (laserList.Count() < 10)
-                    laserList.Add(new Entity(EyePosition, "ImaFirinMahLaserr", content));
+                    laserList.Add(new Entity(EyePosition, "Enemies/ImaFirinMahLaserr", content));
             }
             for (int i = 0; i < laserList.Count; i++)
             {

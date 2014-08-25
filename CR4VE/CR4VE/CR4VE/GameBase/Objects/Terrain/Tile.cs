@@ -33,7 +33,7 @@ namespace CR4VE.GameBase.Objects.Terrain
         public Tile(String modelType, int modelNumber, Vector3 pos, BoundingBox bound)
         {
             this.position = pos;
-            this.model = Content.Load<Model>("Assets/Models/" + modelType + modelNumber);
+            this.model = Content.Load<Model>("Assets/Models/Terrain/" + modelType + modelNumber);
             this.boundary = bound;
         }
         #endregion
