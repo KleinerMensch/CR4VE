@@ -17,7 +17,7 @@ using CR4VE.GameLogic.Characters;
 
 namespace CR4VE.GameLogic.Controls
 {
-    public static class KeyboardControls
+    public static class GameControls
     {
         #region Attributes
         //Keyboard- und Mausparameter
@@ -25,6 +25,8 @@ namespace CR4VE.GameLogic.Controls
         static KeyboardState previousKeyboard;
         static MouseState currentMouseState;
         static MouseState previousMouseState;
+        static GamePadState currGamepad;
+        static GamePadState prevGamepad;
 
         //Bewegungsparameter
         private static readonly float accel = 1;
@@ -81,6 +83,20 @@ namespace CR4VE.GameLogic.Controls
         {
             return (current.MiddleButton == ButtonState.Pressed) && (previous.MiddleButton == ButtonState.Released);
         }
+
+        //help methods for Gamepad
+        public static bool isPressed(Buttons button)
+        {
+            return currGamepad.IsButtonDown(button);
+        }
+        public static bool isClicked(Buttons button)
+        {
+            return currGamepad.IsButtonDown(button) && prevGamepad.IsButtonUp(button);
+        }
+        public static bool isReleased(Buttons button)
+        {
+            return currGamepad.IsButtonUp(button) && prevGamepad.IsButtonDown(button);
+        }
         #endregion
 
         //update methods
@@ -93,11 +109,15 @@ namespace CR4VE.GameLogic.Controls
             previousMouseState = currentMouseState;
             currentMouseState = Mouse.GetState();
 
+            prevGamepad = currGamepad;
+            currGamepad = GamePad.GetState(PlayerIndex.One);
+            
+
             #region Calculate moveVecPlayer
             Vector3 moveVecPlayer = new Vector3(0, 0, 0);
 
             #region left and right movement
-            if (currentKeyboard.IsKeyDown(Keys.A) && !borderedLeft)
+            if ((currentKeyboard.IsKeyDown(Keys.A) || currGamepad.IsButtonDown(Buttons.DPadLeft)) && !borderedLeft)
             {
                 if (velocityLeft < maxVelocity) velocityLeft += velocityGain;
                 velocityRight = 0;
@@ -111,7 +131,7 @@ namespace CR4VE.GameLogic.Controls
             else
                 velocityLeft = MathHelper.Clamp(velocityLeft -= velocityGain, 0, maxVelocity);
 
-            if (currentKeyboard.IsKeyDown(Keys.D) && !borderedRight)
+            if ((currentKeyboard.IsKeyDown(Keys.D) || currGamepad.IsButtonDown(Buttons.DPadRight)) && !borderedRight)
             {
                 if (velocityRight < maxVelocity) velocityRight += velocityGain;
                 velocityLeft = 0;
@@ -128,7 +148,7 @@ namespace CR4VE.GameLogic.Controls
 
             #region airborne influence
             //being airborne by jumping
-            if (isClicked(Keys.Space) && !isJumping && !isFalling)
+            if ((isClicked(Keys.Space) || isClicked(Buttons.A)) && !isJumping && !isFalling)
             {
                 isJumping = true;
                 borderedBottom = false;
@@ -212,17 +232,17 @@ namespace CR4VE.GameLogic.Controls
         
 
             #region Updating attacks
-            if (leftClick(currentMouseState, previousMouseState))
+            if (leftClick(currentMouseState, previousMouseState) || isClicked(Buttons.X))
             {
                 //Nahangriff
                 Singleplayer.player.MeleeAttack(gameTime);
             }
-            else if (rightClick(currentMouseState, previousMouseState))
+            else if (rightClick(currentMouseState, previousMouseState) || isClicked(Buttons.B))
             {
                 //Fernangriff
                 Singleplayer.player.RangedAttack(gameTime);
             }
-            else if (middleClick(currentMouseState, previousMouseState))
+            else if (middleClick(currentMouseState, previousMouseState) || isClicked(Buttons.Y))
             {
                 //Spezialangriff
                 Singleplayer.player.SpecialAttack(gameTime);
@@ -236,12 +256,15 @@ namespace CR4VE.GameLogic.Controls
             previousKeyboard = currentKeyboard;
             currentKeyboard = Keyboard.GetState();
 
+            prevGamepad = currGamepad;
+            currGamepad = GamePad.GetState(PlayerIndex.One);
+
             Vector3 moveVecPlayer = new Vector3(0, 0, 0);
 
-            if (currentKeyboard.IsKeyDown(Keys.W)) moveVecPlayer += new Vector3(0, 0, -accel);
-            if (currentKeyboard.IsKeyDown(Keys.A)) moveVecPlayer += new Vector3(-accel, 0, 0);
-            if (currentKeyboard.IsKeyDown(Keys.S)) moveVecPlayer += new Vector3(0, 0, accel);
-            if (currentKeyboard.IsKeyDown(Keys.D)) moveVecPlayer += new Vector3(accel, 0, 0);
+            if (currentKeyboard.IsKeyDown(Keys.W) || currGamepad.IsButtonDown(Buttons.DPadUp)) moveVecPlayer += new Vector3(0, 0, -accel);
+            if (currentKeyboard.IsKeyDown(Keys.A) || currGamepad.IsButtonDown(Buttons.DPadLeft)) moveVecPlayer += new Vector3(-accel, 0, 0);
+            if (currentKeyboard.IsKeyDown(Keys.S) || currGamepad.IsButtonDown(Buttons.DPadDown)) moveVecPlayer += new Vector3(0, 0, accel);
+            if (currentKeyboard.IsKeyDown(Keys.D) || currGamepad.IsButtonDown(Buttons.DPadRight)) moveVecPlayer += new Vector3(accel, 0, 0);
 
             Multiplayer.player.move(moveVecPlayer);
         }
@@ -254,18 +277,21 @@ namespace CR4VE.GameLogic.Controls
             previousMouseState = currentMouseState;
             currentMouseState = Mouse.GetState();
 
+            prevGamepad = currGamepad;
+            currGamepad = GamePad.GetState(PlayerIndex.One);
+
             #region Updating attacks
-            if (leftClick(currentMouseState, previousMouseState))
+            if (leftClick(currentMouseState, previousMouseState) || isClicked(Buttons.X))
             {
                 //Nahangriff
                 Arena.player.MeleeAttack(gameTime);
             }
-            else if (rightClick(currentMouseState, previousMouseState))
+            else if (rightClick(currentMouseState, previousMouseState) || isClicked(Buttons.B))
             {
                 //Fernangriff
                 Arena.player.RangedAttack(gameTime);
             }
-            else if (middleClick(currentMouseState, previousMouseState))
+            else if (middleClick(currentMouseState, previousMouseState) || isClicked(Buttons.Y))
             {
                 //Spezialangriff
                 Arena.player.SpecialAttack(gameTime);
@@ -274,10 +300,10 @@ namespace CR4VE.GameLogic.Controls
 
             Vector3 moveVecPlayer = new Vector3(0, 0, 0);
 
-            if (currentKeyboard.IsKeyDown(Keys.W)) moveVecPlayer += new Vector3(0, 0, -accel);
-            if (currentKeyboard.IsKeyDown(Keys.A)) moveVecPlayer += new Vector3(-accel, 0, 0);
-            if (currentKeyboard.IsKeyDown(Keys.S)) moveVecPlayer += new Vector3(0, 0, accel);
-            if (currentKeyboard.IsKeyDown(Keys.D)) moveVecPlayer += new Vector3(accel, 0, 0);
+            if (currentKeyboard.IsKeyDown(Keys.W) || currGamepad.IsButtonDown(Buttons.DPadUp)) moveVecPlayer += new Vector3(0, 0, -accel);
+            if (currentKeyboard.IsKeyDown(Keys.A) || currGamepad.IsButtonDown(Buttons.DPadLeft)) moveVecPlayer += new Vector3(-accel, 0, 0);
+            if (currentKeyboard.IsKeyDown(Keys.S) || currGamepad.IsButtonDown(Buttons.DPadDown)) moveVecPlayer += new Vector3(0, 0, accel);
+            if (currentKeyboard.IsKeyDown(Keys.D) || currGamepad.IsButtonDown(Buttons.DPadRight)) moveVecPlayer += new Vector3(accel, 0, 0);
 
             if (moveVecPlayer != new Vector3(0, 0, 0))
             {

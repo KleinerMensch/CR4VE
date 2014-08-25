@@ -55,7 +55,7 @@ namespace CR4VE.GameLogic.GameStates
 
         public Game1.EGameState Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            KeyboardControls.updateArena(gameTime);
+            GameControls.updateArena(gameTime);
             player.Update(gameTime);
 
             #region Updating HUD

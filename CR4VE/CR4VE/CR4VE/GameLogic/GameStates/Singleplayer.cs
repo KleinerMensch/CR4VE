@@ -109,7 +109,7 @@ namespace CR4VE.GameLogic.GameStates
         {
             Console.Clear();
 
-            KeyboardControls.updateSingleplayer(gameTime);
+            GameControls.updateSingleplayer(gameTime);
 
             Console.WriteLine(player.boundary);
 
@@ -124,7 +124,7 @@ namespace CR4VE.GameLogic.GameStates
 
             //updating Characters
             player.Update(gameTime);
-            animatedEnemy.Update(gameTime);
+            //animatedEnemy.Update(gameTime);
 
             //Updating Enemies
             foreach (Enemy enemy in enemyList)
@@ -166,7 +166,7 @@ namespace CR4VE.GameLogic.GameStates
 
             player.drawIn2DWorldWithoutBones(Vector3.One, 0, MathHelper.ToRadians(90) * player.viewingDirection.X, 0);
             //player.drawIn2DWorld(new Vector3(0.1f, 0.1f, 0.1f), 0, MathHelper.ToRadians(90)*player.viewingDirection.X, 0);
-            animatedEnemy.Draw(gameTime, new Vector3(0.5f,0.5f,0.5f),0,MathHelper.ToRadians(180),0);
+            //animatedEnemy.Draw(gameTime, new Vector3(0.5f,0.5f,0.5f),0,MathHelper.ToRadians(180),0);
 
             //enemies
             foreach (AIInterface enemy in enemyList)

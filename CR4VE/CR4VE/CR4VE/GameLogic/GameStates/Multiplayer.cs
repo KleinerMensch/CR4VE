@@ -47,7 +47,7 @@ namespace CR4VE.GameLogic.GameStates
         #region Update
         public Game1.EGameState Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            KeyboardControls.updateMultiplayer(gameTime);
+            GameControls.updateMultiplayer(gameTime);
 
             return Game1.EGameState.Multiplayer;
         }
