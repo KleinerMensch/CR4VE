@@ -210,7 +210,7 @@ namespace CR4VE.GameLogic.GameStates
             //minions etc.
             foreach (Entity laser in CR4VE.GameLogic.AI.EnemyRedEye.laserList)
             {
-                laser.drawIn2DWorld(new Vector3(0.5f, 0.5f, 0.5f), 0, 0, MathHelper.ToRadians(90));
+                laser.drawIn2DWorld(new Vector3(0.5f, 0.5f, 0.5f), 0, 0, MathHelper.ToRadians(-90) * laser.viewingDirection.X);
             }
             foreach (Entity minion in CR4VE.GameLogic.Characters.CharacterSeraphin.minionList)
             {
