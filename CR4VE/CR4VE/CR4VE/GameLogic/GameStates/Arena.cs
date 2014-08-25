@@ -22,7 +22,12 @@ namespace CR4VE.GameLogic.GameStates
         SpriteBatch spriteBatch;
 
         public static HUD hud;
-        
+
+        //Terrain
+        static Entity terrain;
+        static Entity lava;
+
+        //moveable Entities
         public static Character player;
         public static List<Enemy> enemyList = new List<Enemy>();
 
@@ -34,7 +39,7 @@ namespace CR4VE.GameLogic.GameStates
         #endregion
 
         #region Methoden
-        public void Initialize(Microsoft.Xna.Framework.Content.ContentManager content)
+        public void Initialize(ContentManager content)
         {
             //Zugriff auf Attribute der Game1 Klasse
             spriteBatch = CR4VE.Game1.spriteBatch;
@@ -42,7 +47,12 @@ namespace CR4VE.GameLogic.GameStates
 
             CameraArena.Initialize(800, 600);
 
-            player = new CharacterFractus(new Vector3(0, 0, 0), "skull", content);
+            //Terrain
+            terrain = new Entity(new Vector3(4, -20, -5), "arena_hell_textured", content);
+            lava = new Entity(new Vector3(0, -50, -30), "lavafloor", content);
+
+            //moveable Entities
+            player = new Character(new Vector3(0, 0, 0), "sphereD5", content);
 
             EnemyRedEye redEye;
             redEye = new EnemyRedEye(new Vector3(10, 0, 0), "EnemyEye", content, new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
@@ -53,9 +63,9 @@ namespace CR4VE.GameLogic.GameStates
             cont = content;
         }
 
-        public Game1.EGameState Update(Microsoft.Xna.Framework.GameTime gameTime)
+        public Game1.EGameState Update(GameTime gameTime)
         {
-            KeyboardControls.updateArena(gameTime);
+            Controls.Controls.updateArena(gameTime);
             player.Update(gameTime);
 
             #region Updating HUD
@@ -84,8 +94,12 @@ namespace CR4VE.GameLogic.GameStates
             return Game1.EGameState.Arena;
         }
 
-        public void Draw(Microsoft.Xna.Framework.GameTime gameTime)
+        public void Draw(GameTime gameTime)
         {
+            //Terrain
+            lava.drawInArena(new Vector3(1, 1, 1), 0, 0, 0);
+            terrain.drawInArena(new Vector3(0.4f, 0.4f, 0.4f), 0, MathHelper.ToRadians(30), 0);
+
             //enemies
             foreach (AIInterface enemy in enemyList)
             {
@@ -93,20 +107,20 @@ namespace CR4VE.GameLogic.GameStates
             }
 
             //minions etc.
-            foreach (Entity laser in CR4VE.GameLogic.AI.EnemyRedEye.laserList)
+            foreach (Entity laser in EnemyRedEye.laserList)
             {
                 laser.drawInArena(new Vector3(0.5f, 0.5f, 0.5f), 0, 0, MathHelper.ToRadians(90));
             }
-            foreach (Entity minion in CR4VE.GameLogic.Characters.CharacterSeraphin.minionList)
+            foreach (Entity minion in CharacterSeraphin.minionList)
             {
                 minion.drawInArena(new Vector3(0.5f, 0.5f, 0.5f), 0, 0, 0);
             }
-            foreach (Entity crystal in CR4VE.GameLogic.Characters.CharacterFractus.crystalList)
+            foreach (Entity crystal in CharacterFractus.crystalList)
             {
                 crystal.drawInArena(new Vector3(0.1f, 0.1f, 0.1f), 0, 0, 0);
             }
 
-            player.drawInArena(new Vector3(0.05f, 0.05f, 0.05f), 0, MathHelper.ToRadians(90) + blickWinkel, 0);
+            player.drawInArenaWithoutBones(new Vector3(0.75f, 0.75f, 0.75f), 0, MathHelper.ToRadians(90) + blickWinkel, 0);
 
             #region HUD
             spriteBatch.Begin();
@@ -115,6 +129,10 @@ namespace CR4VE.GameLogic.GameStates
             hud.Draw(spriteBatch);
 
             spriteBatch.End();
+
+            //GraphicsDevice auf default setzen
+            graphics.GraphicsDevice.BlendState = BlendState.Opaque;
+            graphics.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             #endregion
         }
 

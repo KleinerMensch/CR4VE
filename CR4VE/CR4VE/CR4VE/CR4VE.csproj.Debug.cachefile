@@ -34,11 +34,13 @@ Content\lava_texture_stock_by_mavrosh_st_0.xnb
 Content\red_brown_up_0.xnb
 Content\lava_0.xnb
 Content\red_eye_0.xnb
+Content\Assets\Models\powerup_hell_health.xnb
+Content\Assets\Models\Textures\gold_256x256_0.xnb
 Content\Assets\Models\arena_hell_textured.xnb
 Content\Assets\Models\Textures\rock_dark4_2048x2048_0.xnb
-Content\Assets\Models\Textures\seamless\lava_bright2_1024x1024_0.xnb
 Content\Assets\Models\UV Maps\hell_altar_silver2_0.xnb
+Content\Assets\Models\lavafloor.xnb
+Content\Assets\Models\Textures\seamless\lava_bright2_1024x1024_0.xnb
 Content\Assets\Sprites\Startscreen.png
 Content\Assets\Sprites\ButtonExit.png
 Content\Assets\Sprites\ButtonPlay.png
-Content\Assets\Text\SaveGame.txt

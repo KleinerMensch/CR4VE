@@ -450,7 +450,7 @@ namespace CR4VE.GameBase.Objects
                     effect.EnableDefaultLighting();
 
                     //Advanced Lighting Parameters
-                    effect.DirectionalLight0.Enabled = true;
+                    /*effect.DirectionalLight0.Enabled = true;
                     effect.DirectionalLight0.Direction = lightPos0;
 
                     effect.DirectionalLight1.Enabled = false;
@@ -458,7 +458,7 @@ namespace CR4VE.GameBase.Objects
                     Console.Clear();
                     Console.WriteLine("0: " + effect.DirectionalLight0.Direction);
                     Console.WriteLine("1: " + effect.DirectionalLight1.Direction);
-                    Console.WriteLine("2: " + effect.DirectionalLight2.Direction);
+                    Console.WriteLine("2: " + effect.DirectionalLight2.Direction);*/
                 }
                 mesh.Draw();
             }

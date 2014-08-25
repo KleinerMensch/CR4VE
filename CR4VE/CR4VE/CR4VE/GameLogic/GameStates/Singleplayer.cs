@@ -32,7 +32,7 @@ namespace CR4VE.GameLogic.GameStates
         public static Character player;
 
         public static Entity checkpoint;
-        public static Entity testStone;
+        public static Entity powerup_health;
 
         //public static AnimatedEntity animatedEnemy;
 
@@ -80,7 +80,8 @@ namespace CR4VE.GameLogic.GameStates
             //load models
             //Charaktere erben von Character && Character erbt von Entity
             player = new CharacterSeraphin(new Vector3(0, 0, 0), "sphereD5", content, new BoundingBox(new Vector3(-2.5f, -2.5f, -2.5f), new Vector3(2.5f, 2.5f, 2.5f)));
-            
+
+            powerup_health = new Entity(new Vector3(10,0,0), "powerup_hell_health", content);
             //animatedEnemy = new AnimatedEntity(new Vector3(20, 0, 0), "enemySpinningAnim", content, new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
             
             #region Loading AI
@@ -109,7 +110,7 @@ namespace CR4VE.GameLogic.GameStates
         {
             Console.Clear();
 
-            KeyboardControls.updateSingleplayer(gameTime);
+            Controls.Controls.updateSingleplayer(gameTime);
 
             Console.WriteLine(player.boundary);
 
@@ -124,7 +125,7 @@ namespace CR4VE.GameLogic.GameStates
 
             //updating Characters
             player.Update(gameTime);
-            animatedEnemy.Update(gameTime);
+            //animatedEnemy.Update(gameTime);
 
             //Updating Enemies
             foreach (Enemy enemy in enemyList)
@@ -164,9 +165,11 @@ namespace CR4VE.GameLogic.GameStates
             #region 3D Objects
             terrainMap.Draw(Vector3.One, 0, 0, 0);
 
+            powerup_health.drawIn2DWorld(new Vector3(1,1,1), 0, 0, 0);
+
             player.drawIn2DWorldWithoutBones(Vector3.One, 0, MathHelper.ToRadians(90) * player.viewingDirection.X, 0);
-            //player.drawIn2DWorld(new Vector3(0.1f, 0.1f, 0.1f), 0, MathHelper.ToRadians(90)*player.viewingDirection.X, 0);
-            animatedEnemy.Draw(gameTime, new Vector3(0.5f,0.5f,0.5f),0,MathHelper.ToRadians(180),0);
+
+            //animatedEnemy.Draw(gameTime, new Vector3(0.5f,0.5f,0.5f),0,MathHelper.ToRadians(180),0);
 
             //enemies
             foreach (AIInterface enemy in enemyList)
