@@ -15,6 +15,10 @@ Content\Assets\Sprites\KazumiHPBar.xnb
 Content\Assets\Sprites\KazumiPower_LeftTail.xnb
 Content\Assets\Sprites\KazumiPower_MiddleTail.xnb
 Content\Assets\Sprites\KazumiPower_RightTail.xnb
+Content\Assets\Sprites\SeraphinHPBar.xnb
+Content\Assets\Sprites\SeraphinPower_LeftEye.xnb
+Content\Assets\Sprites\SeraphinPower_LowerEye.xnb
+Content\Assets\Sprites\SeraphinPower_RightEye.xnb
 Content\Assets\Fonts\HUDfont.xnb
 Content\Assets\Fonts\GameOverFlo.xnb
 Content\Assets\Models\Enemies\EnemyEye.xnb
@@ -50,10 +54,6 @@ Content\Dirt 1_0.xnb
 Content\Dirt 2_0.xnb
 Content\Grass 1_0.xnb
 Content\fountain-water-texture_0.xnb
-Content\Assets\Sprites\SeraphinHPBar.xnb
-Content\Assets\Sprites\SeraphinPower_LeftEye.xnb
-Content\Assets\Sprites\SeraphinPower_LowerEye.xnb
-Content\Assets\Sprites\SeraphinPower_RightEye.xnb
 Content\Assets\Sprites\Startscreen.png
 Content\Assets\Sprites\ButtonExit.png
 Content\Assets\Sprites\ButtonPlay.png
