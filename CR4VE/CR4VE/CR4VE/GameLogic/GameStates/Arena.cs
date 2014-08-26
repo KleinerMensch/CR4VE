@@ -29,9 +29,14 @@ namespace CR4VE.GameLogic.GameStates
 
         //moveable Entities
         public static Character player;
+        public static Boss boss;
+
         public static List<Enemy> enemyList = new List<Enemy>();
 
         public static float blickWinkel;
+        public static float blickwinkelBoss;
+
+        public static BoundingSphere sphere;
         #endregion
 
         #region Konstruktor
@@ -52,7 +57,19 @@ namespace CR4VE.GameLogic.GameStates
             lava = new Entity(new Vector3(0, -50, -30), "Terrain/lavafloor", content);
 
             //moveable Entities
-            player = new CharacterSeraphin(new Vector3(0, 0, 0), "sphereD5", content);
+            player = new CharacterSeraphin(new Vector3(0, 0, 0), "sphereD5", content,new BoundingBox(new Vector3(-3,-3,-3), new Vector3(3,3,3)));
+            sphere = new BoundingSphere(player.position, 2);
+
+            //gegner
+            boss = new Boss(new Vector3(60, 0, 0),"EnemyEye",content, new BoundingBox(new Vector3(-3,-3,-3), new Vector3(3,3,3)));
+
+            #region Loading AI
+            EnemyRedEye redEye;
+            redEye = new EnemyRedEye(new Vector3(60, 0, 0), "EnemyEye", content, new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
+            //fill list with enemies
+            enemyList.Add(redEye);
+            #endregion
+
 
             //HUD
             hud = new OpheliaHUD(content, graphics);
@@ -64,6 +81,10 @@ namespace CR4VE.GameLogic.GameStates
             GameControls.updateArena(gameTime);
             player.Update(gameTime);
 
+            boss.Update(gameTime);
+
+            sphere.Center = player.position;
+
             #region Updating HUD
             hud.Update();
             /*hud.UpdateMana();
@@ -71,6 +92,22 @@ namespace CR4VE.GameLogic.GameStates
             {
                 return Game1.EGameState.GameOver;
             }*/
+
+            //Updating Enemies
+            foreach (Enemy enemy in enemyList)
+            {
+                enemy.UpdateArena(gameTime);
+            }
+
+            //aktualisieren der lebenden Gegner
+            for (int i = 0; i < enemyList.Count; i++)
+            {
+                if (enemyList.ElementAt(i).health <= 0)
+                {
+                    enemyList.ElementAt(i).Destroy();
+                    enemyList.Remove(enemyList.ElementAt(i));
+                }
+            }
             #endregion
 
             return Game1.EGameState.Arena;
@@ -89,6 +126,10 @@ namespace CR4VE.GameLogic.GameStates
             }
 
             //minions etc.
+            foreach (Entity laser in CR4VE.GameLogic.AI.EnemyRedEye.laserList)
+            {
+                laser.drawInArena(new Vector3(0.5f, 0.5f, 0.5f), 0, 0, MathHelper.ToRadians(-90) * laser.viewingDirection.X);
+            }
             foreach (Entity minion in CharacterSeraphin.minionList)
             {
                 minion.drawInArena(new Vector3(0.5f, 0.5f, 0.5f), 0, 0, 0);
@@ -99,6 +140,7 @@ namespace CR4VE.GameLogic.GameStates
             }
 
             player.drawInArenaWithoutBones(new Vector3(0.75f, 0.75f, 0.75f), 0, MathHelper.ToRadians(90) + blickWinkel, 0);
+            boss.drawInArena(new Vector3(0.75f, 0.75f, 0.75f), 0, MathHelper.ToRadians(90)+ blickwinkelBoss, 0);
 
             #region HUD
             spriteBatch.Begin();
