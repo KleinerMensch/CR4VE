@@ -22,9 +22,9 @@ namespace CR4VE.GameLogic.Characters
 
         #region inherited Constructors
         //base ist fuer Vererbungskram
-        public CharacterFractus():base() { }
-        public CharacterFractus(Vector3 pos, String modelName, ContentManager cm):base(pos, modelName, cm) { }
-        public CharacterFractus(Vector3 pos, String modelName, ContentManager cm, BoundingBox bound) : base(pos, modelName, cm) { }
+        public CharacterFractus() : base() { }
+        public CharacterFractus(Vector3 pos, String modelName, ContentManager cm) : base(pos, modelName, cm) { }
+        public CharacterFractus(Vector3 pos, String modelName, ContentManager cm, BoundingBox bound) : base(pos, modelName, cm, bound) { }
         #endregion
 
         #region Methods

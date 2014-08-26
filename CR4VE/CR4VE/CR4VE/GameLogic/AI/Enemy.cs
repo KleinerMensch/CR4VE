@@ -16,12 +16,12 @@ namespace CR4VE.GameLogic.AI
 
         #region Constructors
         public Enemy() : base() { }
-        public Enemy(Vector3 pos, String modelName, ContentManager cm)/* : base(pos, modelName, cm)*/
+        public Enemy(Vector3 pos, String modelName, ContentManager cm)
         {
             this.position = pos;
             this.model = cm.Load<Model>("Assets/Models/Enemies/" + modelName);
         }
-        public Enemy(Vector3 pos, String modelName, ContentManager cm, BoundingBox bound)/* : base(pos, modelName, cm)*/
+        public Enemy(Vector3 pos, String modelName, ContentManager cm, BoundingBox bound)
         {
             this.position = pos;
             this.model = cm.Load<Model>("Assets/Models/Enemies/" + modelName);
