@@ -38,7 +38,7 @@ namespace CR4VE.GameLogic.Controls
 
         //Sprungparameter
         private static readonly float G = 9.81f;
-        private static readonly float velocityGain = 0.2f;
+        private static readonly float velocityGain = 0.25f;
         private static readonly float maxVelocity = 2.5f;
 
         private static double startFallTime;
@@ -154,8 +154,11 @@ namespace CR4VE.GameLogic.Controls
                 borderedBottom = false;
 
                 //minimum jump
-                if (velocityLeft < 0.5f && velocityRight < 0.5f)
-                    moveVecPlayer += new Vector3(0, 2.5f, 0);
+                if (velocityLeft == 0f && velocityRight == 0f)
+                {
+                    velocityLeft = 2.5f;
+                    velocityRight = 2.5f;
+                }
 
                 startJumpTime = gameTime.TotalGameTime.TotalSeconds;
             }
@@ -259,14 +262,14 @@ namespace CR4VE.GameLogic.Controls
             prevGamepad = currGamepad;
             currGamepad = GamePad.GetState(PlayerIndex.One);
 
-            Vector3 moveVecPlayer = new Vector3(0, 0, 0);
+            Vector3 moveVecPlayer1 = new Vector3(0, 0, 0);
 
-            if (currentKeyboard.IsKeyDown(Keys.W) || currGamepad.IsButtonDown(Buttons.DPadUp)) moveVecPlayer += new Vector3(0, 0, -accel);
-            if (currentKeyboard.IsKeyDown(Keys.A) || currGamepad.IsButtonDown(Buttons.DPadLeft)) moveVecPlayer += new Vector3(-accel, 0, 0);
-            if (currentKeyboard.IsKeyDown(Keys.S) || currGamepad.IsButtonDown(Buttons.DPadDown)) moveVecPlayer += new Vector3(0, 0, accel);
-            if (currentKeyboard.IsKeyDown(Keys.D) || currGamepad.IsButtonDown(Buttons.DPadRight)) moveVecPlayer += new Vector3(accel, 0, 0);
+            if (currentKeyboard.IsKeyDown(Keys.W) || currGamepad.IsButtonDown(Buttons.DPadUp)) moveVecPlayer1 += new Vector3(0, 0, -accel);
+            if (currentKeyboard.IsKeyDown(Keys.A) || currGamepad.IsButtonDown(Buttons.DPadLeft)) moveVecPlayer1 += new Vector3(-accel, 0, 0);
+            if (currentKeyboard.IsKeyDown(Keys.S) || currGamepad.IsButtonDown(Buttons.DPadDown)) moveVecPlayer1 += new Vector3(0, 0, accel);
+            if (currentKeyboard.IsKeyDown(Keys.D) || currGamepad.IsButtonDown(Buttons.DPadRight)) moveVecPlayer1 += new Vector3(accel, 0, 0);
 
-            Multiplayer.player1.move(moveVecPlayer);
+            Multiplayer.player1.move(moveVecPlayer1);
         }
 
         public static void updateArena(GameTime gameTime)
