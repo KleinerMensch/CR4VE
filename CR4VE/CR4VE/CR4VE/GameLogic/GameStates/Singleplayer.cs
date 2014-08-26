@@ -31,8 +31,8 @@ namespace CR4VE.GameLogic.GameStates
         public static Tilemap terrainMap;
         public static Character player;
 
-        public static Entity checkpoint;
-        public static Entity powerup_health;
+        public static Checkpoint c1_hell;
+        public static Powerup powerup_health;
         
         public static List<Enemy> enemyList = new List<Enemy>();
 
@@ -101,16 +101,18 @@ namespace CR4VE.GameLogic.GameStates
             graphics = CR4VE.Game1.graphics;
 
             //initialize Camera Class
-            Camera2D.Initialize(800, 600);
+            Camera2D.Initialize(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
+            Console.WriteLine(graphics.PreferredBackBufferWidth);
 
             //load textures
             background = content.Load<Texture2D>("Assets/Sprites/stone");
 
             //load models
-            //Charaktere erben von Character && Character erbt von Entity
             player = new CharacterSeraphin(new Vector3(0, 0, 0), "sphereD5", content, new BoundingBox(new Vector3(-2.5f, -2.5f, -2.5f), new Vector3(2.5f, 2.5f, 2.5f)));
-
-            powerup_health = new Entity(new Vector3(10,0,0), "Powerups/powerup_hell_health", content);
+            
+            powerup_health = new Powerup(new Vector3(10,0,0), "powerup_hell_health", content, new BoundingBox(Vector3.Zero, Vector3.One), "energy", 50);
+            
+            c1_hell = new Checkpoint(new Vector3(10,0,0), "checkpoint_hell", content, new BoundingBox(new Vector3(-3,-3,-3), new Vector3(3,3,3)));
             
             #region Loading AI
             EnemyRedEye redEye;
@@ -134,13 +136,9 @@ namespace CR4VE.GameLogic.GameStates
         #endregion
 
         #region Update
-        public Game1.EGameState Update(Microsoft.Xna.Framework.GameTime gameTime)
+        public Game1.EGameState Update(GameTime gameTime)
         {
-            Console.Clear();
-
             GameControls.updateSingleplayer(gameTime);
-
-            Console.WriteLine(player.boundary);
 
             #region Updating HUD
             hud.Update();
@@ -153,9 +151,11 @@ namespace CR4VE.GameLogic.GameStates
 
             //updating Characters
             player.Update(gameTime);
-            //animatedEnemy.Update(gameTime);
 
-            //Updating Enemies
+            //updating Powerups
+            powerup_health.Update();
+
+            //updating Enemies
             foreach (Enemy enemy in enemyList)
             {
                 enemy.UpdateSingleplayer(gameTime);
@@ -193,7 +193,7 @@ namespace CR4VE.GameLogic.GameStates
             #region 3D Objects
             terrainMap.Draw(Vector3.One, 0, 0, 0);
 
-            powerup_health.drawIn2DWorld(new Vector3(1,1,1), 0, 0, 0);
+            powerup_health.drawIn2DWorld(new Vector3(1,1,1), 0, powerup_health.rotatedDegree, 0);
 
             player.drawIn2DWorldWithoutBones(Vector3.One, 0, MathHelper.ToRadians(90) * player.viewingDirection.X, 0);
 

@@ -23,7 +23,7 @@ namespace CR4VE.GameBase.Objects
         public Model model;
         public BoundingBox boundary;
 
-        //Blickrichtung fuer Angriffe
+        //Blickrichtung
         public Vector3 viewingDirection = new Vector3(1, 0, 0);
         #endregion
 
@@ -74,31 +74,17 @@ namespace CR4VE.GameBase.Objects
         {
             this.Position += offset;
 
-            //moving bounding box (Sidescroller)
-            //(noch hart gecoded fuer sphereD5)
-            if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
-            {
-                //Console.WriteLine(this.Boundary);
-                this.boundary.Min = this.Position + new Vector3(-2.5f, -2.5f, -2.5f);
-                this.boundary.Max = this.Position + new Vector3(2.5f, 2.5f, 2.5f);
-            }
-            if (Game1.currentState.Equals(Game1.EGameState.Arena))
-            {
-                this.boundary.Min = this.Position + new Vector3(-2.5f, -2.5f, -2.5f);
-                this.boundary.Max = this.Position + new Vector3(2.5f, 2.5f, 2.5f);
-            }
+            this.boundary.Min += offset;
+            this.boundary.Max += offset;
         }
         public void moveTo(Vector3 destination)
         {
+            Vector3 deltaPos = destination - this.Position;
+
             this.Position = destination;
 
-            //moving bounding box (Sidescroller)
-            //(noch hart gecoded fuer sphereD5)
-            if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
-            {
-                this.boundary.Min = this.Position + new Vector3(-2.5f, -2.5f, -2.5f);
-                this.boundary.Max = this.Position + new Vector3(2.5f, 2.5f, 2.5f);
-            }
+            this.boundary.Min = this.Boundary.Min + deltaPos;
+            this.boundary.Max = this.Boundary.Max + deltaPos;
         }
 
         //checks if entity boundary intersects with terrain tile boundary
