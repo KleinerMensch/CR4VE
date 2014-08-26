@@ -279,18 +279,31 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Models\Terrain\Box7.FBX">
-      <Name>Box7</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Assets\Models\Terrain\Box8.FBX">
       <Name>Box8</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Models\5x5x5Box1.FBX">
+      <Name>5x5x5Box1</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\Terrain\Box7.FBX">
+      <Name>Box7</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\Terrain\Box9.FBX">
+      <Name>Box9</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <None Include="Assets\Text\SaveGame.txt">
+      <Name>SaveGame</Name>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Models\Checkpoints\checkpoint_hell.FBX">
