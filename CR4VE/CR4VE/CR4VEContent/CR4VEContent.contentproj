@@ -298,21 +298,6 @@
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
-    <Compile Include="Assets\Models\Terrain\Box10.FBX">
-      <Name>Box10</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-    <Compile Include="Assets\Models\Terrain\Box11.FBX">
-      <Name>Box11</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-    <Compile Include="Assets\Models\Terrain\Box12.FBX">
-      <Name>Box12</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
     <Compile Include="Assets\Models\Terrain\Box13.FBX">
       <Name>Box13</Name>
       <Importer>FbxImporter</Importer>
@@ -320,6 +305,21 @@
     </Compile>
     <Compile Include="Assets\Models\Terrain\Box14.FBX">
       <Name>Box14</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\Checkpoints\checkpoint_hell.FBX">
+      <Name>checkpoint_hell</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\Enemies\enemyShootingNoAnim.FBX">
+      <Name>enemyShootingNoAnim</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\Terrain\Box10.FBX">
+      <Name>Box10</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
