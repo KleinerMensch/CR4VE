@@ -333,6 +333,31 @@
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
+    <Compile Include="Assets\Models\Terrain\Box15.FBX">
+      <Name>Box15</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\Terrain\Box16.FBX">
+      <Name>Box16</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\Terrain\Box17.FBX">
+      <Name>Box17</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\Terrain\Box18.FBX">
+      <Name>Box18</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\Terrain\Box19.FBX">
+      <Name>Box19</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
     <None Include="Assets\Text\SaveGame.txt">
       <Name>SaveGame</Name>
     </None>
