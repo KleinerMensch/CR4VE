@@ -128,7 +128,7 @@ namespace CR4VE.GameLogic.GameStates
             #endregion
 
             //HUD
-            hud = new OpheliaHUD(content, graphics);
+            hud = new SeraphinHUD(content, graphics);
             cont = content;
         }
         #endregion

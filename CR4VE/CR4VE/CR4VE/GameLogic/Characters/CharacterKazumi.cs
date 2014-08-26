@@ -66,7 +66,7 @@ namespace CR4VE.GameLogic.Characters
         {
             if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
             {
-                Entity fireBall = new Entity(this.position, "skull", Singleplayer.cont);
+                Entity fireBall = new Entity(this.position, "Enemies/skull", Singleplayer.cont);
                 fireBall.boundary = new BoundingBox(this.position + new Vector3(-3, -3, -3), this.position + new Vector3(3, 3, 3));
 
                 //Feuerball verschwindet nach 50 Einheiten oder wenn er mit etwas kollidiert
@@ -92,7 +92,7 @@ namespace CR4VE.GameLogic.Characters
             }
             else if (Game1.currentState.Equals(Game1.EGameState.Arena))
             {
-                Entity fireBall = new Entity(this.position, "skull", Arena.cont);
+                Entity fireBall = new Entity(this.position, "Enemies/skull", Arena.cont);
                 fireBall.boundary = new BoundingBox(this.position + new Vector3(-3, -3, -3), this.position + new Vector3(3, 3, 3));
 
                 //Feuerball verschwindet nach 50 Einheiten oder wenn er mit etwas kollidiert
@@ -140,7 +140,7 @@ namespace CR4VE.GameLogic.Characters
                 Entity danceOfFireFox = new Entity(this.Position, "10x10x10Box1", Arena.cont);
                 danceOfFireFox.boundary = new BoundingBox(this.position + new Vector3(-20, -3, -20), this.position + new Vector3(20, 3, 20));
                 danceOfFireFox.drawInArena(Vector3.One, 0, 0, 0);
-                
+
                 foreach (Enemy enemy in Arena.enemyList)
                 {
                     if (danceOfFireFox.boundary.Intersects(enemy.boundary))

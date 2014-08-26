@@ -29,6 +29,7 @@ namespace CR4VE.GameLogic.GameStates
 
         //moveable Entities
         public static Character player;
+
         public static List<Enemy> enemyList = new List<Enemy>();
 
         public static float blickWinkel;
@@ -54,6 +55,13 @@ namespace CR4VE.GameLogic.GameStates
             //moveable Entities
             player = new CharacterSeraphin(new Vector3(0, 0, 0), "sphereD5", content);
 
+            #region Loading AI
+            EnemyRedEye redEye;
+            redEye = new EnemyRedEye(new Vector3(60, 0, 0), "EnemyEye", content, new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
+            //fill list with enemies
+            enemyList.Add(redEye);
+            #endregion
+
             //HUD
             hud = new OpheliaHUD(content, graphics);
             cont = content;
@@ -73,6 +81,22 @@ namespace CR4VE.GameLogic.GameStates
             }*/
             #endregion
 
+            //Updating Enemies
+            foreach (Enemy enemy in enemyList)
+            {
+                enemy.UpdateArena(gameTime);
+            }
+
+            //aktualisieren der lebenden Gegner
+            for (int i = 0; i < enemyList.Count; i++)
+            {
+                if (enemyList.ElementAt(i).health <= 0)
+                {
+                    enemyList.ElementAt(i).Destroy();
+                    enemyList.Remove(enemyList.ElementAt(i));
+                }
+            }
+
             return Game1.EGameState.Arena;
         }
 
@@ -89,6 +113,10 @@ namespace CR4VE.GameLogic.GameStates
             }
 
             //minions etc.
+            foreach (Entity laser in CR4VE.GameLogic.AI.EnemyRedEye.laserList)
+            {
+                laser.drawInArena(new Vector3(0.5f, 0.5f, 0.5f), 0, 0, MathHelper.ToRadians(-90) * laser.viewingDirection.X);
+            }
             foreach (Entity minion in CharacterSeraphin.minionList)
             {
                 minion.drawInArena(new Vector3(0.5f, 0.5f, 0.5f), 0, 0, 0);

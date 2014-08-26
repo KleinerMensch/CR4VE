@@ -131,11 +131,11 @@ namespace CR4VE.GameLogic.Characters
         {
             if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
             {
-                minionList.Add(new Entity(this.position, "EnemyEye", CR4VE.GameLogic.GameStates.Singleplayer.cont));
+                minionList.Add(new Entity(this.position, "Enemies/EnemyEye", CR4VE.GameLogic.GameStates.Singleplayer.cont));
             }
             else if (Game1.currentState.Equals(Game1.EGameState.Arena))
             {
-                minionList.Add(new Entity(this.position, "EnemyEye", CR4VE.GameLogic.GameStates.Arena.cont));
+                minionList.Add(new Entity(this.position, "Enemies/EnemyEye", CR4VE.GameLogic.GameStates.Arena.cont));
             }
             //max. 3 minions can be spawned
             if (minionList.Count > 3)
@@ -146,7 +146,7 @@ namespace CR4VE.GameLogic.Characters
         {
             if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
             {
-                Entity laser = new Entity(this.position, "skull", Singleplayer.cont);
+                Entity laser = new Entity(this.position, "Enemies/skull", Singleplayer.cont);
                 laser.boundary = new BoundingBox(this.position + new Vector3(-3, -3, -3), this.position + new Vector3(3, 3, 3));
 
                 //Feuerball verschwindet nach 50 Einheiten oder wenn er mit etwas kollidiert
@@ -172,7 +172,7 @@ namespace CR4VE.GameLogic.Characters
             }
             else if (Game1.currentState.Equals(Game1.EGameState.Arena))
             {
-                Entity laser = new Entity(this.position, "skull", Arena.cont);
+                Entity laser = new Entity(this.position, "Enemies/skull", Arena.cont);
                 laser.boundary = new BoundingBox(this.position + new Vector3(-3, -3, -3), this.position + new Vector3(3, 3, 3));
 
                 //Feuerball verschwindet nach 50 Einheiten oder wenn er mit etwas kollidiert

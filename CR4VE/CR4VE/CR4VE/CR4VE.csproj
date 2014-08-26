@@ -86,6 +86,7 @@
     <Compile Include="GameBase\HeadUpDisplay\HUD.cs" />
     <Compile Include="GameBase\HeadUpDisplay\KazumiHUD.cs" />
     <Compile Include="GameBase\HeadUpDisplay\OpheliaHUD.cs" />
+    <Compile Include="GameBase\HeadUpDisplay\SeraphinHUD.cs" />
     <Compile Include="GameBase\Objects\AnimatedEntity.cs" />
     <Compile Include="GameBase\Objects\Checkpoint.cs" />
     <Compile Include="GameBase\Objects\Entity.cs" />
