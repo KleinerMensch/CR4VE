@@ -89,6 +89,7 @@
     <Compile Include="GameBase\Objects\AnimatedEntity.cs" />
     <Compile Include="GameBase\Objects\Checkpoint.cs" />
     <Compile Include="GameBase\Objects\Entity.cs" />
+    <Compile Include="GameBase\Objects\Powerup.cs" />
     <Compile Include="GameBase\Screens\Button.cs" />
     <Compile Include="GameBase\Objects\Terrain\Tile.cs" />
     <Compile Include="GameBase\Objects\Terrain\Tilemap.cs" />

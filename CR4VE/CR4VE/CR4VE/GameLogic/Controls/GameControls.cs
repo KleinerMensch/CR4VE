@@ -20,16 +20,18 @@ namespace CR4VE.GameLogic.Controls
     public static class GameControls
     {
         #region Attributes
-        //Keyboard- und Mausparameter
+        //Keyboard-, Maus- und Gamepadparameter
         static KeyboardState currentKeyboard;
         static KeyboardState previousKeyboard;
+
         static MouseState currentMouseState;
         static MouseState previousMouseState;
+
         static GamePadState currGamepad;
         static GamePadState prevGamepad;
 
         //Bewegungsparameter
-        private static readonly float accel = 1;
+        private static readonly float accel = 1f;
 
         public static bool borderedLeft = false;
         public static bool borderedRight = false;
@@ -37,9 +39,8 @@ namespace CR4VE.GameLogic.Controls
         public static bool borderedBottom = false;
 
         //Sprungparameter
-        private static readonly float G = 9.81f;
-        private static readonly float velocityGain = 0.25f;
-        private static readonly float maxVelocity = 2.5f;
+        private static readonly float G = 9.5f;
+        private static readonly float jumpHeight = 2.5f;
 
         private static double startFallTime;
         private static double startJumpTime;
@@ -48,9 +49,6 @@ namespace CR4VE.GameLogic.Controls
         public static bool isJumping = false;
         public static bool isAirborne = true;
         public static bool isFalling = true;
-        
-        private static float velocityLeft = 0;
-        private static float velocityRight = 0;
         #endregion
 
         #region Methods
@@ -111,7 +109,9 @@ namespace CR4VE.GameLogic.Controls
 
             prevGamepad = currGamepad;
             currGamepad = GamePad.GetState(PlayerIndex.One);
-            
+
+            //visible tiles (potential collisions)
+            List<Tile> visibles = Tilemap.getVisibleTiles();
 
             #region Calculate moveVecPlayer
             Vector3 moveVecPlayer = new Vector3(0, 0, 0);
@@ -119,31 +119,23 @@ namespace CR4VE.GameLogic.Controls
             #region left and right movement
             if ((currentKeyboard.IsKeyDown(Keys.A) || currGamepad.IsButtonDown(Buttons.DPadLeft)) && !borderedLeft)
             {
-                if (velocityLeft < maxVelocity) velocityLeft += velocityGain;
-                velocityRight = 0;
                 moveVecPlayer += new Vector3(-accel, 0, 0);
 
                 borderedRight = false;
 
-                //richtung = links
+                //Blickrichtung = links
                 Singleplayer.player.viewingDirection.X = -1;
             }
-            else
-                velocityLeft = MathHelper.Clamp(velocityLeft -= velocityGain, 0, maxVelocity);
 
             if ((currentKeyboard.IsKeyDown(Keys.D) || currGamepad.IsButtonDown(Buttons.DPadRight)) && !borderedRight)
             {
-                if (velocityRight < maxVelocity) velocityRight += velocityGain;
-                velocityLeft = 0;
                 moveVecPlayer += new Vector3(accel, 0, 0);
 
                 borderedLeft = false;
 
-                //richtung = rechts
+                //Blickrichtung = rechts
                 Singleplayer.player.viewingDirection.X = 1;
             }
-            else
-                velocityRight = MathHelper.Clamp(velocityRight -= velocityGain, 0, maxVelocity);
             #endregion
 
             #region airborne influence
@@ -153,18 +145,11 @@ namespace CR4VE.GameLogic.Controls
                 isJumping = true;
                 borderedBottom = false;
 
-                //minimum jump
-                if (velocityLeft == 0f && velocityRight == 0f)
-                {
-                    velocityLeft = 2.5f;
-                    velocityRight = 2.5f;
-                }
-
                 startJumpTime = gameTime.TotalGameTime.TotalSeconds;
             }
 
             //being airborne by falling
-            if (!isFalling && !isJumping && !Singleplayer.player.checkFooting())
+            if (!isFalling && !isJumping && !Singleplayer.player.checkFooting(visibles))
             {
                 isFalling = true;
                 borderedBottom = false;
@@ -186,29 +171,29 @@ namespace CR4VE.GameLogic.Controls
                 currentTime = gameTime.TotalGameTime.TotalSeconds;
 
                 double deltaTime = currentTime - startJumpTime;
-                moveVecPlayer += new Vector3(0, Math.Max(velocityRight, velocityLeft) - (float)deltaTime * G, 0);
+                moveVecPlayer += new Vector3(0, jumpHeight - (float)deltaTime * G, 0);
             }
             #endregion
             
             #region collision
             Vector3 temp = moveVecPlayer;
-            
-            if (Singleplayer.player.handleTerrainCollisionInDirection("left", moveVecPlayer))
+
+            if (Singleplayer.player.handleTerrainCollisionInDirection("left", moveVecPlayer, visibles))
             {
                 if (temp.X < 0) temp.X = 0;
                 borderedLeft = true;
             }
-            if (Singleplayer.player.handleTerrainCollisionInDirection("right", moveVecPlayer))
+            if (Singleplayer.player.handleTerrainCollisionInDirection("right", moveVecPlayer, visibles))
             {
                 if (temp.X > 0) temp.X = 0;
                 borderedRight = true;
             }
-            if (Singleplayer.player.handleTerrainCollisionInDirection("up", moveVecPlayer))
+            if (Singleplayer.player.handleTerrainCollisionInDirection("up", moveVecPlayer, visibles))
             {
                 if (temp.Y > 0) temp.Y = 0;
                 borderedTop = true;
             }
-            if (Singleplayer.player.handleTerrainCollisionInDirection("down", moveVecPlayer))
+            if (Singleplayer.player.handleTerrainCollisionInDirection("down", moveVecPlayer, visibles))
             {
                 if (temp.Y < 0) temp.Y = 0;
                 isJumping = false;
@@ -227,7 +212,7 @@ namespace CR4VE.GameLogic.Controls
             #endregion
             #endregion
 
-            //updating Playerposition
+            //update Playerposition
             Singleplayer.player.move(moveVecPlayer);
 
             //move camera and realign BoundingFrustum
@@ -252,6 +237,8 @@ namespace CR4VE.GameLogic.Controls
             }
             #endregion
 
+            borderedRight = Singleplayer.player.checkRightBorder(visibles);
+            borderedLeft = Singleplayer.player.checkLeftBorder(visibles);
         }
 
         public static void updateMultiplayer(GameTime gameTime)
