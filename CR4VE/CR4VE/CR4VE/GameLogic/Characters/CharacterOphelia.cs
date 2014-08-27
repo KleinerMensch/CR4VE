@@ -66,7 +66,7 @@ namespace CR4VE.GameLogic.Characters
         {
             if (Game1.currentState.Equals(Game1.EGameState.Arena))
             {
-                Entity doppelgaenger = new Entity(this.position, "skull", Arena.cont);
+                Entity doppelgaenger = new Entity(this.position, "Enemies/skull", Arena.cont);
                 doppelgaenger.boundary = new BoundingBox(this.position + new Vector3(-3, -3, -3), this.position + new Vector3(3, 3, 3));
 
                 //Doppelgaenger schnellt hervor und verschwindet
@@ -94,7 +94,7 @@ namespace CR4VE.GameLogic.Characters
             }
             else if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
             {
-                Entity doppelgaenger = new Entity(this.position, "skull", Singleplayer.cont);
+                Entity doppelgaenger = new Entity(this.position, "Enemies/skull", Singleplayer.cont);
                 doppelgaenger.boundary = new BoundingBox(this.position + new Vector3(-3, -3, -3), this.position + new Vector3(3, 3, 3));
 
                 //Doppelgaenger schnellt hervor und verschwindet

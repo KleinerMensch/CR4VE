@@ -41,7 +41,6 @@ namespace CR4VE.GameBase.HeadUpDisplay
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            //kazumis HUD
             spriteBatch.Draw(redLiquid, kazumiLiquidPosition, new Rectangle(0, 0, redLiquid.Width, healthLeft), Color.White, MathHelper.ToRadians(180), kazumiHealthContainerPosition, 0.3f, SpriteEffects.None, 0);
             spriteBatch.Draw(kazumiHealthContainer, kazumiHealthContainerPosition, null, Color.White, 0f, kazumiHealthContainerPosition, 0.3f, SpriteEffects.None, 0);
             spriteBatch.Draw(kazumiPowerLeftTail, kazumiHealthContainerPosition, null, Color.White, 0f, kazumiHealthContainerPosition, 0.3f, SpriteEffects.None, 0);
