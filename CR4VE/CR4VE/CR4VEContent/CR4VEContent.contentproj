@@ -343,11 +343,6 @@
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
-    <Compile Include="Assets\Models\Terrain\Box17.FBX">
-      <Name>Box17</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
     <Compile Include="Assets\Models\Terrain\Box18.FBX">
       <Name>Box18</Name>
       <Importer>FbxImporter</Importer>
