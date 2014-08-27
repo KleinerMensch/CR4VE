@@ -66,10 +66,10 @@ namespace CR4VE.GameBase.Objects
         #endregion
 
         #region Methods
-        public void move(Vector2 offset)
+        /*public void move(Vector2 offset)
         {
             this.Position += new Vector3(offset, 0);
-        }
+        }*/
         public void move(Vector3 offset)
         {
             this.Position += offset;

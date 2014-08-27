@@ -6,6 +6,10 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using CR4VE.GameLogic.Controls;
+using CR4VE.GameBase.Camera;
+using CR4VE.GameLogic;
+using CR4VE.GameLogic.GameStates;
+using CR4VE.GameBase.Objects.Terrain;
 
 namespace CR4VE.GameBase.HeadUpDisplay
 {
@@ -48,9 +52,14 @@ namespace CR4VE.GameBase.HeadUpDisplay
         #region Methods
         public void Update()
         {
-            if (healthLeft <= fullHealth * 0){
-                    trialsLeft -= 1;
-                    healthLeft = fullHealth;
+            if (healthLeft <= 0 && !GameControls.isGhost)
+            {
+                trialsLeft -= 1;
+
+                GameControls.isGhost = true;
+
+                //refill health
+                healthLeft = fullHealth;
             }
 
             if (trialsLeft < 0)

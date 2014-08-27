@@ -150,6 +150,9 @@ namespace CR4VE
             //size of Game Window
             graphics.PreferredBackBufferWidth = 800;
             graphics.PreferredBackBufferHeight = 600;
+
+            //graphics.IsFullScreen = true;
+
             graphics.ApplyChanges();
 
             SaveGame.Load();

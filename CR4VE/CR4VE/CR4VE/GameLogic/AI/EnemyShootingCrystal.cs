@@ -27,7 +27,7 @@ namespace CR4VE.GameLogic.AI
         #endregion
 
 
-        public override void UpdateSingleplayer(Microsoft.Xna.Framework.GameTime gameTime)
+        public override void UpdateSingleplayer(GameTime gameTime)
         {
         }
 

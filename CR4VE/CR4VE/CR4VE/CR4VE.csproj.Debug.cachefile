@@ -52,7 +52,8 @@ Content\Assets\Models\Terrain\Box15.xnb
 Content\Assets\Models\Terrain\Box16.xnb
 Content\Assets\Models\Terrain\Box18.xnb
 Content\Assets\Models\Terrain\Box19.xnb
-Content\Assets\Models\Players\EnemyEye.xnb
+Content\Assets\Models\Players\skull.xnb
+Content\Assets\Models\Powerups\powerup_hell_mana.xnb
 Content\red_eye_0.xnb
 Content\Assets\Models\Powerups\Textures\gold_256x256_0.xnb
 Content\Assets\Models\Terrain\Textures\seamless\lava_bright2_1024x1024_0.xnb
@@ -68,12 +69,15 @@ Content\Grass 1_0.xnb
 Content\fountain-water-texture_0.xnb
 Content\stone_blocks_0.xnb
 Content\Texture acqua piscina water pool_0.xnb
+Content\Assets\Models\Checkpoints\UV Maps\checkpoint_hell1_0.xnb
 Content\1430_0.xnb
 Content\Seamless_rock_10_by_LucieG_Stock_0.xnb
 Content\Seamless-Gold-Coins-520x520_0.xnb
 Content\box_0.xnb
 Content\Lava Cracks_0.xnb
 Content\dark_stone_texture_by_sagemeline_0.xnb
+Content\Assets\Models\Powerups\UV Maps\powerup_hell_energy_0.xnb
+Content\Assets\Models\Players\EnemyEye.xnb
 Content\red_eye_1.xnb
 Content\volcano2_0.xnb
 Content\Assets\Sprites\Startscreen.png
