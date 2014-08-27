@@ -86,6 +86,7 @@
     <Compile Include="GameBase\HeadUpDisplay\HUD.cs" />
     <Compile Include="GameBase\HeadUpDisplay\KazumiHUD.cs" />
     <Compile Include="GameBase\HeadUpDisplay\OpheliaHUD.cs" />
+    <Compile Include="GameBase\HeadUpDisplay\SeraphinHUD.cs" />
     <Compile Include="GameBase\Objects\AnimatedEntity.cs" />
     <Compile Include="GameBase\Objects\Checkpoint.cs" />
     <Compile Include="GameBase\Objects\Entity.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="GameLogic\AI\AIInterface.cs" />
     <Compile Include="GameLogic\AI\Enemy.cs" />
     <Compile Include="GameLogic\AI\EnemyRedEye.cs" />
+    <Compile Include="GameLogic\AI\EnemyShootingCrystal.cs" />
     <Compile Include="GameLogic\AI\EnemySkull.cs" />
     <Compile Include="GameLogic\AI\EnemySpinningCrystal.cs" />
     <Compile Include="GameLogic\Characters\Character.cs" />

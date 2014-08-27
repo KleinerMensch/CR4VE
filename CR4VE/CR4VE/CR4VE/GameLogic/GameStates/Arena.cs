@@ -113,7 +113,7 @@ namespace CR4VE.GameLogic.GameStates
         {
             //Terrain
             lava.drawInArena(new Vector3(1, 1, 1), 0, 0, 0);
-            terrain.drawInArena(new Vector3(0.4f, 0.4f, 0.4f), 0, MathHelper.ToRadians(30), 0);
+            terrain.drawInArena(new Vector3(0.5f, 0.5f, 0.5f), 0, MathHelper.ToRadians(30), 0);
 
             //enemies
             foreach (AIInterface enemy in enemyList)

@@ -108,8 +108,12 @@ namespace CR4VE.GameLogic.Controls
             if (isGhost)
             {
                 //set ghost = player
-                if(Singleplayer.ghost.Position == Vector3.Zero)
+                if (Singleplayer.ghost.Position == Vector3.Zero)
+                {
                     Singleplayer.ghost.Position = Singleplayer.player.Position;
+
+                    Singleplayer.player.moveTo(Singleplayer.lastCheckpoint.Position);
+                }
 
                 //save moveVecGhost and calculate moveVecPlayer
                 if (moveVecGhost == Vector3.Zero)
@@ -128,8 +132,6 @@ namespace CR4VE.GameLogic.Controls
                 {
                     moveVecGhost = Vector3.Zero;
                     
-                    Singleplayer.player.moveTo(Singleplayer.ghost.Position);
-
                     Singleplayer.ghost.Position = Vector3.Zero;
                     
                     isGhost = false;
