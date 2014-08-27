@@ -1,10 +1,10 @@
 Reset Crystal:
 0
-34
+0
 Reset Hell:
-19
+0
 0
 Fractus:
 false
 Seraphin:
-true
+false

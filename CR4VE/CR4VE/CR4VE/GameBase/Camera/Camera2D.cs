@@ -198,13 +198,6 @@ namespace CR4VE.GameBase.Camera
 
             //move position and target of BoundingFrustum (in 3D screen coordinates)
             moveFrustum(moveVecFrus);
-
-            //DEBUG
-            /*Console.WriteLine("frustumPos: " + frustumPos);
-            Console.WriteLine("frustumTarget: " + frustumTarget);
-            Console.WriteLine("Position2D: " + Position2D);
-
-            Console.WriteLine(Game1.graphics.GraphicsDevice.Viewport.Unproject(new Vector3(Position2D,0), viewMatr, projMatr, worldMatr));*/
         }
 
         //checks if a rectangle intersects with viewport

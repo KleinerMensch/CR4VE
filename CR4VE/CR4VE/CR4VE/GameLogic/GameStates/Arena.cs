@@ -26,6 +26,7 @@ namespace CR4VE.GameLogic.GameStates
         //Terrain
         static Entity terrain;
         static Entity lava;
+        static BoundingSphere arenaBound;
 
         //moveable Entities
         public static Character player;
@@ -51,6 +52,8 @@ namespace CR4VE.GameLogic.GameStates
             terrain = new Entity(new Vector3(4, -20, -5), "Terrain/arena_hell", content);
             lava = new Entity(new Vector3(0, -50, -30), "Terrain/lavafloor", content);
 
+            arenaBound = new BoundingSphere(new Vector3(3, 0, 12.5f), 41f);
+
             //moveable Entities
             player = new CharacterSeraphin(new Vector3(0, 0, 0), "sphereD5", content);
 
@@ -62,7 +65,13 @@ namespace CR4VE.GameLogic.GameStates
         public Game1.EGameState Update(GameTime gameTime)
         {
             GameControls.updateArena(gameTime);
+
             player.Update(gameTime);
+
+            //DEBUG
+            Console.Clear();
+            Console.WriteLine(player.Position);
+            Console.WriteLine(player.Boundary.Intersects(arenaBound));
 
             #region Updating HUD
             hud.Update();
