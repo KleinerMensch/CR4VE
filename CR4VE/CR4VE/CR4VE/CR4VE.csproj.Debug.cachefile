@@ -8,54 +8,64 @@ Content\Assets\Sprites\HealthLiquidPrismatic.xnb
 Content\Assets\Sprites\OpheliaHPBar.xnb
 Content\Assets\Sprites\OpheliaPower.xnb
 Content\Assets\Sprites\stone.xnb
+Content\Assets\Models\Enemies\red_eye.xnb
 Content\Assets\Sprites\TryAgain.xnb
 Content\Assets\Sprites\Winscreen.xnb
 Content\Assets\Sprites\KazumiHPBar.xnb
 Content\Assets\Sprites\KazumiPower_LeftTail.xnb
 Content\Assets\Sprites\KazumiPower_MiddleTail.xnb
 Content\Assets\Sprites\KazumiPower_RightTail.xnb
+Content\Assets\Sprites\SeraphinHPBar.xnb
+Content\Assets\Sprites\SeraphinPower_LeftEye.xnb
+Content\Assets\Sprites\SeraphinPower_LowerEye.xnb
+Content\Assets\Sprites\SeraphinPower_RightEye.xnb
 Content\Assets\Fonts\HUDfont.xnb
 Content\Assets\Fonts\GameOverFlo.xnb
-Content\Assets\Models\Terrain\10x10x10Box1.xnb
-Content\Assets\Models\Terrain\Box1.xnb
-Content\Assets\Models\Terrain\Box3.xnb
-Content\Assets\Models\Terrain\Box4.xnb
-Content\Assets\Models\Terrain\Box2.xnb
-Content\grass_grass_0105_02_preview_0.xnb
-Content\Dirt cracked 00 seamless_0.xnb
-Content\WaterSurface.png4fbdf4a2-e7ef-4d_0.xnb
-Content\ground_0.xnb
-Content\Assets\Models\5x5x5Box1.xnb
-Content\Assets\Models\Enemies\red_eye.xnb
 Content\Assets\Models\Enemies\EnemyEye.xnb
 Content\Assets\Models\Players\sphereR5.xnb
 Content\Assets\Models\Enemies\enemySpinningNoAnim.xnb
 Content\Assets\Models\Enemies\ImaFirinMahLaserr.xnb
 Content\Assets\Models\Enemies\skull.xnb
+Content\Assets\Models\Terrain\10x10x10Box1.xnb
 Content\Assets\Models\Players\sphereD5.xnb
 Content\Assets\Models\Enemies\enemySpinningAnim.xnb
 Content\Assets\Models\Powerups\powerup_hell_health.xnb
 Content\Assets\Models\Terrain\lavafloor.xnb
 Content\Assets\Models\Terrain\arena_hell.xnb
+Content\Assets\Models\Terrain\Box1.xnb
+Content\Assets\Models\Terrain\Box3.xnb
+Content\Assets\Models\Terrain\Box4.xnb
+Content\Assets\Models\Terrain\Box2.xnb
 Content\Assets\Models\Terrain\Box5.xnb
 Content\Assets\Models\Terrain\Box6.xnb
-Content\Assets\Models\Terrain\Box8.xnb
 Content\Assets\Models\Terrain\Box7.xnb
-Content\Assets\Models\Terrain\Box9.xnb
-Content\red_eye_1.xnb
+Content\Assets\Models\Terrain\Box8.xnb
+Content\Assets\Models\5x5x5Box1.xnb
+Content\Assets\Models\Terrain\Box10.xnb
+Content\Assets\Models\Terrain\Box11.xnb
+Content\Assets\Models\Terrain\Box12.xnb
+Content\Assets\Models\Terrain\Box13.xnb
+Content\Assets\Models\Terrain\Box14.xnb
+Content\Assets\Models\Players\EnemyEye.xnb
+Content\red_eye_0.xnb
 Content\Assets\Models\Powerups\Textures\gold_256x256_0.xnb
 Content\Assets\Models\Terrain\Textures\seamless\lava_bright2_1024x1024_0.xnb
 Content\Assets\Models\Terrain\Textures\rock_dark4_2048x2048_0.xnb
 Content\Assets\Models\Terrain\UV Maps\hell_altar_silver2_0.xnb
+Content\grass_grass_0105_02_preview_0.xnb
+Content\Dirt cracked 00 seamless_0.xnb
+Content\WaterSurface.png4fbdf4a2-e7ef-4d_0.xnb
+Content\ground_0.xnb
 Content\Dirt 1_0.xnb
 Content\Dirt 2_0.xnb
-Content\fountain-water-texture_0.xnb
 Content\Grass 1_0.xnb
-Content\MG_2640-seamless_0.xnb
-Content\Assets\Models\Enemies\enemyShootingNoAnim.xnb
-Content\Assets\Models\Checkpoints\checkpoint_hell.xnb
-Content\Assets\Models\Players\EnemyEye.xnb
-Content\red_eye_0.xnb
+Content\fountain-water-texture_0.xnb
+Content\seamless_stone_wall_texture_by_h_0.xnb
+Content\stone_texture___seamless_by_agf8_0.xnb
+Content\Tileable stone texture (5)_0.xnb
+Content\stone_blocks_0.xnb
+Content\Texture acqua piscina water pool_0.xnb
+Content\red_eye_1.xnb
 Content\Assets\Sprites\Startscreen.png
 Content\Assets\Sprites\ButtonExit.png
 Content\Assets\Sprites\ButtonPlay.png

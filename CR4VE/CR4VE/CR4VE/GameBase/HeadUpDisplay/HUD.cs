@@ -38,7 +38,7 @@ namespace CR4VE.GameBase.HeadUpDisplay
             font = content.Load<SpriteFont>("Assets/Fonts/HUDfont");
 
             //trials spaeter anders visualisiert
-            trialsPosition = new Vector2(graphics.PreferredBackBufferWidth - 200, 10);
+            trialsPosition = new Vector2(0, 0);
 
             fullHealth = redLiquid.Height;
             healthLeft = fullHealth;

@@ -28,23 +28,31 @@ namespace CR4VE.GameLogic.AI
 
         public override void Update(GameTime time)
         {
-            
-            Vector3 playerPos = Arena.player.position;
-            Vector3 direction = this.position- playerPos;
-            float distance = direction.Length();
-
-            if (distance < 80)
+            Console.WriteLine(Arena.sphere.Center);
+            if (!Arena.sphere.Intersects(Arena.boss.boundary))
             {
-                
-                direction.Normalize();
-                direction = moveSpeed * direction;
-                this.viewingDirection = direction;
-                Arena.blickwinkelBoss = (float)Math.Atan2(-Arena.boss.viewingDirection.Z, Arena.boss.viewingDirection.X);
-                this.position += direction;
-                
+                Vector3 playerPos = Arena.player.position;
+                Vector3 direction = this.position - playerPos;
+                float distance = direction.Length();
+
+
+                if (distance < 100)
+                {
+
+                    direction.Normalize();
+                    direction = moveSpeed * direction;
+                    this.viewingDirection = direction;
+                    Arena.blickwinkelBoss = (float)Math.Atan2(-Arena.boss.viewingDirection.Z, Arena.boss.viewingDirection.X);
+                    this.position += direction;
+
+                }
             }
-           
-            this.MeleeAttack(time);
+            
+
+            //if (Arena.player.boundary.Intersects(this.boundary))
+            //{
+            //    Arena.hud.healthLeft -= (int)(Arena.hud.fullHealth * 0.01);
+            //}
         }
     }
 }

@@ -279,6 +279,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Models\Terrain\Box7.FBX">
+      <Name>Box7</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="Assets\Models\Terrain\Box8.FBX">
       <Name>Box8</Name>
       <Importer>FbxImporter</Importer>
@@ -291,18 +298,28 @@
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
-    <Compile Include="Assets\Models\Terrain\Box7.FBX">
-      <Name>Box7</Name>
+    <Compile Include="Assets\Models\Terrain\Box10.FBX">
+      <Name>Box10</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
-    <Compile Include="Assets\Models\Terrain\Box9.FBX">
-      <Name>Box9</Name>
+    <Compile Include="Assets\Models\Terrain\Box11.FBX">
+      <Name>Box11</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
-    <Compile Include="Assets\Models\Enemies\enemyShootingNoAnim.FBX">
-      <Name>enemyShootingNoAnim</Name>
+    <Compile Include="Assets\Models\Terrain\Box12.FBX">
+      <Name>Box12</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\Terrain\Box13.FBX">
+      <Name>Box13</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\Terrain\Box14.FBX">
+      <Name>Box14</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
@@ -316,10 +333,25 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Models\Checkpoints\checkpoint_hell.FBX">
-      <Name>checkpoint_hell</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
+    <Compile Include="Assets\Sprites\SeraphinHPBar.png">
+      <Name>SeraphinHPBar</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Sprites\SeraphinPower_LeftEye.png">
+      <Name>SeraphinPower_LeftEye</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Sprites\SeraphinPower_LowerEye.png">
+      <Name>SeraphinPower_LowerEye</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Sprites\SeraphinPower_RightEye.png">
+      <Name>SeraphinPower_RightEye</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
