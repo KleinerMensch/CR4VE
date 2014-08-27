@@ -16,9 +16,9 @@ namespace CR4VE.GameLogic.AI
         Vector3 offset = new Vector3(8, 8, 8);
         float speed = 1;
         float moveSpeed = -0.2f;
+        float minionSpeed = 100;
         float spawn = 0;
         bool enemyHit = false;
-        public static List<Entity> minionList = new List<Entity>();
         TimeSpan timeSpan = TimeSpan.FromSeconds(10);
         #endregion
 
@@ -31,12 +31,13 @@ namespace CR4VE.GameLogic.AI
 
         public override void Update(GameTime time)
         {
-           
+            this.RangedAttack(time);
             
             spawn += (float)time.ElapsedGameTime.TotalSeconds;
 
             // Decrements the timespan
             timeSpan -= time.ElapsedGameTime;
+            
             // If the timespan is equal or smaller time "0"
             if (timeSpan <= TimeSpan.Zero && minionList.Count > 0)
             {
@@ -46,39 +47,35 @@ namespace CR4VE.GameLogic.AI
                 // minion vanishes after 10 seconds
                 timeSpan = TimeSpan.FromSeconds(10);
             }
-
+            
             foreach (Entity minion in minionList)
             {
+                
                 minion.boundary = new BoundingBox(minion.position + new Vector3(-2, -2, -2), minion.position + new Vector3(2, 2, 2));
                 
-                Vector3 direction = new Vector3(0,0,0);
-                float minDistance = float.MaxValue;
-                                
-                Vector3 dir = minion.position - Arena.player.position;
-                float distance = dir.Length();
+                Vector3 direction = minion.position - Arena.player.position;
+                float distance = direction.Length();
 
                 direction.Normalize();
                 direction = moveSpeed * direction;
-                minion.position += direction;
+                minion.position += direction*minionSpeed;
 
-                this.MeleeAttack(time);
+                Console.WriteLine(minion.position);
                 
-                    if (minion.boundary.Intersects(Arena.player.boundary))
-                    {
-                        Arena.hud.healthLeft -= (int) 0.01f;
-                        Console.WriteLine("Seraphin hit enemy by RangedAttack");
-                    }
-
-                    
+                if (minion.boundary.Intersects(Arena.player.boundary))
+                {
+                    Arena.hud.healthLeft -= (int) 0.01f;
+                    Console.WriteLine("Seraphin hit enemy by RangedAttack");
+                }
             }
-            
+
+
             if (!Arena.sphere.Intersects(Arena.boss.boundary))
             {
+                this.RangedAttack(time);
                 Vector3 playerPos = Arena.player.position;
                 Vector3 direction = this.position - playerPos;
                 float distance = direction.Length();
-
-                
 
                 if (distance < 100)
                 {
@@ -92,7 +89,15 @@ namespace CR4VE.GameLogic.AI
 
                 }
             }
+            
           
+        }
+
+        public override void RangedAttack(GameTime time) {
+            minionList.Add(new Entity(this.position, "Enemies/EnemyEye", CR4VE.GameLogic.GameStates.Arena.cont));
+
+            if (minionList.Count > 3)
+                minionList.RemoveAt(0);
         }
     }
 }
