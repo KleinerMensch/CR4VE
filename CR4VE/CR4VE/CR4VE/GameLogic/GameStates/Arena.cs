@@ -29,7 +29,7 @@ namespace CR4VE.GameLogic.GameStates
 
         //moveable Entities
         public static Character player;
-        public static Boss boss;
+        public static BossHell boss;
 
         public static List<Enemy> enemyList = new List<Enemy>();
 
@@ -57,11 +57,13 @@ namespace CR4VE.GameLogic.GameStates
             lava = new Entity(new Vector3(0, -50, -30), "Terrain/lavafloor", content);
 
             //moveable Entities
-            player = new CharacterSeraphin(new Vector3(0, 0, 0), "sphereD5", content,new BoundingBox(new Vector3(-3,-3,-3), new Vector3(3,3,3)));
-            sphere = new BoundingSphere(player.position, 2);
+            player = new CharacterSeraphin(new Vector3(0, 0, 0), "sphereD5", content);
+            player.boundary= new BoundingBox(player.position + new Vector3(-3,-3,-3), player.position +new Vector3(3,3,3));
+            sphere = new BoundingSphere(player.position, 5);
 
             //gegner
-            boss = new Boss(new Vector3(60, 0, 0),"EnemyEye",content, new BoundingBox(new Vector3(-3,-3,-3), new Vector3(3,3,3)));
+            boss = new BossHell(new Vector3(60, 0, 0), "EnemyEye", content);
+            boss.boundary = new BoundingBox(boss.position + new Vector3(-6,-6,-6), boss.position +new Vector3(6,6,6));
 
             #region Loading AI
             EnemyRedEye redEye;
@@ -78,6 +80,7 @@ namespace CR4VE.GameLogic.GameStates
 
         public Game1.EGameState Update(GameTime gameTime)
         {
+           
             GameControls.updateArena(gameTime);
             player.Update(gameTime);
 
@@ -115,6 +118,7 @@ namespace CR4VE.GameLogic.GameStates
 
         public void Draw(GameTime gameTime)
         {
+            
             //Terrain
             lava.drawInArena(new Vector3(1, 1, 1), 0, 0, 0);
             terrain.drawInArena(new Vector3(0.4f, 0.4f, 0.4f), 0, MathHelper.ToRadians(30), 0);
@@ -131,6 +135,10 @@ namespace CR4VE.GameLogic.GameStates
                 laser.drawInArena(new Vector3(0.5f, 0.5f, 0.5f), 0, 0, MathHelper.ToRadians(-90) * laser.viewingDirection.X);
             }
             foreach (Entity minion in CharacterSeraphin.minionList)
+            {
+                minion.drawInArena(new Vector3(0.5f, 0.5f, 0.5f), 0, 0, 0);
+            }
+            foreach (Entity minion in BossHell.minionList)
             {
                 minion.drawInArena(new Vector3(0.5f, 0.5f, 0.5f), 0, 0, 0);
             }
