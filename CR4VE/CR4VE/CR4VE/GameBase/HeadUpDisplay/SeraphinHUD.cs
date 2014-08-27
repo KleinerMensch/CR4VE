@@ -1,4 +1,7 @@
-﻿using Microsoft.Xna.Framework;
+﻿using CR4VE.GameBase.Objects;
+using CR4VE.GameLogic.Characters;
+using CR4VE.GameLogic.GameStates;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -21,11 +24,6 @@ namespace CR4VE.GameBase.HeadUpDisplay
         #endregion
 
         #region Methods
-        public override void UpdateMana()
-        {
-            base.UpdateMana();
-        }
-
         public override void Initialize(ContentManager content)
         {
             #region LoadContent
@@ -40,13 +38,43 @@ namespace CR4VE.GameBase.HeadUpDisplay
             seraphinLiquidPosition = seraphinHealthContainerPosition + new Vector2(-399.5f, +147.5f);
         }
 
+        public override void UpdateMana()
+        {
+            for (int i=0; i < Singleplayer.powerUpList.Count; i++)
+            {
+                if (CharacterSeraphin.manaLeft < 3)
+                {
+                    if (Singleplayer.powerUpList[i].boundary.Intersects(Singleplayer.player.boundary))
+                    {
+                        Singleplayer.powerUpList.Remove(Singleplayer.powerUpList.ElementAt(i));
+                        CharacterSeraphin.manaLeft += 1;
+                    }
+                }
+            }
+        }
+
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(redLiquid, seraphinLiquidPosition, new Rectangle(0, 0, redLiquid.Width, healthLeft), Color.White, MathHelper.ToRadians(180), seraphinHealthContainerPosition, 0.3f, SpriteEffects.None, 0);
             spriteBatch.Draw(seraphinHealthContainer, seraphinHealthContainerPosition, null, Color.White, 0f, seraphinHealthContainerPosition, 0.3f, SpriteEffects.None, 0);
-            spriteBatch.Draw(seraphinPowerRightEye, seraphinHealthContainerPosition, null, Color.White, 0f, seraphinHealthContainerPosition, 0.3f, SpriteEffects.None, 0);
-            spriteBatch.Draw(seraphinPowerLeftEye, seraphinHealthContainerPosition, null, Color.White, 0f, seraphinHealthContainerPosition, 0.3f, SpriteEffects.None, 0);
-            spriteBatch.Draw(seraphinPowerLowerEye, seraphinHealthContainerPosition, null, Color.White, 0f, seraphinHealthContainerPosition, 0.3f, SpriteEffects.None, 0);
+            
+            #region Drawing current amount of Mana
+            if (CharacterSeraphin.manaLeft == 3)
+            {
+                spriteBatch.Draw(seraphinPowerRightEye, seraphinHealthContainerPosition, null, Color.White, 0f, seraphinHealthContainerPosition, 0.3f, SpriteEffects.None, 0);
+                spriteBatch.Draw(seraphinPowerLeftEye, seraphinHealthContainerPosition, null, Color.White, 0f, seraphinHealthContainerPosition, 0.3f, SpriteEffects.None, 0);
+                spriteBatch.Draw(seraphinPowerLowerEye, seraphinHealthContainerPosition, null, Color.White, 0f, seraphinHealthContainerPosition, 0.3f, SpriteEffects.None, 0);
+            }
+            if (CharacterSeraphin.manaLeft > 1 && CharacterSeraphin.manaLeft < 3)
+            {
+                spriteBatch.Draw(seraphinPowerLeftEye, seraphinHealthContainerPosition, null, Color.White, 0f, seraphinHealthContainerPosition, 0.3f, SpriteEffects.None, 0);
+                spriteBatch.Draw(seraphinPowerLowerEye, seraphinHealthContainerPosition, null, Color.White, 0f, seraphinHealthContainerPosition, 0.3f, SpriteEffects.None, 0);
+            }
+            if (CharacterSeraphin.manaLeft <= 1 && CharacterSeraphin.manaLeft > 0)
+            {
+                spriteBatch.Draw(seraphinPowerLowerEye, seraphinHealthContainerPosition, null, Color.White, 0f, seraphinHealthContainerPosition, 0.3f, SpriteEffects.None, 0);
+            }
+            #endregion
         }
         #endregion
     }

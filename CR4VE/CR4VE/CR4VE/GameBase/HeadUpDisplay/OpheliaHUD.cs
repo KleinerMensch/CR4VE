@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using CR4VE.GameLogic.Characters;
+using CR4VE.GameLogic.GameStates;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -23,18 +25,6 @@ namespace CR4VE.GameBase.HeadUpDisplay
         #endregion
 
         #region Methods
-        public override void UpdateMana()
-        {
-            // Fadingeffekt
-            if (opheliaPowerColor.A < 255 && powerIsDown == false)
-                opheliaPowerColor.A += 1;
-            else if (opheliaPowerColor.A == 255)
-            {
-                powerIsDown = true;
-                opheliaPowerColor = new Color(0, 0, 0, 0);
-            }
-        }
-
         public override void Initialize(ContentManager content)
         {
             #region LoadContent
@@ -46,6 +36,41 @@ namespace CR4VE.GameBase.HeadUpDisplay
 
             opheliaHealthContainerPosition = new Vector2(0, graphics.PreferredBackBufferHeight - 90);
             opheliaLiquidPosition = opheliaHealthContainerPosition + new Vector2(178.5f, -86);
+        }
+
+        public override void UpdateMana()
+        {
+            //Fadingeffekt
+            //Alphawert 255 => komplett transparent
+            //Alphawert 0 => nicht transparent
+            //if (opheliaPowerColor.A < 255 && powerIsDown == false)
+            //    opheliaPowerColor.A += 1;
+            //else if (opheliaPowerColor.A == 255)
+            //{
+            //    powerIsDown = true;
+            //    opheliaPowerColor = new Color(0, 0, 0, 0);
+            //}
+
+            if (CharacterOphelia.manaLeft == 3)
+                opheliaPowerColor = new Color(198, 226, 255, 0);
+            else if (CharacterOphelia.manaLeft == 2)
+                opheliaPowerColor = new Color(198, 226, 255, 85);
+            else if (CharacterOphelia.manaLeft == 1)
+                opheliaPowerColor = new Color(198, 226, 255, 170);
+            else if (CharacterOphelia.manaLeft == 0)
+                opheliaPowerColor = new Color(0, 0, 0, 0);
+
+            for (int i = 0; i < Singleplayer.powerUpList.Count; i++)
+            {
+                if (CharacterOphelia.manaLeft < 3)
+                {
+                    if (Singleplayer.powerUpList[i].boundary.Intersects(Singleplayer.player.boundary))
+                    {
+                        Singleplayer.powerUpList.Remove(Singleplayer.powerUpList.ElementAt(i));
+                        CharacterOphelia.manaLeft += 1;
+                    }
+                }
+            }
         }
 
         public override void Draw(SpriteBatch spriteBatch)

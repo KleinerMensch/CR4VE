@@ -11,6 +11,14 @@ namespace CR4VE.GameLogic.Characters
 {
     class Character : Entity
     {
+        #region Attributes
+        public List<Entity> attackList = new List<Entity>();
+        public static float manaLeft = 3;
+        public bool launchedMelee = false;
+        public bool launchedRanged = false;
+        public bool launchedSpecial = false;
+        #endregion
+
         #region inherited Constructors
         //base ist fuer Vererbungskram
         public Character() : base() { }
@@ -31,5 +39,6 @@ namespace CR4VE.GameLogic.Characters
         public virtual void MeleeAttack(GameTime time) { }
         public virtual void RangedAttack(GameTime time) { }
         public virtual void SpecialAttack(GameTime time) { }
+        public virtual void DrawAttacks() { }
     }
 }
