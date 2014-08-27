@@ -95,6 +95,7 @@
     <Compile Include="GameBase\Objects\Terrain\Tile.cs" />
     <Compile Include="GameBase\Objects\Terrain\Tilemap.cs" />
     <Compile Include="GameLogic\AI\AIInterface.cs" />
+    <Compile Include="GameLogic\AI\Boss.cs" />
     <Compile Include="GameLogic\AI\Enemy.cs" />
     <Compile Include="GameLogic\AI\EnemyRedEye.cs" />
     <Compile Include="GameLogic\AI\EnemyShootingCrystal.cs" />

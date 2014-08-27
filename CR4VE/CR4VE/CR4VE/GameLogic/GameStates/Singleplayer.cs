@@ -277,7 +277,13 @@ namespace CR4VE.GameLogic.GameStates
             #region Background
             spriteBatch.Begin();
 
-            spriteBatch.Draw(background, new Vector2(Camera2D.WorldRectangle.X, Camera2D.WorldRectangle.Y), new Rectangle((int)Camera2D.Position2D.X, (int)Camera2D.Position2D.Y, 800, 600), Color.White);
+            //width and height for spriteBatch rectangle needed to draw background texture
+            Vector2 drawPos = new Vector2(Camera2D.WorldRectangle.X, Camera2D.WorldRectangle.Y);
+            int drawRecWidth = graphics.PreferredBackBufferWidth;
+            int drawRecHeight = graphics.PreferredBackBufferHeight;
+            Rectangle drawRec = new Rectangle((int)Camera2D.Position2D.X, (int)Camera2D.Position2D.Y, drawRecWidth, drawRecHeight);
+            
+            spriteBatch.Draw(background, drawPos, drawRec, Color.White);
             
             spriteBatch.End();
 

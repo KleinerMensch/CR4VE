@@ -54,6 +54,14 @@ namespace CR4VE.GameLogic.Controls
         public static bool isJumping = false;
         public static bool isAirborne = true;
         public static bool isFalling = true;
+
+        //Arena
+        private static readonly float fallDelay = 0.5f;
+        private static readonly float fallSpeed = 0.5f;
+
+        static Vector3 fallVecPlayer;
+        static bool ringOut = false;
+        
         #endregion
 
         #region Methods
@@ -315,40 +323,62 @@ namespace CR4VE.GameLogic.Controls
             prevGamepad = currGamepad;
             currGamepad = GamePad.GetState(PlayerIndex.One);
 
-            #region Updating attacks
-            if (leftClick(currentMouseState, previousMouseState) || isClicked(Buttons.X))
+            if (ringOut)
             {
-                //Nahangriff
-                Arena.player.MeleeAttack(gameTime);
-            }
-            else if (rightClick(currentMouseState, previousMouseState) || isClicked(Buttons.B))
-            {
-                //Fernangriff
-                Arena.player.RangedAttack(gameTime);
-            }
-            else if (middleClick(currentMouseState, previousMouseState) || isClicked(Buttons.Y))
-            {
-                //Spezialangriff
-                Arena.player.SpecialAttack(gameTime);
-            }
-            #endregion
+                currentTime = gameTime.TotalGameTime.TotalSeconds;
 
-            Vector3 moveVecPlayer = new Vector3(0, 0, 0);
+                double deltaTime = currentTime - startFallTime;
 
-            if (currentKeyboard.IsKeyDown(Keys.W) || currGamepad.IsButtonDown(Buttons.DPadUp)) moveVecPlayer += new Vector3(0, 0, -accel);
-            if (currentKeyboard.IsKeyDown(Keys.A) || currGamepad.IsButtonDown(Buttons.DPadLeft)) moveVecPlayer += new Vector3(-accel, 0, 0);
-            if (currentKeyboard.IsKeyDown(Keys.S) || currGamepad.IsButtonDown(Buttons.DPadDown)) moveVecPlayer += new Vector3(0, 0, accel);
-            if (currentKeyboard.IsKeyDown(Keys.D) || currGamepad.IsButtonDown(Buttons.DPadRight)) moveVecPlayer += new Vector3(accel, 0, 0);
+                fallVecPlayer *= 0.98f;
 
-            if (moveVecPlayer != new Vector3(0, 0, 0))
-            {
-                Vector3 recentPlayerPosition = Arena.player.position;
-                Vector3 newPlayerPosition = Arena.player.position + moveVecPlayer;
-                Arena.player.viewingDirection = newPlayerPosition - recentPlayerPosition;
-                Arena.blickWinkel = (float)Math.Atan2(-Arena.player.viewingDirection.Z, Arena.player.viewingDirection.X);
+                Arena.player.move(new Vector3(fallVecPlayer.X, (float) -deltaTime * G/4, fallVecPlayer.Z));
             }
-            
-            Arena.player.move(moveVecPlayer);
+            else
+            {
+                #region Updating attacks
+                if (leftClick(currentMouseState, previousMouseState) || isClicked(Buttons.X))
+                {
+                    //Nahangriff
+                    Arena.player.MeleeAttack(gameTime);
+                }
+                else if (rightClick(currentMouseState, previousMouseState) || isClicked(Buttons.B))
+                {
+                    //Fernangriff
+                    Arena.player.RangedAttack(gameTime);
+                }
+                else if (middleClick(currentMouseState, previousMouseState) || isClicked(Buttons.Y))
+                {
+                    //Spezialangriff
+                    Arena.player.SpecialAttack(gameTime);
+                }
+                #endregion
+
+                Vector3 moveVecPlayer = new Vector3(0, 0, 0);
+
+                if (currentKeyboard.IsKeyDown(Keys.W) || currGamepad.IsButtonDown(Buttons.DPadUp)) moveVecPlayer += new Vector3(0, 0, -accel);
+                if (currentKeyboard.IsKeyDown(Keys.A) || currGamepad.IsButtonDown(Buttons.DPadLeft)) moveVecPlayer += new Vector3(-accel, 0, 0);
+                if (currentKeyboard.IsKeyDown(Keys.S) || currGamepad.IsButtonDown(Buttons.DPadDown)) moveVecPlayer += new Vector3(0, 0, accel);
+                if (currentKeyboard.IsKeyDown(Keys.D) || currGamepad.IsButtonDown(Buttons.DPadRight)) moveVecPlayer += new Vector3(accel, 0, 0);
+
+                if (moveVecPlayer != new Vector3(0, 0, 0))
+                {
+                    Vector3 recentPlayerPosition = Arena.player.position;
+                    Vector3 newPlayerPosition = Arena.player.position + moveVecPlayer;
+                    Arena.player.viewingDirection = newPlayerPosition - recentPlayerPosition;
+                    Arena.blickWinkel = (float)Math.Atan2(-Arena.player.viewingDirection.Z, Arena.player.viewingDirection.X);
+                }
+
+                Arena.player.move(moveVecPlayer);
+
+                if (!Arena.player.Boundary.Intersects(Arena.arenaBound))
+                {
+                    fallVecPlayer = moveVecPlayer;
+
+                    startFallTime = gameTime.TotalGameTime.TotalSeconds;
+
+                    ringOut = true;
+                }
+            }            
         }
         #endregion
     }
