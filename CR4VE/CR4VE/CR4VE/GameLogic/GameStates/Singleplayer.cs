@@ -227,7 +227,6 @@ namespace CR4VE.GameLogic.GameStates
             
             //Powerups
             powerup_health = new Powerup(new Vector3(10,0,0), "powerup_hell_health", content, new BoundingBox(Vector3.Zero, Vector3.One), "health", 50);
-            powerup_mana = new Powerup(new Vector3(50, -20, 0), "powerup_hell_mana", content, new BoundingBox(Vector3.Zero, Vector3.One), "mana", 1);
             
             //Checkpoints
             lastCheckpoint = new Checkpoint(Vector3.Zero, "checkpoint_hell", content);
@@ -255,7 +254,7 @@ namespace CR4VE.GameLogic.GameStates
             powerup_health = new Powerup(new Vector3(10, 0, 0), "powerup_hell_health", content, new BoundingBox(Vector3.Zero, Vector3.One), "energy", 50);
 
             Powerup opheliaManaPowerUp;
-            opheliaManaPowerUp = new Powerup(new Vector3(50, -30, 0), "powerup_hell_health", content, new BoundingBox(new Vector3(50, -30, 0)+Vector3.Zero, new Vector3(50, -30, 0)+Vector3.One), "energy", 1);
+            opheliaManaPowerUp = new Powerup(new Vector3(50, -30, 0), "powerup_hell_mana", content, new BoundingBox(new Vector3(50, -30, 0)+Vector3.Zero, new Vector3(50, -30, 0)+Vector3.One), "energy", 1);
             powerUpList.Add(opheliaManaPowerUp);
             #endregion
 
@@ -284,7 +283,6 @@ namespace CR4VE.GameLogic.GameStates
 
             #region Updating Powerups
             powerup_health.Update();
-            powerup_mana.Update();
 
             //Checkpoints
             c1_hell.Update();
@@ -342,7 +340,6 @@ namespace CR4VE.GameLogic.GameStates
 
             //Powerups
             powerup_health.drawIn2DWorld(new Vector3(1,1,1), 0, powerup_health.rotatedDegree, 0);
-            powerup_mana.drawIn2DWorld(new Vector3(0.5f, 0.5f, 0.5f), 0, MathHelper.ToRadians(-90), 0);
 
             //Player or Ghost
             if (GameControls.isGhost)

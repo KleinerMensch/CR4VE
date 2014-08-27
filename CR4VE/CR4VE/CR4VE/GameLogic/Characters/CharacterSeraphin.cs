@@ -17,6 +17,7 @@ namespace CR4VE.GameLogic.Characters
         Entity algaWhip, laser;
         TimeSpan timeSpan = TimeSpan.FromSeconds(10);
 
+        Vector3 currentViewingDirection;
         Vector3 offset = new Vector3(8,8,8);
         float speed = 1;
         float moveSpeed = -0.2f;
@@ -127,12 +128,12 @@ namespace CR4VE.GameLogic.Characters
                 #region Singleplayer
                 if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
                 {
-                    laser.position += speed * viewingDirection;
-                    laser.boundary.Min += speed * viewingDirection;
-                    laser.boundary.Max += speed * viewingDirection;
+                    laser.position += speed * currentViewingDirection;
+                    laser.boundary.Min += speed * currentViewingDirection;
+                    laser.boundary.Max += speed * currentViewingDirection;
 
                     //Laser verschwindet nach 50 Einheiten oder wenn er mit etwas kollidiert
-                    if (laser.position != this.position + 50 * viewingDirection)
+                    if (laser.position != this.position + 50 * currentViewingDirection)
                     {
                         launchedSpecial = true;
                         if (enemyHit)
@@ -175,12 +176,12 @@ namespace CR4VE.GameLogic.Characters
                 #region Arena
                 else if (Game1.currentState.Equals(Game1.EGameState.Arena))
                 {
-                    laser.position += speed * viewingDirection;
-                    laser.boundary.Min += speed * viewingDirection;
-                    laser.boundary.Max += speed * viewingDirection;
+                    laser.position += speed * currentViewingDirection;
+                    laser.boundary.Min += speed * currentViewingDirection;
+                    laser.boundary.Max += speed * currentViewingDirection;
 
                     //Laser verschwindet nach 50 Einheiten oder wenn er mit etwas kollidiert
-                    if (laser.position != this.position + 50 * viewingDirection)
+                    if (laser.position != this.position + 50 * currentViewingDirection)
                     {
                         launchedSpecial = true;
                         if (enemyHit)
@@ -309,6 +310,7 @@ namespace CR4VE.GameLogic.Characters
                 #region Singleplayer
                 if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
                 {
+                    currentViewingDirection = Singleplayer.player.viewingDirection;
                     laser = new Entity(this.position, "Enemies/skull", Singleplayer.cont);
                     laser.boundary = new BoundingBox(this.position + new Vector3(-3, -3, -3), this.position + new Vector3(3, 3, 3));
                     attackList.Add(laser);
@@ -317,6 +319,7 @@ namespace CR4VE.GameLogic.Characters
                 #region Arena
                 else if (Game1.currentState.Equals(Game1.EGameState.Arena))
                 {
+                    currentViewingDirection = Arena.player.viewingDirection;
                     laser = new Entity(this.position, "Enemies/skull", Arena.cont);
                     laser.boundary = new BoundingBox(this.position + new Vector3(-3, -3, -3), this.position + new Vector3(3, 3, 3));
                     attackList.Add(laser);

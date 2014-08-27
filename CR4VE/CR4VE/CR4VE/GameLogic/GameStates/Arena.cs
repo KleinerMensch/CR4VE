@@ -69,16 +69,16 @@ namespace CR4VE.GameLogic.GameStates
 
             sphere = new BoundingSphere(player.position, 6);
 
-            //gegner
-            boss = new BossHell(new Vector3(60, 0, 0),"EnemyEye",content);
-            boss.boundary = new BoundingBox(boss.position + new Vector3(-6, -6, -6), boss.position +new Vector3(6, 6, 6));
             #region Loading AI
             EnemyRedEye redEye;
             redEye = new EnemyRedEye(new Vector3(60, 0, 0), "EnemyEye", content, new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
             //fill list with enemies
             enemyList.Add(redEye);
-            #endregion
 
+            //Boss
+            boss = new BossHell(new Vector3(60, 0, 0), "EnemyEye", content);
+            boss.boundary = new BoundingBox(boss.position + new Vector3(-6, -6, -6), boss.position + new Vector3(6, 6, 6));
+            #endregion
 
             //HUD
             hud = new SeraphinHUD(content, graphics);
@@ -90,7 +90,6 @@ namespace CR4VE.GameLogic.GameStates
             GameControls.updateArena(gameTime);
 
             player.Update(gameTime);
-
             boss.Update(gameTime);
 
             sphere.Center = player.position;
@@ -103,7 +102,7 @@ namespace CR4VE.GameLogic.GameStates
 
             #region HUD
             hud.Update();
-
+            hud.UpdateMana();
             /*hud.UpdateMana();
              * 
             if (hud.isDead)
@@ -154,10 +153,6 @@ namespace CR4VE.GameLogic.GameStates
             {
                 laser.drawInArena(new Vector3(0.5f, 0.5f, 0.5f), 0, 0, MathHelper.ToRadians(-90) * laser.viewingDirection.X);
             }
-            foreach (Entity bossMinion in BossHell.minionList)
-            {
-                bossMinion.drawInArena(new Vector3(0.5f, 0.5f, 0.5f), 0, 0, 0);
-            }
             foreach (Entity crystal in CharacterFractus.crystalList)
             {
                 crystal.drawInArena(new Vector3(0.1f, 0.1f, 0.1f), 0, 0, 0);
@@ -170,6 +165,7 @@ namespace CR4VE.GameLogic.GameStates
             
             //Boss
             boss.drawInArena(new Vector3(0.75f, 0.75f, 0.75f), 0, MathHelper.ToRadians(90)+ blickwinkelBoss, 0);
+            boss.DrawAttacks();
 
             #region HUD
             spriteBatch.Begin();
