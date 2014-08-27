@@ -33,7 +33,7 @@ namespace CR4VE.GameLogic.GameStates
 
         //moveable Entities
         public static Character player;
-        public static Boss boss;
+        public static BossHell boss;
 
         public static List<Enemy> enemyList = new List<Enemy>();
 
@@ -67,11 +67,11 @@ namespace CR4VE.GameLogic.GameStates
             BoundingBox playerBound = new BoundingBox(player.Position + new Vector3(-3, -3, -3), player.Position + new Vector3(3, 3, 3));
             player.Boundary = playerBound;
 
-            sphere = new BoundingSphere(player.position, 2);
+            sphere = new BoundingSphere(player.position, 6);
 
             //gegner
-            boss = new Boss(new Vector3(60, 0, 0),"EnemyEye",content, new BoundingBox(new Vector3(-3,-3,-3), new Vector3(3,3,3)));
-
+            boss = new BossHell(new Vector3(60, 0, 0),"EnemyEye",content);
+            boss.boundary = new BoundingBox(boss.position + new Vector3(-6, -6, -6), boss.position +new Vector3(6, 6, 6));
             #region Loading AI
             EnemyRedEye redEye;
             redEye = new EnemyRedEye(new Vector3(60, 0, 0), "EnemyEye", content, new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
