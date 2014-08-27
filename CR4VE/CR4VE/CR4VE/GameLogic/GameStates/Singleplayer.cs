@@ -375,7 +375,6 @@ namespace CR4VE.GameLogic.GameStates
                 crystal.drawIn2DWorld(new Vector3(0.1f, 0.1f, 0.1f), 0, 0, 0);
             }
             #endregion
-            #endregion
 
             #region HUD
             spriteBatch.Begin();
@@ -386,6 +385,7 @@ namespace CR4VE.GameLogic.GameStates
             spriteBatch.End();
             #endregion
         }
+        #endregion
 
         // loeschen aller grafischen Elemente
         public void Unload()

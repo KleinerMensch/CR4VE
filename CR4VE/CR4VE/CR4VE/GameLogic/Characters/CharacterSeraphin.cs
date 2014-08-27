@@ -34,7 +34,6 @@ namespace CR4VE.GameLogic.Characters
         #region Methods
         public override void Update(GameTime time)
         {
-            Console.WriteLine(launchedRanged);
             #region MinionsFromRangedAttack
             spawn += (float)time.ElapsedGameTime.TotalSeconds;
 
@@ -174,7 +173,7 @@ namespace CR4VE.GameLogic.Characters
                 }
                 #endregion
                 #region Arena
-                else if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
+                else if (Game1.currentState.Equals(Game1.EGameState.Arena))
                 {
                     laser.position += speed * viewingDirection;
                     laser.boundary.Min += speed * viewingDirection;
