@@ -44,6 +44,7 @@ namespace CR4VE.GameLogic.GameStates
         
         //Enemies
         public static List<Enemy> enemyList = new List<Enemy>();
+        public static List<Powerup> powerUpList = new List<Powerup>();
 
         //HUD
         public static HUD hud;
@@ -250,6 +251,14 @@ namespace CR4VE.GameLogic.GameStates
             enemyList.Add(shootingCrystal);
             #endregion
 
+            #region Loading PowerUps
+            powerup_health = new Powerup(new Vector3(10, 0, 0), "powerup_hell_health", content, new BoundingBox(Vector3.Zero, Vector3.One), "energy", 50);
+
+            Powerup opheliaManaPowerUp;
+            opheliaManaPowerUp = new Powerup(new Vector3(50, -30, 0), "powerup_hell_health", content, new BoundingBox(new Vector3(50, -30, 0)+Vector3.Zero, new Vector3(50, -30, 0)+Vector3.One), "energy", 1);
+            powerUpList.Add(opheliaManaPowerUp);
+            #endregion
+
             //HUD
             hud = new SeraphinHUD(content, graphics);
             cont = content;
@@ -263,26 +272,29 @@ namespace CR4VE.GameLogic.GameStates
 
             #region HUD
             hud.Update();
-
             hud.UpdateMana();
-
-            if (hud.isDead)
+            /*if (hud.isDead)
             {
                 return Game1.EGameState.GameOver;
-            }
+            }*/
             #endregion
 
             //Player
             player.Update(gameTime);
 
-            //Powerups
+            #region Updating Powerups
             powerup_health.Update();
             powerup_mana.Update();
 
             //Checkpoints
             c1_hell.Update();
+            foreach (Powerup powerUp in powerUpList)
+            {
+                powerUp.Update();
+            }
+            #endregion
 
-            #region Enemies
+            #region Updating Enemies
             foreach (Enemy enemy in enemyList)
             {
                 enemy.UpdateSingleplayer(gameTime);
@@ -337,11 +349,17 @@ namespace CR4VE.GameLogic.GameStates
                 ghost.drawIn2DWorld(new Vector3(0.05f, 0.05f, 0.05f), 0, 0, 0);
             else
                 player.drawIn2DWorldWithoutBones(Vector3.One, 0, MathHelper.ToRadians(90) * player.viewingDirection.X, 0);
+            player.DrawAttacks();
 
             //Checkpoints
             c1_hell.drawIn2DWorld(new Vector3(0.5f, 0.5f, 0.5f), 0, 0, 0);
 
-            #region Enemies
+            foreach (Powerup powerUp in powerUpList)
+            {
+                powerUp.drawIn2DWorld(new Vector3(0.5f, 0.5f, 0.5f), 0, powerup_health.rotatedDegree, 0);
+            }
+
+            //enemies
             foreach (AIInterface enemy in enemyList)
             {
                 enemy.Draw(gameTime);
@@ -351,10 +369,6 @@ namespace CR4VE.GameLogic.GameStates
             foreach (Entity laser in CR4VE.GameLogic.AI.EnemyRedEye.laserList)
             {
                 laser.drawIn2DWorld(new Vector3(0.5f, 0.5f, 0.5f), 0, 0, MathHelper.ToRadians(-90) * laser.viewingDirection.X);
-            }
-            foreach (Entity minion in CR4VE.GameLogic.Characters.CharacterSeraphin.minionList)
-            {
-                minion.drawIn2DWorld(new Vector3(0.5f,0.5f,0.5f), 0, 0, 0);
             }
             foreach (Entity crystal in CR4VE.GameLogic.Characters.CharacterFractus.crystalList)
             {
@@ -372,7 +386,6 @@ namespace CR4VE.GameLogic.GameStates
             spriteBatch.End();
             #endregion
         }
-        #endregion
 
         // loeschen aller grafischen Elemente
         public void Unload()

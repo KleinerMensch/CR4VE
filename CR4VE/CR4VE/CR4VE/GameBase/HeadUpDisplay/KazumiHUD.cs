@@ -21,11 +21,6 @@ namespace CR4VE.GameBase.HeadUpDisplay
         #endregion
 
         #region Methods
-        public override void UpdateMana()
-        {
-            base.UpdateMana();
-        }
-
         public override void Initialize(ContentManager content)
         {
             #region LoadContent

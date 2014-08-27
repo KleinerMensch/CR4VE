@@ -81,7 +81,7 @@ namespace CR4VE.GameLogic.GameStates
 
 
             //HUD
-            hud = new OpheliaHUD(content, graphics);
+            hud = new SeraphinHUD(content, graphics);
             cont = content;
         }
 
@@ -154,10 +154,6 @@ namespace CR4VE.GameLogic.GameStates
             {
                 laser.drawInArena(new Vector3(0.5f, 0.5f, 0.5f), 0, 0, MathHelper.ToRadians(-90) * laser.viewingDirection.X);
             }
-            foreach (Entity minion in CharacterSeraphin.minionList)
-            {
-                minion.drawInArena(new Vector3(0.5f, 0.5f, 0.5f), 0, 0, 0);
-            }
             foreach (Entity bossMinion in BossHell.minionList)
             {
                 bossMinion.drawInArena(new Vector3(0.5f, 0.5f, 0.5f), 0, 0, 0);
@@ -170,6 +166,7 @@ namespace CR4VE.GameLogic.GameStates
 
             //Player
             player.drawInArenaWithoutBones(new Vector3(0.75f, 0.75f, 0.75f), 0, MathHelper.ToRadians(90) + blickWinkel, 0);
+            player.DrawAttacks();
             
             //Boss
             boss.drawInArena(new Vector3(0.75f, 0.75f, 0.75f), 0, MathHelper.ToRadians(90)+ blickwinkelBoss, 0);

@@ -298,16 +298,6 @@
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
-    <Compile Include="Assets\Models\Terrain\Box13.FBX">
-      <Name>Box13</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-    <Compile Include="Assets\Models\Terrain\Box14.FBX">
-      <Name>Box14</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
     <Compile Include="Assets\Models\Checkpoints\checkpoint_hell.FBX">
       <Name>checkpoint_hell</Name>
       <Importer>FbxImporter</Importer>
@@ -318,38 +308,8 @@
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
-    <Compile Include="Assets\Models\Terrain\Box10.FBX">
-      <Name>Box10</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-    <Compile Include="Assets\Models\Terrain\Box12.FBX">
-      <Name>Box12</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-    <Compile Include="Assets\Models\Terrain\Box11.FBX">
-      <Name>Box11</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-    <Compile Include="Assets\Models\Terrain\Box15.FBX">
-      <Name>Box15</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-    <Compile Include="Assets\Models\Terrain\Box16.FBX">
-      <Name>Box16</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-    <Compile Include="Assets\Models\Terrain\Box18.FBX">
-      <Name>Box18</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-    <Compile Include="Assets\Models\Terrain\Box19.FBX">
-      <Name>Box19</Name>
+    <Compile Include="Assets\Models\Players\EnemyEye.FBX">
+      <Name>EnemyEye</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
@@ -360,11 +320,6 @@
     </Compile>
     <Compile Include="Assets\Models\Powerups\powerup_hell_mana.FBX">
       <Name>powerup_hell_mana</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-    <Compile Include="Assets\Models\Players\EnemyEye.FBX">
-      <Name>EnemyEye</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
