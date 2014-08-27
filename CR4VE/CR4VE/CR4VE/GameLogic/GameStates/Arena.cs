@@ -27,12 +27,20 @@ namespace CR4VE.GameLogic.GameStates
         static Entity terrain;
         static Entity lava;
 
+        //Arena Boundaries
+        public static readonly BoundingBox arenaFloorBox = new BoundingBox(new Vector3(-54, -25, -65), new Vector3(63, -15, 53));
+        public static readonly BoundingSphere arenaBound = new BoundingSphere(new Vector3(5, -20, -8), 60f);        
+
         //moveable Entities
         public static Character player;
+        public static BossHell boss;
 
         public static List<Enemy> enemyList = new List<Enemy>();
 
         public static float blickWinkel;
+        public static float blickwinkelBoss;
+
+        public static BoundingSphere sphere;
         #endregion
 
         #region Konstruktor
@@ -49,18 +57,28 @@ namespace CR4VE.GameLogic.GameStates
             CameraArena.Initialize(800, 600);
 
             //Terrain
-            terrain = new Entity(new Vector3(4, -20, -5), "Terrain/arena_hell", content);
-            lava = new Entity(new Vector3(0, -50, -30), "Terrain/lavafloor", content);
+            terrain = new Entity(new Vector3(5, -20, -10), "Terrain/arena_hell", content);
+
+            BoundingBox lavaBound = new BoundingBox(new Vector3(), new Vector3());
+            lava = new Entity(new Vector3(0, -110, -30), "Terrain/lavafloor", content);
 
             //moveable Entities
-            player = new CharacterSeraphin(new Vector3(0, 0, 0), "sphereD5", content);
+            player = new CharacterSeraphin(new Vector3(0, -12.5f, 0), "sphereD5", content);
+            BoundingBox playerBound = new BoundingBox(player.Position + new Vector3(-3, -3, -3), player.Position + new Vector3(3, 3, 3));
+            player.Boundary = playerBound;
 
+            sphere = new BoundingSphere(player.position, 6);
+
+            //gegner
+            boss = new BossHell(new Vector3(60, 0, 0),"EnemyEye",content);
+            boss.boundary = new BoundingBox(boss.position + new Vector3(-6, -6, -6), boss.position +new Vector3(6, 6, 6));
             #region Loading AI
             EnemyRedEye redEye;
             redEye = new EnemyRedEye(new Vector3(60, 0, 0), "EnemyEye", content, new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
             //fill list with enemies
             enemyList.Add(redEye);
             #endregion
+
 
             //HUD
             hud = new SeraphinHUD(content, graphics);
@@ -70,17 +88,31 @@ namespace CR4VE.GameLogic.GameStates
         public Game1.EGameState Update(GameTime gameTime)
         {
             GameControls.updateArena(gameTime);
+
             player.Update(gameTime);
 
-            #region Updating HUD
+            boss.Update(gameTime);
+
+            sphere.Center = player.position;
+
+            //DEBUG
+            /*Console.Clear();
+            Console.WriteLine(player.Position);
+            Console.WriteLine(arenaFloorBox);
+            Console.WriteLine(player.Boundary.Intersects(arenaFloorBox));*/
+
+            #region HUD
             hud.Update();
+
             /*hud.UpdateMana();
+             * 
             if (hud.isDead)
             {
                 return Game1.EGameState.GameOver;
             }*/
             #endregion
 
+            #region Enemies
             //Updating Enemies
             foreach (Enemy enemy in enemyList)
             {
@@ -96,6 +128,7 @@ namespace CR4VE.GameLogic.GameStates
                     enemyList.Remove(enemyList.ElementAt(i));
                 }
             }
+            #endregion
 
             return Game1.EGameState.Arena;
         }
@@ -104,15 +137,19 @@ namespace CR4VE.GameLogic.GameStates
         {
             //Terrain
             lava.drawInArena(new Vector3(1, 1, 1), 0, 0, 0);
-            terrain.drawInArena(new Vector3(0.4f, 0.4f, 0.4f), 0, MathHelper.ToRadians(30), 0);
 
-            //enemies
+            //arenaFloor.drawInArenaWithoutBones(new Vector3(12, 2, 12), 0, 0, 0);
+            //arenaBoundSphere.drawInArenaWithoutBones(new Vector3(24, 24, 24), 0, 0, 0);
+            
+            terrain.drawInArena(new Vector3(0.5f, 0.5f, 0.5f), 0, MathHelper.ToRadians(30), 0);
+
+            #region Enemies
             foreach (AIInterface enemy in enemyList)
             {
                 enemy.DrawInArena(gameTime);
             }
 
-            //minions etc.
+            //Minions etc.
             foreach (Entity laser in CR4VE.GameLogic.AI.EnemyRedEye.laserList)
             {
                 laser.drawInArena(new Vector3(0.5f, 0.5f, 0.5f), 0, 0, MathHelper.ToRadians(-90) * laser.viewingDirection.X);
@@ -121,9 +158,14 @@ namespace CR4VE.GameLogic.GameStates
             {
                 crystal.drawInArena(new Vector3(0.1f, 0.1f, 0.1f), 0, 0, 0);
             }
+            #endregion
 
+            //Player
             player.drawInArenaWithoutBones(new Vector3(0.75f, 0.75f, 0.75f), 0, MathHelper.ToRadians(90) + blickWinkel, 0);
             player.DrawAttacks();
+            
+            //Boss
+            boss.drawInArena(new Vector3(0.75f, 0.75f, 0.75f), 0, MathHelper.ToRadians(90)+ blickwinkelBoss, 0);
 
             #region HUD
             spriteBatch.Begin();
