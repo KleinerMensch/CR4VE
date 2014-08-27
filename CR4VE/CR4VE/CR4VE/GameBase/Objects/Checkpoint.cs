@@ -15,21 +15,6 @@ namespace CR4VE.GameBase.Objects
     {
         #region Attributes
         private String type;
-
-        //realign parameters
-        private Vector2 saveCamPosition;
-        private Matrix saveFrusMat;
-        #endregion
-
-        #region Properties
-        public Vector2 savedCameraPosition2D
-        { 
-            get { return saveCamPosition; } 
-        }
-        public Matrix savedFrustumMatrix
-        {
-            get { return saveFrusMat; }
-        }
         #endregion
 
         #region Constructor
@@ -44,10 +29,6 @@ namespace CR4VE.GameBase.Objects
                 this.type = "hell";
             else
                 this.type = "crystal";
-
-            //realign parameters
-            this.saveCamPosition = Camera2D.Position2D;
-            this.saveFrusMat = Camera2D.BoundFrustum.Matrix;
         }
         #endregion
 
@@ -58,16 +39,17 @@ namespace CR4VE.GameBase.Objects
             {
                 Singleplayer.lastCheckpoint = this;
 
-                //save realign parameters
-                this.saveCamPosition = Camera2D.Position2D;
-                this.saveFrusMat = Camera2D.BoundFrustum.Matrix;
-
                 //update SaveGame.txt
                 if (this.type == "hell")
                     SaveGame.setHellReset(this.Position);
                 else
                     SaveGame.setCrystalReset(this.Position);
             }
+        }
+
+        public void Draw()
+        {
+            this.drawIn2DWorld(new Vector3(0.5f, 0.5f, 0.5f), 0, 0, 0);
         }
         #endregion
     }

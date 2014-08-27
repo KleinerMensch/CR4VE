@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using CR4VE.GameLogic.GameStates;
 using CR4VE.GameBase.Camera;
+using CR4VE.GameBase.Objects;
 using CR4VE.GameBase.Objects.Terrain;
 
 namespace CR4VE.GameBase.Objects.Terrain
@@ -14,12 +15,22 @@ namespace CR4VE.GameBase.Objects.Terrain
     {
         #region Attributes
         private List<Tile> Tiles = new List<Tile>();
+        private List<Checkpoint> Checkpoints = new List<Checkpoint>();
+        private List<Powerup> Powerups = new List<Powerup>();
         #endregion
 
         #region Properties
-        public List<Tile> TilesList
+        public List<Tile> TileList
         {
             get { return Tiles; }
+        }
+        public List<Checkpoint> CheckpointList
+        {
+            get { return Checkpoints; }
+        }
+        public List<Powerup> PowerupList
+        {
+            get { return Powerups; }
         }
         #endregion
 
@@ -30,7 +41,7 @@ namespace CR4VE.GameBase.Objects.Terrain
         #region Methods
         //map = Anordnung der Tiles
         //size = Groeße eines einzelnen Tiles
-        public void Generate(int[,] map, int size)
+        public void Generate(int[,] map, int size, Vector3 start)
         {
             for (int y = 0; y < map.GetLength(0); y++)
             {
@@ -39,26 +50,76 @@ namespace CR4VE.GameBase.Objects.Terrain
                     //momentane Zahl in der Tilemap
                     int number = map[y,x];
 
-                    //Wenn Zahl ungleich 0, Tile erstellen und adden
-                    if (number != 0)
+                    //Wenn Zahl zwischen 1 und 95, Tile erstellen und adden
+                    switch (number)
                     {
-                        Vector3 position = new Vector3(x*size, -y*size, 0);
-                        BoundingBox boundary = new BoundingBox(position + new Vector3(-size / 2, -size / 2, -size / 2), position + new Vector3(size / 2, size / 2, size / 2));
-                        
-                        //harten String noch ersetzen
-                        Tiles.Add(new Tile("Box", number, position, boundary));
+                        default:
+                            {
+                                Vector3 position = start + new Vector3(x * size, -y * size, 0);
+                                BoundingBox boundary = new BoundingBox(position + new Vector3(-size / 2, -size / 2, -size / 2), position + new Vector3(size / 2, size / 2, size / 2));
+
+                                //harten String noch ersetzen
+                                Tiles.Add(new Tile("Box", number, position, boundary));
+                            } break;
+
+                        //do nothing
+                        case 0:
+                            break;
+
+                        //Checkpoint
+                        case 96:
+                            {
+                                Vector3 position = start + new Vector3(x * size, -y * size, 0) + new Vector3(0, 4f, 0);
+
+                                //spaeter noch nach Leveltyp differenzieren
+                                Checkpoints.Add(new Checkpoint(position, "checkpoint_hell", Singleplayer.cont));
+                            } break;
+
+                        //Health Powerup
+                        case 97:
+                            {
+                                Vector3 position = start + new Vector3(x * size, -y * size, 0) + new Vector3(0, 2f, 0);
+                                BoundingBox healthBound = new BoundingBox(position + new Vector3(-3, -3, -3), position + new Vector3(3, 3, 3));
+
+                                //spaeter noch nach Leveltyp differenzieren
+                                Powerups.Add(new Powerup(position, "powerup_hell_health", Singleplayer.cont, healthBound, "health", 50));
+                            } break;
+
+                        //Mana Powerup
+                        case 98:
+                            {
+                                Vector3 position = start + new Vector3(x * size, -y * size, 0);
+                                BoundingBox manaBound = new BoundingBox(position + new Vector3(-3, -3, -3), position + new Vector3(3, 3, 3));
+
+                                //spaeter noch nach Leveltyp differenzieren
+                                Powerups.Add(new Powerup(position, "powerup_hell_mana", Singleplayer.cont, manaBound, "mana", 1));
+                            } break;
                     }
+                            
                 }
             }
         }
        
-        public void Draw(Vector3 scale, float rotX, float rotY, float rotZ)
+        public void Draw()
         {
             List<Tile> visibles = getVisibleTiles();
 
+            //Tiles
             foreach (Tile t in visibles)
             {
-                t.drawIn2DWorldWithoutBones(scale, rotX, rotY, rotZ);
+                t.Draw();
+            }
+
+            //Checkpoints
+            foreach (Checkpoint c in this.Checkpoints)
+            {
+                c.Draw();
+            }
+
+            //Powerups
+            foreach (Powerup p in this.Powerups)
+            {
+                p.Draw();
             }
         }
 
@@ -67,7 +128,7 @@ namespace CR4VE.GameBase.Objects.Terrain
         {
             List<Tile> result = new List<Tile>();
 
-            foreach (Tile t in Singleplayer.terrainMap.TilesList)
+            foreach (Tile t in Singleplayer.terrainMap.TileList)
             {
                 if (Camera2D.BoundFrustum.Intersects(t.Boundary))
                 {

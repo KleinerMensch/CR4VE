@@ -48,7 +48,7 @@ namespace CR4VE.GameLogic.GameStates
         #endregion
 
         #region Update
-        public Game1.EGameState Update(Microsoft.Xna.Framework.GameTime gameTime)
+        public Game1.EGameState Update(GameTime gameTime)
         {
             MouseState mouseState = Mouse.GetState();
 
@@ -58,13 +58,15 @@ namespace CR4VE.GameLogic.GameStates
 
             if (playButton.isClicked)
                 return Game1.EGameState.Singleplayer;
+
             if (exitButton.isClicked)
                 //Gamestate Nothing beendet einfach das Spiel
                 return Game1.EGameState.Nothing;
+
             //if (creditsButton.isClicked == true)
             //    return Game1.EGameState.Credits;
+
             return Game1.EGameState.MainMenu;
-            
         }
         #endregion
 

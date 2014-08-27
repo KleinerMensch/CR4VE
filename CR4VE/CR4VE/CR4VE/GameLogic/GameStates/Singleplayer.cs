@@ -57,6 +57,11 @@ namespace CR4VE.GameLogic.GameStates
         #region Init
         public void Initialize(ContentManager content)
         {
+            //Zugriff auf Attribute der Game1 Klasse
+            spriteBatch = CR4VE.Game1.spriteBatch;
+            graphics = CR4VE.Game1.graphics;
+            cont = content;
+
             #region Terrain
             terrainMap = new Tilemap();
             
@@ -64,13 +69,13 @@ namespace CR4VE.GameLogic.GameStates
 
             int[,] layout = new int[,] {
         
-           {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-           {0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,1,0,1,1,1,0,0,0},
-           {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,3,3,1,0,0,0,1,0,0,0,1,0,0,0,0},
-           {0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,3,0,0,3,3,3,1,0,0,0,0,0,0,0,0,0,0,0},
-           {1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,3,3,3,3,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,3,4,4,3,3,3,3,1,0,0,0,0,0,0,0,0,0,0},
-           {3,3,3,3,4,4,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,4,4,3,3,4,4,3,3,4,4,3,3,4,4,3,4,4,3,3,3,3,3,4,4,4,4,4,4,4,4,4,0},
-           {3,3,3,3,4,4,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,4,4,3,3,4,4,3,3,4,4,3,3,4,4,3,4,4,3,3,3,3,3,4,4,4,4,4,4,4,4,4,0}};
+           {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,96, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+           {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0},
+           {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 3, 3, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0},
+           {0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 3, 0, 0, 3, 3, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+           {1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 3, 4, 4, 3, 3, 3, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+           {3, 3, 3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 3, 4, 4, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0},
+           {3, 3, 3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 3, 4, 4, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0}};
 
             int[,] layout2 = new int[,] { 
 
@@ -194,22 +199,15 @@ namespace CR4VE.GameLogic.GameStates
                 
             int boxSize = 10;
 
-            terrainMap.Generate(layout, boxSize);
-          /*  terrainMap.Generate(layout2, boxSize);
-            terrainMap.Generate(layout3, boxSize);
-            terrainMap.Generate(layout4, boxSize);
-            terrainMap.Generate(layout5, boxSize);
-            terrainMap.Generate(layout6, boxSize);
-            terrainMap.Generate(layout7, boxSize);
-            terrainMap.Generate(layout8, boxSize);*/
-
-
-
-            #endregion
-
-            //Zugriff auf Attribute der Game1 Klasse
-            spriteBatch = CR4VE.Game1.spriteBatch;
-            graphics = CR4VE.Game1.graphics;
+            terrainMap.Generate(layout, boxSize, new Vector3(0,0,0));
+            //terrainMap.Generate(layout2, boxSize, new Vector3(0,0,0));
+            //terrainMap.Generate(layout3, boxSize, new Vector3(0,0,0));
+            //terrainMap.Generate(layout4, boxSize, new Vector3(0,0,0));
+            //terrainMap.Generate(layout5, boxSize, new Vector3(0,0,0));
+            //terrainMap.Generate(layout6, boxSize, new Vector3(0,0,0));
+            //terrainMap.Generate(layout7, boxSize, new Vector3(0,0,0));
+            //terrainMap.Generate(layout8, boxSize, new Vector3(0,0,0));
+            #endregion            
 
             //Camera
             Camera2D.Initialize(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
@@ -224,13 +222,8 @@ namespace CR4VE.GameLogic.GameStates
             ghost = new Character(Vector3.Zero, "skull", content);
             player = new CharacterSeraphin(Vector3.Zero, "sphereD5", content, new BoundingBox(new Vector3(-2.5f, -2.5f, -2.5f), new Vector3(2.5f, 2.5f, 2.5f)));
             
-            //Powerups
-            powerup_health = new Powerup(new Vector3(10,0,0), "powerup_hell_health", content, new BoundingBox(Vector3.Zero, Vector3.One), "health", 50);
-            powerup_mana = new Powerup(new Vector3(50, -20, 0), "powerup_hell_mana", content, new BoundingBox(Vector3.Zero, Vector3.One), "mana", 1);
-            
             //Checkpoints
             lastCheckpoint = new Checkpoint(Vector3.Zero, "checkpoint_hell", content);
-            c1_hell = new Checkpoint(new Vector3(110, 4f, 0), "checkpoint_hell", content);
             
             #region Loading AI
             EnemyRedEye redEye;
@@ -251,8 +244,7 @@ namespace CR4VE.GameLogic.GameStates
             #endregion
 
             //HUD
-            hud = new SeraphinHUD(content, graphics);
-            cont = content;
+            hud = new OpheliaHUD(cont, graphics);
         }
         #endregion
 
@@ -276,11 +268,16 @@ namespace CR4VE.GameLogic.GameStates
             player.Update(gameTime);
 
             //Powerups
-            powerup_health.Update();
-            powerup_mana.Update();
-
+            foreach (Powerup p in terrainMap.PowerupList)
+            {
+                p.Update();
+            }
+            
             //Checkpoints
-            c1_hell.Update();
+            foreach (Checkpoint c in terrainMap.CheckpointList)
+            {
+                c.Update();
+            }
 
             #region Enemies
             foreach (Enemy enemy in enemyList)
@@ -325,21 +322,14 @@ namespace CR4VE.GameLogic.GameStates
             #endregion
 
             #region 3D Objects
-            //Terrain
-            terrainMap.Draw(Vector3.One, 0, 0, 0);
-
-            //Powerups
-            powerup_health.drawIn2DWorld(new Vector3(1,1,1), 0, powerup_health.rotatedDegree, 0);
-            powerup_mana.drawIn2DWorld(new Vector3(0.5f, 0.5f, 0.5f), 0, MathHelper.ToRadians(-90), 0);
+            //Terrain (includes Powerups and Checkpoints)
+            terrainMap.Draw();
 
             //Player or Ghost
             if (GameControls.isGhost)
                 ghost.drawIn2DWorld(new Vector3(0.05f, 0.05f, 0.05f), 0, 0, 0);
             else
                 player.drawIn2DWorldWithoutBones(Vector3.One, 0, MathHelper.ToRadians(90) * player.viewingDirection.X, 0);
-
-            //Checkpoints
-            c1_hell.drawIn2DWorld(new Vector3(0.5f, 0.5f, 0.5f), 0, 0, 0);
 
             #region Enemies
             foreach (AIInterface enemy in enemyList)
