@@ -298,13 +298,28 @@
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
-    <Compile Include="Assets\Models\Terrain\Box10.FBX">
-      <Name>Box10</Name>
+    <Compile Include="Assets\Models\Terrain\Box13.FBX">
+      <Name>Box13</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
-    <Compile Include="Assets\Models\Terrain\Box11.FBX">
-      <Name>Box11</Name>
+    <Compile Include="Assets\Models\Terrain\Box14.FBX">
+      <Name>Box14</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\Checkpoints\checkpoint_hell.FBX">
+      <Name>checkpoint_hell</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\Enemies\enemyShootingNoAnim.FBX">
+      <Name>enemyShootingNoAnim</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\Terrain\Box10.FBX">
+      <Name>Box10</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
@@ -313,13 +328,33 @@
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
-    <Compile Include="Assets\Models\Terrain\Box13.FBX">
-      <Name>Box13</Name>
+    <Compile Include="Assets\Models\Terrain\Box11.FBX">
+      <Name>Box11</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
-    <Compile Include="Assets\Models\Terrain\Box14.FBX">
-      <Name>Box14</Name>
+    <Compile Include="Assets\Models\Terrain\Box15.FBX">
+      <Name>Box15</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\Terrain\Box16.FBX">
+      <Name>Box16</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\Terrain\Box17.FBX">
+      <Name>Box17</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\Terrain\Box18.FBX">
+      <Name>Box18</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\Terrain\Box19.FBX">
+      <Name>Box19</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
