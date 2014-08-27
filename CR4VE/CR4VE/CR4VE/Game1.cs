@@ -157,7 +157,6 @@ namespace CR4VE
             base.Initialize();
         }
 
-
         protected override void LoadContent()
         {
             //Create a new SpriteBatch, which can be used to draw textures.
@@ -165,7 +164,7 @@ namespace CR4VE
 
             // Gamestate am Anfang
             // zum Testen jeweiligen GameState einsetzen
-            this.GameState = EGameState.Singleplayer;
+            this.GameState = EGameState.Arena;
         }
 
 

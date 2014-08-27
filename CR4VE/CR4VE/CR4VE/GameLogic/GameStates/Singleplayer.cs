@@ -35,6 +35,7 @@ namespace CR4VE.GameLogic.GameStates
         public static Powerup powerup_health;
         
         public static List<Enemy> enemyList = new List<Enemy>();
+        public static List<Powerup> powerUpList = new List<Powerup>();
 
         public static HUD hud;
         #endregion
@@ -134,8 +135,6 @@ namespace CR4VE.GameLogic.GameStates
             //load models
             player = new CharacterSeraphin(new Vector3(0, 0, 0), "sphereD5", content, new BoundingBox(new Vector3(-2.5f, -2.5f, -2.5f), new Vector3(2.5f, 2.5f, 2.5f)));
             
-            powerup_health = new Powerup(new Vector3(10,0,0), "powerup_hell_health", content, new BoundingBox(Vector3.Zero, Vector3.One), "energy", 50);
-            
             c1_hell = new Checkpoint(new Vector3(10,0,0), "checkpoint_hell", content, new BoundingBox(new Vector3(-3,-3,-3), new Vector3(3,3,3)));
             
             #region Loading AI
@@ -156,6 +155,14 @@ namespace CR4VE.GameLogic.GameStates
             enemyList.Add(shootingCrystal);
             #endregion
 
+            #region Loading PowerUps
+            powerup_health = new Powerup(new Vector3(10, 0, 0), "powerup_hell_health", content, new BoundingBox(Vector3.Zero, Vector3.One), "energy", 50);
+
+            Powerup opheliaManaPowerUp;
+            opheliaManaPowerUp = new Powerup(new Vector3(50, -30, 0), "powerup_hell_health", content, new BoundingBox(new Vector3(50, -30, 0)+Vector3.Zero, new Vector3(50, -30, 0)+Vector3.One), "energy", 1);
+            powerUpList.Add(opheliaManaPowerUp);
+            #endregion
+
             //HUD
             hud = new SeraphinHUD(content, graphics);
             cont = content;
@@ -169,8 +176,8 @@ namespace CR4VE.GameLogic.GameStates
 
             #region Updating HUD
             hud.Update();
-            /*hud.UpdateMana();
-            if (hud.isDead)
+            hud.UpdateMana();
+            /*if (hud.isDead)
             {
                 return Game1.EGameState.GameOver;
             }*/
@@ -179,10 +186,16 @@ namespace CR4VE.GameLogic.GameStates
             //updating Characters
             player.Update(gameTime);
 
-            //updating Powerups
+            #region Updating Powerups
             powerup_health.Update();
 
-            //updating Enemies
+            foreach (Powerup powerUp in powerUpList)
+            {
+                powerUp.Update();
+            }
+            #endregion
+
+            #region Updating Enemies
             foreach (Enemy enemy in enemyList)
             {
                 enemy.UpdateSingleplayer(gameTime);
@@ -196,6 +209,7 @@ namespace CR4VE.GameLogic.GameStates
                     enemyList.Remove(enemyList.ElementAt(i));
                 }
             }
+            #endregion
 
             //notwendiger Rueckgabewert
             return Game1.EGameState.Singleplayer;
@@ -223,8 +237,14 @@ namespace CR4VE.GameLogic.GameStates
             powerup_health.drawIn2DWorld(new Vector3(1,1,1), 0, powerup_health.rotatedDegree, 0);
 
             player.drawIn2DWorldWithoutBones(Vector3.One, 0, MathHelper.ToRadians(90) * player.viewingDirection.X, 0);
+            player.DrawAttacks();
 
             //animatedEnemy.Draw(gameTime, new Vector3(0.5f,0.5f,0.5f),0,MathHelper.ToRadians(180),0);
+
+            foreach (Powerup powerUp in powerUpList)
+            {
+                powerUp.drawIn2DWorld(new Vector3(0.5f, 0.5f, 0.5f), 0, powerup_health.rotatedDegree, 0);
+            }
 
             //enemies
             foreach (AIInterface enemy in enemyList)
@@ -236,10 +256,6 @@ namespace CR4VE.GameLogic.GameStates
             foreach (Entity laser in CR4VE.GameLogic.AI.EnemyRedEye.laserList)
             {
                 laser.drawIn2DWorld(new Vector3(0.5f, 0.5f, 0.5f), 0, 0, MathHelper.ToRadians(-90) * laser.viewingDirection.X);
-            }
-            foreach (Entity minion in CR4VE.GameLogic.Characters.CharacterSeraphin.minionList)
-            {
-                minion.drawIn2DWorld(new Vector3(0.5f,0.5f,0.5f), 0, 0, 0);
             }
             foreach (Entity crystal in CR4VE.GameLogic.Characters.CharacterFractus.crystalList)
             {

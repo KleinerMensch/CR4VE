@@ -54,6 +54,8 @@ Content\Assets\Sprites\SeraphinHPBar.xnb
 Content\Assets\Sprites\SeraphinPower_LeftEye.xnb
 Content\Assets\Sprites\SeraphinPower_LowerEye.xnb
 Content\Assets\Sprites\SeraphinPower_RightEye.xnb
+Content\Assets\Models\Checkpoints\checkpoint_hell.xnb
+Content\Assets\Models\Enemies\enemyShootingNoAnim.xnb
 Content\Assets\Sprites\Startscreen.png
 Content\Assets\Sprites\ButtonExit.png
 Content\Assets\Sprites\ButtonPlay.png

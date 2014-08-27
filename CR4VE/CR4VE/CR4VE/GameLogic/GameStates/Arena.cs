@@ -63,7 +63,7 @@ namespace CR4VE.GameLogic.GameStates
             #endregion
 
             //HUD
-            hud = new OpheliaHUD(content, graphics);
+            hud = new SeraphinHUD(content, graphics);
             cont = content;
         }
 
@@ -117,16 +117,13 @@ namespace CR4VE.GameLogic.GameStates
             {
                 laser.drawInArena(new Vector3(0.5f, 0.5f, 0.5f), 0, 0, MathHelper.ToRadians(-90) * laser.viewingDirection.X);
             }
-            foreach (Entity minion in CharacterSeraphin.minionList)
-            {
-                minion.drawInArena(new Vector3(0.5f, 0.5f, 0.5f), 0, 0, 0);
-            }
             foreach (Entity crystal in CharacterFractus.crystalList)
             {
                 crystal.drawInArena(new Vector3(0.1f, 0.1f, 0.1f), 0, 0, 0);
             }
 
             player.drawInArenaWithoutBones(new Vector3(0.75f, 0.75f, 0.75f), 0, MathHelper.ToRadians(90) + blickWinkel, 0);
+            player.DrawAttacks();
 
             #region HUD
             spriteBatch.Begin();
