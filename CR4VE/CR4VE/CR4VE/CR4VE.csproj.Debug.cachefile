@@ -41,9 +41,19 @@ Content\Assets\Models\Terrain\Box6.xnb
 Content\Assets\Models\Terrain\Box7.xnb
 Content\Assets\Models\Terrain\Box8.xnb
 Content\Assets\Models\5x5x5Box1.xnb
-Content\Assets\Models\Terrain\Box10.xnb
 Content\Assets\Models\Terrain\Box13.xnb
 Content\Assets\Models\Terrain\Box14.xnb
+Content\Assets\Models\Checkpoints\checkpoint_hell.xnb
+Content\Assets\Models\Enemies\enemyShootingNoAnim.xnb
+Content\Assets\Models\Terrain\Box10.xnb
+Content\Assets\Models\Terrain\Box12.xnb
+Content\Assets\Models\Terrain\Box11.xnb
+Content\Assets\Models\Terrain\Box15.xnb
+Content\Assets\Models\Terrain\Box16.xnb
+Content\Assets\Models\Terrain\Box17.xnb
+Content\Assets\Models\Terrain\Box18.xnb
+Content\Assets\Models\Terrain\Box19.xnb
+Content\Assets\Models\Players\EnemyEye.xnb
 Content\red_eye_0.xnb
 Content\Assets\Models\Powerups\Textures\gold_256x256_0.xnb
 Content\Assets\Models\Terrain\Textures\seamless\lava_bright2_1024x1024_0.xnb
@@ -59,23 +69,15 @@ Content\Grass 1_0.xnb
 Content\fountain-water-texture_0.xnb
 Content\stone_blocks_0.xnb
 Content\Texture acqua piscina water pool_0.xnb
-Content\Assets\Models\Checkpoints\checkpoint_hell.xnb
-Content\Assets\Models\Enemies\enemyShootingNoAnim.xnb
 Content\1430_0.xnb
-Content\Assets\Models\Terrain\Box12.xnb
 Content\Seamless_rock_10_by_LucieG_Stock_0.xnb
-Content\Assets\Models\Terrain\Box11.xnb
 Content\Seamless-Gold-Coins-520x520_0.xnb
-Content\Assets\Models\Terrain\Box15.xnb
-Content\Assets\Models\Terrain\Box16.xnb
-Content\Assets\Models\Terrain\Box17.xnb
-Content\11415_0.xnb
 Content\box_0.xnb
-Content\Assets\Models\Terrain\Box18.xnb
-Content\Lava Cracks_0.xnb
-Content\Assets\Models\Terrain\Box19.xnb
-Content\dark_stone_texture_by_sagemeline_0.xnb
+Content\11415_0.xnb
 Content\10458_0.xnb
+Content\Lava Cracks_0.xnb
+Content\dark_stone_texture_by_sagemeline_0.xnb
+Content\red_eye_1.xnb
 Content\Assets\Sprites\Startscreen.png
 Content\Assets\Sprites\ButtonExit.png
 Content\Assets\Sprites\ButtonPlay.png
