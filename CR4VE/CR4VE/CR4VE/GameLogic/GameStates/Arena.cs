@@ -154,6 +154,10 @@ namespace CR4VE.GameLogic.GameStates
             {
                 laser.drawInArena(new Vector3(0.5f, 0.5f, 0.5f), 0, 0, MathHelper.ToRadians(-90) * laser.viewingDirection.X);
             }
+            foreach (Entity bossMinion in BossHell.minionList)
+            {
+                bossMinion.drawInArena(new Vector3(0.5f, 0.5f, 0.5f), 0, 0, 0);
+            }
             foreach (Entity crystal in CharacterFractus.crystalList)
             {
                 crystal.drawInArena(new Vector3(0.1f, 0.1f, 0.1f), 0, 0, 0);
