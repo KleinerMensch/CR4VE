@@ -59,6 +59,11 @@ namespace CR4VE.GameLogic.Controls
         //Arena
         static Vector3 fallVecPlayer;
         static bool ringOut = false;
+
+        //Vibration
+        static double vibrTimer;
+        static float currentHealth;
+        static float previousHealth;
         #endregion
 
         #region Methods
@@ -107,7 +112,31 @@ namespace CR4VE.GameLogic.Controls
         }
         #endregion
 
+        public static bool isReduced()
+        {
+            previousHealth = currentHealth;
+            currentHealth = Singleplayer.hud.healthLeft;
+
+            return previousHealth > currentHealth;
+        }
+
         //update methods
+
+        public static void updateVibration(GameTime gameTime)
+        {
+            if (isReduced()) {
+                GamePad.SetVibration(PlayerIndex.One, 0.5f, 0.5f);
+                vibrTimer = 1.0f;            
+            }
+
+            vibrTimer -= gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (vibrTimer <= 0.0f) {
+                GamePad.SetVibration(PlayerIndex.One, 0.0f, 0.0f);
+            }
+          
+        }
+        
         public static void updateSingleplayer(GameTime gameTime)
         {
             if (isGhost)

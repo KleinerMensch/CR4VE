@@ -30,7 +30,7 @@ namespace CR4VE.GameLogic.AI
             this.position.X += moveSpeed;
             rotationX -= 0.1f;
 
-            if (this.position.X < 230 || this.position.X > 280)
+            if (this.position.X < 350 || this.position.X > 450)
             {
                 moveSpeed *= -1;
                 rotationX *= -1;

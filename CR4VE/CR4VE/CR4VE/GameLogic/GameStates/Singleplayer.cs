@@ -28,6 +28,8 @@ namespace CR4VE.GameLogic.GameStates
 
         Texture2D background;
 
+        static float vibrTimer;
+
         public static Tilemap terrainMap;
 
         //Player
@@ -243,10 +245,10 @@ namespace CR4VE.GameLogic.GameStates
             EnemySpinningCrystal spinningCrystal;
             EnemyShootingCrystal shootingCrystal;
 
-            redEye = new EnemyRedEye(new Vector3(60, 0, 0),"EnemyEye",content,new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
-            skull = new EnemySkull(new Vector3(260, 0, 0), "skull", content, new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
-            spinningCrystal = new EnemySpinningCrystal(new Vector3(120, 0, 0), "enemySpinningNoAnim", content,new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
-            shootingCrystal = new EnemyShootingCrystal(new Vector3(300, 0, 0), "enemyShootingNoAnim", content, new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
+            redEye = new EnemyRedEye(new Vector3(80, 0, 0),"EnemyEye",content,new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
+            skull = new EnemySkull(new Vector3(400, 0, 0), "skull", content, new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
+            spinningCrystal = new EnemySpinningCrystal(new Vector3(200, 0, 0), "enemySpinningNoAnim", content,new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
+            shootingCrystal = new EnemyShootingCrystal(new Vector3(500, 0, 0), "enemyShootingNoAnim", content, new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
 
             //fill list with enemies
             enemyList.Add(redEye);
@@ -317,6 +319,8 @@ namespace CR4VE.GameLogic.GameStates
                 }
             }
             #endregion
+
+
 
             //notwendiger Rueckgabewert
             return Game1.EGameState.Singleplayer;
