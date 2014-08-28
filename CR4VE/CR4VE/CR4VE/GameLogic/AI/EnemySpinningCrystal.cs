@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CR4VE.GameLogic.Controls;
+using Microsoft.Xna.Framework.Input;
 
 namespace CR4VE.GameLogic.AI
 {
@@ -40,7 +42,7 @@ namespace CR4VE.GameLogic.AI
             } else {
                 //noch zu aendern, was passiert, wenn player nicht mehr in der AggroRange
                 this.position.X += moveSpeed;
-                if (this.position.X < 115 || this.position.X > 180)
+                if (this.position.X < 150 || this.position.X > 250)
                 {
                     moveSpeed *= -1;
                     rotationX *= -1;
@@ -55,6 +57,7 @@ namespace CR4VE.GameLogic.AI
             if (Singleplayer.player.boundary.Intersects(this.boundary))
             {
                 Singleplayer.hud.healthLeft -= (int)(Singleplayer.hud.fullHealth * 0.01);
+                
             }
         }
 
