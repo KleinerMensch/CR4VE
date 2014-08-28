@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using CR4VE.GameBase.Camera;
 using CR4VE.GameBase.Objects;
+using CR4VE.GameLogic.Controls;
 
 namespace CR4VE.GameLogic.GameStates
 {
@@ -26,7 +27,7 @@ namespace CR4VE.GameLogic.GameStates
         //Button creditsButton;
 
         //Entities
-        Entity sword;
+        public static Entity sword;
         #endregion
 
         #region Konstruktor
@@ -36,10 +37,14 @@ namespace CR4VE.GameLogic.GameStates
         #region Init
         public void Initialize(ContentManager content)
         {
-
+            //Game1 Attributes
             graphics = CR4VE.Game1.graphics.GraphicsDevice;
             spriteBatch = CR4VE.Game1.spriteBatch;
 
+            //Camera
+            CameraMenu.Initialize(Game1.graphics.PreferredBackBufferWidth, Game1.graphics.PreferredBackBufferHeight);
+
+            //Sprites
             background = content.Load<Texture2D>("Assets/Sprites/doge");
 
             //Buttons
@@ -52,13 +57,15 @@ namespace CR4VE.GameLogic.GameStates
             //creditsButton.setPosition(new Vector2(350, 360));
 
             //Entities
-            sword = new Entity(new Vector3(0, 0, 0), "mainmenu_sword", content);
+            sword = new Entity(new Vector3(0, -210, 0), "mainmenu_sword", content);
         }
         #endregion
 
         #region Update
         public Game1.EGameState Update(GameTime gameTime)
         {
+            GameControls.updateMainMenu();
+
             MouseState mouseState = Mouse.GetState();
 
             //Buttons
@@ -86,10 +93,11 @@ namespace CR4VE.GameLogic.GameStates
         #region Draw
         public void Draw(GameTime gameTime)
         {
-            #region Background
+            #region Sprites (background)
             spriteBatch.Begin();
 
-            spriteBatch.Draw(background, new Vector2(Camera2D.WorldRectangle.X, Camera2D.WorldRectangle.Y), new Rectangle((int)Camera2D.Position2D.X, (int)Camera2D.Position2D.Y, 800, 600), Color.White);
+            spriteBatch.Draw(background, new Vector2(0,0), CameraMenu.BackgroundRectangle, Color.White);
+            
             playButton.Draw(spriteBatch);
             exitButton.Draw(spriteBatch);
             //creditsButton.Draw(spriteBatch);
@@ -97,12 +105,12 @@ namespace CR4VE.GameLogic.GameStates
             spriteBatch.End();
 
             //GraphicsDevice auf default setzen
-            /*graphics.GraphicsDevice.BlendState = BlendState.Opaque;
-            graphics.GraphicsDevice.DepthStencilState = DepthStencilState.Default;*/
+            graphics.BlendState = BlendState.Opaque;
+            graphics.DepthStencilState = DepthStencilState.Default;
             #endregion
 
             #region 3D Objects
-            sword.drawIn2DWorld(new Vector3(1, 1, 1), 0, 0, 0);
+            sword.drawInMainMenu(new Vector3(1f, 1f, 1f), 0, 0, 0);
             #endregion
         }
         #endregion

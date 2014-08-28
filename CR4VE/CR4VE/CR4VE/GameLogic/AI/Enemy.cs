@@ -29,10 +29,10 @@ namespace CR4VE.GameLogic.AI
         }
         #endregion
 
-        public virtual void UpdateSingleplayer(Microsoft.Xna.Framework.GameTime gameTime) { }
-        public virtual void UpdateArena(Microsoft.Xna.Framework.GameTime gameTime) { }
-        public virtual void Draw(Microsoft.Xna.Framework.GameTime gameTime) { }
-        public virtual void DrawInArena(Microsoft.Xna.Framework.GameTime gameTime) { }
+        public virtual void UpdateSingleplayer(GameTime gameTime) { }
+        public virtual void UpdateArena(GameTime gameTime) { }
+        public virtual void Draw(GameTime gameTime) { }
+        public virtual void DrawInArena(GameTime gameTime) { }
         public virtual void Destroy() { }
     }
 }
