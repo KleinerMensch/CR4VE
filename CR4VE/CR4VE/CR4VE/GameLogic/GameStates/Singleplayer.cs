@@ -273,6 +273,7 @@ namespace CR4VE.GameLogic.GameStates
         #region Update
         public Game1.EGameState Update(GameTime gameTime)
         {
+            
             GameControls.updateSingleplayer(gameTime);
 
             #region HUD
@@ -321,7 +322,7 @@ namespace CR4VE.GameLogic.GameStates
             #endregion
 
 
-
+            GameControls.updateVibration(gameTime);
             //notwendiger Rueckgabewert
             return Game1.EGameState.Singleplayer;
         }
