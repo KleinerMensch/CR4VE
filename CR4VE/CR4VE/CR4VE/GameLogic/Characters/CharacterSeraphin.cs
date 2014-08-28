@@ -34,7 +34,7 @@ namespace CR4VE.GameLogic.Characters
         #region Methods
         public override void Update(GameTime time)
         {
-            Console.WriteLine(launchedRanged);
+            
             #region MinionsFromRangedAttack
             spawn += (float)time.ElapsedGameTime.TotalSeconds;
 

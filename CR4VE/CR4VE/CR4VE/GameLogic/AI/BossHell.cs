@@ -65,7 +65,7 @@ namespace CR4VE.GameLogic.AI
                 if (minion.boundary.Intersects(Arena.player.boundary))
                 {
                     Arena.hud.healthLeft -= (int) 0.01f;
-                    Console.WriteLine("Seraphin hit enemy by RangedAttack");
+                    //Console.WriteLine("Seraphin hit enemy by RangedAttack");
                 }
             }
 
