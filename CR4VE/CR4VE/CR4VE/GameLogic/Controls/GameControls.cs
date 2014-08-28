@@ -40,6 +40,7 @@ namespace CR4VE.GameLogic.Controls
         public static bool borderedBottom = false;
         //(ghost)
         private static readonly float ghostDelay = 0.01f;
+        private static readonly Vector3 checkPointFall = new Vector3(0, 10f, 0);
         private static Vector3 moveVecGhost = Vector3.Zero;
         public static bool isGhost = false;
         
@@ -53,15 +54,11 @@ namespace CR4VE.GameLogic.Controls
         
         public static bool isJumping = false;
         public static bool isAirborne = true;
-        public static bool isFalling = true;
+        public static bool isFalling = false;
 
         //Arena
-        private static readonly float fallDelay = 0.5f;
-        private static readonly float fallSpeed = 0.5f;
-
         static Vector3 fallVecPlayer;
         static bool ringOut = false;
-        
         #endregion
 
         #region Methods
@@ -120,23 +117,23 @@ namespace CR4VE.GameLogic.Controls
                 {
                     Singleplayer.ghost.Position = Singleplayer.player.Position;
 
-                    Singleplayer.player.moveTo(Singleplayer.lastCheckpoint.Position);
+                    Singleplayer.player.moveTo(Singleplayer.lastCheckpoint.Position + checkPointFall);
                 }
 
-                //save moveVecGhost and calculate moveVecPlayer
+                //save moveVecGhost and calculate moveVec for ghost
                 if (moveVecGhost == Vector3.Zero)
                 {
-                    moveVecGhost = Singleplayer.lastCheckpoint.Position - Singleplayer.ghost.Position;
+                    moveVecGhost = Singleplayer.lastCheckpoint.Position + checkPointFall - Singleplayer.ghost.Position;
                     Singleplayer.ghost.viewingDirection = moveVecGhost;
                 }
 
-                Vector3 moveVecPlayer = moveVecGhost * ghostDelay;
+                Vector3 moveVec = moveVecGhost * ghostDelay;
 
                 //update Playerposition
-                Singleplayer.ghost.move(moveVecPlayer);
+                Singleplayer.ghost.move(moveVec);
 
                 //check if still a ghost and reanimate player if not
-                if (Math.Abs(Singleplayer.ghost.Position.Length() - Singleplayer.lastCheckpoint.Position.Length()) < 0.25f)
+                if (Math.Abs(Singleplayer.ghost.Position.Length() - (Singleplayer.lastCheckpoint.Position + checkPointFall).Length()) < 0.25f)
                 {
                     moveVecGhost = Vector3.Zero;
                     
@@ -146,7 +143,7 @@ namespace CR4VE.GameLogic.Controls
                 }
 
                 //move camera and realign BoundingFrustum
-                Camera2D.realign(moveVecPlayer, Singleplayer.ghost.Position);
+                Camera2D.realign(moveVec, Singleplayer.ghost.Position);
             }
             else
             {

@@ -39,6 +39,10 @@ namespace CR4VE.GameBase.Objects.Terrain
         #endregion
 
         #region Methods
+        public void Draw()
+        {
+            this.drawIn2DWorldWithoutBones(Vector3.One, 0, 0, 0);
+        }
         #endregion
     }
 }

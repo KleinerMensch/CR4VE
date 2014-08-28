@@ -155,8 +155,6 @@ namespace CR4VE
 
             graphics.ApplyChanges();
 
-            SaveGame.Load();
-
             base.Initialize();
         }
 
@@ -185,41 +183,49 @@ namespace CR4VE
                 case EGameState.Nothing:
                     // do nothing
                     break;
+
                 case EGameState.StartScreen:
                     currentState = this.startScreen.Update(gameTime);
                     if (currentState != EGameState.StartScreen)
                         this.GameState = currentState;
                     break;
+
                 case EGameState.MainMenu:
                     currentState = this.menu.Update(gameTime);
                     if (currentState != EGameState.MainMenu)
                         this.GameState = currentState;
                     break;
+
                 case EGameState.Singleplayer:
                     currentState = this.singlePlayer.Update(gameTime);
                     if (currentState != EGameState.Singleplayer)
                         this.GameState = currentState;
                     break;
+
                 case EGameState.Multiplayer:
                     currentState = this.multiPlayer.Update(gameTime);
                     if (currentState != EGameState.Multiplayer)
                         this.GameState = currentState;
                     break;
+
                 case EGameState.Continue:
                     currentState = this.cont.Update(gameTime);
                     if (currentState != EGameState.Continue)
                         this.GameState = currentState;
                     break;
+
                 case EGameState.GameOver:
                     currentState = this.gameOver.Update(gameTime);
                     if (currentState != EGameState.GameOver)
                         this.GameState = currentState;
                     break;
+
                 case EGameState.Credits:
                     currentState = this.credits.Update(gameTime);
                     if (currentState != EGameState.Credits)
                         this.GameState = currentState;
                     break;
+
                 case EGameState.Arena:
                     currentState = this.arena.Update(gameTime);
                     if (currentState != EGameState.Arena)
