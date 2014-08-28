@@ -14,7 +14,7 @@ namespace CR4VE.GameBase.Camera
         private static Vector3 camTarget = new Vector3(0, 0, 0);
 
         private static Vector2 viewPortSize;
-        private static Rectangle worldRec = new Rectangle(0, 0, 0, 0);
+        private static Rectangle worldRec = new Rectangle(0, 0, 1920, 1080);
         private static float ratio;
         
         //Viewport BoundingFrunstum
@@ -134,8 +134,6 @@ namespace CR4VE.GameBase.Camera
             BoundFrustum = new BoundingFrustum(viewMatr * projMatr);
             frustumPos = Position3D;
             frustumTarget = CamTarget;
-
-            WorldRectangle = new Rectangle(0, 0, 1920, 1080);
         }
 
         //moves camera rectangle in 2D screen coordinates

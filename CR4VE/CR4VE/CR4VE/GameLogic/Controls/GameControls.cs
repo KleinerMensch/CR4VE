@@ -406,6 +406,15 @@ namespace CR4VE.GameLogic.Controls
                 }
             }            
         }
+
+        public static void updateMainMenu()
+        {
+            previousKeyboard = currentKeyboard;
+            currentKeyboard = Keyboard.GetState();
+
+            if (currentKeyboard.IsKeyDown(Keys.Up)) MainMenu.sword.Position += new Vector3(0, 0.5f, 0);
+            if (currentKeyboard.IsKeyDown(Keys.Down)) MainMenu.sword.Position += new Vector3(0, -0.5f, 0);
+        }
         #endregion
     }
 }

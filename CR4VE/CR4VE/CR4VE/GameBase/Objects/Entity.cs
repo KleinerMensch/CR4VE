@@ -380,8 +380,6 @@ namespace CR4VE.GameBase.Objects
         //zeichnet 3D Objekt im Bezug auf den Viewport
         public void drawOn2DScreen(Vector3 scale, float rotX, float rotY, float rotZ)
         {
-            Matrix view = Camera2D.ViewMatrix;
-            Matrix projection = Camera2D.ProjectionMatrix;
             Matrix rotation = Matrix.CreateRotationX(rotX) * Matrix.CreateRotationY(rotY) * Matrix.CreateRotationZ(rotZ);
 
             Matrix world = Matrix.CreateScale(scale) * rotation;
@@ -390,8 +388,8 @@ namespace CR4VE.GameBase.Objects
             {
                 foreach (BasicEffect effect in mesh.Effects)
                 {
-                    effect.View = view;
-                    effect.Projection = projection;
+                    effect.View = Camera2D.ViewMatrix;
+                    effect.Projection = Camera2D.ProjectionMatrix;
                     effect.World = world;
                     effect.EnableDefaultLighting();
                 }
@@ -402,8 +400,6 @@ namespace CR4VE.GameBase.Objects
         //zeichnet 3D Objekt in Bezug auf die Spielwelt
         public void drawIn2DWorldWithoutBones(Vector3 scale, float rotX, float rotY, float rotZ)
         {
-            Matrix view = Camera2D.ViewMatrix;
-            Matrix projection = Camera2D.ProjectionMatrix;
             Matrix rotation = Matrix.CreateRotationX(rotX) * Matrix.CreateRotationY(rotY) * Matrix.CreateRotationZ(rotZ);
             Matrix translation = Matrix.CreateTranslation(Camera2D.transform3D(this.Position));
 
@@ -413,8 +409,8 @@ namespace CR4VE.GameBase.Objects
             {
                 foreach (BasicEffect effect in mesh.Effects)
                 {
-                    effect.View = view;
-                    effect.Projection = projection;
+                    effect.View = Camera2D.ViewMatrix;
+                    effect.Projection = Camera2D.ProjectionMatrix;
                     effect.World = world;
                     effect.EnableDefaultLighting();
                 }
@@ -427,8 +423,6 @@ namespace CR4VE.GameBase.Objects
             Matrix[] transforms = new Matrix[model.Bones.Count];
             model.CopyAbsoluteBoneTransformsTo(transforms);
 
-            Matrix view = Camera2D.ViewMatrix;
-            Matrix projection = Camera2D.ProjectionMatrix;
             Matrix rotation = Matrix.CreateRotationX(rotX) * Matrix.CreateRotationY(rotY) * Matrix.CreateRotationZ(rotZ);
             Matrix translation = Matrix.CreateTranslation(Camera2D.transform3D(this.Position));
 
@@ -438,8 +432,8 @@ namespace CR4VE.GameBase.Objects
             {
                 foreach (BasicEffect effect in mesh.Effects)
                 {
-                    effect.View = view;
-                    effect.Projection = projection;
+                    effect.View = Camera2D.ViewMatrix;
+                    effect.Projection = Camera2D.ProjectionMatrix;
                     effect.World = transforms[mesh.ParentBone.Index] * world;
                     effect.EnableDefaultLighting();
                 }
@@ -450,8 +444,6 @@ namespace CR4VE.GameBase.Objects
         //zeichnet 3D Objekt in Bezug auf die Arenakamera
         public void drawInArenaWithoutBones(Vector3 scale, float rotX, float rotY, float rotZ)
         {
-            Matrix view = CameraArena.ViewMatrix;
-            Matrix projection = CameraArena.ProjectionMatrix;
             Matrix rotation = Matrix.CreateRotationX(rotX) * Matrix.CreateRotationY(rotY) * Matrix.CreateRotationZ(rotZ);
             Matrix translation = Matrix.CreateTranslation(this.Position);
 
@@ -461,8 +453,8 @@ namespace CR4VE.GameBase.Objects
             {
                 foreach (BasicEffect effect in mesh.Effects)
                 {
-                    effect.View = view;
-                    effect.Projection = projection;
+                    effect.View = CameraArena.ViewMatrix;
+                    effect.Projection = Camera2D.ProjectionMatrix;
                     effect.World = world;
                     effect.EnableDefaultLighting();
                 }
@@ -474,8 +466,6 @@ namespace CR4VE.GameBase.Objects
             Matrix[] transforms = new Matrix[model.Bones.Count];
             model.CopyAbsoluteBoneTransformsTo(transforms);
 
-            Matrix view = CameraArena.ViewMatrix;
-            Matrix projection = CameraArena.ProjectionMatrix;
             Matrix rotation = Matrix.CreateRotationX(rotX) * Matrix.CreateRotationY(rotY) * Matrix.CreateRotationZ(rotZ);
             Matrix translation = Matrix.CreateTranslation(this.Position);
 
@@ -487,8 +477,41 @@ namespace CR4VE.GameBase.Objects
             {
                 foreach (BasicEffect effect in mesh.Effects)
                 {
-                    effect.View = view;
-                    effect.Projection = projection;
+                    effect.View = CameraArena.ViewMatrix;
+                    effect.Projection = CameraArena.ProjectionMatrix;
+                    effect.World = transforms[mesh.ParentBone.Index] * world;
+                    effect.EnableDefaultLighting();
+
+                    //Advanced Lighting Parameters
+                    /*effect.DirectionalLight0.Enabled = true;
+                    effect.DirectionalLight0.Direction = lightPos0;
+
+                    effect.DirectionalLight1.Enabled = false;
+                    effect.DirectionalLight2.Enabled = false;
+                    Console.Clear();
+                    Console.WriteLine("0: " + effect.DirectionalLight0.Direction);
+                    Console.WriteLine("1: " + effect.DirectionalLight1.Direction);
+                    Console.WriteLine("2: " + effect.DirectionalLight2.Direction);*/
+                }
+                mesh.Draw();
+            }
+        }
+        public void drawInMainMenu(Vector3 scale, float rotX, float rotY, float rotZ)
+        {
+            Matrix[] transforms = new Matrix[model.Bones.Count];
+            model.CopyAbsoluteBoneTransformsTo(transforms);
+
+            Matrix rotation = Matrix.CreateRotationX(rotX) * Matrix.CreateRotationY(rotY) * Matrix.CreateRotationZ(rotZ);
+            Matrix translation = Matrix.CreateTranslation(CameraMenu.transform3D(this.Position));
+
+            Matrix world = Matrix.CreateScale(scale) * rotation * translation;
+
+            foreach (ModelMesh mesh in this.model.Meshes)
+            {
+                foreach (BasicEffect effect in mesh.Effects)
+                {
+                    effect.View = CameraMenu.ViewMatrix;
+                    effect.Projection = CameraMenu.ProjectionMatrix;
                     effect.World = transforms[mesh.ParentBone.Index] * world;
                     effect.EnableDefaultLighting();
 

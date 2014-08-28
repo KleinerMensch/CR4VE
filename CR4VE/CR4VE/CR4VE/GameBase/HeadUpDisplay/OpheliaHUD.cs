@@ -60,13 +60,13 @@ namespace CR4VE.GameBase.HeadUpDisplay
             else if (CharacterOphelia.manaLeft == 0)
                 opheliaPowerColor = new Color(0, 0, 0, 0);
 
-            for (int i = 0; i < Singleplayer.powerUpList.Count; i++)
+            for (int i = 0; i < Singleplayer.terrainMap.PowerupList.Count; i++)
             {
                 if (CharacterOphelia.manaLeft < 3)
                 {
-                    if (Singleplayer.powerUpList[i].boundary.Intersects(Singleplayer.player.boundary))
+                    if (Singleplayer.terrainMap.PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
                     {
-                        Singleplayer.powerUpList.Remove(Singleplayer.powerUpList.ElementAt(i));
+                        Singleplayer.terrainMap.PowerupList.Remove(Singleplayer.terrainMap.PowerupList.ElementAt(i));
                         CharacterOphelia.manaLeft += 1;
                     }
                 }

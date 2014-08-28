@@ -8,6 +8,8 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using CR4VE.GameBase.Camera;
+using CR4VE.GameBase.Objects;
+using CR4VE.GameLogic.Controls;
 
 namespace CR4VE.GameLogic.GameStates
 {
@@ -19,9 +21,13 @@ namespace CR4VE.GameLogic.GameStates
 
         Texture2D background;
 
+        //Buttons
         Button playButton;
         Button exitButton;
         //Button creditsButton;
+
+        //Entities
+        public static Entity sword;
         #endregion
 
         #region Konstruktor
@@ -31,12 +37,17 @@ namespace CR4VE.GameLogic.GameStates
         #region Init
         public void Initialize(ContentManager content)
         {
-
+            //Game1 Attributes
             graphics = CR4VE.Game1.graphics.GraphicsDevice;
             spriteBatch = CR4VE.Game1.spriteBatch;
 
+            //Camera
+            CameraMenu.Initialize(Game1.graphics.PreferredBackBufferWidth, Game1.graphics.PreferredBackBufferHeight);
+
+            //Sprites
             background = content.Load<Texture2D>("Assets/Sprites/doge");
 
+            //Buttons
             playButton = new Button(content.Load<Texture2D>("Assets/Sprites/ButtonPlay"), graphics);
             exitButton = new Button(content.Load<Texture2D>("Assets/Sprites/ButtonExit"), graphics);
             //creditsButton = new Button(content.Load<Texture2D>("Assets/Sprites/ButtonExit"), graphics);
@@ -44,14 +55,20 @@ namespace CR4VE.GameLogic.GameStates
             playButton.setPosition(new Vector2(350, 300));
             exitButton.setPosition(new Vector2(350, 330));
             //creditsButton.setPosition(new Vector2(350, 360));
+
+            //Entities
+            sword = new Entity(new Vector3(0, -210, 0), "mainmenu_sword", content);
         }
         #endregion
 
         #region Update
         public Game1.EGameState Update(GameTime gameTime)
         {
+            GameControls.updateMainMenu();
+
             MouseState mouseState = Mouse.GetState();
 
+            //Buttons
             playButton.Update(mouseState);
             exitButton.Update(mouseState);
             //creditsButton.Update(mouseState);
@@ -66,19 +83,35 @@ namespace CR4VE.GameLogic.GameStates
             //if (creditsButton.isClicked == true)
             //    return Game1.EGameState.Credits;
 
+            //Entities
+            //sword
+
             return Game1.EGameState.MainMenu;
         }
         #endregion
 
         #region Draw
-        public void Draw(Microsoft.Xna.Framework.GameTime gameTime)
+        public void Draw(GameTime gameTime)
         {
+            #region Sprites (background)
             spriteBatch.Begin();
-            spriteBatch.Draw(background, new Vector2(Camera2D.WorldRectangle.X, Camera2D.WorldRectangle.Y), new Rectangle((int)Camera2D.Position2D.X, (int)Camera2D.Position2D.Y, 800, 600), Color.White);
+
+            spriteBatch.Draw(background, new Vector2(0,0), CameraMenu.BackgroundRectangle, Color.White);
+            
             playButton.Draw(spriteBatch);
             exitButton.Draw(spriteBatch);
             //creditsButton.Draw(spriteBatch);
+
             spriteBatch.End();
+
+            //GraphicsDevice auf default setzen
+            graphics.BlendState = BlendState.Opaque;
+            graphics.DepthStencilState = DepthStencilState.Default;
+            #endregion
+
+            #region 3D Objects
+            sword.drawInMainMenu(new Vector3(1f, 1f, 1f), 0, 0, 0);
+            #endregion
         }
         #endregion
 
