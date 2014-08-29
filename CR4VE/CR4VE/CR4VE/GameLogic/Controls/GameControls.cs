@@ -112,10 +112,19 @@ namespace CR4VE.GameLogic.Controls
         }
         #endregion
 
-        public static bool isReduced()
+        public static bool isReduced(Game1.EGameState state)
         {
-            previousHealth = currentHealth;
-            currentHealth = Singleplayer.hud.healthLeft;
+            if (state == Game1.EGameState.Singleplayer)
+            {
+                previousHealth = currentHealth;
+                currentHealth = Singleplayer.hud.healthLeft;
+            }
+
+            else if (state == Game1.EGameState.Arena)
+            {
+                previousHealth = currentHealth;
+                currentHealth = Arena.hud.healthLeft;
+            }
 
             return previousHealth > currentHealth;
         }
@@ -124,7 +133,7 @@ namespace CR4VE.GameLogic.Controls
 
         public static void updateVibration(GameTime gameTime)
         {
-            if (isReduced()) {
+            if (isReduced(Game1.currentState)) {
                 GamePad.SetVibration(PlayerIndex.One, 0.5f, 0.5f);
                 vibrTimer = 1.0f;            
             }

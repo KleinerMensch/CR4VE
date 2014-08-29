@@ -58,8 +58,16 @@ namespace CR4VE.GameBase.Objects.Terrain
                                 Vector3 position = start + new Vector3(x * size, -y * size, 0);
                                 BoundingBox boundary = new BoundingBox(position + new Vector3(-size / 2, -size / 2, -size / 2), position + new Vector3(size / 2, size / 2, size / 2));
 
+                                //define Tile damage
+                                int damage = 0;
+
+                                if (number == 4 || number == 8 || number == 14)
+                                    damage = Tile.waterDmg;
+                                else if (number == 16)
+                                    damage = Tile.lavaDmg;
+
                                 //harten String noch ersetzen
-                                Tiles.Add(new Tile("Box", number, position, boundary));
+                                Tiles.Add(new Tile("Box", number, position, boundary, damage));
                             } break;
 
                         //do nothing
@@ -130,7 +138,12 @@ namespace CR4VE.GameBase.Objects.Terrain
 
             foreach (Tile t in Singleplayer.terrainMap.TileList)
             {
-                if (Camera2D.BoundFrustum.Intersects(t.Boundary))
+                //slightly larger Frustum than Camera2D.BoundingFrustum to prevent clipping errors
+                Matrix clippView = Matrix.CreateLookAt(Camera2D.FrustumPosition + new Vector3(0, 0, 50), Camera2D.FrustumTarget, Vector3.Up);
+                
+                BoundingFrustum clippingFrus = new BoundingFrustum(clippView * Camera2D.ProjectionMatrix);
+
+                if (clippingFrus.Intersects(t.Boundary))
                 {
                     result.Add(t);
                 }

@@ -28,15 +28,14 @@ namespace CR4VE.GameLogic.GameStates
 
         Texture2D background;
 
-        static float vibrTimer;
-
+        //Terrain
         public static Tilemap terrainMap;
 
         //Player
         public static Character ghost;
         public static Character player;
 
-        //Checkpoints
+        //reset point if dead
         public static Checkpoint lastCheckpoint;
         
         //Enemies
@@ -303,8 +302,13 @@ namespace CR4VE.GameLogic.GameStates
             }
             #endregion
 
+<<<<<<< HEAD
 
             GameControls.updateVibration(gameTime);
+=======
+            GameControls.updateVibration(gameTime);
+
+>>>>>>> 3cf717b8087d3869eefe29836bcf2f2818dad638
             //notwendiger Rueckgabewert
             return Game1.EGameState.Singleplayer;
         }
