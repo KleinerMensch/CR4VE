@@ -19,6 +19,11 @@ namespace CR4VE.GameBase.Objects.Terrain
     {
         #region Attributes
         private static ContentManager content;
+
+        //Damage Values
+        public static readonly int waterDmg = 210;
+        public static readonly int lavaDmg = 1000;
+        private int dmg;
         #endregion
 
         #region Properties
@@ -27,14 +32,19 @@ namespace CR4VE.GameBase.Objects.Terrain
             protected get { return content; }
             set { content = value; }
         }
+        public int Damage
+        {
+            get { return this.dmg; }
+        }
         #endregion
 
         #region Constructors
-        public Tile(String modelType, int modelNumber, Vector3 pos, BoundingBox bound)
+        public Tile(String modelType, int modelNumber, Vector3 pos, BoundingBox bound, int damage)
         {
             this.position = pos;
             this.model = Content.Load<Model>("Assets/Models/Terrain/" + modelType + modelNumber);
             this.boundary = bound;
+            this.dmg = damage;
         }
         #endregion
 

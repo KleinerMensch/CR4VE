@@ -360,6 +360,10 @@ namespace CR4VE.GameBase.Objects
                                         float deltaY = Math.Abs(t.Boundary.Max.Y - this.Boundary.Min.Y);
 
                                         this.move(new Vector3(0, -deltaY, 0));
+
+                                        //DEBUG
+                                        if (t.Damage != 0)
+                                            Singleplayer.hud.healthLeft -= t.Damage;
                                     }
                                 }
                             }
