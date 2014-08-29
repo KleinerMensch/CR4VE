@@ -217,7 +217,7 @@ namespace CR4VE.GameLogic.Controls
                 Vector3 moveVecPlayer = new Vector3(0, 0, 0);
 
                 #region left and right movement
-                if ((currentKeyboard.IsKeyDown(Keys.A) || currGamepad.IsButtonDown(Buttons.DPadLeft)) && !borderedLeft)
+                if ((currentKeyboard.IsKeyDown(Keys.A) || currGamepad.IsButtonDown(Buttons.LeftThumbstickLeft)) && !borderedLeft)
                 {
                     moveVecPlayer += new Vector3(-accel, 0, 0);
 
@@ -227,7 +227,7 @@ namespace CR4VE.GameLogic.Controls
                     Singleplayer.player.viewingDirection.X = -1;
                 }
 
-                if ((currentKeyboard.IsKeyDown(Keys.D) || currGamepad.IsButtonDown(Buttons.DPadRight)) && !borderedRight)
+                if ((currentKeyboard.IsKeyDown(Keys.D) || currGamepad.IsButtonDown(Buttons.LeftThumbstickRight)) && !borderedRight)
                 {
                     moveVecPlayer += new Vector3(accel, 0, 0);
 
@@ -353,10 +353,10 @@ namespace CR4VE.GameLogic.Controls
 
             Vector3 moveVecPlayer1 = new Vector3(0, 0, 0);
 
-            if (currentKeyboard.IsKeyDown(Keys.W) || currGamepad.IsButtonDown(Buttons.DPadUp)) moveVecPlayer1 += new Vector3(0, 0, -accel);
-            if (currentKeyboard.IsKeyDown(Keys.A) || currGamepad.IsButtonDown(Buttons.DPadLeft)) moveVecPlayer1 += new Vector3(-accel, 0, 0);
-            if (currentKeyboard.IsKeyDown(Keys.S) || currGamepad.IsButtonDown(Buttons.DPadDown)) moveVecPlayer1 += new Vector3(0, 0, accel);
-            if (currentKeyboard.IsKeyDown(Keys.D) || currGamepad.IsButtonDown(Buttons.DPadRight)) moveVecPlayer1 += new Vector3(accel, 0, 0);
+            if (currentKeyboard.IsKeyDown(Keys.W) || currGamepad.IsButtonDown(Buttons.LeftThumbstickUp)) moveVecPlayer1 += new Vector3(0, 0, -accel);
+            if (currentKeyboard.IsKeyDown(Keys.A) || currGamepad.IsButtonDown(Buttons.LeftThumbstickLeft)) moveVecPlayer1 += new Vector3(-accel, 0, 0);
+            if (currentKeyboard.IsKeyDown(Keys.S) || currGamepad.IsButtonDown(Buttons.LeftThumbstickDown)) moveVecPlayer1 += new Vector3(0, 0, accel);
+            if (currentKeyboard.IsKeyDown(Keys.D) || currGamepad.IsButtonDown(Buttons.LeftThumbstickRight)) moveVecPlayer1 += new Vector3(accel, 0, 0);
 
             Multiplayer.player1.move(moveVecPlayer1);
         }
@@ -404,10 +404,10 @@ namespace CR4VE.GameLogic.Controls
 
                 Vector3 moveVecPlayer = new Vector3(0, 0, 0);
 
-                if (currentKeyboard.IsKeyDown(Keys.W) || currGamepad.IsButtonDown(Buttons.DPadUp)) moveVecPlayer += new Vector3(0, 0, -accel);
-                if (currentKeyboard.IsKeyDown(Keys.A) || currGamepad.IsButtonDown(Buttons.DPadLeft)) moveVecPlayer += new Vector3(-accel, 0, 0);
-                if (currentKeyboard.IsKeyDown(Keys.S) || currGamepad.IsButtonDown(Buttons.DPadDown)) moveVecPlayer += new Vector3(0, 0, accel);
-                if (currentKeyboard.IsKeyDown(Keys.D) || currGamepad.IsButtonDown(Buttons.DPadRight)) moveVecPlayer += new Vector3(accel, 0, 0);
+                if (currentKeyboard.IsKeyDown(Keys.W) || currGamepad.IsButtonDown(Buttons.LeftThumbstickUp)) moveVecPlayer += new Vector3(0, 0, -accel);
+                if (currentKeyboard.IsKeyDown(Keys.A) || currGamepad.IsButtonDown(Buttons.LeftThumbstickLeft)) moveVecPlayer += new Vector3(-accel, 0, 0);
+                if (currentKeyboard.IsKeyDown(Keys.S) || currGamepad.IsButtonDown(Buttons.LeftThumbstickDown)) moveVecPlayer += new Vector3(0, 0, accel);
+                if (currentKeyboard.IsKeyDown(Keys.D) || currGamepad.IsButtonDown(Buttons.LeftThumbstickRight)) moveVecPlayer += new Vector3(accel, 0, 0);
 
                 if (moveVecPlayer != new Vector3(0, 0, 0))
                 {

@@ -27,17 +27,29 @@ namespace CR4VE.GameLogic.AI
         public override void UpdateSingleplayer(Microsoft.Xna.Framework.GameTime gameTime)
         {
             //skull rolling over the floor
-            this.position.X += moveSpeed;
+            //this.position.X += moveSpeed;
             rotationX -= 0.1f;
 
-            if (this.position.X < 350 || this.position.X > 450)
+            Vector3 playerPos = Singleplayer.player.position;
+            Vector3 direction = this.position - playerPos;
+            float distance = direction.Length();
+
+            if (distance < 50)
+            {
+                direction.Normalize();
+                direction = moveSpeed * direction;
+                //this.position += direction;
+                this.move(direction);
+            }
+
+            else if (this.position.X < 350 || this.position.X > 450)
             {
                 moveSpeed *= -1;
                 rotationX *= -1;
                 rotationY += MathHelper.ToRadians(180);
             }
 
-            //updating bounding box
+            //updating bounding box & check collision
             this.boundary.Min = this.position + new Vector3(-3, -3, -3);
             this.boundary.Max = this.position + new Vector3(3, 3, 3);
 

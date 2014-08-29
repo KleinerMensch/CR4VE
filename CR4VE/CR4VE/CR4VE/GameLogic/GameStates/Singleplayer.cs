@@ -256,7 +256,7 @@ namespace CR4VE.GameLogic.GameStates
 
             //Player
             ghost = new Character(Vector3.Zero, "skull", content);
-            player = new CharacterOphelia(Vector3.Zero, "sphereD5", content, new BoundingBox(new Vector3(-2.5f, -2.5f, -2.5f), new Vector3(2.5f, 2.5f, 2.5f)));
+            player = new CharacterSeraphin(Vector3.Zero, "sphereD5", content, new BoundingBox(new Vector3(-2.5f, -2.5f, -2.5f), new Vector3(2.5f, 2.5f, 2.5f)));
             
             //Checkpoints
             lastCheckpoint = new Checkpoint(Vector3.Zero, "checkpoint_hell", content);
@@ -274,13 +274,13 @@ namespace CR4VE.GameLogic.GameStates
 
             //fill list with enemies
             enemyList.Add(redEye);
-            enemyList.Add(spinningCrystal);
+            //enemyList.Add(spinningCrystal);
             enemyList.Add(skull);
             enemyList.Add(shootingCrystal);
             #endregion
 
             //HUD
-            hud = new OpheliaHUD(cont, graphics);
+            hud = new SeraphinHUD(cont, graphics);
         }
         #endregion
 
