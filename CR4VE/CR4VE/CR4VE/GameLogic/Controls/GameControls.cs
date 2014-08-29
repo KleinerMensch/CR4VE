@@ -120,11 +120,11 @@ namespace CR4VE.GameLogic.Controls
                 currentHealth = Singleplayer.hud.healthLeft;
             }
 
-            //else if (state == Game1.EGameState.Arena)
+           // else if (state == Game1.EGameState.Arena)
             //{
-            //    previousHealth = currentHealth;
+              //  previousHealth = currentHealth;
             //    currentHealth = Arena.hud.healthLeft;
-            //}
+           // }
 
             return previousHealth > currentHealth;
         }
