@@ -48,12 +48,10 @@ namespace CR4VE.GameLogic.GameStates
             background = content.Load<Texture2D>("Assets/Sprites/doge");
 
             //Buttons
-            playButton = new Button(content.Load<Texture2D>("Assets/Sprites/ButtonPlay"), graphics);
-            exitButton = new Button(content.Load<Texture2D>("Assets/Sprites/ButtonExit"), graphics);
+            //exitButton = new Button(content.Load<Texture2D>("Assets/Sprites/ButtonExit"), graphics);
             //creditsButton = new Button(content.Load<Texture2D>("Assets/Sprites/ButtonExit"), graphics);
 
-            playButton.setPosition(new Vector2(350, 300));
-            exitButton.setPosition(new Vector2(350, 330));
+            //exitButton.setPosition(new Vector2(350, 330));
             //creditsButton.setPosition(new Vector2(350, 360));
 
             //Entities
@@ -64,29 +62,10 @@ namespace CR4VE.GameLogic.GameStates
         #region Update
         public Game1.EGameState Update(GameTime gameTime)
         {
-            GameControls.updateMainMenu();
-            Console.WriteLine(sword.Position);
-            MouseState mouseState = Mouse.GetState();
+            //get next Gamestate based on player input
+            Game1.EGameState nextState = GameControls.updateMainMenu();
 
-            //Buttons
-            playButton.Update(mouseState);
-            exitButton.Update(mouseState);
-            //creditsButton.Update(mouseState);
-
-            if (playButton.isClicked)
-                return Game1.EGameState.Singleplayer;
-
-            if (exitButton.isClicked)
-                //Gamestate Nothing beendet einfach das Spiel
-                return Game1.EGameState.Nothing;
-
-            //if (creditsButton.isClicked == true)
-            //    return Game1.EGameState.Credits;
-
-            //Entities
-            //sword
-
-            return Game1.EGameState.MainMenu;
+            return nextState;
         }
         #endregion
 
@@ -98,8 +77,7 @@ namespace CR4VE.GameLogic.GameStates
 
             //spriteBatch.Draw(background, new Vector2(0,0), CameraMenu.BackgroundRectangle, Color.White);
             
-            playButton.Draw(spriteBatch);
-            exitButton.Draw(spriteBatch);
+            //exitButton.Draw(spriteBatch);
             //creditsButton.Draw(spriteBatch);
 
             spriteBatch.End();

@@ -237,11 +237,11 @@ namespace CR4VE.GameLogic.GameStates
 
             terrainMap.Generate(layout, boxSize, new Vector3(0,0,0));
             terrainMap.Generate(layout2, boxSize, new Vector3(520,20,0)); //520,20
-            terrainMap.Generate(layout3, boxSize, new Vector3(1040,-50,0)); //1040,-50
-            terrainMap.Generate(layout4, boxSize, new Vector3(1560,-150,0)); // 1560,-150
-            terrainMap.Generate(layout5, boxSize, new Vector3(2120,-270,0)); //2120,-270
-            terrainMap.Generate(layout6, boxSize, new Vector3(2680,-280,0));
-           // terrainMap.Generate(layout7, boxSize, new Vector3(0,0,0));
+            //terrainMap.Generate(layout3, boxSize, new Vector3(1040,-50,0)); //1040,-50
+            //terrainMap.Generate(layout4, boxSize, new Vector3(1560,-150,0)); // 1560,-150
+            //terrainMap.Generate(layout5, boxSize, new Vector3(2120,-270,0)); //2120,-270
+            //terrainMap.Generate(layout6, boxSize, new Vector3(2680,-280,0));
+            //terrainMap.Generate(layout7, boxSize, new Vector3(0,0,0));
             //terrainMap.Generate(layout8, boxSize, new Vector3(0,0,0));
             #endregion            
 
@@ -287,16 +287,17 @@ namespace CR4VE.GameLogic.GameStates
         #region Update
         public Game1.EGameState Update(GameTime gameTime)
         {
-            
             GameControls.updateSingleplayer(gameTime);
 
             #region HUD
             hud.Update();
+            
             hud.UpdateMana();
-            /*if (hud.isDead)
+            
+            if (hud.isDead)
             {
                 return Game1.EGameState.GameOver;
-            }*/
+            }
             #endregion
 
             //Player
@@ -329,8 +330,6 @@ namespace CR4VE.GameLogic.GameStates
                 }
             }
             #endregion
-
-
 
             GameControls.updateVibration(gameTime);
 

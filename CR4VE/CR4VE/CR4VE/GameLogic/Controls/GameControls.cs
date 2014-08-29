@@ -65,17 +65,19 @@ namespace CR4VE.GameLogic.Controls
         static float currentHealth;
         static float previousHealth;
 
-        //Menu
+        //MainMenu
         private static Vector3 moveVecSword;
         private static bool isMoving = false;
+        private static int menuPosIndex = 0;
 
         private static readonly Vector3[] menuPositions = new Vector3[]
         {
-            new Vector3(0, -248.5f, 0), //Start
-            new Vector3(0, -84.5f, 0), //Singleplayer
-            new Vector3(0, 0.5f, 0), //Multiplayer
-            new Vector3(0, 96.5f, 0), //Options
-            new Vector3(0, 110f, 0), //detailed Options
+            new Vector3(0, -238, -10), //Start
+            new Vector3(0, -84, -10), //Singleplayer
+            new Vector3(0, 0, -10), //Multiplayer
+            new Vector3(0, 96, -10), //Options
+            new Vector3(0, 150, -10), //detailed Options
+            new Vector3(0, 235, -10) //more detailed Options
         };
         #endregion
 
@@ -143,7 +145,6 @@ namespace CR4VE.GameLogic.Controls
         }
 
         //update methods
-
         public static void updateVibration(GameTime gameTime)
         {
             if (isReduced(Game1.currentState)) {
@@ -429,7 +430,7 @@ namespace CR4VE.GameLogic.Controls
             }            
         }
 
-        public static void updateMainMenu()
+        public static Game1.EGameState updateMainMenu()
         {
             previousKeyboard = currentKeyboard;
             currentKeyboard = Keyboard.GetState();
@@ -437,12 +438,95 @@ namespace CR4VE.GameLogic.Controls
             prevGamepad = currGamepad;
             currGamepad = GamePad.GetState(PlayerIndex.One);
 
-            /*if ((currentKeyboard.IsKeyDown(Keys.Down) || currGamepad.IsButtonDown(Buttons.DPadDown)) && !isMoving)
-            {
-                moveVecSword = 
-            }*/
+            //DEBUG
+            /*if ((currentKeyboard.IsKeyDown(Keys.Up) || currGamepad.IsButtonDown(Buttons.DPadUp)))
+                MainMenu.sword.move(new Vector3(0, 0.5f, 0));
+            if ((currentKeyboard.IsKeyDown(Keys.Down) || currGamepad.IsButtonDown(Buttons.DPadDown)))
+                MainMenu.sword.move(new Vector3(0,-0.5f,0));*/
 
-            if (currentKeyboard.IsKeyDown(Keys.Down)) MainMenu.sword.Position += new Vector3(0, -0.5f, 0);
+            //Up- and Down movement
+            if (menuPosIndex != 0 && menuPosIndex != 4)
+            {
+                if ((currentKeyboard.IsKeyDown(Keys.Down) || currGamepad.IsButtonDown(Buttons.DPadDown)) && !isMoving)
+                {
+                    menuPosIndex = (int)MathHelper.Clamp((float)(menuPosIndex + 1), 0f, 3f);
+
+                    isMoving = true;
+
+                    moveVecSword = menuPositions[menuPosIndex] - MainMenu.sword.position;
+                }
+                if ((currentKeyboard.IsKeyDown(Keys.Up) || currGamepad.IsButtonDown(Buttons.DPadUp)) && !isMoving)
+                {
+                    menuPosIndex = (int)MathHelper.Clamp((float)(menuPosIndex - 1), 0f, 3f);
+
+                    isMoving = true;
+
+                    moveVecSword = menuPositions[menuPosIndex] - MainMenu.sword.position;
+                }
+            }
+
+            if (isMoving)
+                if ((MainMenu.sword.Position - menuPositions[menuPosIndex]).Length() >= 0.01f)
+                    MainMenu.sword.move(moveVecSword * 0.01f);
+                else
+                    isMoving = false;
+
+            //special cases (Start, Option, Optiondetails)
+            if (!isMoving)
+            {
+                switch (menuPosIndex)
+                {
+                    //Press Start
+                    case 0:
+                        if ((currentKeyboard.IsKeyDown(Keys.Enter) || currGamepad.IsButtonDown(Buttons.Start)) && !isMoving)
+                        {
+                            menuPosIndex += 1;
+
+                            isMoving = true;
+
+                            moveVecSword = menuPositions[menuPosIndex] - MainMenu.sword.position;
+                        }
+                        break;
+                    
+                    //Singleplayer
+                    case 1:
+                        if ((currentKeyboard.IsKeyDown(Keys.Enter) || currGamepad.IsButtonDown(Buttons.A)) && !isMoving)
+                            return Game1.EGameState.Singleplayer;
+                        break;
+
+                    //Multiplayer
+                    case 2:
+                        if ((currentKeyboard.IsKeyDown(Keys.Enter) || currGamepad.IsButtonDown(Buttons.A)) && !isMoving)
+                            return Game1.EGameState.Arena;
+                        break;
+
+                    //Options
+                    case 3:
+                        if ((currentKeyboard.IsKeyDown(Keys.Enter) || currGamepad.IsButtonDown(Buttons.A)) && !isMoving)
+                        {
+                            menuPosIndex = (int)MathHelper.Clamp((float)(menuPosIndex + 1), 0f, 4f);
+
+                            isMoving = true;
+
+                            moveVecSword = menuPositions[menuPosIndex] - MainMenu.sword.position;
+                        }
+                        break;
+
+                    //Options Details
+                    case 4:
+                        if ((currentKeyboard.IsKeyDown(Keys.Escape) || currGamepad.IsButtonDown(Buttons.B)) && !isMoving)
+                        {
+                            menuPosIndex = (int)MathHelper.Clamp((float)(menuPosIndex - 1), 0f, 3f);
+
+                            isMoving = true;
+
+                            moveVecSword = menuPositions[menuPosIndex] - MainMenu.sword.position;
+                        }
+                        break;
+                }
+            }
+            Console.WriteLine(MainMenu.sword.Position);
+            return Game1.EGameState.MainMenu;
         }
         #endregion
     }
