@@ -402,12 +402,12 @@ namespace CR4VE.GameLogic.Controls
                 }
                 #endregion
 
-                Vector3 moveVecPlayer = new Vector3(0, 0, 0);
+                Vector3 moveVecPlayer = new Vector3(currGamepad.ThumbSticks.Left.X, 0, -currGamepad.ThumbSticks.Left.Y);
 
-                if (currentKeyboard.IsKeyDown(Keys.W) || currGamepad.IsButtonDown(Buttons.LeftThumbstickUp)) moveVecPlayer += new Vector3(0, 0, -accel);
+                /*if (currentKeyboard.IsKeyDown(Keys.W) || currGamepad.IsButtonDown(Buttons.LeftThumbstickUp)) moveVecPlayer += new Vector3(0, 0, -accel);
                 if (currentKeyboard.IsKeyDown(Keys.A) || currGamepad.IsButtonDown(Buttons.LeftThumbstickLeft)) moveVecPlayer += new Vector3(-accel, 0, 0);
                 if (currentKeyboard.IsKeyDown(Keys.S) || currGamepad.IsButtonDown(Buttons.LeftThumbstickDown)) moveVecPlayer += new Vector3(0, 0, accel);
-                if (currentKeyboard.IsKeyDown(Keys.D) || currGamepad.IsButtonDown(Buttons.LeftThumbstickRight)) moveVecPlayer += new Vector3(accel, 0, 0);
+                if (currentKeyboard.IsKeyDown(Keys.D) || currGamepad.IsButtonDown(Buttons.LeftThumbstickRight)) moveVecPlayer += new Vector3(accel, 0, 0);*/
 
                 if (moveVecPlayer != new Vector3(0, 0, 0))
                 {
