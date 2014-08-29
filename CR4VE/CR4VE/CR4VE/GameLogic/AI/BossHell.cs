@@ -32,6 +32,12 @@ namespace CR4VE.GameLogic.AI
 
         public override void Update(GameTime time)
         {
+            // soll global angelegt werden, damit von allen klassen genutzt werden kann
+            Random r = new Random();
+            double help = r.NextDouble() * Math.PI * 2.0;
+            Vector2 tmp = new Vector2((float)Math.Sin(help), (float)Math.Cos(help));
+                
+
             spawn += (float)time.ElapsedGameTime.TotalSeconds;
 
             // Decrements the timespan
@@ -56,7 +62,8 @@ namespace CR4VE.GameLogic.AI
                 direction.Normalize();
                 direction = moveSpeed * direction;
                 minion.position += direction*minionSpeed;
-                
+
+              
                 if (minion.boundary.Intersects(Arena.player.boundary))
                 {
                     Arena.hud.healthLeft -= (int) 0.01f;
@@ -92,7 +99,7 @@ namespace CR4VE.GameLogic.AI
             launchedRanged = true;
             minionList.Add(new Entity(this.position, "Enemies/EnemyEye", CR4VE.GameLogic.GameStates.Arena.cont));
 
-            if (minionList.Count > 3)
+            if (minionList.Count > 2)
                 minionList.RemoveAt(0);
         }
 
