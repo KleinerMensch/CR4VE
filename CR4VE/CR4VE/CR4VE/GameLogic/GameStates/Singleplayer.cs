@@ -256,7 +256,7 @@ namespace CR4VE.GameLogic.GameStates
 
             //Player
             ghost = new Character(Vector3.Zero, "skull", content);
-            player = new CharacterSeraphin(Vector3.Zero, "sphereD5", content, new BoundingBox(new Vector3(-2.5f, -2.5f, -2.5f), new Vector3(2.5f, 2.5f, 2.5f)));
+            player = new CharacterOphelia(Vector3.Zero, "sphereD5", content, new BoundingBox(new Vector3(-2.5f, -2.5f, -2.5f), new Vector3(2.5f, 2.5f, 2.5f)));
             
             //Checkpoints
             lastCheckpoint = new Checkpoint(Vector3.Zero, "checkpoint_hell", content);

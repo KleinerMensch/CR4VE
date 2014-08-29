@@ -217,7 +217,7 @@ namespace CR4VE.GameLogic.Controls
                 Vector3 moveVecPlayer = new Vector3(0, 0, 0);
 
                 #region left and right movement
-                if ((currentKeyboard.IsKeyDown(Keys.A) || currGamepad.IsButtonDown(Buttons.LeftThumbstickLeft)) && !borderedLeft)
+                if ((currentKeyboard.IsKeyDown(Keys.A) || currGamepad.IsButtonDown(Buttons.DPadLeft) || currGamepad.IsButtonDown(Buttons.LeftThumbstickLeft)) && !borderedLeft)
                 {
                     moveVecPlayer += new Vector3(-accel, 0, 0);
 
@@ -227,7 +227,7 @@ namespace CR4VE.GameLogic.Controls
                     Singleplayer.player.viewingDirection.X = -1;
                 }
 
-                if ((currentKeyboard.IsKeyDown(Keys.D) || currGamepad.IsButtonDown(Buttons.LeftThumbstickRight)) && !borderedRight)
+                if ((currentKeyboard.IsKeyDown(Keys.D) || currGamepad.IsButtonDown(Buttons.DPadRight) || currGamepad.IsButtonDown(Buttons.LeftThumbstickRight)) && !borderedRight)
                 {
                     moveVecPlayer += new Vector3(accel, 0, 0);
 
@@ -484,7 +484,7 @@ namespace CR4VE.GameLogic.Controls
 
                             isMoving = true;
 
-                            moveVecSword = menuPositions[menuPosIndex] - MainMenu.sword.position;
+                            moveVecSword = (menuPositions[menuPosIndex] - MainMenu.sword.position) * 0.5f;
                         }
                         break;
                     
