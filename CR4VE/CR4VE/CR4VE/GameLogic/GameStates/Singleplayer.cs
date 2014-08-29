@@ -302,7 +302,7 @@ namespace CR4VE.GameLogic.GameStates
             }
             #endregion
 
-
+            GameControls.updateVibration(gameTime);
 
             //notwendiger Rueckgabewert
             return Game1.EGameState.Singleplayer;
