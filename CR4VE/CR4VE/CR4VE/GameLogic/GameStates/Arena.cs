@@ -128,7 +128,7 @@ namespace CR4VE.GameLogic.GameStates
                 }
             }
             #endregion
-
+            GameControls.updateVibration(gameTime);
             return Game1.EGameState.Arena;
         }
 
