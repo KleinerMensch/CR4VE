@@ -28,15 +28,14 @@ namespace CR4VE.GameLogic.GameStates
 
         Texture2D background;
 
-        static float vibrTimer;
-
+        //Terrain
         public static Tilemap terrainMap;
 
         //Player
         public static Character ghost;
         public static Character player;
 
-        //Checkpoints
+        //reset point if dead
         public static Checkpoint lastCheckpoint;
         
         //Enemies

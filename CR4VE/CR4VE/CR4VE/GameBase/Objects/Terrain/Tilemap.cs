@@ -130,7 +130,12 @@ namespace CR4VE.GameBase.Objects.Terrain
 
             foreach (Tile t in Singleplayer.terrainMap.TileList)
             {
-                if (Camera2D.BoundFrustum.Intersects(t.Boundary))
+                //slightly larger Frustum than Camera2D.BoundingFrustum to prevent clipping errors
+                Matrix clippView = Matrix.CreateLookAt(Camera2D.FrustumPosition + new Vector3(0, 0, 50), Camera2D.FrustumTarget, Vector3.Up);
+                
+                BoundingFrustum clippingFrus = new BoundingFrustum(clippView * Camera2D.ProjectionMatrix);
+
+                if (clippingFrus.Intersects(t.Boundary))
                 {
                     result.Add(t);
                 }
