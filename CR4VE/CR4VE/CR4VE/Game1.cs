@@ -148,10 +148,10 @@ namespace CR4VE
             IsMouseVisible = true;
 
             //size of Game Window
-            graphics.PreferredBackBufferWidth = 800;
-            graphics.PreferredBackBufferHeight = 600;
+            graphics.PreferredBackBufferWidth = 1280;
+            graphics.PreferredBackBufferHeight = 720;
 
-            //graphics.IsFullScreen = true;
+            graphics.IsFullScreen = true;
 
             graphics.ApplyChanges();
 

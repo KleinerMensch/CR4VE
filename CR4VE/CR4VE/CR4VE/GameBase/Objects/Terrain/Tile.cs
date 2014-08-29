@@ -22,7 +22,7 @@ namespace CR4VE.GameBase.Objects.Terrain
 
         //Damage Values
         public static readonly int waterDmg = 210;
-        public static readonly int lavaDmg = 1000;
+        public static readonly int lethalDmg = 1000;
         private int dmg;
         #endregion
 

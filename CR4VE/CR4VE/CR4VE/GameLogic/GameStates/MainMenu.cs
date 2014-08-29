@@ -57,7 +57,7 @@ namespace CR4VE.GameLogic.GameStates
             //creditsButton.setPosition(new Vector2(350, 360));
 
             //Entities
-            sword = new Entity(new Vector3(0, -210, 0), "mainmenu_sword", content);
+            sword = new Entity(new Vector3(0, -238f, -10), "mainmenu_sword", content);
         }
         #endregion
 
@@ -65,7 +65,7 @@ namespace CR4VE.GameLogic.GameStates
         public Game1.EGameState Update(GameTime gameTime)
         {
             GameControls.updateMainMenu();
-
+            Console.WriteLine(sword.Position);
             MouseState mouseState = Mouse.GetState();
 
             //Buttons
@@ -96,7 +96,7 @@ namespace CR4VE.GameLogic.GameStates
             #region Sprites (background)
             spriteBatch.Begin();
 
-            spriteBatch.Draw(background, new Vector2(0,0), CameraMenu.BackgroundRectangle, Color.White);
+            //spriteBatch.Draw(background, new Vector2(0,0), CameraMenu.BackgroundRectangle, Color.White);
             
             playButton.Draw(spriteBatch);
             exitButton.Draw(spriteBatch);

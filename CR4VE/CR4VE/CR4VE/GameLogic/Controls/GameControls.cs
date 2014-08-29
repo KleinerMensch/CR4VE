@@ -64,6 +64,19 @@ namespace CR4VE.GameLogic.Controls
         static double vibrTimer;
         static float currentHealth;
         static float previousHealth;
+
+        //Menu
+        private static Vector3 moveVecSword;
+        private static bool isMoving = false;
+
+        private static readonly Vector3[] menuPositions = new Vector3[]
+        {
+            new Vector3(0, -248.5f, 0), //Start
+            new Vector3(0, -84.5f, 0), //Singleplayer
+            new Vector3(0, 0.5f, 0), //Multiplayer
+            new Vector3(0, 96.5f, 0), //Options
+            new Vector3(0, 110f, 0), //detailed Options
+        };
         #endregion
 
         #region Methods
@@ -412,7 +425,14 @@ namespace CR4VE.GameLogic.Controls
             previousKeyboard = currentKeyboard;
             currentKeyboard = Keyboard.GetState();
 
-            if (currentKeyboard.IsKeyDown(Keys.Up)) MainMenu.sword.Position += new Vector3(0, 0.5f, 0);
+            prevGamepad = currGamepad;
+            currGamepad = GamePad.GetState(PlayerIndex.One);
+
+            /*if ((currentKeyboard.IsKeyDown(Keys.Down) || currGamepad.IsButtonDown(Buttons.DPadDown)) && !isMoving)
+            {
+                moveVecSword = 
+            }*/
+
             if (currentKeyboard.IsKeyDown(Keys.Down)) MainMenu.sword.Position += new Vector3(0, -0.5f, 0);
         }
         #endregion

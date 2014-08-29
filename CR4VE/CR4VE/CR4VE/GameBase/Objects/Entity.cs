@@ -66,10 +66,6 @@ namespace CR4VE.GameBase.Objects
         #endregion
 
         #region Methods
-        /*public void move(Vector2 offset)
-        {
-            this.Position += new Vector3(offset, 0);
-        }*/
         public void move(Vector3 offset)
         {
             this.Position += offset;
@@ -458,7 +454,7 @@ namespace CR4VE.GameBase.Objects
                 foreach (BasicEffect effect in mesh.Effects)
                 {
                     effect.View = CameraArena.ViewMatrix;
-                    effect.Projection = Camera2D.ProjectionMatrix;
+                    effect.Projection = CameraArena.ProjectionMatrix;
                     effect.World = world;
                     effect.EnableDefaultLighting();
                 }
@@ -500,6 +496,7 @@ namespace CR4VE.GameBase.Objects
                 mesh.Draw();
             }
         }
+
         public void drawInMainMenu(Vector3 scale, float rotX, float rotY, float rotZ)
         {
             Matrix[] transforms = new Matrix[model.Bones.Count];
