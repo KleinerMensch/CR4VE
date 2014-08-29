@@ -63,7 +63,7 @@ namespace CR4VE.GameLogic.GameStates
             lava = new Entity(new Vector3(0, -110, -30), "Terrain/lavafloor", content);
 
             //moveable Entities
-            player = new CharacterSeraphin(new Vector3(0, -12.5f, 0), "sphereD5", content);
+            player = new CharacterOphelia(new Vector3(0, -12.5f, 0), "sphereD5", content);
             BoundingBox playerBound = new BoundingBox(player.Position + new Vector3(-3, -3, -3), player.Position + new Vector3(3, 3, 3));
             player.Boundary = playerBound;
 
@@ -81,7 +81,7 @@ namespace CR4VE.GameLogic.GameStates
             #endregion
 
             //HUD
-            hud = new SeraphinHUD(content, graphics);
+            hud = new OpheliaHUD(content, graphics);
             cont = content;
         }
 
@@ -102,7 +102,7 @@ namespace CR4VE.GameLogic.GameStates
 
             #region HUD
             hud.Update();
-            hud.UpdateMana();
+            //hud.UpdateMana();
             /*hud.UpdateMana();
              * 
             if (hud.isDead)

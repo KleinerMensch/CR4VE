@@ -458,7 +458,7 @@ namespace CR4VE.GameBase.Objects
                 foreach (BasicEffect effect in mesh.Effects)
                 {
                     effect.View = CameraArena.ViewMatrix;
-                    effect.Projection = Camera2D.ProjectionMatrix;
+                    effect.Projection = CameraArena.ProjectionMatrix;
                     effect.World = world;
                     effect.EnableDefaultLighting();
                 }

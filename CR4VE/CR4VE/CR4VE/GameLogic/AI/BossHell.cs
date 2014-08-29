@@ -81,9 +81,11 @@ namespace CR4VE.GameLogic.AI
                 }
             }
 
-            //Minion nur gespawned, wenn noch keiner da ist
-            if (manaLeft > 0 && minionList.Count == 0)
-                this.RangedAttack(time);
+            this.RangedAttack(time);
+
+            ////Minion nur gespawned, wenn noch keiner da ist
+            //if (manaLeft > 0 && minionList.Count == 0)
+            //    this.RangedAttack(time);
         }
 
         public override void RangedAttack(GameTime time) {
