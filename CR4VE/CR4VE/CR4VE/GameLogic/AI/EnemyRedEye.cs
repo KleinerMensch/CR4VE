@@ -41,7 +41,7 @@ namespace CR4VE.GameLogic.AI
         public override void UpdateSingleplayer(GameTime gameTime)
         {
             spawn += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            this.position.X += moveSpeed;
+            this.move(new Vector3(moveSpeed, 0, 0));
             if (this.position.X < 50 || this.position.X > 105)
             {
                 moveSpeed *= -1;
@@ -51,10 +51,6 @@ namespace CR4VE.GameLogic.AI
 
             //updating laserList
             this.LoadEnemies(this.position, Singleplayer.cont);
-
-            //updating bounding box
-            this.boundary.Min = this.position + new Vector3(-3, -3, -3);
-            this.boundary.Max = this.position + new Vector3(3, 3, 3);
 
             if (Singleplayer.player.boundary.Intersects(this.boundary))
             {
@@ -77,7 +73,7 @@ namespace CR4VE.GameLogic.AI
         public override void UpdateArena(GameTime gameTime)
         {
             spawn += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            this.position.X += moveSpeed;
+            this.move(new Vector3(moveSpeed, 0, 0));
             if (this.position.X < 50 || this.position.X > 105)
             {
                 moveSpeed *= -1;
@@ -88,10 +84,7 @@ namespace CR4VE.GameLogic.AI
             //updating laserList
             this.LoadEnemies(this.position, Arena.cont);
 
-            //updating bounding box
-            this.boundary.Min = this.position + new Vector3(-3, -3, -3);
-            this.boundary.Max = this.position + new Vector3(3, 3, 3);
-
+  
             if (Arena.player.boundary.Intersects(this.boundary))
             {
                 Arena.opheliaHud.healthLeft -= (int)(Arena.opheliaHud.fullHealth * 0.01);
