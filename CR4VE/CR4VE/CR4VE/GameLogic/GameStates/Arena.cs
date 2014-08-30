@@ -89,7 +89,6 @@ namespace CR4VE.GameLogic.GameStates
 
             boss.Update(gameTime);
 
-
             #region HUD
             opheliaHud.Update();
             opheliaHud.UpdateLiquidPositionByResolution();

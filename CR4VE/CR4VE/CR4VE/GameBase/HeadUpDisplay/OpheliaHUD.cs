@@ -58,35 +58,39 @@ namespace CR4VE.GameBase.HeadUpDisplay
             else if (CharacterOphelia.manaLeft == 0)
                 opheliaPowerColor = new Color(0, 0, 0, 0);
 
-            int ai1 = Singleplayer.activeIndex1;
-            int ai2 = Singleplayer.activeIndex2;
+            if (Game1.currentState == Game1.EGameState.Singleplayer)
+            {
 
-            #region active Tilemap1
-            for (int i = 0; i < Singleplayer.tileMaps[ai1].PowerupList.Count; i++)
-            {
-                if (CharacterOphelia.manaLeft < 3)
+                int ai1 = Singleplayer.activeIndex1;
+                int ai2 = Singleplayer.activeIndex2;
+
+                #region active Tilemap1
+                for (int i = 0; i < Singleplayer.tileMaps[ai1].PowerupList.Count; i++)
                 {
-                    if (Singleplayer.tileMaps[ai1].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
+                    if (CharacterOphelia.manaLeft < 3)
                     {
-                        Singleplayer.tileMaps[ai1].PowerupList.Remove(Singleplayer.tileMaps[ai1].PowerupList.ElementAt(i));
-                        CharacterOphelia.manaLeft += 1;
+                        if (Singleplayer.tileMaps[ai1].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
+                        {
+                            Singleplayer.tileMaps[ai1].PowerupList.Remove(Singleplayer.tileMaps[ai1].PowerupList.ElementAt(i));
+                            CharacterOphelia.manaLeft += 1;
+                        }
                     }
                 }
-            }
-            #endregion
-            #region active Tilemap2
-            for (int i = 0; i < Singleplayer.tileMaps[ai2].PowerupList.Count; i++)
-            {
-                if (CharacterOphelia.manaLeft < 3)
+                #endregion
+                #region active Tilemap2
+                for (int i = 0; i < Singleplayer.tileMaps[ai2].PowerupList.Count; i++)
                 {
-                    if (Singleplayer.tileMaps[ai2].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
+                    if (CharacterOphelia.manaLeft < 3)
                     {
-                        Singleplayer.tileMaps[ai2].PowerupList.Remove(Singleplayer.tileMaps[ai2].PowerupList.ElementAt(i));
-                        CharacterOphelia.manaLeft += 1;
+                        if (Singleplayer.tileMaps[ai2].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
+                        {
+                            Singleplayer.tileMaps[ai2].PowerupList.Remove(Singleplayer.tileMaps[ai2].PowerupList.ElementAt(i));
+                            CharacterOphelia.manaLeft += 1;
+                        }
                     }
                 }
+                #endregion
             }
-            #endregion
         }
 
         public override void UpdateLiquidPositionByResolution()
