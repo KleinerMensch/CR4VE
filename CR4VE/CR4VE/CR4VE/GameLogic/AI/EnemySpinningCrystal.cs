@@ -20,10 +20,22 @@ namespace CR4VE.GameLogic.AI
         float rotationY = MathHelper.ToRadians(-90);
         #endregion
 
+        #region Properties
+        public override bool isDead
+        {
+            get { return this.hp <= 0; }
+        }
+        public override float Health
+        {
+            get { return this.hp; }
+            set { this.hp = value; }
+        }
+        #endregion
+
         #region inherited Constructors
         public EnemySpinningCrystal():base() { }
         public EnemySpinningCrystal(Vector3 pos, String modelName, ContentManager cm) : base(pos, modelName, cm) { }
-        public EnemySpinningCrystal(Vector3 pos, String modelName, ContentManager cm, BoundingBox bound) : base(pos, modelName, cm) { }
+        public EnemySpinningCrystal(Vector3 pos, String modelName, ContentManager cm, BoundingBox bound) : base(pos, modelName, cm, bound) { }
         #endregion
 
         public override void UpdateSingleplayer(GameTime gameTime)

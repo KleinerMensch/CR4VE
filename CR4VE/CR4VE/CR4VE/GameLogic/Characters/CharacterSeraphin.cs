@@ -81,7 +81,7 @@ namespace CR4VE.GameLogic.Characters
                     {
                         if (minion.boundary.Intersects(enemy.boundary))
                         {
-                            enemy.health -= 0.01f;
+                            enemy.hp -= 0.01f;
                             Console.WriteLine("Seraphin hit enemy by RangedAttack");
                         }
                     }
@@ -157,7 +157,7 @@ namespace CR4VE.GameLogic.Characters
                                     {
                                         if (seraphinsLaser.boundary.Intersects(enemy.boundary))
                                         {
-                                            enemy.health -= 1;
+                                            enemy.hp -= 1;
                                             enemyHit = true;
                                             Console.WriteLine("Seraphin hit enemy by SpecialAttack");
                                         }
@@ -244,7 +244,7 @@ namespace CR4VE.GameLogic.Characters
                     {
                         if (seraphinsWhip.boundary.Intersects(enemy.boundary))
                         {
-                            enemy.health -= 1;
+                            enemy.hp -= 1;
                             Console.WriteLine("Seraphin hit enemy by MeleeAttack");
                         }
                     }

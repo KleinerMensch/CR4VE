@@ -43,7 +43,7 @@ namespace CR4VE.GameBase.Objects.Terrain
                     break;
             }
             
-            this.drawIn2DWorldWithoutBones(Vector3.One, rotX, 0, 0);
+            this.drawIn2DWorldWithoutBones(new Vector3(1.1f, 1.1f, 1.1f), rotX, 0, 0);
         }
         #endregion
     }

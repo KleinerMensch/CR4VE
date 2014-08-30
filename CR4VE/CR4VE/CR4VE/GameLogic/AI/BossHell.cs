@@ -32,7 +32,7 @@ namespace CR4VE.GameLogic.AI
         //base ist fuer Vererbungskram
         public BossHell() : base() { }
         public BossHell(Vector3 pos, String modelName, ContentManager cm) : base(pos,modelName,cm){ }
-        public BossHell(Vector3 pos, String modelName, ContentManager cm, BoundingBox bound):base(pos,modelName,cm,bound) { }
+        public BossHell(Vector3 pos, String modelName, ContentManager cm, BoundingBox bound) : base(pos, modelName, cm, bound) { }
         #endregion
 
         public override void Update(GameTime time)

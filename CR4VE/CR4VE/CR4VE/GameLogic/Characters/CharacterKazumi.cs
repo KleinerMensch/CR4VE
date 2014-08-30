@@ -36,14 +36,14 @@ namespace CR4VE.GameLogic.Characters
                 claws.boundary = new BoundingBox(this.position + new Vector3(-2.5f, -2.5f, -2.5f) + viewingDirection * offset, this.position + new Vector3(2.5f, 2.5f, 2.5f) + viewingDirection * offset);
                 claws.drawInArena(new Vector3(1, 1, 1), 0, 0, 0);
 
-                foreach (Enemy enemy in Singleplayer.enemyList)
+                /*foreach (Enemy enemy in Singleplayer.enemyList)
                 {
                     if (claws.boundary.Intersects(enemy.boundary))
                     {
                         enemy.health -= 1;
                         Console.WriteLine("Kazumi hit enemy by MeleeAttack");
                     }
-                }
+                }*/
             }
             else if (Game1.currentState.Equals(Game1.EGameState.Arena))
             {
@@ -79,7 +79,7 @@ namespace CR4VE.GameLogic.Characters
                         if (enemyHit) break;
                         if (fireBall.boundary.Intersects(enemy.boundary))
                         {
-                            enemy.health -= 1;
+                            enemy.hp -= 1;
                             enemyHit = true;
                             Console.WriteLine("Kazumi hit enemy by RangedAttack");
                         }
@@ -131,7 +131,7 @@ namespace CR4VE.GameLogic.Characters
                 {
                     if (danceOfFireFox.boundary.Intersects(enemy.boundary))
                     {
-                        enemy.health -= 1;
+                        enemy.hp -= 1;
                         Console.WriteLine("Kazumi hit enemy by AoE");
                     }
                 }
