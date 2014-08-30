@@ -89,7 +89,10 @@ namespace CR4VE.GameBase.Objects.Terrain
                                 int damage = 0;
 
                                 if (number == 4 || number == 8 || number == 14)
+                                {
                                     damage = Tile.waterDmg;
+                                    boundary = new BoundingBox(position + new Vector3(-size / 2, -size / 2, -size / 2), position + new Vector3(size / 2, -size/2, size / 2));
+                                }
                                 else if (number == 16)
                                     damage = Tile.lethalDmg;
 
@@ -104,8 +107,8 @@ namespace CR4VE.GameBase.Objects.Terrain
                         //ceiling spikes
                         case 94:
                             {
-                                Vector3 position = start + new Vector3(x * size, -y * size, 0) + new Vector3(0,0,0);
-                                BoundingBox boundary = new BoundingBox(position + new Vector3(-size / 2, -size / 2, -size / 2), position + new Vector3(size / 2, size / 2, size / 2));
+                                Vector3 position = start + new Vector3(x * size, -y * size, 0);
+                                BoundingBox boundary = new BoundingBox(position + new Vector3(-size / 2, -size / 2.5f, -size / 2), position + new Vector3(size / 2, 0, size / 2));
                                 
                                 enemies.Add(new Spikes(position, "spikes_ceiling", Singleplayer.cont, boundary));
                             } break;
@@ -113,8 +116,8 @@ namespace CR4VE.GameBase.Objects.Terrain
                         //ground spikes
                         case 95:
                             {
-                                Vector3 position = start + new Vector3(x * size, -y * size, 0) + new Vector3(3, -size/2, 3);
-                                BoundingBox boundary = new BoundingBox(position + new Vector3(-size / 2, -size / 2, -size / 2), position + new Vector3(size / 2, size / 2, size / 2));
+                                Vector3 position = start + new Vector3(x * size, -y * size, 0) + new Vector3(3, -size/2, 5);
+                                BoundingBox boundary = new BoundingBox(position + new Vector3(-size / 2, 0, -size / 2), position + new Vector3(size / 2, size / 8, size / 2));
                                 
                                 tiles.Add(new GroundSpikes("ground", position, boundary, Tile.lethalDmg));
                             } break;

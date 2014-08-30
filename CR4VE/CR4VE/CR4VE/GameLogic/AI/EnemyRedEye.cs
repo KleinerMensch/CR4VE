@@ -20,13 +20,25 @@ namespace CR4VE.GameLogic.AI
         public new Vector3 viewingDirection = new Vector3(-1, 0, 0);
         #endregion
 
+        #region Properties
+        public override bool isDead
+        {
+            get { return this.hp <= 0; }
+        }
+        public override float Health
+        {
+            get { return this.hp; }
+            set { this.hp = value; }
+        }
+        #endregion
+
         #region inherited Constructors
         public EnemyRedEye() : base() { }
         public EnemyRedEye(Vector3 pos, String modelName, ContentManager cm) : base(pos, modelName, cm) { }
         public EnemyRedEye(Vector3 pos, String modelName, ContentManager cm, BoundingBox bound) : base(pos, modelName, cm, bound) { }
         #endregion
 
-        public override void UpdateSingleplayer(Microsoft.Xna.Framework.GameTime gameTime)
+        public override void UpdateSingleplayer(GameTime gameTime)
         {
             spawn += (float)gameTime.ElapsedGameTime.TotalSeconds;
             this.position.X += moveSpeed;
