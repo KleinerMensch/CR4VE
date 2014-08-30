@@ -40,7 +40,6 @@ namespace CR4VE.GameLogic.GameStates
         
         //Enemies
         public static List<Enemy> enemyList = new List<Enemy>();
-        public static List<Powerup> powerUpList = new List<Powerup>();
 
         //HUD
         public static HUD hud;
@@ -256,7 +255,7 @@ namespace CR4VE.GameLogic.GameStates
 
             //Player
             ghost = new Character(Vector3.Zero, "skull", content);
-            player = new CharacterOphelia(Vector3.Zero, "sphereD5", content, new BoundingBox(new Vector3(-2.5f, -2.5f, -2.5f), new Vector3(2.5f, 2.5f, 2.5f)));
+            player = new CharacterOphelia(new Vector3(0,0,+5), "Ophelia", content, new BoundingBox(new Vector3(-2.5f, -9f, -2.5f), new Vector3(2.5f, 9f, 2.5f)));
             
             //Checkpoints
             lastCheckpoint = new Checkpoint(Vector3.Zero, "checkpoint_hell", content);
@@ -280,7 +279,7 @@ namespace CR4VE.GameLogic.GameStates
             #endregion
 
             //HUD
-            hud = new SeraphinHUD(cont, graphics);
+            hud = new OpheliaHUD(cont, graphics);
         }
         #endregion
 
@@ -293,6 +292,7 @@ namespace CR4VE.GameLogic.GameStates
             hud.Update();
             
             hud.UpdateMana();
+            hud.UpdateLiquidPositionByResolution();
             
             if (hud.isDead)
             {
@@ -368,7 +368,7 @@ namespace CR4VE.GameLogic.GameStates
                 ghost.drawIn2DWorld(new Vector3(0.05f, 0.05f, 0.05f), 0, 0, 0);
             else
             {
-                player.drawIn2DWorldWithoutBones(Vector3.One, 0, MathHelper.ToRadians(90) * player.viewingDirection.X, 0);
+                player.drawIn2DWorld(new Vector3(0.02f, 0.02f, 0.02f), 0, MathHelper.ToRadians(90) * player.viewingDirection.X, 0);
                 player.DrawAttacks();
             }
 

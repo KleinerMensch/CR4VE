@@ -13,6 +13,7 @@ namespace CR4VE.GameLogic.Characters
     class CharacterFractus : Character
     {
         #region Attributes
+        public static new float manaLeft = 3;
         public static List<Entity> crystalList = new List<Entity>();
         Enemy nearestEnemy = new Enemy();
 
@@ -66,15 +67,15 @@ namespace CR4VE.GameLogic.Characters
                     crystal.boundary = new BoundingBox(crystal.position + new Vector3(-2, -2, -2), crystal.position + new Vector3(2, 2, 2));
                     float minDistance = float.MaxValue;
 
-                    foreach (Enemy enemy in Arena.enemyList)
-                    {
-                        float distance = (crystal.position - enemy.position).Length();
-                        if (distance < minDistance)
-                        {
-                            minDistance = distance;
-                            nearestEnemy = enemy;
-                        }
-                    }
+                    //foreach (Enemy enemy in Arena.bossList)
+                    //{
+                    //    float distance = (crystal.position - enemy.position).Length();
+                    //    if (distance < minDistance)
+                    //    {
+                    //        minDistance = distance;
+                    //        nearestEnemy = enemy;
+                    //    }
+                    //}
 
                     foreach (Entity healthAbsorbingCrystal in crystalList)
                     {
@@ -85,8 +86,8 @@ namespace CR4VE.GameLogic.Characters
                             nearestEnemy.health -= 0.01f;
 
                             //transfers health to Fractus in Arena
-                            if (Arena.hud.trialsLeft <= 3 && Arena.hud.healthLeft < Arena.hud.fullHealth)
-                                Arena.hud.healthLeft += (int)(Arena.hud.fullHealth * 0.01f);
+                            if (Arena.opheliaHud.trialsLeft <= 3 && Arena.opheliaHud.healthLeft < Arena.opheliaHud.fullHealth)
+                                Arena.opheliaHud.healthLeft += (int)(Arena.opheliaHud.fullHealth * 0.01f);
                         }
                     }
                 }
@@ -116,14 +117,14 @@ namespace CR4VE.GameLogic.Characters
                 crystalShield.boundary = new BoundingBox(this.position + new Vector3(-10, -3, -10), this.position + new Vector3(10, 3, 10));
                 crystalShield.drawInArena(new Vector3(1, 1, 1), 0, 0, 0);
 
-                foreach (Enemy enemy in Arena.enemyList)
-                {
-                    if (crystalShield.boundary.Intersects(enemy.boundary))
-                    {
-                        enemy.health -= 1;
-                        Console.WriteLine("Fractus hit enemy by crystalShield");
-                    }
-                }
+                //foreach (Enemy enemy in Arena.bossList)
+                //{
+                //    if (crystalShield.boundary.Intersects(enemy.boundary))
+                //    {
+                //        enemy.health -= 1;
+                //        Console.WriteLine("Fractus hit enemy by crystalShield");
+                //    }
+                //}
             }
         }
 
@@ -164,16 +165,16 @@ namespace CR4VE.GameLogic.Characters
                 while (crystals.position != this.position + 50 * viewingDirection)
                 {
                     if (enemyHit) break;
-                    foreach (Enemy enemy in Arena.enemyList)
-                    {
-                        if (enemyHit) break;
-                        if (crystals.boundary.Intersects(enemy.boundary))
-                        {
-                            enemy.health -= 1;
-                            enemyHit = true;
-                            Console.WriteLine("Fractus hit enemy by RangedAttack");
-                        }
-                    }
+                    //foreach (Enemy enemy in Arena.bossList)
+                    //{
+                    //    if (enemyHit) break;
+                    //    if (crystals.boundary.Intersects(enemy.boundary))
+                    //    {
+                    //        enemy.health -= 1;
+                    //        enemyHit = true;
+                    //        Console.WriteLine("Fractus hit enemy by RangedAttack");
+                    //    }
+                    //}
                     crystals.position += speed * viewingDirection;
                     crystals.boundary.Min += speed * viewingDirection;
                     crystals.boundary.Max += speed * viewingDirection;

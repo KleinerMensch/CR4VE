@@ -17,7 +17,6 @@ namespace CR4VE.GameBase.HeadUpDisplay
         public Color opheliaPowerColor;
 
         private Vector2 opheliaHealthContainerPosition;
-        private Vector2 opheliaLiquidPosition;
         #endregion
 
         #region inherited Constructor
@@ -34,13 +33,12 @@ namespace CR4VE.GameBase.HeadUpDisplay
 
             opheliaPowerColor = new Color(198, 226, 255, 0);
 
-            opheliaHealthContainerPosition = new Vector2(0, graphics.PreferredBackBufferHeight - 90);
-            opheliaLiquidPosition = opheliaHealthContainerPosition + new Vector2(178.5f, -86);
+            opheliaHealthContainerPosition = new Vector2(0, graphics.PreferredBackBufferHeight - (opheliaHealthContainer.Height * spriteScale));
         }
 
         public override void UpdateMana()
         {
-            //Fadingeffekt
+            //Fadingeffekte
             //Alphawert 255 => komplett transparent
             //Alphawert 0 => nicht transparent
             //if (opheliaPowerColor.A < 255 && powerIsDown == false)
@@ -60,28 +58,36 @@ namespace CR4VE.GameBase.HeadUpDisplay
             else if (CharacterOphelia.manaLeft == 0)
                 opheliaPowerColor = new Color(0, 0, 0, 0);
 
-            for (int i = 0; i < Singleplayer.terrainMap.PowerupList.Count; i++)
+            if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
             {
-                if (CharacterOphelia.manaLeft < 3)
+                for (int i = 0; i < Singleplayer.terrainMap.PowerupList.Count; i++)
                 {
-                    if (Singleplayer.terrainMap.PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
+                    if (CharacterOphelia.manaLeft < 3)
                     {
-                        Singleplayer.terrainMap.PowerupList.Remove(Singleplayer.terrainMap.PowerupList.ElementAt(i));
-                        CharacterOphelia.manaLeft += 1;
+                        if (Singleplayer.terrainMap.PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
+                        {
+                            Singleplayer.terrainMap.PowerupList.Remove(Singleplayer.terrainMap.PowerupList.ElementAt(i));
+                            CharacterOphelia.manaLeft += 1;
+                        }
                     }
                 }
             }
         }
 
+        public override void UpdateLiquidPositionByResolution()
+        {
+            if ((graphics.PreferredBackBufferWidth / graphics.PreferredBackBufferHeight == 16 / 9) || (graphics.PreferredBackBufferWidth / graphics.PreferredBackBufferHeight == 4 / 3))
+                liquidPosition = opheliaHealthContainerPosition + new Vector2(114.5f, 157);
+        }
+
         public override void Draw(SpriteBatch spriteBatch)
         {
-            // Healthbar von Ophelia
+            float percentagedHealthLeft = (float)healthLeft / (float)fullHealth;
+
             // 3.Argument ist SourceRectangle -> null = ganzes Sprite wird gezeichnet
-            // Teil der ausgeblendet wird hart reingecodet ->zu optimieren !
-            //ophelias HUD
-            spriteBatch.Draw(redLiquid, opheliaLiquidPosition, new Rectangle(0, 0, redLiquid.Width, healthLeft), Color.White, MathHelper.ToRadians(180), opheliaHealthContainerPosition, 0.3f, SpriteEffects.None, 0);
-            spriteBatch.Draw(opheliaHealthContainer, opheliaHealthContainerPosition, null, Color.White, 0f, opheliaHealthContainerPosition, 0.3f, SpriteEffects.None, 0);
-            spriteBatch.Draw(opheliaPower, opheliaHealthContainerPosition + new Vector2(0, 3), null, opheliaPowerColor, 0f, opheliaHealthContainerPosition, 0.3f, SpriteEffects.None, 0);
+            spriteBatch.Draw(redLiquid, liquidPosition, new Rectangle(0, 0, redLiquid.Width, (int) (percentagedHealthLeft*redLiquid.Height)), Color.White, MathHelper.ToRadians(180), new Vector2(redLiquid.Width / 2, redLiquid.Height / 2), spriteScale, SpriteEffects.None, 0);
+            spriteBatch.Draw(opheliaHealthContainer, opheliaHealthContainerPosition, null, Color.White, 0f, Vector2.Zero, spriteScale, SpriteEffects.None, 0);
+            spriteBatch.Draw(opheliaPower, opheliaHealthContainerPosition+ new Vector2(0,4), null, opheliaPowerColor, 0f, Vector2.Zero, spriteScale, SpriteEffects.None, 0);
         }
         #endregion
     }

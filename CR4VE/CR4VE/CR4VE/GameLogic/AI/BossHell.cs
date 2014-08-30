@@ -15,6 +15,7 @@ namespace CR4VE.GameLogic.AI
     {
         #region Attributes
         public new static List<Entity> minionList = new List<Entity>();
+        public static float bossHealth = 100;
         TimeSpan timeSpan = TimeSpan.FromSeconds(10);
         Vector3 offset = new Vector3(8, 8, 8);
 
@@ -66,11 +67,10 @@ namespace CR4VE.GameLogic.AI
               
                 if (minion.boundary.Intersects(Arena.player.boundary))
                 {
-                    Arena.hud.healthLeft -= (int) 0.01f;
+                    Arena.opheliaHud.healthLeft -= 1;
                     Console.WriteLine("Boss hit Player by RangedAttack");
                 }
             }
-
 
             if (!Arena.sphere.Intersects(Arena.boss.boundary))
             {

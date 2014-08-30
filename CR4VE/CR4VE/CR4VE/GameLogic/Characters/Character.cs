@@ -13,10 +13,11 @@ namespace CR4VE.GameLogic.Characters
     {
         #region Attributes
         public List<Entity> attackList = new List<Entity>();
-        public static float manaLeft = 3;
         public bool launchedMelee = false;
         public bool launchedRanged = false;
         public bool launchedSpecial = false;
+
+        public static float manaLeft = 3;
         #endregion
 
         #region inherited Constructors

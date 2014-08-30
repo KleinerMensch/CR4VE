@@ -82,7 +82,7 @@ namespace CR4VE.GameLogic.AI
 
             if (Arena.player.boundary.Intersects(this.boundary))
             {
-                Arena.hud.healthLeft -= (int)(Arena.hud.fullHealth * 0.01);
+                Arena.opheliaHud.healthLeft -= (int)(Arena.opheliaHud.fullHealth * 0.01);
             }
 
             #region Collision with Laser
@@ -92,7 +92,7 @@ namespace CR4VE.GameLogic.AI
                 laser.position.X += laser.viewingDirection.X;
                 if (Arena.player.boundary.Intersects(laser.boundary))
                 {
-                    Arena.hud.healthLeft -= (int)(Arena.hud.fullHealth * 0.01);
+                    Arena.opheliaHud.healthLeft -= (int)(Arena.opheliaHud.fullHealth * 0.01);
                 }
             }
             #endregion

@@ -21,7 +21,7 @@ namespace CR4VE.GameLogic.GameStates
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        public static HUD hud;
+        public static HUD opheliaHud, seraphinBossHUD;
 
         //Terrain
         static Entity terrain;
@@ -34,8 +34,6 @@ namespace CR4VE.GameLogic.GameStates
         //moveable Entities
         public static Character player;
         public static BossHell boss;
-
-        public static List<Enemy> enemyList = new List<Enemy>();
 
         public static float blickWinkel;
         public static float blickwinkelBoss;
@@ -63,72 +61,48 @@ namespace CR4VE.GameLogic.GameStates
             lava = new Entity(new Vector3(0, -110, -30), "Terrain/lavafloor", content);
 
             //moveable Entities
-            player = new CharacterOphelia(new Vector3(0, -12.5f, 0), "sphereD5", content);
+            player = new CharacterOphelia(new Vector3(0, -12.5f, 0), "Ophelia", content);
             BoundingBox playerBound = new BoundingBox(player.Position + new Vector3(-3, -3, -3), player.Position + new Vector3(3, 3, 3));
             player.Boundary = playerBound;
 
             sphere = new BoundingSphere(player.position, 6);
 
             #region Loading AI
-            EnemyRedEye redEye;
-            redEye = new EnemyRedEye(new Vector3(60, 0, 0), "EnemyEye", content, new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
-            //fill list with enemies
-            enemyList.Add(redEye);
-
             //Boss
             boss = new BossHell(new Vector3(60, 0, 0), "EnemyEye", content);
             boss.boundary = new BoundingBox(boss.position + new Vector3(-6, -6, -6), boss.position + new Vector3(6, 6, 6));
             #endregion
 
             //HUD
-            hud = new OpheliaHUD(content, graphics);
+            opheliaHud = new OpheliaHUD(content, graphics);
+            seraphinBossHUD = new SeraphinHUD(content, graphics);
             cont = content;
         }
 
         public Game1.EGameState Update(GameTime gameTime)
         {
             GameControls.updateArena(gameTime);
+            GameControls.updateVibration(gameTime);
 
             player.Update(gameTime);
-            boss.Update(gameTime);
-
             sphere.Center = player.position;
 
-            //DEBUG
-            /*Console.Clear();
-            Console.WriteLine(player.Position);
-            Console.WriteLine(arenaFloorBox);
-            Console.WriteLine(player.Boundary.Intersects(arenaFloorBox));*/
+            boss.Update(gameTime);
+
 
             #region HUD
-            hud.Update();
-            //hud.UpdateMana();
-            /*hud.UpdateMana();
-             * 
-            if (hud.isDead)
+            opheliaHud.Update();
+            opheliaHud.UpdateLiquidPositionByResolution();
+            opheliaHud.UpdateMana();
+            seraphinBossHUD.Update();
+            seraphinBossHUD.UpdateLiquidPositionByResolution();
+            seraphinBossHUD.UpdateMana();
+            /*
+            if (opheliaHud.isDead)
             {
                 return Game1.EGameState.GameOver;
             }*/
             #endregion
-
-            #region Enemies
-            //Updating Enemies
-            foreach (Enemy enemy in enemyList)
-            {
-                enemy.UpdateArena(gameTime);
-            }
-
-            //aktualisieren der lebenden Gegner
-            for (int i = 0; i < enemyList.Count; i++)
-            {
-                if (enemyList.ElementAt(i).health <= 0)
-                {
-                    enemyList.ElementAt(i).Destroy();
-                    enemyList.Remove(enemyList.ElementAt(i));
-                }
-            }
-            #endregion
-            GameControls.updateVibration(gameTime);
             return Game1.EGameState.Arena;
         }
 
@@ -142,36 +116,28 @@ namespace CR4VE.GameLogic.GameStates
             
             terrain.drawInArena(new Vector3(0.5f, 0.5f, 0.5f), 0, MathHelper.ToRadians(30), 0);
 
+            //Player
+            player.drawInArena(new Vector3(0.05f, 0.05f, 0.05f), 0, MathHelper.ToRadians(90) + blickWinkel, 0);
+            player.DrawAttacks();
+
             #region Enemies
-            foreach (AIInterface enemy in enemyList)
-            {
-                enemy.DrawInArena(gameTime);
-            }
+            boss.drawInArena(new Vector3(0.75f, 0.75f, 0.75f), 0, MathHelper.ToRadians(90) + blickwinkelBoss, 0);
+            boss.DrawAttacks();
 
             //Minions etc.
-            foreach (Entity laser in CR4VE.GameLogic.AI.EnemyRedEye.laserList)
-            {
-                laser.drawInArena(new Vector3(0.5f, 0.5f, 0.5f), 0, 0, MathHelper.ToRadians(-90) * laser.viewingDirection.X);
-            }
             foreach (Entity crystal in CharacterFractus.crystalList)
             {
                 crystal.drawInArena(new Vector3(0.1f, 0.1f, 0.1f), 0, 0, 0);
             }
             #endregion
-
-            //Player
-            player.drawInArenaWithoutBones(new Vector3(0.75f, 0.75f, 0.75f), 0, MathHelper.ToRadians(90) + blickWinkel, 0);
-            player.DrawAttacks();
             
-            //Boss
-            boss.drawInArena(new Vector3(0.75f, 0.75f, 0.75f), 0, MathHelper.ToRadians(90)+ blickwinkelBoss, 0);
-            boss.DrawAttacks();
-
             #region HUD
             spriteBatch.Begin();
 
-            hud.DrawGenerals(spriteBatch);
-            hud.Draw(spriteBatch);
+            seraphinBossHUD.DrawGenerals(spriteBatch);
+            seraphinBossHUD.Draw(spriteBatch);
+            opheliaHud.DrawGenerals(spriteBatch);
+            opheliaHud.Draw(spriteBatch);
 
             spriteBatch.End();
 
