@@ -50,7 +50,7 @@ namespace CR4VE.GameLogic.AI
             {
                 direction.Normalize();
                 direction = moveSpeed * direction;
-                this.position += direction;
+                this.move(direction);
             } else {
                 //noch zu aendern, was passiert, wenn player nicht mehr in der AggroRange
                 this.position.X += moveSpeed;
@@ -62,9 +62,6 @@ namespace CR4VE.GameLogic.AI
                 }
             }
 
-            //updating bounding box & check collision
-            this.boundary.Min = this.position + new Vector3(-3, -3, -3);
-            this.boundary.Max = this.position + new Vector3(3, 3, 3);
 
             if (Singleplayer.player.boundary.Intersects(this.boundary))
             {

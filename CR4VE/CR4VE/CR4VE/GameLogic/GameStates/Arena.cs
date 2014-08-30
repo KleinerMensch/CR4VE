@@ -63,7 +63,7 @@ namespace CR4VE.GameLogic.GameStates
 
             //moveable Entities
             player = new CharacterOphelia(new Vector3(0, -12.5f, 0), "Ophelia", content);
-            BoundingBox playerBound = new BoundingBox(player.Position + new Vector3(-3, -3, -3), player.Position + new Vector3(3, 3, 3));
+            BoundingBox playerBound = new BoundingBox(player.Position + new Vector3(-2.5f, -9, -2.5f), player.Position + new Vector3(2.5f, 9, 2.5f));
             player.Boundary = playerBound;
 
             sphere = new BoundingSphere(player.position, 6);
@@ -119,7 +119,7 @@ namespace CR4VE.GameLogic.GameStates
             terrain.drawInArena(new Vector3(0.5f, 0.5f, 0.5f), 0, MathHelper.ToRadians(30), 0);
 
             //Player
-            player.drawInArena(new Vector3(0.05f, 0.05f, 0.05f), 0, MathHelper.ToRadians(90) + blickWinkel, 0);
+            player.drawInArena(new Vector3(0.02f, 0.02f, 0.02f), 0, MathHelper.ToRadians(90) + blickWinkel, 0);
             player.DrawAttacks();
 
             #region Enemies
