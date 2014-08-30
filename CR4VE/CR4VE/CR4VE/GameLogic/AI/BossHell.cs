@@ -20,8 +20,12 @@ namespace CR4VE.GameLogic.AI
         Vector3 offset = new Vector3(8, 8, 8);
 
         float moveSpeed = -0.2f;
-        float minionSpeed = 100;
+        float minionSpeed = 5;
         float spawn = 0;
+
+        //für die minionbewegung
+        static float rTimer = 4.0f;
+        static float chaseTimer = 6.0f;
         #endregion
 
         #region inherited Constructors
@@ -36,7 +40,7 @@ namespace CR4VE.GameLogic.AI
             // soll global angelegt werden, damit von allen klassen genutzt werden kann
             Random r = new Random();
             double help = r.NextDouble() * Math.PI * 2.0;
-            Vector2 tmp = new Vector2((float)Math.Sin(help), (float)Math.Cos(help));
+            Vector3 tmp = new Vector3((float)Math.Sin(help), (float)Math.Cos(help), 0);
                 
 
             spawn += (float)time.ElapsedGameTime.TotalSeconds;
@@ -59,10 +63,21 @@ namespace CR4VE.GameLogic.AI
             {
                 minion.boundary = new BoundingBox(minion.position + new Vector3(-2, -2, -2), minion.position + new Vector3(2, 2, 2));
 
-                Vector3 direction =  minion.position - Arena.player.position;
-                direction.Normalize();
-                direction = moveSpeed * direction;
-                minion.position += direction*minionSpeed;
+                if (rTimer != 0)
+                {
+                    minion.position += tmp* minionSpeed;
+                    rTimer -=  (float)time.ElapsedGameTime.TotalSeconds;
+                }
+
+                if (chaseTimer != 0)
+                {
+                    Vector3 direction = minion.position - Arena.player.position;
+                    direction.Normalize();
+                    direction = moveSpeed * direction;
+                    minion.position += direction* minionSpeed;
+                    chaseTimer -= (float)time.ElapsedGameTime.TotalSeconds;
+                }
+
 
               
                 if (minion.boundary.Intersects(Arena.player.boundary))

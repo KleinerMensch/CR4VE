@@ -12,7 +12,6 @@ namespace CR4VE.GameLogic.AI
     class Spikes : Enemy
     {
         #region Attributes
-        Random random = new Random();
         float rotationY = MathHelper.ToRadians(-90);
         #endregion
 
