@@ -12,8 +12,8 @@ namespace CR4VE.GameLogic.AI
     class EnemySkull : Enemy
     {
         #region Attributes
-        Random random = new Random();
         float moveSpeed = -0.5f;
+
         float rotationX = 0.4f;
         float rotationY = MathHelper.ToRadians(-90);
         #endregion
@@ -31,7 +31,7 @@ namespace CR4VE.GameLogic.AI
         #endregion
 
         #region inherited Constructors
-        public EnemySkull():base() { }
+        public EnemySkull() : base() { }
         public EnemySkull(Vector3 pos, String modelName, ContentManager cm) : base(pos, modelName, cm) { }
         public EnemySkull(Vector3 pos, String modelName, ContentManager cm, BoundingBox bound) : base(pos, modelName, cm, bound) { }
         #endregion
@@ -39,7 +39,6 @@ namespace CR4VE.GameLogic.AI
         public override void UpdateSingleplayer(GameTime gameTime)
         {
             //skull rolling over the floor
-            //this.position.X += moveSpeed;
             rotationX -= 0.1f;
 
             Vector3 playerPos = Singleplayer.player.position;
@@ -50,20 +49,15 @@ namespace CR4VE.GameLogic.AI
             {
                 direction.Normalize();
                 direction = moveSpeed * direction;
-                //this.position += direction;
+                
                 this.move(direction);
             }
-
             else if (this.position.X < 350 || this.position.X > 450)
             {
                 moveSpeed *= -1;
                 rotationX *= -1;
                 rotationY += MathHelper.ToRadians(180);
             }
-
-            ////updating bounding box & check collision
-            //this.boundary.Min = this.position + new Vector3(-3, -3, -3);
-            //this.boundary.Max = this.position + new Vector3(3, 3, 3);
 
             if (Singleplayer.player.boundary.Intersects(this.boundary))
             {

@@ -15,14 +15,12 @@ namespace CR4VE.GameLogic.GameStates
         SpriteBatch spriteBatch;
         Texture2D background;
         private SpriteFont font;
-        private Vector2 fontPosition;
+        private static Vector2 fontPosition;
+        private Vector2 fontGap;
         private GraphicsDeviceManager graphics;
 
         #region Konstruktor
-        public GameOver() 
-        {
-           
-        }
+        public GameOver() { }
         #endregion
 
         #region Init
@@ -30,10 +28,13 @@ namespace CR4VE.GameLogic.GameStates
         {
             graphics = CR4VE.Game1.graphics;
             spriteBatch = CR4VE.Game1.spriteBatch;
+
             background = content.Load<Texture2D>("Assets/Sprites/TryAgain");
+
             font = content.Load<SpriteFont>("Assets/Fonts/GameOverFlo");
+
             fontPosition = new Vector2(graphics.PreferredBackBufferWidth/2, graphics.PreferredBackBufferHeight/2);
-            //throw new NotImplementedException();
+            fontGap = fontPosition + new Vector2(0, -1);
         }
         #endregion
 
@@ -47,12 +48,20 @@ namespace CR4VE.GameLogic.GameStates
         #endregion
 
         #region Draw
-        public void Draw(Microsoft.Xna.Framework.GameTime gameTime)
+        public void Draw(GameTime gameTime)
         {
             graphics.GraphicsDevice.Clear(Color.Black);
             spriteBatch.Begin();
+
             spriteBatch.DrawString(font, "GAME OVER"/*"Game Over Flo"*/, fontPosition, Color.White);
+            spriteBatch.DrawString(font, "Start / Enter - Back to Main Menu", new Vector2(fontPosition.X, fontPosition.Y + 50), Color.White);
+            spriteBatch.DrawString(font, "Select / Esc  - Quit Game", new Vector2(fontPosition.X, fontPosition.Y + 75), Color.White);
+
             spriteBatch.End();
+
+            //GraphicsDevice auf default setzen
+            graphics.GraphicsDevice.BlendState = BlendState.Opaque;
+            graphics.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
         }
         #endregion
 
