@@ -18,10 +18,12 @@ namespace CR4VE.GameBase.HeadUpDisplay
         #region Attributes
         public GraphicsDeviceManager graphics;
 
+        public float spriteScale = 0.3f;
         public Texture2D redLiquid;
-        private SpriteFont font;
+        public SpriteFont font;
 
-        private Vector2 trialsPosition;
+        public Vector2 liquidPosition;
+        public Vector2 trialsPosition;
         public bool powerIsDown = false;
 
         public int healthLeft, fullHealth;
@@ -52,14 +54,26 @@ namespace CR4VE.GameBase.HeadUpDisplay
         #region Methods
         public void Update()
         {
-            if (healthLeft <= 0 && !GameControls.isGhost)
+            if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
             {
-                trialsLeft -= 1;
+                if (healthLeft <= 0 && !GameControls.isGhost)
+                {
+                    trialsLeft -= 1;
 
-                GameControls.isGhost = true;
+                    GameControls.isGhost = true;
 
-                //refill health
-                healthLeft = fullHealth;
+                    //refill health
+                    healthLeft = fullHealth;
+                }
+            }
+            else if (Game1.currentState.Equals(Game1.EGameState.Arena))
+            {
+                if (healthLeft <= 0)
+                {
+                    trialsLeft -= 1;
+                    //refill health
+                    healthLeft = fullHealth;
+                }
             }
 
             if (trialsLeft < 0)
@@ -74,6 +88,7 @@ namespace CR4VE.GameBase.HeadUpDisplay
 
         public virtual void Initialize(ContentManager content) { }
         public virtual void UpdateMana() { }
+        public virtual void UpdateLiquidPositionByResolution() { }
         public virtual void Draw(SpriteBatch spriteBatch) { }
         #endregion
     }

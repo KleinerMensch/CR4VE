@@ -14,6 +14,7 @@ namespace CR4VE.GameLogic.Characters
     class CharacterOphelia : Character
     {
         #region Attributes
+        public static new float manaLeft = 3;
         Entity speer, doppelgaenger, holyThunder;
 
         Vector3 offset = new Vector3(8, 8, 8);
@@ -130,23 +131,20 @@ namespace CR4VE.GameLogic.Characters
                         }
                         else
                         {
-                            foreach (Enemy enemy in Arena.enemyList)
+                            if (enemyHit)
                             {
-                                if (enemyHit)
+                                launchedRanged = false;
+                                attackList.Remove(doppelgaenger);
+                            }
+                            else
+                            {
+                                foreach (Entity opheliaDoppelgaenger in attackList)
                                 {
-                                    launchedRanged = false;
-                                    attackList.Remove(doppelgaenger);
-                                }
-                                else
-                                {
-                                    foreach (Entity opheliaDoppelgaenger in attackList)
+                                    if (opheliaDoppelgaenger.boundary.Intersects(Arena.boss.boundary))
                                     {
-                                        if (opheliaDoppelgaenger.boundary.Intersects(enemy.boundary))
-                                        {
-                                            enemy.health -= 1;
-                                            enemyHit = true;
-                                            Console.WriteLine("Ophelia hit enemy by RangedAttack");
-                                        }
+                                        Arena.seraphinBossHUD.healthLeft -= 2;
+                                        enemyHit = true;
+                                        Console.WriteLine("Ophelia hit Boss by RangedAttack");
                                     }
                                 }
                             }
@@ -200,15 +198,12 @@ namespace CR4VE.GameLogic.Characters
                 attackList.Add(speer);
 
                 //Kollision mit Attacke
-                foreach (Enemy enemy in Arena.enemyList)
+                foreach (Entity opheliaSpeer in attackList)
                 {
-                    foreach (Entity opheliaSpeer in attackList)
+                    if (opheliaSpeer.boundary.Intersects(Arena.boss.boundary))
                     {
-                        if (opheliaSpeer.boundary.Intersects(enemy.boundary))
-                        {
-                            enemy.health -= 1;
-                            Console.WriteLine("Ophelia hit enemy by MeleeAttack");
-                        }
+                        Arena.seraphinBossHUD.healthLeft -= 3;
+                        Console.WriteLine("Ophelia hit Boss by MeleeAttack");
                     }
                 }
                 attackList.Remove(speer);
@@ -274,13 +269,10 @@ namespace CR4VE.GameLogic.Characters
                     holyThunder.boundary = new BoundingBox(this.position + new Vector3(-20, -3, -20), this.position + new Vector3(20, 3, 20));
                     attackList.Add(holyThunder);
 
-                    foreach (Enemy enemy in Arena.enemyList)
+                    if (holyThunder.boundary.Intersects(Arena.boss.boundary))
                     {
-                        if (holyThunder.boundary.Intersects(enemy.boundary))
-                        {
-                            enemy.health -= 1;
-                            Console.WriteLine("Ophelia hit enemy by AoE");
-                        }
+                        Arena.seraphinBossHUD.healthLeft -= 50;
+                        Console.WriteLine("Ophelia hit Boss by AoE");
                     }
                     attackList.Remove(holyThunder);
                 }

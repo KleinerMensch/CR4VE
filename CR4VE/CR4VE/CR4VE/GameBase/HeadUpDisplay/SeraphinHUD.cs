@@ -1,4 +1,5 @@
 ﻿using CR4VE.GameBase.Objects;
+using CR4VE.GameLogic.AI;
 using CR4VE.GameLogic.Characters;
 using CR4VE.GameLogic.GameStates;
 using Microsoft.Xna.Framework;
@@ -16,7 +17,6 @@ namespace CR4VE.GameBase.HeadUpDisplay
         #region Attributes
         private Texture2D seraphinHealthContainer, seraphinPowerRightEye, seraphinPowerLeftEye, seraphinPowerLowerEye;
         private Vector2 seraphinHealthContainerPosition;
-        private Vector2 seraphinLiquidPosition;
         #endregion
 
         #region inherited Constructor
@@ -33,60 +33,74 @@ namespace CR4VE.GameBase.HeadUpDisplay
             seraphinPowerLowerEye = content.Load<Texture2D>("Assets/Sprites/SeraphinPower_LowerEye");
             #endregion
 
-            //Positionen hart gecoded -> hier anpassen !
-            seraphinHealthContainerPosition = new Vector2(graphics.PreferredBackBufferWidth + 80, graphics.PreferredBackBufferHeight - graphics.PreferredBackBufferHeight);
-            seraphinLiquidPosition = seraphinHealthContainerPosition + new Vector2(-399.5f, +147.5f);
+            seraphinHealthContainerPosition = new Vector2(graphics.PreferredBackBufferWidth - (seraphinHealthContainer.Width * spriteScale), 0);
         }
 
         public override void UpdateMana()
         {
-            int ai1 = Singleplayer.activeIndex1;
-            int ai2 = Singleplayer.activeIndex2;
+            if (Game1.currentState == Game1.EGameState.Singleplayer)
+            {
+                int ai1 = Singleplayer.activeIndex1;
+                int ai2 = Singleplayer.activeIndex2;
 
-            for (int i = 0; i < Singleplayer.tileMaps[ai1].PowerupList.Count; i++)
-            {
-                if (CharacterOphelia.manaLeft < 3)
+                #region activeTilemap1
+                for (int i = 0; i < Singleplayer.tileMaps[ai1].PowerupList.Count; i++)
                 {
-                    if (Singleplayer.tileMaps[ai1].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
+                    if (CharacterOphelia.manaLeft < 3)
                     {
-                        Singleplayer.tileMaps[ai1].PowerupList.Remove(Singleplayer.tileMaps[ai1].PowerupList.ElementAt(i));
-                        CharacterOphelia.manaLeft += 1;
+                        if (Singleplayer.tileMaps[ai1].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
+                        {
+                            Singleplayer.tileMaps[ai1].PowerupList.Remove(Singleplayer.tileMaps[ai1].PowerupList.ElementAt(i));
+                            CharacterOphelia.manaLeft += 1;
+                        }
                     }
                 }
-            }
-            for (int i = 0; i < Singleplayer.tileMaps[ai2].PowerupList.Count; i++)
-            {
-                if (CharacterOphelia.manaLeft < 3)
+                #endregion
+                #region activeTilemap2
+                for (int i = 0; i < Singleplayer.tileMaps[ai2].PowerupList.Count; i++)
                 {
-                    if (Singleplayer.tileMaps[ai2].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
+                    if (CharacterOphelia.manaLeft < 3)
                     {
-                        Singleplayer.tileMaps[ai2].PowerupList.Remove(Singleplayer.tileMaps[ai2].PowerupList.ElementAt(i));
-                        CharacterOphelia.manaLeft += 1;
+                        if (Singleplayer.tileMaps[ai2].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
+                        {
+                            Singleplayer.tileMaps[ai2].PowerupList.Remove(Singleplayer.tileMaps[ai2].PowerupList.ElementAt(i));
+                            CharacterOphelia.manaLeft += 1;
+                        }
                     }
                 }
+                #endregion
             }
+        }
+
+        public override void UpdateLiquidPositionByResolution()
+        {
+            if ((graphics.PreferredBackBufferWidth / graphics.PreferredBackBufferHeight == 16 / 9) || (graphics.PreferredBackBufferWidth / graphics.PreferredBackBufferHeight == 4 / 3))
+                liquidPosition = seraphinHealthContainerPosition + new Vector2(65, 83.5f);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(redLiquid, seraphinLiquidPosition, new Rectangle(0, 0, redLiquid.Width, healthLeft), Color.White, MathHelper.ToRadians(180), seraphinHealthContainerPosition, 0.3f, SpriteEffects.None, 0);
-            spriteBatch.Draw(seraphinHealthContainer, seraphinHealthContainerPosition, null, Color.White, 0f, seraphinHealthContainerPosition, 0.3f, SpriteEffects.None, 0);
+            float percentagedHealthLeft = (float)healthLeft / (float)fullHealth;
+
+            // Origin ist der Punkt, um den rotiert wird !
+            spriteBatch.Draw(redLiquid, liquidPosition, new Rectangle(0, 0, redLiquid.Width, (int) (percentagedHealthLeft*redLiquid.Height)), Color.White, MathHelper.ToRadians(180), new Vector2(redLiquid.Width / 2, redLiquid.Height / 2), spriteScale, SpriteEffects.None, 0);
+            spriteBatch.Draw(seraphinHealthContainer, seraphinHealthContainerPosition, null, Color.White, 0f, Vector2.Zero, spriteScale, SpriteEffects.None, 0);
             
             #region Drawing current amount of Mana
-            if (CharacterSeraphin.manaLeft == 3)
+            if (CharacterSeraphin.manaLeft == 3 || BossHell.manaLeft == 3)
             {
-                spriteBatch.Draw(seraphinPowerRightEye, seraphinHealthContainerPosition, null, Color.White, 0f, seraphinHealthContainerPosition, 0.3f, SpriteEffects.None, 0);
-                spriteBatch.Draw(seraphinPowerLeftEye, seraphinHealthContainerPosition, null, Color.White, 0f, seraphinHealthContainerPosition, 0.3f, SpriteEffects.None, 0);
-                spriteBatch.Draw(seraphinPowerLowerEye, seraphinHealthContainerPosition, null, Color.White, 0f, seraphinHealthContainerPosition, 0.3f, SpriteEffects.None, 0);
+                spriteBatch.Draw(seraphinPowerRightEye, seraphinHealthContainerPosition, null, Color.White, 0f, Vector2.Zero, spriteScale, SpriteEffects.None, 0);
+                spriteBatch.Draw(seraphinPowerLeftEye, seraphinHealthContainerPosition, null, Color.White, 0f, Vector2.Zero, spriteScale, SpriteEffects.None, 0);
+                spriteBatch.Draw(seraphinPowerLowerEye, seraphinHealthContainerPosition, null, Color.White, 0f, Vector2.Zero, spriteScale, SpriteEffects.None, 0);
             }
-            if (CharacterSeraphin.manaLeft > 1 && CharacterSeraphin.manaLeft < 3)
+            if (CharacterSeraphin.manaLeft > 1 && CharacterSeraphin.manaLeft < 3 || BossHell.manaLeft > 1 && BossHell.manaLeft < 3)
             {
-                spriteBatch.Draw(seraphinPowerLeftEye, seraphinHealthContainerPosition, null, Color.White, 0f, seraphinHealthContainerPosition, 0.3f, SpriteEffects.None, 0);
-                spriteBatch.Draw(seraphinPowerLowerEye, seraphinHealthContainerPosition, null, Color.White, 0f, seraphinHealthContainerPosition, 0.3f, SpriteEffects.None, 0);
+                spriteBatch.Draw(seraphinPowerLeftEye, seraphinHealthContainerPosition, null, Color.White, 0f, Vector2.Zero, spriteScale, SpriteEffects.None, 0);
+                spriteBatch.Draw(seraphinPowerLowerEye, seraphinHealthContainerPosition, null, Color.White, 0f, Vector2.Zero, spriteScale, SpriteEffects.None, 0);
             }
-            if (CharacterSeraphin.manaLeft <= 1 && CharacterSeraphin.manaLeft > 0)
+            if (CharacterSeraphin.manaLeft <= 1 && CharacterSeraphin.manaLeft > 0 || BossHell.manaLeft <= 1 && BossHell.manaLeft > 0)
             {
-                spriteBatch.Draw(seraphinPowerLowerEye, seraphinHealthContainerPosition, null, Color.White, 0f, seraphinHealthContainerPosition, 0.3f, SpriteEffects.None, 0);
+                spriteBatch.Draw(seraphinPowerLowerEye, seraphinHealthContainerPosition, null, Color.White, 0f, Vector2.Zero, spriteScale, SpriteEffects.None, 0);
             }
             #endregion
         }

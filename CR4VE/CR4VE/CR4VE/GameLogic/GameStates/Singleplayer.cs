@@ -240,12 +240,12 @@ namespace CR4VE.GameLogic.GameStates
             //Array of all generated Tilemaps
             tileMaps = new Tilemap[]
             {
-                Tilemap.Generate2(layout1, boxSize, new Vector3(0, 0, 0)),
-                Tilemap.Generate2(layout2, boxSize, new Vector3(520, 20, 0)),
-                Tilemap.Generate2(layout3, boxSize, new Vector3(1040, -50, 0)),
-                Tilemap.Generate2(layout4, boxSize, new Vector3(1560, -150, 0)),
-                Tilemap.Generate2(layout5, boxSize, new Vector3(2120, -270, 0)),
-                Tilemap.Generate2(layout6, boxSize, new Vector3(2680, -280, 0)),
+                Tilemap.Generate(layout1, boxSize, new Vector3(0, 0, 0)),
+                Tilemap.Generate(layout2, boxSize, new Vector3(520, 20, 0)),
+                Tilemap.Generate(layout3, boxSize, new Vector3(1040, -50, 0)),
+                Tilemap.Generate(layout4, boxSize, new Vector3(1560, -150, 0)),
+                Tilemap.Generate(layout5, boxSize, new Vector3(2120, -270, 0)),
+                Tilemap.Generate(layout6, boxSize, new Vector3(2680, -280, 0)),
                 //tileMap7 = Tilemap.Generate(layout7, boxSize, new Vector3(0, 0, 0)),
                 //tileMap8 = Tilemap.Generate(layout8, boxSize, new Vector3(0, 0, 0))
             };
@@ -253,6 +253,8 @@ namespace CR4VE.GameLogic.GameStates
             //indices of active Tilemaps
             activeTileMap1 = tileMaps[activeIndex1];
             activeTileMap2 = tileMaps[activeIndex2];
+
+            visibles = new List<Tile>();
             #endregion            
 
             //Camera
@@ -266,7 +268,7 @@ namespace CR4VE.GameLogic.GameStates
 
             //Player
             ghost = new Character(Vector3.Zero, "skull", content);
-            player = new CharacterOphelia(Vector3.Zero, "sphereD5", content, new BoundingBox(new Vector3(-2.5f, -2.5f, -2.5f), new Vector3(2.5f, 2.5f, 2.5f)));
+            player = new CharacterOphelia(new Vector3(0,0,5), "Ophelia", content, new BoundingBox(new Vector3(-2.5f, -9f, -2.5f), new Vector3(2.5f, 9f, 2.5f)));
             
             //Checkpoints (default = Startposition)
             lastCheckpoint = new Checkpoint(Vector3.Zero, "checkpoint_hell", content);
@@ -297,7 +299,8 @@ namespace CR4VE.GameLogic.GameStates
         #region Update
         public Game1.EGameState Update(GameTime gameTime)
         {
-            visibles = Tilemap.getVisibleTiles2();
+            //Viewport Culling
+            visibles = Tilemap.getVisibleTiles();
 
             GameControls.updateSingleplayer(gameTime, visibles);
 
@@ -308,6 +311,7 @@ namespace CR4VE.GameLogic.GameStates
             hud.Update();
             
             hud.UpdateMana();
+            hud.UpdateLiquidPositionByResolution();
             
             if (hud.isDead)
             {
@@ -393,7 +397,7 @@ namespace CR4VE.GameLogic.GameStates
                 ghost.drawIn2DWorld(new Vector3(0.05f, 0.05f, 0.05f), 0, 0, 0);
             else
             {
-                player.drawIn2DWorldWithoutBones(Vector3.One, 0, MathHelper.ToRadians(90) * player.viewingDirection.X, 0);
+                player.drawIn2DWorld(new Vector3(0.02f, 0.02f, 0.02f), 0, MathHelper.ToRadians(90) * player.viewingDirection.X, 0);
                 player.DrawAttacks();
             }
 
