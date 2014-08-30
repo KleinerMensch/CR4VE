@@ -20,7 +20,7 @@ namespace CR4VE.GameLogic.AI
         #region inherited Constructors
         public Spikes() : base() { }
         public Spikes(Vector3 pos, String modelName, ContentManager cm) : base(pos, modelName, cm) { }
-        public Spikes(Vector3 pos, String modelName, ContentManager cm, BoundingBox bound) : base(pos, modelName, cm) { }
+        public Spikes(Vector3 pos, String modelName, ContentManager cm, BoundingBox bound) : base(pos, modelName, cm, bound) { }
         #endregion
 
         public override void UpdateSingleplayer(GameTime gameTime)

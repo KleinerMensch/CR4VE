@@ -23,7 +23,7 @@ namespace CR4VE.GameLogic.AI
         #region inherited Constructors
         public EnemyRedEye() : base() { }
         public EnemyRedEye(Vector3 pos, String modelName, ContentManager cm) : base(pos, modelName, cm) { }
-        public EnemyRedEye(Vector3 pos, String modelName, ContentManager cm, BoundingBox bound) : base(pos, modelName, cm) { }
+        public EnemyRedEye(Vector3 pos, String modelName, ContentManager cm, BoundingBox bound) : base(pos, modelName, cm, bound) { }
         #endregion
 
         public override void UpdateSingleplayer(Microsoft.Xna.Framework.GameTime gameTime)

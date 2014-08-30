@@ -21,7 +21,7 @@ namespace CR4VE.GameLogic.AI
         #region inherited Constructors
         public EnemySkull():base() { }
         public EnemySkull(Vector3 pos, String modelName, ContentManager cm) : base(pos, modelName, cm) { }
-        public EnemySkull(Vector3 pos, String modelName, ContentManager cm, BoundingBox bound) : base(pos, modelName, cm) { }
+        public EnemySkull(Vector3 pos, String modelName, ContentManager cm, BoundingBox bound) : base(pos, modelName, cm, bound) { }
         #endregion
 
         public override void UpdateSingleplayer(GameTime gameTime)
@@ -49,9 +49,9 @@ namespace CR4VE.GameLogic.AI
                 rotationY += MathHelper.ToRadians(180);
             }
 
-            //updating bounding box & check collision
-            this.boundary.Min = this.position + new Vector3(-3, -3, -3);
-            this.boundary.Max = this.position + new Vector3(3, 3, 3);
+            ////updating bounding box & check collision
+            //this.boundary.Min = this.position + new Vector3(-3, -3, -3);
+            //this.boundary.Max = this.position + new Vector3(3, 3, 3);
 
             if (Singleplayer.player.boundary.Intersects(this.boundary))
             {
