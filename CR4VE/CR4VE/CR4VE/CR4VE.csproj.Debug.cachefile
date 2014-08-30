@@ -23,6 +23,8 @@ Content\Assets\Models\Players\Maps\body-cos.xnb
 Content\Assets\Models\Players\Maps\lace.xnb
 Content\Assets\Models\Players\Maps\shadow.xnb
 Content\Assets\Models\Players\Maps\HoernerTextur.xnb
+Content\Assets\Models\Maps\EdelsteinTextur.xnb
+Content\Assets\Models\Maps\gold_1024x1024.xnb
 Content\Assets\Fonts\HUDfont.xnb
 Content\Assets\Fonts\GameOverFlo.xnb
 Content\Assets\Models\Enemies\EnemyEye.xnb
@@ -95,15 +97,6 @@ Content\Assets\Models\Players\Maps\trans_0.xnb
 Content\Assets\Models\Players\Maps\lace_0.xnb
 Content\Assets\Models\Players\Maps\body-cos_0.xnb
 Content\Assets\Models\Players\Maps\HoernerTextur_0.xnb
-Content\Assets\Models\Maps\body-cos.xnb
-Content\Assets\Models\Maps\EdelsteinTextur.xnb
-Content\Assets\Models\Maps\gold_1024x1024.xnb
-Content\Assets\Models\Maps\HoernerTextur.xnb
-Content\Assets\Models\Maps\lace.xnb
-Content\Assets\Models\Maps\mimi.xnb
-Content\Assets\Models\Maps\shadow.xnb
-Content\Assets\Models\Maps\trans.xnb
-Content\Assets\Models\Maps\trans_mask.xnb
 Content\Assets\Models\Maps\gold_1024x1024_0.xnb
 Content\Assets\Models\Maps\EdelsteinTextur_0.xnb
 Content\Assets\Sprites\Startscreen.png

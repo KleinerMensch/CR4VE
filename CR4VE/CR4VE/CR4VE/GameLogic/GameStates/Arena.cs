@@ -52,7 +52,8 @@ namespace CR4VE.GameLogic.GameStates
             spriteBatch = CR4VE.Game1.spriteBatch;
             graphics = CR4VE.Game1.graphics;
 
-            CameraArena.Initialize(800, 600);
+            //Camera
+            CameraArena.Initialize(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
 
             //Terrain
             terrain = new Entity(new Vector3(5, -20, -10), "Terrain/arena_hell", content);
@@ -62,7 +63,7 @@ namespace CR4VE.GameLogic.GameStates
 
             //moveable Entities
             player = new CharacterOphelia(new Vector3(0, -12.5f, 0), "Ophelia", content);
-            BoundingBox playerBound = new BoundingBox(player.Position + new Vector3(-3, -3, -3), player.Position + new Vector3(3, 3, 3));
+            BoundingBox playerBound = new BoundingBox(player.Position + new Vector3(-2.5f, -9, -2.5f), player.Position + new Vector3(2.5f, 9, 2.5f));
             player.Boundary = playerBound;
 
             sphere = new BoundingSphere(player.position, 6);
@@ -82,13 +83,14 @@ namespace CR4VE.GameLogic.GameStates
         public Game1.EGameState Update(GameTime gameTime)
         {
             GameControls.updateArena(gameTime);
+
             GameControls.updateVibration(gameTime);
 
             player.Update(gameTime);
             sphere.Center = player.position;
 
             boss.Update(gameTime);
-
+            
             #region HUD
             opheliaHud.Update();
             opheliaHud.UpdateLiquidPositionByResolution();
@@ -117,7 +119,7 @@ namespace CR4VE.GameLogic.GameStates
             terrain.drawInArena(new Vector3(0.5f, 0.5f, 0.5f), 0, MathHelper.ToRadians(30), 0);
 
             //Player
-            player.drawInArena(new Vector3(0.05f, 0.05f, 0.05f), 0, MathHelper.ToRadians(90) + blickWinkel, 0);
+            player.drawInArena(new Vector3(0.02f, 0.02f, 0.02f), 0, MathHelper.ToRadians(90) + blickWinkel, 0);
             player.DrawAttacks();
 
             #region Enemies

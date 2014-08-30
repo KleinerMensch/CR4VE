@@ -20,16 +20,28 @@ namespace CR4VE.GameLogic.AI
         public new Vector3 viewingDirection = new Vector3(-1, 0, 0);
         #endregion
 
+        #region Properties
+        public override bool isDead
+        {
+            get { return this.hp <= 0; }
+        }
+        public override float Health
+        {
+            get { return this.hp; }
+            set { this.hp = value; }
+        }
+        #endregion
+
         #region inherited Constructors
         public EnemyRedEye() : base() { }
         public EnemyRedEye(Vector3 pos, String modelName, ContentManager cm) : base(pos, modelName, cm) { }
-        public EnemyRedEye(Vector3 pos, String modelName, ContentManager cm, BoundingBox bound) : base(pos, modelName, cm) { }
+        public EnemyRedEye(Vector3 pos, String modelName, ContentManager cm, BoundingBox bound) : base(pos, modelName, cm, bound) { }
         #endregion
 
-        public override void UpdateSingleplayer(Microsoft.Xna.Framework.GameTime gameTime)
+        public override void UpdateSingleplayer(GameTime gameTime)
         {
             spawn += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            this.position.X += moveSpeed;
+            this.move(new Vector3(moveSpeed,0,0));
             if (this.position.X < 50 || this.position.X > 105)
             {
                 moveSpeed *= -1;
@@ -39,10 +51,6 @@ namespace CR4VE.GameLogic.AI
 
             //updating laserList
             this.LoadEnemies(this.position, Singleplayer.cont);
-
-            //updating bounding box
-            this.boundary.Min = this.position + new Vector3(-3, -3, -3);
-            this.boundary.Max = this.position + new Vector3(3, 3, 3);
 
             if (Singleplayer.player.boundary.Intersects(this.boundary))
             {
@@ -123,12 +131,16 @@ namespace CR4VE.GameLogic.AI
         }
         #endregion
 
-        public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
+        public override void Draw()
         {
             this.drawIn2DWorld(new Vector3(0.5f, 0.5f, 0.5f), 0, rotationY, 0);
+            foreach (Entity laser in laserList)
+            {
+                laser.drawIn2DWorld(new Vector3(0.5f, 0.5f, 0.5f), 0, 0, MathHelper.ToRadians(-90) * laser.viewingDirection.X);
+            }
         }
 
-        public override void DrawInArena(GameTime gameTime)
+        public override void DrawInArena()
         {
             this.drawInArena(new Vector3(0.5f, 0.5f, 0.5f), 0, rotationY, 0);
         }

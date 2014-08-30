@@ -20,13 +20,25 @@ namespace CR4VE.GameLogic.AI
         float rotationY = MathHelper.ToRadians(-90);
         #endregion
 
+        #region Properties
+        public override bool isDead
+        {
+            get { return this.hp <= 0; }
+        }
+        public override float Health
+        {
+            get { return this.hp; }
+            set { this.hp = value; }
+        }
+        #endregion
+
         #region inherited Constructors
         public EnemySpinningCrystal():base() { }
         public EnemySpinningCrystal(Vector3 pos, String modelName, ContentManager cm) : base(pos, modelName, cm) { }
-        public EnemySpinningCrystal(Vector3 pos, String modelName, ContentManager cm, BoundingBox bound) : base(pos, modelName, cm) { }
+        public EnemySpinningCrystal(Vector3 pos, String modelName, ContentManager cm, BoundingBox bound) : base(pos, modelName, cm, bound) { }
         #endregion
 
-        public override void UpdateSingleplayer(Microsoft.Xna.Framework.GameTime gameTime)
+        public override void UpdateSingleplayer(GameTime gameTime)
         {
             rotationX -= 0.1f;
 
@@ -38,7 +50,7 @@ namespace CR4VE.GameLogic.AI
             {
                 direction.Normalize();
                 direction = moveSpeed * direction;
-                this.position += direction;
+                this.move(direction);
             } else {
                 //noch zu aendern, was passiert, wenn player nicht mehr in der AggroRange
                 this.position.X += moveSpeed;
@@ -50,10 +62,6 @@ namespace CR4VE.GameLogic.AI
                 }
             }
 
-            //updating bounding box & check collision
-            this.boundary.Min = this.position + new Vector3(-3, -3, -3);
-            this.boundary.Max = this.position + new Vector3(3, 3, 3);
-
             if (Singleplayer.player.boundary.Intersects(this.boundary))
             {
                 Singleplayer.hud.healthLeft -= (int)(Singleplayer.hud.fullHealth * 0.01);
@@ -61,7 +69,7 @@ namespace CR4VE.GameLogic.AI
             }
         }
 
-        public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
+        public override void Draw()
         {
             this.drawIn2DWorld(new Vector3(0.1f, 0.1f, 0.1f), 0, rotationY + rotationX, 0);
         }

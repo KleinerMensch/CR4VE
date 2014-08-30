@@ -38,7 +38,7 @@ namespace CR4VE.GameLogic.Characters
                     crystal.boundary = new BoundingBox(crystal.position + new Vector3(-2, -2, -2), crystal.position + new Vector3(2, 2, 2));
                     float minDistance = float.MaxValue;
 
-                    foreach (Enemy enemy in Singleplayer.enemyList)
+                    /*foreach (Enemy enemy in Singleplayer.enemyList)
                     {
                         float distance = (crystal.position - enemy.position).Length();
                         if (distance < minDistance)
@@ -46,15 +46,15 @@ namespace CR4VE.GameLogic.Characters
                             minDistance = distance;
                             nearestEnemy = enemy;
                         }
-                    }
+                    }*/
 
                     foreach (Entity healthAbsorbingCrystal in crystalList)
                     {
                         //absorbs health of nearest enemy if enemy is in range of effect
-                        if ((healthAbsorbingCrystal.position - nearestEnemy.position).Length() < 50 && nearestEnemy.health > 0)
+                        if ((healthAbsorbingCrystal.position - nearestEnemy.position).Length() < 50 && nearestEnemy.hp > 0)
                         {
-                            Console.WriteLine(nearestEnemy.health + " Fractus hit enemy by SpecialAttack");
-                            nearestEnemy.health -= 0.01f;
+                            Console.WriteLine(nearestEnemy.hp + " Fractus hit enemy by SpecialAttack");
+                            nearestEnemy.hp -= 0.01f;
 
                             //transfers health to Fractus
                             if (Singleplayer.hud.trialsLeft <= 3 && Singleplayer.hud.healthLeft < Singleplayer.hud.fullHealth)
@@ -80,10 +80,10 @@ namespace CR4VE.GameLogic.Characters
                     foreach (Entity healthAbsorbingCrystal in crystalList)
                     {
                         //absorbs health of nearest enemy if enemy is in range of effect
-                        if ((healthAbsorbingCrystal.position - nearestEnemy.position).Length() < 50 && nearestEnemy.health > 0)
+                        if ((healthAbsorbingCrystal.position - nearestEnemy.position).Length() < 50 && nearestEnemy.hp > 0)
                         {
-                            Console.WriteLine(nearestEnemy.health + " Fractus hit enemy by SpecialAttack");
-                            nearestEnemy.health -= 0.01f;
+                            Console.WriteLine(nearestEnemy.hp + " Fractus hit enemy by SpecialAttack");
+                            nearestEnemy.hp -= 0.01f;
 
                             //transfers health to Fractus in Arena
                             if (Arena.opheliaHud.trialsLeft <= 3 && Arena.opheliaHud.healthLeft < Arena.opheliaHud.fullHealth)
@@ -106,7 +106,7 @@ namespace CR4VE.GameLogic.Characters
                 {
                     if (crystalShield.boundary.Intersects(enemy.boundary))
                     {
-                        enemy.health -= 1;
+                        enemy.hp -= 1;
                         Console.WriteLine("Fractus hit enemy by crystalShield");
                     }
                 }
@@ -144,7 +144,7 @@ namespace CR4VE.GameLogic.Characters
                         if (enemyHit) break;
                         if (crystals.boundary.Intersects(enemy.boundary))
                         {
-                            enemy.health -= 1;
+                            enemy.hp -= 1;
                             enemyHit = true;
                             Console.WriteLine("Fractus hit enemy by RangedAttack");
                         }

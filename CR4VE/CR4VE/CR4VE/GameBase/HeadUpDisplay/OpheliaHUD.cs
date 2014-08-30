@@ -60,7 +60,6 @@ namespace CR4VE.GameBase.HeadUpDisplay
 
             if (Game1.currentState == Game1.EGameState.Singleplayer)
             {
-
                 int ai1 = Singleplayer.activeIndex1;
                 int ai2 = Singleplayer.activeIndex2;
 

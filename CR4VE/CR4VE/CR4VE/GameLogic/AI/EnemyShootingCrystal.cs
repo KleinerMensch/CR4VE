@@ -20,10 +20,22 @@ namespace CR4VE.GameLogic.AI
         Vector3 viewingDirection = new Vector3(-1, 0, 0);
         #endregion
 
+        #region Properties
+        public override bool isDead
+        {
+            get { return this.hp <= 0; }
+        }
+        public override float Health
+        {
+            get { return this.hp; }
+            set { this.hp = value; }
+        }
+        #endregion
+
         #region inherited Constructors
         public EnemyShootingCrystal() : base() { }
         public EnemyShootingCrystal(Vector3 pos, String modelName, ContentManager cm) : base(pos, modelName, cm) { }
-        public EnemyShootingCrystal(Vector3 pos, String modelName, ContentManager cm, BoundingBox bound) : base(pos, modelName, cm) { }
+        public EnemyShootingCrystal(Vector3 pos, String modelName, ContentManager cm, BoundingBox bound) : base(pos, modelName, cm, bound) { }
         #endregion
 
 
@@ -31,7 +43,7 @@ namespace CR4VE.GameLogic.AI
         {
         }
 
-        public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
+        public override void Draw()
         {
             this.drawIn2DWorld(new Vector3(0.1f, 0.1f, 0.1f), 0, rotationY , 0);
         }

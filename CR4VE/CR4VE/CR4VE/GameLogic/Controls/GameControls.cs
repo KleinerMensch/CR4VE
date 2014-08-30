@@ -34,10 +34,10 @@ namespace CR4VE.GameLogic.Controls
         //(alive)
         private static readonly float accel = 1f;
 
-        public static bool borderedLeft = false;
-        public static bool borderedRight = false;
-        public static bool borderedTop = false;
-        public static bool borderedBottom = false;
+        private static bool borderedLeft = false;
+        private static bool borderedRight = false;
+        private static bool borderedTop = false;
+        private static bool borderedBottom = false;
         //(ghost)
         private static readonly float ghostDelay = 0.01f;
         private static readonly Vector3 checkPointFall = new Vector3(0, 10f, 0);
@@ -147,14 +147,16 @@ namespace CR4VE.GameLogic.Controls
         //update methods
         public static void updateVibration(GameTime gameTime)
         {
-            if (isReduced(Game1.currentState)) {
+            if (isReduced(Game1.currentState))
+            {
                 GamePad.SetVibration(PlayerIndex.One, 0.5f, 0.5f);
                 vibrTimer = 1.0f;            
             }
 
             vibrTimer -= gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (vibrTimer <= 0.0f) {
+            if (vibrTimer <= 0.0f)
+            {
                 GamePad.SetVibration(PlayerIndex.One, 0.0f, 0.0f);
             }
           
@@ -169,7 +171,7 @@ namespace CR4VE.GameLogic.Controls
                 {
                     Singleplayer.ghost.Position = Singleplayer.player.Position;
 
-                    Singleplayer.player.moveTo(Singleplayer.lastCheckpoint.Position + checkPointFall);
+                    Singleplayer.player.moveTo(Singleplayer.lastCheckpoint.Position + checkPointFall + new Vector3(0,0,5));
                 }
 
                 //save moveVecGhost and calculate moveVec for ghost
@@ -209,9 +211,6 @@ namespace CR4VE.GameLogic.Controls
 
                 prevGamepad = currGamepad;
                 currGamepad = GamePad.GetState(PlayerIndex.One);
-
-                //visible tiles (potential collisions)
-                //List<Tile> visibles = Tilemap.getVisibleTiles();
 
                 #region Calculate moveVecPlayer
                 Vector3 moveVecPlayer = new Vector3(0, 0, 0);
@@ -275,6 +274,12 @@ namespace CR4VE.GameLogic.Controls
                 }
                 #endregion
 
+                Console.Clear();
+                Console.WriteLine("right: " + borderedRight);
+                Console.WriteLine("left: " + borderedLeft);
+                Console.WriteLine("top: " + borderedTop);
+                Console.WriteLine("down: " + borderedBottom);
+
                 #region collision
                 Vector3 temp = moveVecPlayer;
 
@@ -318,7 +323,6 @@ namespace CR4VE.GameLogic.Controls
                 //move camera and realign BoundingFrustum
                 Camera2D.realign(moveVecPlayer, Singleplayer.player.Position);
 
-
                 #region Updating attacks
                 if (leftClick(currentMouseState, previousMouseState) || isClicked(Buttons.X))
                 {
@@ -336,7 +340,7 @@ namespace CR4VE.GameLogic.Controls
                     Singleplayer.player.SpecialAttack(gameTime);
                 }
                 #endregion
-
+                
                 borderedRight = Singleplayer.player.checkRightBorder(visibles);
                 borderedLeft = Singleplayer.player.checkLeftBorder(visibles);
                 #endregion
@@ -363,15 +367,6 @@ namespace CR4VE.GameLogic.Controls
 
         public static void updateArena(GameTime gameTime)
         {
-            previousKeyboard = currentKeyboard;
-            currentKeyboard = Keyboard.GetState();
-
-            previousMouseState = currentMouseState;
-            currentMouseState = Mouse.GetState();
-
-            prevGamepad = currGamepad;
-            currGamepad = GamePad.GetState(PlayerIndex.One);
-
             if (ringOut)
             {
                 currentTime = gameTime.TotalGameTime.TotalSeconds;
@@ -384,6 +379,15 @@ namespace CR4VE.GameLogic.Controls
             }
             else
             {
+                previousKeyboard = currentKeyboard;
+                currentKeyboard = Keyboard.GetState();
+
+                previousMouseState = currentMouseState;
+                currentMouseState = Mouse.GetState();
+
+                prevGamepad = currGamepad;
+                currGamepad = GamePad.GetState(PlayerIndex.One);
+
                 #region Updating attacks
                 if (leftClick(currentMouseState, previousMouseState) || isClicked(Buttons.X))
                 {
@@ -402,21 +406,40 @@ namespace CR4VE.GameLogic.Controls
                 }
                 #endregion
 
-                Vector3 moveVecPlayer = new Vector3(currGamepad.ThumbSticks.Left.X, 0, -currGamepad.ThumbSticks.Left.Y);
+                //Left ThumbStick control
+                Vector3 moveVecPad = new Vector3(currGamepad.ThumbSticks.Left.X, 0, -currGamepad.ThumbSticks.Left.Y);
 
-                if (moveVecPlayer != new Vector3(0, 0, 0))
+                //WASD controls
+                Vector3 moveVecBoard = new Vector3(0, 0, 0);
+                if (currentKeyboard.IsKeyDown(Keys.W)) moveVecBoard += new Vector3(0, 0, -accel);
+                if (currentKeyboard.IsKeyDown(Keys.A)) moveVecBoard += new Vector3(-accel, 0, 0);
+                if (currentKeyboard.IsKeyDown(Keys.S)) moveVecBoard += new Vector3(0, 0, accel);
+                if (currentKeyboard.IsKeyDown(Keys.D)) moveVecBoard += new Vector3(accel, 0, 0);
+
+                if (moveVecPad != new Vector3(0, 0, 0))
                 {
-                    Vector3 recentPlayerPosition = Arena.player.position;
-                    Vector3 newPlayerPosition = Arena.player.position + moveVecPlayer;
-                    Arena.player.viewingDirection = newPlayerPosition - recentPlayerPosition;
+                    Vector3 recentPlayerPosition = Arena.player.Position;
+
+                    Arena.player.move(moveVecPad);
+
+                    Arena.player.viewingDirection = Arena.player.Position - recentPlayerPosition;
+                    Arena.blickWinkel = (float)Math.Atan2(-Arena.player.viewingDirection.Z, Arena.player.viewingDirection.X);
+                }
+                else if (moveVecBoard != Vector3.Zero)
+                {
+                    Vector3 recentPlayerPosition = Arena.player.Position;
+
+                    if (moveVecBoard.Length() > 1) moveVecBoard.Normalize();
+                    Arena.player.move(moveVecBoard);
+
+                    Arena.player.viewingDirection = Arena.player.Position - recentPlayerPosition;
                     Arena.blickWinkel = (float)Math.Atan2(-Arena.player.viewingDirection.Z, Arena.player.viewingDirection.X);
                 }
 
-                Arena.player.move(moveVecPlayer);
-
+                //check for ring out
                 if (!Arena.player.Boundary.Intersects(Arena.arenaBound))
                 {
-                    fallVecPlayer = moveVecPlayer;
+                    fallVecPlayer = moveVecPad;
 
                     startFallTime = gameTime.TotalGameTime.TotalSeconds;
 

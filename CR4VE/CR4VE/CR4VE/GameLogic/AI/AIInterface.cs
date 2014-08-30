@@ -11,7 +11,7 @@ namespace CR4VE.GameLogic.AI
     {
         void UpdateSingleplayer(GameTime gameTime);
         void UpdateArena(GameTime gameTime);
-        void Draw(GameTime gameTime);
-        void DrawInArena(GameTime gameTime);
+        void Draw();
+        void DrawInArena();
     }
 }

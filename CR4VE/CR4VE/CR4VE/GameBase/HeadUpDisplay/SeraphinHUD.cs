@@ -34,10 +34,13 @@ namespace CR4VE.GameBase.HeadUpDisplay
             #endregion
 
             seraphinHealthContainerPosition = new Vector2(graphics.PreferredBackBufferWidth - (seraphinHealthContainer.Width * spriteScale), 0);
+            if (Game1.currentState.Equals(Game1.EGameState.Arena))
+                trialsLeft = 0;
         }
 
         public override void UpdateMana()
         {
+            Console.WriteLine(this.trialsLeft);
             if (Game1.currentState == Game1.EGameState.Singleplayer)
             {
                 int ai1 = Singleplayer.activeIndex1;

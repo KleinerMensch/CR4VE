@@ -11,8 +11,15 @@ namespace CR4VE.GameLogic.AI
 {
     class Enemy : Entity, AIInterface
     {
+        #region Attributes
         //alle Gegner haben 3Leben -> wird vererbt
-        public float health = 3;
+        public float hp = 3;
+        #endregion
+
+        #region Properties
+        public virtual bool isDead { get; set; }
+        public virtual float Health { get; set; }
+        #endregion
 
         #region Constructors
         public Enemy() : base() { }
@@ -31,8 +38,8 @@ namespace CR4VE.GameLogic.AI
 
         public virtual void UpdateSingleplayer(GameTime gameTime) { }
         public virtual void UpdateArena(GameTime gameTime) { }
-        public virtual void Draw(GameTime gameTime) { }
-        public virtual void DrawInArena(GameTime gameTime) { }
+        public virtual void Draw() { }
+        public virtual void DrawInArena() { }
         public virtual void Destroy() { }
     }
 }
