@@ -20,19 +20,22 @@ namespace CR4VE.GameLogic.AI
         Vector3 offset = new Vector3(8, 8, 8);
 
         float moveSpeed = -0.2f;
-        float minionSpeed = 5;
+        float minionSpeed = 3;
         float spawn = 0;
 
+        private static readonly TimeSpan attackTimer = TimeSpan.FromSeconds(5);
+        private TimeSpan lastAttack;
+
         //für die minionbewegung
-        static float rTimer = 4.0f;
-        static float chaseTimer = 6.0f;
+        static float rTimer = 10.0f;
+        static float chaseTimer = 5.0f;
         #endregion
 
         #region inherited Constructors
         //base ist fuer Vererbungskram
         public BossHell() : base() { }
         public BossHell(Vector3 pos, String modelName, ContentManager cm) : base(pos,modelName,cm){ }
-        public BossHell(Vector3 pos, String modelName, ContentManager cm, BoundingBox bound):base(pos,modelName,cm,bound) { }
+        public BossHell(Vector3 pos, String modelName, ContentManager cm, BoundingBox bound) : base(pos, modelName, cm, bound) { }
         #endregion
 
         public override void Update(GameTime time)
@@ -41,13 +44,13 @@ namespace CR4VE.GameLogic.AI
             Random r = new Random();
             double help = r.NextDouble() * Math.PI * 2.0;
             Vector3 tmp = new Vector3((float)Math.Sin(help), (float)Math.Cos(help), 0);
-                
+
 
             spawn += (float)time.ElapsedGameTime.TotalSeconds;
 
             // Decrements the timespan
             timeSpan -= time.ElapsedGameTime;
-            
+
             // If the timespan is equal or smaller time "0"
             if (timeSpan <= TimeSpan.Zero && minionList.Count > 0)
             {
@@ -58,15 +61,15 @@ namespace CR4VE.GameLogic.AI
                 timeSpan = TimeSpan.FromSeconds(10);
                 launchedRanged = false;
             }
-            
+
             foreach (Entity minion in minionList)
             {
                 minion.boundary = new BoundingBox(minion.position + new Vector3(-2, -2, -2), minion.position + new Vector3(2, 2, 2));
 
                 if (rTimer != 0)
                 {
-                    minion.position += tmp* minionSpeed;
-                    rTimer -=  (float)time.ElapsedGameTime.TotalSeconds;
+                    minion.position += tmp * minionSpeed;
+                    rTimer -= (float)time.ElapsedGameTime.TotalSeconds;
                 }
 
                 if (chaseTimer != 0)
@@ -74,12 +77,12 @@ namespace CR4VE.GameLogic.AI
                     Vector3 direction = minion.position - Arena.player.position;
                     direction.Normalize();
                     direction = moveSpeed * direction;
-                    minion.position += direction* minionSpeed;
+                    minion.position += direction * minionSpeed;
                     chaseTimer -= (float)time.ElapsedGameTime.TotalSeconds;
                 }
 
 
-              
+
                 if (minion.boundary.Intersects(Arena.player.boundary))
                 {
                     Arena.opheliaHud.healthLeft -= 1;
@@ -103,11 +106,22 @@ namespace CR4VE.GameLogic.AI
                 }
             }
 
-            this.RangedAttack(time);
-
-            ////Minion nur gespawned, wenn noch keiner da ist
-            //if (manaLeft > 0 && minionList.Count == 0)
-            //    this.RangedAttack(time);
+            //else if (lastAttack + attackTimer < time.TotalGameTime)
+            //{
+            //    this.MeleeAttack(time);
+            //    lastAttack = time.TotalGameTime;
+            //}
+            //Minion nur gespawned, wenn noch keiner da ist
+            if (manaLeft > 0 && minionList.Count == 0)
+            {
+                if (lastAttack + attackTimer < time.TotalGameTime)
+                {
+                    this.RangedAttack(time);
+                    lastAttack = time.TotalGameTime;
+                    manaLeft -= 1;
+                }
+                
+            }
         }
 
         public override void RangedAttack(GameTime time) {

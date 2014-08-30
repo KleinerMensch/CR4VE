@@ -87,7 +87,7 @@ namespace CR4VE.GameLogic.Characters
                                     {
                                         if (opheliaDoppelgaenger.boundary.Intersects(enemy.boundary))
                                         {
-                                            enemy.health -= 1;
+                                            enemy.hp -= 1;
                                             enemyHit = true;
                                             Console.WriteLine("Ophelia hit enemy by RangedAttack");
                                         }
@@ -193,7 +193,7 @@ namespace CR4VE.GameLogic.Characters
                     {
                         if (opheliaSpeer.boundary.Intersects(enemy.boundary))
                         {
-                            enemy.health -= 1;
+                            enemy.hp -= 1;
                             Console.WriteLine("Ophelia hit enemy by MeleeAttack");
                         }
                     }
@@ -267,7 +267,7 @@ namespace CR4VE.GameLogic.Characters
                     {
                         if (holyThunder.boundary.Intersects(enemy.boundary))
                         {
-                            enemy.health -= 1;
+                            enemy.hp -= 1;
                             Console.WriteLine("Ophelia hit enemy by AoE");
                         }
                     }

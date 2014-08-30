@@ -42,11 +42,11 @@ namespace CR4VE.GameLogic.GameStates
         public static Character ghost;
         public static Character player;
 
+        //DEBUG
+        public static List<Enemy> enemyList = new List<Enemy>();
+
         //reset point if dead
         public static Checkpoint lastCheckpoint;
-        
-        //Enemies
-        public static List<Enemy> enemyList = new List<Enemy>();
 
         //HUD
         public static HUD hud;
@@ -290,27 +290,23 @@ namespace CR4VE.GameLogic.GameStates
             //Textures
             background = content.Load<Texture2D>("Assets/Sprites/stone");
 
-            //Player
+            //Player and Ghost
             ghost = new Character(Vector3.Zero, "skull", content);
-            player = new CharacterOphelia(new Vector3(0,0,5), "Ophelia", content, new BoundingBox(new Vector3(-2.5f, -9f, -2.5f), new Vector3(2.5f, 9f, 2.5f)));
+            player = new CharacterOphelia(new Vector3(0, 0, 5), "Ophelia", content, new BoundingBox(new Vector3(-2.5f, -9f, -2.5f), new Vector3(2.5f, 9f, 2.5f)));
             
             //Checkpoints (default = Startposition)
             lastCheckpoint = new Checkpoint(Vector3.Zero, "checkpoint_hell", content);
             
             #region Loading AI
-            EnemyRedEye redEye;
+            /*EnemyRedEye redEye;
             EnemySkull skull;
-            //EnemySpinningCrystal spinningCrystal;
-            //EnemyShootingCrystal shootingCrystal;
 
             redEye = new EnemyRedEye(new Vector3(80, 0, 0),"EnemyEye",content,new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
-            skull = new EnemySkull(new Vector3(400, 0, 0), "skull", content, new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
-            //spinningCrystal = new EnemySpinningCrystal(new Vector3(200, 0, 0), "enemySpinningNoAnim", content,new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
-            //shootingCrystal = new EnemyShootingCrystal(new Vector3(500, 0, 0), "enemyShootingNoAnim", content, new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
+            skull = new EnemySkull(new Vector3(400, 0, 0), "skull", content, new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));*/
 
             //fill list with enemies
-            enemyList.Add(redEye);
-            enemyList.Add(skull);
+            /*enemyList.Add(redEye);
+            enemyList.Add(skull);*/
             #endregion
 
             //HUD
@@ -321,25 +317,14 @@ namespace CR4VE.GameLogic.GameStates
         #region Update
         public Game1.EGameState Update(GameTime gameTime)
         {
-            //Viewport Culling
+            //needed for Viewport Culling, Collision, etc.
             visibles = Tilemap.getVisibleTiles();
 
+            //Controls
             GameControls.updateSingleplayer(gameTime, visibles);
 
             //check if active Tilemaps have changed
             Tilemap.updateActiveTilemaps();
-
-            #region HUD
-            hud.Update();
-            
-            hud.UpdateMana();
-            hud.UpdateLiquidPositionByResolution();
-            
-            if (hud.isDead)
-            {
-                return Game1.EGameState.GameOver;
-            }
-            #endregion
 
             //Player
             player.Update(gameTime);
@@ -364,22 +349,7 @@ namespace CR4VE.GameLogic.GameStates
                 c.Update();
             }
 
-            #region Updating Enemies
-            /*foreach (Enemy enemy in enemyList)
-            {
-                enemy.UpdateSingleplayer(gameTime);
-            }
-            
-            for (int i = 0; i < enemyList.Count; i++)
-            {
-                if (enemyList.ElementAt(i).health <= 0)
-                {
-                    enemyList.ElementAt(i).Destroy();
-                    enemyList.Remove(enemyList.ElementAt(i));
-                }
-            }*/
-
-            //DEBUG
+            #region Enemies
             foreach (Enemy e in tileMaps[activeIndex1].EnemyList)
             {
                 e.UpdateSingleplayer(gameTime);
@@ -387,6 +357,37 @@ namespace CR4VE.GameLogic.GameStates
             foreach (Enemy e in tileMaps[activeIndex2].EnemyList)
             {
                 e.UpdateSingleplayer(gameTime);
+            }
+
+            //remove enemies with health <= 0 and destroy minions
+            for (int i = 0; i < tileMaps[activeIndex1].EnemyList.Count; i++)
+            {
+                if (tileMaps[activeIndex1].EnemyList.ElementAt(i).isDead)
+                {
+                    tileMaps[activeIndex1].EnemyList.ElementAt(i).Destroy();
+                    tileMaps[activeIndex1].EnemyList.Remove(tileMaps[activeIndex1].EnemyList.ElementAt(i));
+                }
+            }
+            for (int i = 0; i < tileMaps[activeIndex2].EnemyList.Count; i++)
+            {
+                if (tileMaps[activeIndex2].EnemyList.ElementAt(i).isDead)
+                {
+                    tileMaps[activeIndex2].EnemyList.ElementAt(i).Destroy();
+                    tileMaps[activeIndex2].EnemyList.Remove(tileMaps[activeIndex2].EnemyList.ElementAt(i));
+                }
+            }
+            #endregion
+
+            #region HUD
+            hud.Update();
+
+            hud.UpdateMana();
+
+            hud.UpdateLiquidPositionByResolution();
+
+            if (hud.isDead)
+            {
+                return Game1.EGameState.GameOver;
             }
             #endregion
 

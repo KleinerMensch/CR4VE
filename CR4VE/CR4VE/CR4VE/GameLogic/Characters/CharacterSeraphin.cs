@@ -81,7 +81,7 @@ namespace CR4VE.GameLogic.Characters
                     {
                         if (minion.boundary.Intersects(enemy.boundary))
                         {
-                            enemy.health -= 0.01f;
+                            enemy.hp -= 0.01f;
                             Console.WriteLine("Seraphin hit enemy by RangedAttack");
                         }
                     }
@@ -90,34 +90,18 @@ namespace CR4VE.GameLogic.Characters
                 #region Arena
                 else if (Game1.currentState.Equals(Game1.EGameState.Arena))
                 {
-                    //minion.boundary = new BoundingBox(minion.position + new Vector3(-2, -2, -2), minion.position + new Vector3(2, 2, 2));
+                    minion.boundary = new BoundingBox(minion.position + new Vector3(-2, -2, -2), minion.position + new Vector3(2, 2, 2));
 
-                    //Vector3 direction = new Vector3(0, 0, 0);
-                    //float minDistance = float.MaxValue;
+                    Vector3 direction = minion.position - Arena.player.position;
+                    direction.Normalize();
+                    direction = moveSpeed * direction;
+                    minion.position += direction;
 
-                    ////checks which enemy is next to it
-                    //foreach (Enemy enemy in Arena.bossList)
-                    //{
-                    //    Vector3 dir = minion.position - enemy.position;
-                    //    float distance = dir.Length();
-                    //    if (distance < minDistance)
-                    //    {
-                    //        direction = dir;
-                    //        minDistance = distance;
-                    //    }
-                    //}
-                    //direction.Normalize();
-                    //direction = moveSpeed * direction;
-                    //minion.position += direction;
-
-                    //foreach (Enemy enemy in Arena.bossList)
-                    //{
-                    //    if (minion.boundary.Intersects(enemy.boundary))
-                    //    {
-                    //        enemy.health -= 0.01f;
-                    //        Console.WriteLine("Seraphin hit enemy by RangedAttack");
-                    //    }
-                    //}
+                    if (minion.boundary.Intersects(Arena.player.boundary))
+                    {
+                        Arena.opheliaHud.healthLeft -= 1;
+                        Console.WriteLine("Seraphin hit enemy by RangedAttack");
+                    }
                 }
                 #endregion
             }
@@ -157,7 +141,7 @@ namespace CR4VE.GameLogic.Characters
                                     {
                                         if (seraphinsLaser.boundary.Intersects(enemy.boundary))
                                         {
-                                            enemy.health -= 1;
+                                            enemy.hp -= 1;
                                             enemyHit = true;
                                             Console.WriteLine("Seraphin hit enemy by SpecialAttack");
                                         }
@@ -192,26 +176,24 @@ namespace CR4VE.GameLogic.Characters
                         }
                         else
                         {
-                            //foreach (Enemy enemy in Arena.bossList)
-                            //{
-                            //    if (enemyHit)
-                            //    {
-                            //        launchedSpecial = false;
-                            //        attackList.Remove(laser);
-                            //    }
-                            //    else
-                            //    {
-                            //        foreach (Entity seraphinsLaser in attackList)
-                            //        {
-                            //            if (seraphinsLaser.boundary.Intersects(enemy.boundary))
-                            //            {
-                            //                enemy.health -= 1;
-                            //                enemyHit = true;
-                            //                Console.WriteLine("Seraphin hit enemy by SpecialAttack");
-                            //            }
-                            //        }
-                            //    }
-                            //}
+                            if (enemyHit)
+                            {
+                                launchedSpecial = false;
+                                attackList.Remove(laser);
+                            }
+                            else
+                            {
+                                foreach (Entity seraphinsLaser in attackList)
+                                {
+                                    if (seraphinsLaser.boundary.Intersects(Arena.player.boundary))
+                                    {
+                                        Arena.opheliaHud.healthLeft -= 1;
+                                        enemyHit = true;
+                                        Console.WriteLine("Seraphin hit Player by SpecialAttack");
+                                    }
+                                }
+                            }
+                            
                         }
                     }
                     else
@@ -244,7 +226,7 @@ namespace CR4VE.GameLogic.Characters
                     {
                         if (seraphinsWhip.boundary.Intersects(enemy.boundary))
                         {
-                            enemy.health -= 1;
+                            enemy.hp -= 1;
                             Console.WriteLine("Seraphin hit enemy by MeleeAttack");
                         }
                     }
@@ -254,22 +236,21 @@ namespace CR4VE.GameLogic.Characters
             #region Arena
             else if (Game1.currentState.Equals(Game1.EGameState.Arena))
             {
-                Vector3 algaWhipPosition = Arena.player.Position + viewingDirection * offset;
+                Vector3 algaWhipPosition = this.position + viewingDirection * offset;
                 algaWhip = new Entity(algaWhipPosition, "5x5x5Box1", Arena.cont);
-                algaWhip.boundary = new BoundingBox(this.position + new Vector3(-2.5f, -2.5f, -2.5f) + viewingDirection * offset, this.position + new Vector3(2.5f, 2.5f, 2.5f) + viewingDirection * offset);
+                algaWhip.boundary = new BoundingBox(this.position + new Vector3(-3,-3,-3) + viewingDirection * offset, this.position + new Vector3(3,3,3) + viewingDirection * offset);
                 attackList.Add(algaWhip);
 
-                //foreach (Enemy enemy in Arena.bossList)
-                //{
-                //    foreach (Entity seraphinsWhip in attackList)
-                //    {
-                //        if (seraphinsWhip.boundary.Intersects(enemy.boundary))
-                //        {
-                //            enemy.health -= 1;
-                //            Console.WriteLine("Seraphin hit enemy by MeleeAttack");
-                //        }
-                //    }
-                //}
+
+                foreach (Entity seraphinsWhip in attackList)
+                {
+                    if (seraphinsWhip.boundary.Intersects(Arena.player.boundary))
+                    {
+                        Arena.opheliaHud.healthLeft -= 1;
+                        Console.WriteLine("Seraphin hit Player by MeleeAttack");
+                    }
+                }
+                
             }
             #endregion
         }

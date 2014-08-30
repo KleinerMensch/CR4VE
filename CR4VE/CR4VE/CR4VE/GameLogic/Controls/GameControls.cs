@@ -147,14 +147,16 @@ namespace CR4VE.GameLogic.Controls
         //update methods
         public static void updateVibration(GameTime gameTime)
         {
-            if (isReduced(Game1.currentState)) {
+            if (isReduced(Game1.currentState))
+            {
                 GamePad.SetVibration(PlayerIndex.One, 0.5f, 0.5f);
                 vibrTimer = 1.0f;            
             }
 
             vibrTimer -= gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (vibrTimer <= 0.0f) {
+            if (vibrTimer <= 0.0f)
+            {
                 GamePad.SetVibration(PlayerIndex.One, 0.0f, 0.0f);
             }
           
@@ -169,7 +171,7 @@ namespace CR4VE.GameLogic.Controls
                 {
                     Singleplayer.ghost.Position = Singleplayer.player.Position;
 
-                    Singleplayer.player.moveTo(Singleplayer.lastCheckpoint.Position + checkPointFall);
+                    Singleplayer.player.moveTo(Singleplayer.lastCheckpoint.Position + checkPointFall + new Vector3(0,0,5));
                 }
 
                 //save moveVecGhost and calculate moveVec for ghost
