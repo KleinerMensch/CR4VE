@@ -12,13 +12,14 @@ using Microsoft.Xna.Framework.Media;
 using CR4VE.GameBase.Camera;
 using CR4VE.GameBase.Objects;
 using CR4VE.GameLogic.Controls;
+using CR4VE.GameLogic.GameStates;
 
 namespace CR4VE.GameBase.Objects.Terrain
 {
     public class Tile : Entity
     {
         #region Attributes
-        private static ContentManager content;
+        private static ContentManager content = Singleplayer.cont;
 
         //Damage Values
         public static readonly int waterDmg = 210;

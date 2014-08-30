@@ -160,7 +160,7 @@ namespace CR4VE.GameLogic.Controls
           
         }
         
-        public static void updateSingleplayer(GameTime gameTime)
+        public static void updateSingleplayer(GameTime gameTime, List<Tile> visibles)
         {
             if (isGhost)
             {
@@ -211,7 +211,7 @@ namespace CR4VE.GameLogic.Controls
                 currGamepad = GamePad.GetState(PlayerIndex.One);
 
                 //visible tiles (potential collisions)
-                List<Tile> visibles = Tilemap.getVisibleTiles();
+                //List<Tile> visibles = Tilemap.getVisibleTiles();
 
                 #region Calculate moveVecPlayer
                 Vector3 moveVecPlayer = new Vector3(0, 0, 0);
@@ -353,10 +353,6 @@ namespace CR4VE.GameLogic.Controls
 
             Vector3 moveVecPlayer1 = new Vector3(0, 0, 0);
 
-            if (currentKeyboard.IsKeyDown(Keys.W) || currGamepad.IsButtonDown(Buttons.LeftThumbstickUp)) moveVecPlayer1 += new Vector3(0, 0, -accel);
-            if (currentKeyboard.IsKeyDown(Keys.A) || currGamepad.IsButtonDown(Buttons.LeftThumbstickLeft)) moveVecPlayer1 += new Vector3(-accel, 0, 0);
-            if (currentKeyboard.IsKeyDown(Keys.S) || currGamepad.IsButtonDown(Buttons.LeftThumbstickDown)) moveVecPlayer1 += new Vector3(0, 0, accel);
-            if (currentKeyboard.IsKeyDown(Keys.D) || currGamepad.IsButtonDown(Buttons.LeftThumbstickRight)) moveVecPlayer1 += new Vector3(accel, 0, 0);
             if (currentKeyboard.IsKeyDown(Keys.W) || currGamepad.IsButtonDown(Buttons.LeftThumbstickUp) || currGamepad.IsButtonDown(Buttons.DPadUp)) moveVecPlayer1 += new Vector3(0, 0, -accel);
             if (currentKeyboard.IsKeyDown(Keys.A) || currGamepad.IsButtonDown(Buttons.LeftThumbstickLeft) || currGamepad.IsButtonDown(Buttons.DPadLeft)) moveVecPlayer1 += new Vector3(-accel, 0, 0);
             if (currentKeyboard.IsKeyDown(Keys.S) || currGamepad.IsButtonDown(Buttons.LeftThumbstickDown) || currGamepad.IsButtonDown(Buttons.DPadDown)) moveVecPlayer1 += new Vector3(0, 0, accel);
@@ -406,12 +402,7 @@ namespace CR4VE.GameLogic.Controls
                 }
                 #endregion
 
-                Vector3 moveVecPlayer = new Vector3(0, 0, 0);
-
-                if (currentKeyboard.IsKeyDown(Keys.W) || currGamepad.IsButtonDown(Buttons.LeftThumbstickUp) || currGamepad.IsButtonDown(Buttons.DPadUp)) moveVecPlayer += new Vector3(0, 0, -accel);
-                if (currentKeyboard.IsKeyDown(Keys.A) || currGamepad.IsButtonDown(Buttons.LeftThumbstickLeft) || currGamepad.IsButtonDown(Buttons.DPadLeft)) moveVecPlayer += new Vector3(-accel, 0, 0);
-                if (currentKeyboard.IsKeyDown(Keys.S) || currGamepad.IsButtonDown(Buttons.LeftThumbstickDown) || currGamepad.IsButtonDown(Buttons.DPadDown)) moveVecPlayer += new Vector3(0, 0, accel);
-                if (currentKeyboard.IsKeyDown(Keys.D) || currGamepad.IsButtonDown(Buttons.LeftThumbstickRight) || currGamepad.IsButtonDown(Buttons.DPadRight)) moveVecPlayer += new Vector3(accel, 0, 0);
+                Vector3 moveVecPlayer = new Vector3(currGamepad.ThumbSticks.Left.X, 0, -currGamepad.ThumbSticks.Left.Y);
 
                 if (moveVecPlayer != new Vector3(0, 0, 0))
                 {
@@ -531,6 +522,21 @@ namespace CR4VE.GameLogic.Controls
             }
             Console.WriteLine(MainMenu.sword.Position);
             return Game1.EGameState.MainMenu;
+        }
+
+        public static Game1.EGameState updateGameOver()
+        {
+            currGamepad = GamePad.GetState(PlayerIndex.One);
+
+            currentKeyboard = Keyboard.GetState();
+
+            if (currGamepad.IsButtonDown(Buttons.Back) || currentKeyboard.IsKeyDown(Keys.Escape))
+                return Game1.EGameState.Nothing;
+
+            if (currGamepad.IsButtonDown(Buttons.Start) || currentKeyboard.IsKeyDown(Keys.Enter))
+                return Game1.EGameState.MainMenu;
+
+            return Game1.EGameState.GameOver;
         }
         #endregion
     }

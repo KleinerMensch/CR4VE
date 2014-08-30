@@ -29,7 +29,14 @@ namespace CR4VE.GameLogic.GameStates
         Texture2D background;
 
         //Terrain
-        public static Tilemap terrainMap;
+        public static Tilemap[] tileMaps;
+
+        public static Tilemap activeTileMap1;
+        public static Tilemap activeTileMap2;
+        public static int activeIndex1 = 0;
+        public static int activeIndex2 = 1;
+
+        public static List<Tile> visibles;
 
         //Player
         public static Character ghost;
@@ -59,13 +66,9 @@ namespace CR4VE.GameLogic.GameStates
             cont = content;
 
             #region Terrain
-            terrainMap = new Tilemap();
-            
-            Tile.Content = content;
-
-            int[,] layout = new int[,] {
+            int[,] layout1 = new int[,] {
         
-           {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,96, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+           {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0},
            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 3, 3, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0},
            {0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,98, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 3, 0, 0, 3, 3, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -104,7 +107,7 @@ namespace CR4VE.GameLogic.GameStates
             {9, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {9, 9, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {9, 9, 9, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {9, 9, 9, 9, 9, 0, 0, 0, 0, 0, 0, 0, 9, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {9, 9, 9, 9, 9, 0, 0, 0, 0,96, 0, 0, 9, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {9, 9, 9, 9, 9, 9, 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {9, 9, 9, 9, 9, 9, 0, 9, 9, 9, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {9, 9, 9, 9, 9, 9, 0, 9, 9, 9, 9, 9, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -129,7 +132,7 @@ namespace CR4VE.GameLogic.GameStates
             {0, 0, 0, 0, 0, 0,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
            {13, 0, 0, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
            {13,13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-           {13,13,13,13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+           {13,13,13,13, 0,96, 0, 0, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
            {13,13,13,13,13,13,13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13, 0, 0, 0, 0, 0, 0, 0},
            {13,13,13,13,13,13,13,13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13, 0, 0, 0, 0, 0, 0, 0},
            {13,13,13,13,13,13,13,13,13, 0, 0,13, 0, 0, 0,13, 0, 0, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13},
@@ -165,7 +168,7 @@ namespace CR4VE.GameLogic.GameStates
            {13,13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,10, 0, 0, 0, 0, 0, 0,10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
            {13,13,13, 0, 0, 0, 0, 0, 0, 0, 0,10, 0, 0, 0,10, 0, 0, 0,10,10, 0, 0, 0,10, 0, 0, 0,10,10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,10,10,10, 0, 0, 0, 0,10, 0, 0, 0, 0},
            {13,13,13,13, 0, 0, 0, 0, 0, 0, 0, 0, 0,10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,10,10, 0, 0,10,10, 0, 0, 0, 0, 0, 0, 0,10,10,10,10, 0, 0, 0},
-           {14,13,13,13,13, 0,10, 0, 0,10,10, 0, 0, 0, 0, 0, 0,10, 0, 0, 0, 0, 0, 0, 0, 0,10,10, 0, 0, 0,10, 0, 0,10 ,0, 0,10, 0, 0, 0, 0,0, 0, 0, 0,14,14,14,10,10,10,10,14,14,14},
+           {14,13,13,13,13, 0,96, 0, 0,10,10, 0, 0, 0, 0, 0, 0,10, 0, 0, 0, 0, 0, 0, 0, 0,10,10, 0, 0, 0,10, 0, 0,10 ,0, 0,10, 0, 0, 0, 0, 0, 0, 0, 0,14,14,14,10,10,10,10,14,14,14},
            {14,14,13,14,14,14,10, 0,10,10,14,14,14,14,14,14,14,10,14,14,14,14,14,14,14,14,10,10,14,14,14,10,14,14,10,10 ,0,10,10,10,10,10, 0,10, 0,14,14,14,14,10,10,10,10,14,14,14},
            {14,14,14,14,14,14,10, 0, 0,10,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,10,10, 0, 0, 0, 0, 0, 0, 0,10,14,14,14,14,14,10,10,10,10,14,14,14},
            {14,14,14,14,14,14,10,10, 0,10,10,10,10,10,10,10,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,10,10,10,10,10,10,10,10,10,10,14,14,14,14,14,10,10,10,10,14,14,14},
@@ -234,14 +237,24 @@ namespace CR4VE.GameLogic.GameStates
                 
             int boxSize = 10;
 
-            terrainMap.Generate(layout, boxSize, new Vector3(0,0,0));
-            terrainMap.Generate(layout2, boxSize, new Vector3(520,20,0)); //520,20
-            //terrainMap.Generate(layout3, boxSize, new Vector3(1040,-50,0)); //1040,-50
-            //terrainMap.Generate(layout4, boxSize, new Vector3(1560,-150,0)); // 1560,-150
-            //terrainMap.Generate(layout5, boxSize, new Vector3(2120,-270,0)); //2120,-270
-            //terrainMap.Generate(layout6, boxSize, new Vector3(2680,-280,0));
-            //terrainMap.Generate(layout7, boxSize, new Vector3(0,0,0));
-            //terrainMap.Generate(layout8, boxSize, new Vector3(0,0,0));
+            //Array of all generated Tilemaps
+            tileMaps = new Tilemap[]
+            {
+                Tilemap.Generate(layout1, boxSize, new Vector3(0, 0, 0)),
+                Tilemap.Generate(layout2, boxSize, new Vector3(520, 20, 0)),
+                Tilemap.Generate(layout3, boxSize, new Vector3(1040, -50, 0)),
+                Tilemap.Generate(layout4, boxSize, new Vector3(1560, -150, 0)),
+                Tilemap.Generate(layout5, boxSize, new Vector3(2120, -270, 0)),
+                Tilemap.Generate(layout6, boxSize, new Vector3(2680, -280, 0)),
+                //tileMap7 = Tilemap.Generate(layout7, boxSize, new Vector3(0, 0, 0)),
+                //tileMap8 = Tilemap.Generate(layout8, boxSize, new Vector3(0, 0, 0))
+            };
+
+            //indices of active Tilemaps
+            activeTileMap1 = tileMaps[activeIndex1];
+            activeTileMap2 = tileMaps[activeIndex2];
+
+            visibles = new List<Tile>();
             #endregion            
 
             //Camera
@@ -255,27 +268,27 @@ namespace CR4VE.GameLogic.GameStates
 
             //Player
             ghost = new Character(Vector3.Zero, "skull", content);
-            player = new CharacterOphelia(new Vector3(0,0,+5), "Ophelia", content, new BoundingBox(new Vector3(-2.5f, -9f, -2.5f), new Vector3(2.5f, 9f, 2.5f)));
+            player = new CharacterOphelia(new Vector3(0,0,5), "Ophelia", content, new BoundingBox(new Vector3(-2.5f, -9f, -2.5f), new Vector3(2.5f, 9f, 2.5f)));
             
-            //Checkpoints
+            //Checkpoints (default = Startposition)
             lastCheckpoint = new Checkpoint(Vector3.Zero, "checkpoint_hell", content);
             
             #region Loading AI
             EnemyRedEye redEye;
             EnemySkull skull;
-            EnemySpinningCrystal spinningCrystal;
-            EnemyShootingCrystal shootingCrystal;
+            //EnemySpinningCrystal spinningCrystal;
+            //EnemyShootingCrystal shootingCrystal;
 
             redEye = new EnemyRedEye(new Vector3(80, 0, 0),"EnemyEye",content,new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
             skull = new EnemySkull(new Vector3(400, 0, 0), "skull", content, new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
-            spinningCrystal = new EnemySpinningCrystal(new Vector3(200, 0, 0), "enemySpinningNoAnim", content,new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
-            shootingCrystal = new EnemyShootingCrystal(new Vector3(500, 0, 0), "enemyShootingNoAnim", content, new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
+            //spinningCrystal = new EnemySpinningCrystal(new Vector3(200, 0, 0), "enemySpinningNoAnim", content,new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
+            //shootingCrystal = new EnemyShootingCrystal(new Vector3(500, 0, 0), "enemyShootingNoAnim", content, new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
 
             //fill list with enemies
             enemyList.Add(redEye);
             //enemyList.Add(spinningCrystal);
             enemyList.Add(skull);
-            enemyList.Add(shootingCrystal);
+            //enemyList.Add(shootingCrystal);
             #endregion
 
             //HUD
@@ -286,7 +299,13 @@ namespace CR4VE.GameLogic.GameStates
         #region Update
         public Game1.EGameState Update(GameTime gameTime)
         {
-            GameControls.updateSingleplayer(gameTime);
+            //Viewport Culling
+            visibles = Tilemap.getVisibleTiles();
+
+            GameControls.updateSingleplayer(gameTime, visibles);
+
+            //check if active Tilemaps have changed
+            Tilemap.updateActiveTilemaps();
 
             #region HUD
             hud.Update();
@@ -304,13 +323,21 @@ namespace CR4VE.GameLogic.GameStates
             player.Update(gameTime);
 
             //Powerups
-            foreach (Powerup p in terrainMap.PowerupList)
+            foreach (Powerup p in tileMaps[activeIndex1].PowerupList)
+            {
+                p.Update();
+            }
+            foreach (Powerup p in tileMaps[activeIndex2].PowerupList)
             {
                 p.Update();
             }
             
             //Checkpoints
-            foreach (Checkpoint c in terrainMap.CheckpointList)
+            foreach (Checkpoint c in tileMaps[activeIndex1].CheckpointList)
+            {
+                c.Update();
+            }
+            foreach (Checkpoint c in tileMaps[activeIndex2].CheckpointList)
             {
                 c.Update();
             }
@@ -348,6 +375,7 @@ namespace CR4VE.GameLogic.GameStates
             Vector2 drawPos = new Vector2(Camera2D.WorldRectangle.X, Camera2D.WorldRectangle.Y);
             int drawRecWidth = graphics.PreferredBackBufferWidth;
             int drawRecHeight = graphics.PreferredBackBufferHeight;
+            
             Rectangle drawRec = new Rectangle((int)Camera2D.Position2D.X, (int)Camera2D.Position2D.Y, drawRecWidth, drawRecHeight);
             
             spriteBatch.Draw(background, drawPos, drawRec, Color.White);
@@ -361,7 +389,8 @@ namespace CR4VE.GameLogic.GameStates
 
             #region 3D Objects
             //Terrain (includes Powerups and Checkpoints)
-            terrainMap.Draw();
+            tileMaps[activeIndex1].Draw(visibles);
+            tileMaps[activeIndex2].Draw(visibles);
 
             //Player or Ghost
             if (GameControls.isGhost)

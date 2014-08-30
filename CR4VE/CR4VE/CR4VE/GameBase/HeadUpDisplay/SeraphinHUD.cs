@@ -38,19 +38,37 @@ namespace CR4VE.GameBase.HeadUpDisplay
 
         public override void UpdateMana()
         {
-            if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
+            if (Game1.currentState == Game1.EGameState.Singleplayer)
             {
-                for (int i = 0; i < Singleplayer.terrainMap.PowerupList.Count; i++)
+                int ai1 = Singleplayer.activeIndex1;
+                int ai2 = Singleplayer.activeIndex2;
+
+                #region activeTilemap1
+                for (int i = 0; i < Singleplayer.tileMaps[ai1].PowerupList.Count; i++)
                 {
-                    if (CharacterSeraphin.manaLeft < 3)
+                    if (CharacterOphelia.manaLeft < 3)
                     {
-                        if (Singleplayer.terrainMap.PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
+                        if (Singleplayer.tileMaps[ai1].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
                         {
-                            Singleplayer.terrainMap.PowerupList.Remove(Singleplayer.terrainMap.PowerupList.ElementAt(i));
-                            CharacterSeraphin.manaLeft += 1;
+                            Singleplayer.tileMaps[ai1].PowerupList.Remove(Singleplayer.tileMaps[ai1].PowerupList.ElementAt(i));
+                            CharacterOphelia.manaLeft += 1;
                         }
                     }
                 }
+                #endregion
+                #region activeTilemap2
+                for (int i = 0; i < Singleplayer.tileMaps[ai2].PowerupList.Count; i++)
+                {
+                    if (CharacterOphelia.manaLeft < 3)
+                    {
+                        if (Singleplayer.tileMaps[ai2].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
+                        {
+                            Singleplayer.tileMaps[ai2].PowerupList.Remove(Singleplayer.tileMaps[ai2].PowerupList.ElementAt(i));
+                            CharacterOphelia.manaLeft += 1;
+                        }
+                    }
+                }
+                #endregion
             }
         }
 

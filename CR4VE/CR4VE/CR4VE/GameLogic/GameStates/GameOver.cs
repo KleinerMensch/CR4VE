@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CR4VE.GameBase.Camera;
+using CR4VE.GameLogic.Controls;
 
 namespace CR4VE.GameLogic.GameStates
 {
@@ -37,9 +38,11 @@ namespace CR4VE.GameLogic.GameStates
         #endregion
 
         #region Update
-        public Game1.EGameState Update(Microsoft.Xna.Framework.GameTime gameTime)
+        public Game1.EGameState Update(GameTime gameTime)
         {
-            return Game1.EGameState.GameOver;
+            Game1.EGameState nextState = GameControls.updateGameOver();
+
+            return nextState;
         }
         #endregion
 

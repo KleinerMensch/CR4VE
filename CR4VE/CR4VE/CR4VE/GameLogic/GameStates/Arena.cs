@@ -103,6 +103,7 @@ namespace CR4VE.GameLogic.GameStates
                 return Game1.EGameState.GameOver;
             }
             #endregion
+
             return Game1.EGameState.Arena;
         }
 
