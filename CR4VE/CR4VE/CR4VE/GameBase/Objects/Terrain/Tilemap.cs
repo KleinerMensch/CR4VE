@@ -93,8 +93,8 @@ namespace CR4VE.GameBase.Objects.Terrain
                                     damage = Tile.waterDmg;
                                     boundary = new BoundingBox(position + new Vector3(-size / 2, -size / 2, -size / 2), position + new Vector3(size / 2, -size/2, size / 2));
                                 }
-                                else if (number == 16)
-                                    damage = Tile.lethalDmg;
+                            //    else if (number == 16)
+                              //      damage = Tile.lethalDmg;
 
                                 //harten String noch ersetzen
                                 tiles.Add(new Tile("Box", number, position, boundary, damage));
