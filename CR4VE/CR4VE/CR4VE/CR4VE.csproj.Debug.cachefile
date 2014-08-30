@@ -56,7 +56,6 @@ Content\Assets\Models\Players\skull.xnb
 Content\Assets\Models\Powerups\powerup_hell_mana.xnb
 Content\Assets\Models\Players\EnemyEye.xnb
 Content\Assets\Models\Terrain\Box9.xnb
-Content\Assets\Models\mainmenu_sword.xnb
 Content\red_eye_0.xnb
 Content\Assets\Models\Powerups\Textures\gold_256x256_0.xnb
 Content\Assets\Models\Terrain\Textures\seamless\lava_bright2_1024x1024_0.xnb
@@ -83,6 +82,7 @@ Content\dark_stone_texture_by_sagemeline_0.xnb
 Content\Assets\Models\Powerups\UV Maps\powerup_hell_energy_0.xnb
 Content\red_eye_1.xnb
 Content\MG_2640-seamless_0.xnb
+Content\Assets\Models\mainmenu_sword.xnb
 Content\Assets\Models\Textures\HELLSWORD_COLOR_0.xnb
 Content\Assets\Models\Players\Maps\body-cos.xnb
 Content\Assets\Models\Players\Maps\lace.xnb

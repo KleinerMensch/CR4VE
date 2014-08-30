@@ -31,7 +31,7 @@ namespace CR4VE.GameLogic.AI
             rotationX -= 0.1f;
 
             Vector3 playerPos = Singleplayer.player.position;
-            Vector3 direction = this.position - playerPos;
+            Vector3 direction = this.position - playerPos; // für richtungsvektor
             float distance = direction.Length();
 
             if (distance < 50)

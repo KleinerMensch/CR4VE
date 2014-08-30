@@ -29,7 +29,7 @@ namespace CR4VE.GameLogic.GameStates
         Texture2D background;
 
         //Terrain
-        public static Tilemap[] tileMaps;
+        public static Tilemap[] tileMaps = new Tilemap[]{};
 
         public static Tilemap activeTileMap1;
         public static Tilemap activeTileMap2;
@@ -276,11 +276,13 @@ namespace CR4VE.GameLogic.GameStates
             #region Loading AI
             EnemyRedEye redEye;
             EnemySkull skull;
+            Spikes spikes;
             //EnemySpinningCrystal spinningCrystal;
             //EnemyShootingCrystal shootingCrystal;
 
             redEye = new EnemyRedEye(new Vector3(80, 0, 0),"EnemyEye",content,new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
             skull = new EnemySkull(new Vector3(400, 0, 0), "skull", content, new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
+            spikes = new Spikes(new Vector3(150, 0, 0), "ImaFirinMahLaserr", content, new BoundingBox(new Vector3(-2, -2, -2), new Vector3(2, 2, 2)));
             //spinningCrystal = new EnemySpinningCrystal(new Vector3(200, 0, 0), "enemySpinningNoAnim", content,new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
             //shootingCrystal = new EnemyShootingCrystal(new Vector3(500, 0, 0), "enemyShootingNoAnim", content, new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
 
@@ -288,6 +290,7 @@ namespace CR4VE.GameLogic.GameStates
             enemyList.Add(redEye);
             //enemyList.Add(spinningCrystal);
             enemyList.Add(skull);
+            enemyList.Add(spikes);
             //enemyList.Add(shootingCrystal);
             #endregion
 
