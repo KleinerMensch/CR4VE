@@ -50,20 +50,20 @@ namespace CR4VE.GameLogic.AI
             {
                 direction.Normalize();
                 direction = moveSpeed * direction;
-                //this.position += direction;
                 this.move(direction);
             }
 
-            else if (this.position.X < 350 || this.position.X > 450)
+            else if (this.position.X == 350 || this.position.X == 450)
             {
                 moveSpeed *= -1;
                 rotationX *= -1;
                 rotationY += MathHelper.ToRadians(180);
             }
 
-            ////updating bounding box & check collision
-            //this.boundary.Min = this.position + new Vector3(-3, -3, -3);
-            //this.boundary.Max = this.position + new Vector3(3, 3, 3);
+            else if (this.position.X < 350)
+            {
+                this.position.X++;
+            }
 
             if (Singleplayer.player.boundary.Intersects(this.boundary))
             {
