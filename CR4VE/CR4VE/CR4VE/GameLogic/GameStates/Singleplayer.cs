@@ -68,11 +68,12 @@ namespace CR4VE.GameLogic.GameStates
             #region Terrain
             int[,] layout1 = new int[,] {
         
+           {0, 0, 0, 0, 0, 0,94,94, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0},
            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 3, 3, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0},
            {0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,98, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 3, 0, 0, 3, 3, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-           {1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 3, 4, 4, 3, 3, 3, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+           {1, 1, 1, 1, 0,95, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 3, 4, 4, 3, 3, 3, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
            {3, 3, 3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 3, 4, 4, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0},
            {3, 3, 3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 3, 4, 4, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0},
            {3, 3, 3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 3, 4, 4, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0},
@@ -113,10 +114,10 @@ namespace CR4VE.GameLogic.GameStates
             {9, 9, 9, 9, 9, 9, 0, 9, 9, 9, 9, 9, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {9, 9, 9, 9, 9, 9, 0, 9, 9, 9, 9, 9, 9, 9, 9, 0, 0, 9, 0, 0, 9, 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {9, 9, 9, 9, 9, 9, 0, 9, 9, 9, 9, 9, 9, 9, 9, 0, 0, 9, 0, 0, 9, 0, 0, 9, 9, 9, 9, 9, 0, 0, 0, 9, 0, 0, 9, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {9, 9, 9, 9, 9, 9, 0, 9, 9, 9, 9, 9, 9, 9, 9, 0, 0, 9, 0, 0, 9, 0, 0, 9, 9, 9, 9, 9, 0, 0, 0, 9, 0, 0, 0, 9, 9, 9, 9, 9, 0, 0, 0, 0, 0,13, 0, 0, 0, 0, 0, 0},
-            {9, 9, 9, 9, 9, 9, 0, 9, 9, 9, 9, 9, 9, 9, 9, 0, 0, 9, 0, 0, 9, 0, 0, 9, 9, 9, 9, 9, 9, 0, 0, 9, 0, 0, 9, 9, 9, 9, 9, 9, 9, 0, 0,13, 0,13,13, 0, 0,13, 0, 0},
-            {9, 9, 9, 9, 9, 9, 0, 9, 9, 9, 9, 9, 9, 9, 9, 0, 0, 9, 0, 0, 9, 0, 0, 9, 9, 9, 9, 9, 9, 0, 0, 9, 0, 0, 9, 9, 9, 9, 9, 9, 9, 0, 0,13,13,13,13,13,13,13,13,13},
-            {9, 9, 9, 9, 9, 9, 0, 9, 9, 9, 9, 9, 9, 9, 9, 0, 0, 9, 0, 0, 9, 0, 0, 9, 9, 9, 9, 9, 9, 0, 0, 9, 0, 0, 9, 9, 9, 9, 9, 9, 9, 0, 0, 9, 9, 9, 9, 9, 9, 9, 9,13},
+            {9, 9, 9, 9, 9, 9,95, 9, 9, 9, 9, 9, 9, 9, 9, 0, 0, 9, 0, 0, 9, 0, 0, 9, 9, 9, 9, 9, 0, 0, 0, 9, 0, 0, 0, 9, 9, 9, 9, 9, 0, 0, 0, 0, 0,13, 0, 0, 0, 0, 0, 0},
+            {9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 0, 0, 9, 0, 0, 9, 0, 0, 9, 9, 9, 9, 9, 9, 0, 0, 9, 0, 0, 9, 9, 9, 9, 9, 9, 9, 0, 0,13, 0,13,13, 0, 0,13, 0, 0},
+            {9, 9, 9, 9, 9, 9, 0, 9, 9, 9, 9, 9, 9, 9, 9,95,95, 9, 0, 0, 9, 0, 0, 9, 9, 9, 9, 9, 9, 0, 0, 9, 0, 0, 9, 9, 9, 9, 9, 9, 9, 0, 0,13,13,13,13,13,13,13,13,13},
+            {9, 9, 9, 9, 9, 9, 0, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 0, 0, 9, 0, 0, 9, 9, 9, 9, 9, 9, 0, 0, 9, 0, 0, 9, 9, 9, 9, 9, 9, 9, 0, 0, 9, 9, 9, 9, 9, 9, 9, 9,13},
             {9, 9, 9, 9, 9, 9, 0, 9, 9, 9, 9, 9, 9, 9, 9, 0, 0, 9, 0, 0, 9, 0, 0, 9, 9, 9, 9, 9, 9, 0, 0, 9, 0, 0, 9, 9, 9, 9, 9, 9, 9, 0, 0, 9, 9, 9, 9, 9, 9, 9, 9,13},
             {9, 9, 9, 9, 9, 9, 0, 9, 9, 9, 9, 9, 9, 9, 9, 0, 0, 9, 0, 0, 9, 0, 0, 9, 9, 9, 9, 9, 9, 0, 0, 9, 0, 0, 9, 9, 9, 9, 9, 9, 9, 0, 0, 9, 9, 9, 9, 9, 9, 9, 9,13},
             {9, 9, 9, 9, 9, 9, 0, 9, 9, 9, 9, 9, 9, 9, 9, 0, 0, 9, 0, 0, 9, 0, 0, 9, 9, 9, 9, 9, 9, 0, 0, 9, 0, 0, 9, 9, 9, 9, 9, 9, 9, 0, 0, 9, 9, 9, 9, 9, 9, 9, 9, 9},
@@ -246,8 +247,8 @@ namespace CR4VE.GameLogic.GameStates
                 Tilemap.Generate(layout4, boxSize, new Vector3(1560, -150, 0)),
                 Tilemap.Generate(layout5, boxSize, new Vector3(2120, -270, 0)),
                 Tilemap.Generate(layout6, boxSize, new Vector3(2680, -280, 0)),
-                //tileMap7 = Tilemap.Generate(layout7, boxSize, new Vector3(0, 0, 0)),
-                //tileMap8 = Tilemap.Generate(layout8, boxSize, new Vector3(0, 0, 0))
+                //Tilemap.Generate(layout7, boxSize, new Vector3(0, 0, 0)),
+                //Tilemap.Generate(layout8, boxSize, new Vector3(0, 0, 0))
             };
 
             //indices of active Tilemaps
@@ -276,22 +277,17 @@ namespace CR4VE.GameLogic.GameStates
             #region Loading AI
             EnemyRedEye redEye;
             EnemySkull skull;
-            Spikes spikes;
             //EnemySpinningCrystal spinningCrystal;
             //EnemyShootingCrystal shootingCrystal;
 
             redEye = new EnemyRedEye(new Vector3(80, 0, 0),"EnemyEye",content,new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
             skull = new EnemySkull(new Vector3(400, 0, 0), "skull", content, new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
-            spikes = new Spikes(new Vector3(150, 0, 0), "ImaFirinMahLaserr", content, new BoundingBox(new Vector3(-2, -2, -2), new Vector3(2, 2, 2)));
             //spinningCrystal = new EnemySpinningCrystal(new Vector3(200, 0, 0), "enemySpinningNoAnim", content,new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
             //shootingCrystal = new EnemyShootingCrystal(new Vector3(500, 0, 0), "enemyShootingNoAnim", content, new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
 
             //fill list with enemies
             enemyList.Add(redEye);
-            //enemyList.Add(spinningCrystal);
             enemyList.Add(skull);
-            enemyList.Add(spikes);
-            //enemyList.Add(shootingCrystal);
             #endregion
 
             //HUD
@@ -346,7 +342,7 @@ namespace CR4VE.GameLogic.GameStates
             }
 
             #region Updating Enemies
-            foreach (Enemy enemy in enemyList)
+            /*foreach (Enemy enemy in enemyList)
             {
                 enemy.UpdateSingleplayer(gameTime);
             }
@@ -358,6 +354,16 @@ namespace CR4VE.GameLogic.GameStates
                     enemyList.ElementAt(i).Destroy();
                     enemyList.Remove(enemyList.ElementAt(i));
                 }
+            }*/
+
+            //DEBUG
+            foreach (Enemy e in tileMaps[activeIndex1].EnemyList)
+            {
+                e.UpdateSingleplayer(gameTime);
+            }
+            foreach (Enemy e in tileMaps[activeIndex2].EnemyList)
+            {
+                e.UpdateSingleplayer(gameTime);
             }
             #endregion
 
@@ -407,7 +413,17 @@ namespace CR4VE.GameLogic.GameStates
             #region Enemies
             foreach (AIInterface enemy in enemyList)
             {
-                enemy.Draw(gameTime);
+                enemy.Draw();
+            }
+
+            //DEBUG
+            foreach (Enemy e in tileMaps[activeIndex1].EnemyList)
+            {
+                e.Draw();
+            }
+            foreach (Enemy e in tileMaps[activeIndex2].EnemyList)
+            {
+                e.Draw();
             }
 
             //Minions etc.

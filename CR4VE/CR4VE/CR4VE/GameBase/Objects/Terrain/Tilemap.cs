@@ -9,6 +9,7 @@ using CR4VE.GameBase.Camera;
 using CR4VE.GameBase.Objects;
 using CR4VE.GameBase.Objects.Terrain;
 using CR4VE.GameLogic.Controls;
+using CR4VE.GameLogic.AI;
 
 namespace CR4VE.GameBase.Objects.Terrain
 {
@@ -17,6 +18,7 @@ namespace CR4VE.GameBase.Objects.Terrain
         #region Attributes
         private List<Tile> Tiles = new List<Tile>();
         private List<Checkpoint> Checkpoints = new List<Checkpoint>();
+        private List<Enemy> Enemies = new List<Enemy>();
         private List<Powerup> Powerups = new List<Powerup>();
 
         private Vector3 startPos;
@@ -31,6 +33,10 @@ namespace CR4VE.GameBase.Objects.Terrain
         {
             get { return Checkpoints; }
         }
+        public List<Enemy> EnemyList
+        {
+            get { return Enemies; }
+        }
         public List<Powerup> PowerupList
         {
             get { return Powerups; }
@@ -43,10 +49,11 @@ namespace CR4VE.GameBase.Objects.Terrain
 
         #region Constructors
         public Tilemap() { }
-        public Tilemap(List<Tile> tiles, List<Checkpoint> checkpoints, List<Powerup> powerups, Vector3 start)
+        public Tilemap(List<Tile> tiles, List<Checkpoint> checkpoints, List<Enemy> enemies, List<Powerup> powerups, Vector3 start)
         {
             this.Tiles = tiles;
             this.Checkpoints = checkpoints;
+            this.Enemies = enemies;
             this.Powerups = powerups;
 
             this.startPos = start;
@@ -60,6 +67,7 @@ namespace CR4VE.GameBase.Objects.Terrain
         {
             List<Tile> tiles = new List<Tile>();
             List<Checkpoint> checkpoints = new List<Checkpoint>();
+            List<Enemy> enemies = new List<Enemy>();
             List<Powerup> powerups = new List<Powerup>();
 
             for (int y = 0; y < map.GetLength(0); y++)
@@ -92,6 +100,24 @@ namespace CR4VE.GameBase.Objects.Terrain
                         //do nothing
                         case 0:
                             break;
+
+                        //ceiling spikes
+                        case 94:
+                            {
+                                Vector3 position = start + new Vector3(x * size, -y * size, 0) + new Vector3(0,0,0);
+                                BoundingBox boundary = new BoundingBox(position + new Vector3(-size / 2, -size / 2, -size / 2), position + new Vector3(size / 2, size / 2, size / 2));
+                                
+                                enemies.Add(new Spikes(position, "spikes_ceiling", Singleplayer.cont, boundary));
+                            } break;
+
+                        //ground spikes
+                        case 95:
+                            {
+                                Vector3 position = start + new Vector3(x * size, -y * size, 0) + new Vector3(3, -size/2, 3);
+                                BoundingBox boundary = new BoundingBox(position + new Vector3(-size / 2, -size / 2, -size / 2), position + new Vector3(size / 2, size / 2, size / 2));
+                                
+                                tiles.Add(new GroundSpikes("ground", position, boundary, Tile.lethalDmg));
+                            } break;
 
                         //Checkpoint
                         case 96:
@@ -126,7 +152,7 @@ namespace CR4VE.GameBase.Objects.Terrain
                 }
             }
 
-            return new Tilemap(tiles, checkpoints, powerups, start);
+            return new Tilemap(tiles, checkpoints, enemies, powerups, start);
         }
 
         public void Draw(List<Tile> visibles)
@@ -213,8 +239,8 @@ namespace CR4VE.GameBase.Objects.Terrain
 
             if (deltaXLeft < switchRange)
             {
-                Singleplayer.activeIndex1 = (int)MathHelper.Clamp(Singleplayer.activeIndex1 - 1, 0, Singleplayer.tileMaps.Length - 1);
-                Singleplayer.activeIndex2 = (int)MathHelper.Clamp(Singleplayer.activeIndex2 - 1, 1, Singleplayer.tileMaps.Length);
+                Singleplayer.activeIndex1 = (int) MathHelper.Clamp(Singleplayer.activeIndex1 - 1, 0, Singleplayer.tileMaps.Length - 1);
+                Singleplayer.activeIndex2 = (int) MathHelper.Clamp(Singleplayer.activeIndex2 - 1, 1, Singleplayer.tileMaps.Length);
             }
         }
 

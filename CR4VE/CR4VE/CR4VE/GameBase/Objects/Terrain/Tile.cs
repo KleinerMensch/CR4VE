@@ -24,7 +24,7 @@ namespace CR4VE.GameBase.Objects.Terrain
         //Damage Values
         public static readonly int waterDmg = 210;
         public static readonly int lethalDmg = 1000;
-        private int dmg;
+        protected int dmg;
         #endregion
 
         #region Properties
@@ -40,6 +40,7 @@ namespace CR4VE.GameBase.Objects.Terrain
         #endregion
 
         #region Constructors
+        public Tile() { }
         public Tile(String modelType, int modelNumber, Vector3 pos, BoundingBox bound, int damage)
         {
             this.position = pos;
@@ -50,7 +51,7 @@ namespace CR4VE.GameBase.Objects.Terrain
         #endregion
 
         #region Methods
-        public void Draw()
+        public virtual void Draw()
         {
             this.drawIn2DWorldWithoutBones(Vector3.One, 0, 0, 0);
         }

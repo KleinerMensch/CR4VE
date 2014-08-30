@@ -31,7 +31,7 @@ namespace CR4VE.GameLogic.AI
         {
         }
 
-        public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
+        public override void Draw()
         {
             this.drawIn2DWorld(new Vector3(0.1f, 0.1f, 0.1f), 0, rotationY , 0);
         }

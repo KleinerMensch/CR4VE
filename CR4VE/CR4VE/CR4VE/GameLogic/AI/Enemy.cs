@@ -31,8 +31,8 @@ namespace CR4VE.GameLogic.AI
 
         public virtual void UpdateSingleplayer(GameTime gameTime) { }
         public virtual void UpdateArena(GameTime gameTime) { }
-        public virtual void Draw(GameTime gameTime) { }
-        public virtual void DrawInArena(GameTime gameTime) { }
+        public virtual void Draw() { }
+        public virtual void DrawInArena() { }
         public virtual void Destroy() { }
     }
 }

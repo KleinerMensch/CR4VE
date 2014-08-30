@@ -24,7 +24,7 @@ namespace CR4VE.GameLogic.AI
         public EnemySkull(Vector3 pos, String modelName, ContentManager cm, BoundingBox bound) : base(pos, modelName, cm) { }
         #endregion
 
-        public override void UpdateSingleplayer(Microsoft.Xna.Framework.GameTime gameTime)
+        public override void UpdateSingleplayer(GameTime gameTime)
         {
             //skull rolling over the floor
             //this.position.X += moveSpeed;
@@ -59,7 +59,7 @@ namespace CR4VE.GameLogic.AI
             }
         }
 
-        public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
+        public override void Draw()
         {
             this.drawIn2DWorld(new Vector3(0.05f, 0.05f, 0.05f), 0, rotationY , rotationX);
         }

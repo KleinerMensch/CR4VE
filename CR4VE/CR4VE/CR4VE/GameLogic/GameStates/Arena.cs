@@ -52,7 +52,8 @@ namespace CR4VE.GameLogic.GameStates
             spriteBatch = CR4VE.Game1.spriteBatch;
             graphics = CR4VE.Game1.graphics;
 
-            CameraArena.Initialize(800, 600);
+            //Camera
+            CameraArena.Initialize(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
 
             //Terrain
             terrain = new Entity(new Vector3(5, -20, -10), "Terrain/arena_hell", content);
@@ -82,14 +83,14 @@ namespace CR4VE.GameLogic.GameStates
         public Game1.EGameState Update(GameTime gameTime)
         {
             GameControls.updateArena(gameTime);
+
             GameControls.updateVibration(gameTime);
 
             player.Update(gameTime);
             sphere.Center = player.position;
 
             boss.Update(gameTime);
-
-
+            
             #region HUD
             opheliaHud.Update();
             opheliaHud.UpdateLiquidPositionByResolution();

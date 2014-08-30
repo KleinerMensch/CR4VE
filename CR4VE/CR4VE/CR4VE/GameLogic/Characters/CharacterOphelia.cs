@@ -40,20 +40,26 @@ namespace CR4VE.GameLogic.Characters
                 {
                     //Doppelganger movement
                     GamePadState curGamepad = GamePad.GetState(PlayerIndex.One);
-                    KeyboardState curKeyboard = Keyboard.GetState();
 
                     Vector3 moveVecDoppelPad = new Vector3(curGamepad.ThumbSticks.Right, 0);
-                    Vector3 moveVecDoppelBoard = Vector3.Zero;
 
-                    if (curKeyboard.IsKeyDown(Keys.Up)) moveVecDoppelBoard += new Vector3(0, speedDoppel, 0);
-                    if (curKeyboard.IsKeyDown(Keys.Left)) moveVecDoppelBoard += new Vector3(-speedDoppel, 0, 0);
-                    if (curKeyboard.IsKeyDown(Keys.Down)) moveVecDoppelBoard += new Vector3(0, -speedDoppel, 0);
-                    if (curKeyboard.IsKeyDown(Keys.Right)) moveVecDoppelBoard += new Vector3(speedDoppel, 0, 0);
-
-                    if (moveVecDoppelBoard == Vector3.Zero)
+                    if (moveVecDoppelPad != Vector3.Zero)
                         doppelgaenger.move(moveVecDoppelPad);
                     else
+                    {
+                        KeyboardState curKeyboard = Keyboard.GetState();
+
+                        Vector3 moveVecDoppelBoard = Vector3.Zero;
+
+                        if (curKeyboard.IsKeyDown(Keys.Up)) moveVecDoppelBoard += new Vector3(0, speedDoppel, 0);
+                        if (curKeyboard.IsKeyDown(Keys.Left)) moveVecDoppelBoard += new Vector3(-speedDoppel, 0, 0);
+                        if (curKeyboard.IsKeyDown(Keys.Down)) moveVecDoppelBoard += new Vector3(0, -speedDoppel, 0);
+                        if (curKeyboard.IsKeyDown(Keys.Right)) moveVecDoppelBoard += new Vector3(speedDoppel, 0, 0);
+
+                        if (moveVecDoppelBoard.Length() > 1) moveVecDoppelBoard.Normalize();
+
                         doppelgaenger.move(moveVecDoppelBoard);
+                    }
 
                     //Doppelgaenger schnellt hervor und verschwindet
                     //nach 50 Einheiten oder wenn er mit etwas kollidiert
@@ -103,20 +109,26 @@ namespace CR4VE.GameLogic.Characters
                 {
                     //Doppelganger movement
                     GamePadState curGamepad = GamePad.GetState(PlayerIndex.One);
-                    KeyboardState curKeyboard = Keyboard.GetState();
 
-                    Vector3 moveVecDoppelPad = new Vector3(curGamepad.ThumbSticks.Right, 0);
-                    Vector3 moveVecDoppelBoard = Vector3.Zero;
+                    Vector3 moveVecDoppelPad = new Vector3(curGamepad.ThumbSticks.Right.X, 0, -curGamepad.ThumbSticks.Right.Y);
 
-                    if (curKeyboard.IsKeyDown(Keys.Up)) moveVecDoppelBoard += new Vector3(0, 0, -speedDoppel);
-                    if (curKeyboard.IsKeyDown(Keys.Left)) moveVecDoppelBoard += new Vector3(-speedDoppel, 0, 0);
-                    if (curKeyboard.IsKeyDown(Keys.Down)) moveVecDoppelBoard += new Vector3(0, 0, speedDoppel);
-                    if (curKeyboard.IsKeyDown(Keys.Right)) moveVecDoppelBoard += new Vector3(speedDoppel, 0, 0);
-
-                    if (moveVecDoppelBoard == Vector3.Zero)
+                    if (moveVecDoppelPad != Vector3.Zero)
                         doppelgaenger.move(moveVecDoppelPad);
                     else
+                    {
+                        KeyboardState curKeyboard = Keyboard.GetState();
+
+                        Vector3 moveVecDoppelBoard = Vector3.Zero;
+
+                        if (curKeyboard.IsKeyDown(Keys.Up)) moveVecDoppelBoard += new Vector3(0, 0, -speedDoppel);
+                        if (curKeyboard.IsKeyDown(Keys.Left)) moveVecDoppelBoard += new Vector3(-speedDoppel, 0, 0);
+                        if (curKeyboard.IsKeyDown(Keys.Down)) moveVecDoppelBoard += new Vector3(0, 0, speedDoppel);
+                        if (curKeyboard.IsKeyDown(Keys.Right)) moveVecDoppelBoard += new Vector3(speedDoppel, 0, 0);
+
+                        if (moveVecDoppelBoard.Length() > 1) moveVecDoppelBoard.Normalize();
+
                         doppelgaenger.move(moveVecDoppelBoard);
+                    }
 
                     //Doppelgaenger schnellt hervor und verschwindet
                     //nach 50 Einheiten oder wenn er mit etwas kollidiert
