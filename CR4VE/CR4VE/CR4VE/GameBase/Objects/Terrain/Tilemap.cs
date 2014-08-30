@@ -88,10 +88,10 @@ namespace CR4VE.GameBase.Objects.Terrain
                                 //define Tile damage
                                 int damage = 0;
 
-                                if (number == 4 || number == 8 || number == 14)
+                                if (number == 4)// || number == 8 || number == 14)
                                     damage = Tile.waterDmg;
-                                else if (number == 16)
-                                    damage = Tile.lethalDmg;
+                               // else if (number == 16)
+                                 //   damage = Tile.lethalDmg;
 
                                 //harten String noch ersetzen
                                 tiles.Add(new Tile("Box", number, position, boundary, damage));
