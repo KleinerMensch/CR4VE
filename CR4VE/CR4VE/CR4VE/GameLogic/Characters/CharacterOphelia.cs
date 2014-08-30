@@ -214,7 +214,7 @@ namespace CR4VE.GameLogic.Characters
                 {
                     if (opheliaSpeer.boundary.Intersects(Arena.boss.boundary))
                     {
-                        Arena.seraphinBossHUD.healthLeft -= 3;
+                        Arena.seraphinBossHUD.healthLeft -= 5;
                         Console.WriteLine("Ophelia hit Boss by MeleeAttack");
                     }
                 }

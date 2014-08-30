@@ -236,7 +236,7 @@ namespace CR4VE.GameLogic.GameStates
             {16,16,18,15,18,18,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,18,18,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,18,18},
             {16,16,18,18,18,18,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,18,18,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,18,18}};
 
-
+            //background layouts
             int[,] layout9 = new int[,] {
             {13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13},
             {13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13},
@@ -270,9 +270,9 @@ namespace CR4VE.GameLogic.GameStates
                 Tilemap.Generate(layout4, boxSize, new Vector3(1550, -150, 0)),
                 Tilemap.Generate(layout5, boxSize, new Vector3(2110, -280, 0)),
                 Tilemap.Generate(layout6, boxSize, new Vector3(2670, -290, 0)),
-                //Tilemap.Generate(layout7, boxSize, new Vector3(3110, -560, 0)),
-                //Tilemap.Generate(layout8, boxSize, new Vector3(, 3660, 0-590))
-                //Tilemap.Generate(layout9, boxsize, new Vector3(3110,-560,0));
+                Tilemap.Generate(layout7, boxSize, new Vector3(3110, -560, 0)),
+                Tilemap.Generate(layout8, boxSize, new Vector3(3660, 0, -590)),
+                Tilemap.Generate(layout9, boxSize, new Vector3(3110,-560,0)),
             };
 
             //indices of active Tilemaps
@@ -365,22 +365,7 @@ namespace CR4VE.GameLogic.GameStates
                 c.Update();
             }
 
-            #region Updating Enemies
-            /*foreach (Enemy enemy in enemyList)
-            {
-                enemy.UpdateSingleplayer(gameTime);
-            }
-            
-            for (int i = 0; i < enemyList.Count; i++)
-            {
-                if (enemyList.ElementAt(i).health <= 0)
-                {
-                    enemyList.ElementAt(i).Destroy();
-                    enemyList.Remove(enemyList.ElementAt(i));
-                }
-            }*/
-
-            //DEBUG
+            #region Enemies
             foreach (Enemy e in tileMaps[activeIndex1].EnemyList)
             {
                 e.UpdateSingleplayer(gameTime);
@@ -388,6 +373,24 @@ namespace CR4VE.GameLogic.GameStates
             foreach (Enemy e in tileMaps[activeIndex2].EnemyList)
             {
                 e.UpdateSingleplayer(gameTime);
+            }
+
+            //remove dead enemies from active lists
+            for (int i = 0; i < tileMaps[activeIndex1].EnemyList.Count; i++)
+            {
+                if (tileMaps[activeIndex1].EnemyList.ElementAt(i).isDead)
+                {
+                    tileMaps[activeIndex1].EnemyList.ElementAt(i).Destroy();
+                    tileMaps[activeIndex1].EnemyList.Remove(tileMaps[activeIndex1].EnemyList.ElementAt(i));
+                }
+            }
+            for (int i = 0; i < tileMaps[activeIndex2].EnemyList.Count; i++)
+            {
+                if (tileMaps[activeIndex2].EnemyList.ElementAt(i).isDead)
+                {
+                    tileMaps[activeIndex2].EnemyList.ElementAt(i).Destroy();
+                    tileMaps[activeIndex2].EnemyList.Remove(tileMaps[activeIndex2].EnemyList.ElementAt(i));
+                }
             }
             #endregion
 
@@ -434,13 +437,7 @@ namespace CR4VE.GameLogic.GameStates
                 player.DrawAttacks();
             }
 
-            #region Enemies
-            foreach (AIInterface enemy in enemyList)
-            {
-                enemy.Draw();
-            }
-
-            //DEBUG
+            #region Enemies and Minions
             foreach (Enemy e in tileMaps[activeIndex1].EnemyList)
             {
                 e.Draw();
