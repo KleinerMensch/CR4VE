@@ -97,11 +97,11 @@ namespace CR4VE.GameLogic.GameStates
             seraphinBossHUD.Update();
             seraphinBossHUD.UpdateLiquidPositionByResolution();
             seraphinBossHUD.UpdateMana();
-            /*
+            
             if (opheliaHud.isDead)
             {
                 return Game1.EGameState.GameOver;
-            }*/
+            }
             #endregion
             return Game1.EGameState.Arena;
         }
@@ -134,7 +134,6 @@ namespace CR4VE.GameLogic.GameStates
             #region HUD
             spriteBatch.Begin();
 
-            seraphinBossHUD.DrawGenerals(spriteBatch);
             seraphinBossHUD.Draw(spriteBatch);
             opheliaHud.DrawGenerals(spriteBatch);
             opheliaHud.Draw(spriteBatch);

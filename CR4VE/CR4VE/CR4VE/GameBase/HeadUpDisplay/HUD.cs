@@ -66,6 +66,15 @@ namespace CR4VE.GameBase.HeadUpDisplay
                     healthLeft = fullHealth;
                 }
             }
+            else if (Game1.currentState.Equals(Game1.EGameState.Arena))
+            {
+                if (healthLeft <= 0)
+                {
+                    trialsLeft -= 1;
+                    //refill health
+                    healthLeft = fullHealth;
+                }
+            }
 
             if (trialsLeft < 0)
                 isDead = true;
