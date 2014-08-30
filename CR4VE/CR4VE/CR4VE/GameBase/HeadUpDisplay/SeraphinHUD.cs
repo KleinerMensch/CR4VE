@@ -15,6 +15,7 @@ namespace CR4VE.GameBase.HeadUpDisplay
     class SeraphinHUD : HUD
     {
         #region Attributes
+        public new int trialsLeft;
         private Texture2D seraphinHealthContainer, seraphinPowerRightEye, seraphinPowerLeftEye, seraphinPowerLowerEye;
         private Vector2 seraphinHealthContainerPosition;
         #endregion
@@ -34,10 +35,13 @@ namespace CR4VE.GameBase.HeadUpDisplay
             #endregion
 
             seraphinHealthContainerPosition = new Vector2(graphics.PreferredBackBufferWidth - (seraphinHealthContainer.Width * spriteScale), 0);
+            if (Game1.currentState.Equals(Game1.EGameState.Arena))
+                trialsLeft = 1;
         }
 
         public override void UpdateMana()
         {
+            Console.WriteLine(this.trialsLeft);
             if (Game1.currentState == Game1.EGameState.Singleplayer)
             {
                 int ai1 = Singleplayer.activeIndex1;
