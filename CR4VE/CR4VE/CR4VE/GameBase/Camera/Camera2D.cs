@@ -14,7 +14,7 @@ namespace CR4VE.GameBase.Camera
         private static Vector3 camTarget = new Vector3(0, 0, 0);
 
         private static Vector2 viewPortSize;
-        private static Rectangle worldRec = new Rectangle(0, 0, 3000, 1080);
+        private static Rectangle worldRec = new Rectangle(0, 0, 6000, 1080);
         private static float ratio;
         
         //Viewport BoundingFrunstum

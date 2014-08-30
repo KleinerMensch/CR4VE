@@ -40,14 +40,28 @@ namespace CR4VE.GameBase.HeadUpDisplay
 
         public override void UpdateMana()
         {
-            for (int i=0; i < Singleplayer.powerUpList.Count; i++)
+            int ai1 = Singleplayer.activeIndex1;
+            int ai2 = Singleplayer.activeIndex2;
+
+            for (int i = 0; i < Singleplayer.tileMaps[ai1].PowerupList.Count; i++)
             {
-                if (CharacterSeraphin.manaLeft < 3)
+                if (CharacterOphelia.manaLeft < 3)
                 {
-                    if (Singleplayer.powerUpList[i].boundary.Intersects(Singleplayer.player.boundary))
+                    if (Singleplayer.tileMaps[ai1].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
                     {
-                        Singleplayer.powerUpList.Remove(Singleplayer.powerUpList.ElementAt(i));
-                        CharacterSeraphin.manaLeft += 1;
+                        Singleplayer.tileMaps[ai1].PowerupList.Remove(Singleplayer.tileMaps[ai1].PowerupList.ElementAt(i));
+                        CharacterOphelia.manaLeft += 1;
+                    }
+                }
+            }
+            for (int i = 0; i < Singleplayer.tileMaps[ai2].PowerupList.Count; i++)
+            {
+                if (CharacterOphelia.manaLeft < 3)
+                {
+                    if (Singleplayer.tileMaps[ai2].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
+                    {
+                        Singleplayer.tileMaps[ai2].PowerupList.Remove(Singleplayer.tileMaps[ai2].PowerupList.ElementAt(i));
+                        CharacterOphelia.manaLeft += 1;
                     }
                 }
             }

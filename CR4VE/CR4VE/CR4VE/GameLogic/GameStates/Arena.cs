@@ -102,7 +102,7 @@ namespace CR4VE.GameLogic.GameStates
 
             #region HUD
             hud.Update();
-            //hud.UpdateMana();
+
             /*hud.UpdateMana();
              * 
             if (hud.isDead)
@@ -128,7 +128,9 @@ namespace CR4VE.GameLogic.GameStates
                 }
             }
             #endregion
+
             GameControls.updateVibration(gameTime);
+
             return Game1.EGameState.Arena;
         }
 

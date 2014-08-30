@@ -3,6 +3,7 @@ using CR4VE.GameLogic.AI;
 using CR4VE.GameLogic.GameStates;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace CR4VE.GameLogic.Characters
         Entity speer, doppelgaenger, holyThunder;
 
         Vector3 offset = new Vector3(8, 8, 8);
-        float speed = 1;
+        float speedDoppel = 1;
         bool enemyHit = false;
         #endregion
 
@@ -30,16 +31,28 @@ namespace CR4VE.GameLogic.Characters
         #region Methods
         public override void Update(GameTime time)
         {
-            Console.WriteLine(attackList.Count);
             #region UpdateDoppelgaenger
             if (launchedRanged)
             {
                 #region Singleplayer
                 if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
                 {
-                    doppelgaenger.position += speed * viewingDirection;
-                    doppelgaenger.boundary.Min += speed * viewingDirection;
-                    doppelgaenger.boundary.Max += speed * viewingDirection;
+                    //Doppelganger movement
+                    GamePadState curGamepad = GamePad.GetState(PlayerIndex.One);
+                    KeyboardState curKeyboard = Keyboard.GetState();
+
+                    Vector3 moveVecDoppelPad = new Vector3(curGamepad.ThumbSticks.Right, 0);
+                    Vector3 moveVecDoppelBoard = Vector3.Zero;
+
+                    if (curKeyboard.IsKeyDown(Keys.Up)) moveVecDoppelBoard += new Vector3(0, speedDoppel, 0);
+                    if (curKeyboard.IsKeyDown(Keys.Left)) moveVecDoppelBoard += new Vector3(-speedDoppel, 0, 0);
+                    if (curKeyboard.IsKeyDown(Keys.Down)) moveVecDoppelBoard += new Vector3(0, -speedDoppel, 0);
+                    if (curKeyboard.IsKeyDown(Keys.Right)) moveVecDoppelBoard += new Vector3(speedDoppel, 0, 0);
+
+                    if (moveVecDoppelBoard == Vector3.Zero)
+                        doppelgaenger.move(moveVecDoppelPad);
+                    else
+                        doppelgaenger.move(moveVecDoppelBoard);
 
                     //Doppelgaenger schnellt hervor und verschwindet
                     //nach 50 Einheiten oder wenn er mit etwas kollidiert
@@ -87,9 +100,22 @@ namespace CR4VE.GameLogic.Characters
                 #region Arena
                 if (Game1.currentState.Equals(Game1.EGameState.Arena))
                 {
-                    doppelgaenger.position += speed * viewingDirection;
-                    doppelgaenger.boundary.Min += speed * viewingDirection;
-                    doppelgaenger.boundary.Max += speed * viewingDirection;
+                    //Doppelganger movement
+                    GamePadState curGamepad = GamePad.GetState(PlayerIndex.One);
+                    KeyboardState curKeyboard = Keyboard.GetState();
+
+                    Vector3 moveVecDoppelPad = new Vector3(curGamepad.ThumbSticks.Right, 0);
+                    Vector3 moveVecDoppelBoard = Vector3.Zero;
+
+                    if (curKeyboard.IsKeyDown(Keys.Up)) moveVecDoppelBoard += new Vector3(0, 0, -speedDoppel);
+                    if (curKeyboard.IsKeyDown(Keys.Left)) moveVecDoppelBoard += new Vector3(-speedDoppel, 0, 0);
+                    if (curKeyboard.IsKeyDown(Keys.Down)) moveVecDoppelBoard += new Vector3(0, 0, speedDoppel);
+                    if (curKeyboard.IsKeyDown(Keys.Right)) moveVecDoppelBoard += new Vector3(speedDoppel, 0, 0);
+
+                    if (moveVecDoppelBoard == Vector3.Zero)
+                        doppelgaenger.move(moveVecDoppelPad);
+                    else
+                        doppelgaenger.move(moveVecDoppelBoard);
 
                     //Doppelgaenger schnellt hervor und verschwindet
                     //nach 50 Einheiten oder wenn er mit etwas kollidiert

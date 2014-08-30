@@ -215,6 +215,9 @@ namespace CR4VE.GameBase.Objects
                                         float deltaX = Math.Abs(t.Boundary.Max.X - this.Boundary.Min.X);
 
                                         this.move(new Vector3(-deltaX,0,0));
+
+                                        //DEBUG
+                                        Camera2D.realign(new Vector3(-deltaX, 0, 0), this.Position);
                                     }
                                 }
                             }
@@ -262,6 +265,9 @@ namespace CR4VE.GameBase.Objects
                                         float deltaX = Math.Abs(t.Boundary.Min.X - this.Boundary.Max.X);
 
                                         this.move(new Vector3(deltaX, 0, 0));
+
+                                        //DEBUG
+                                        Camera2D.realign(new Vector3(deltaX, 0, 0), this.Position);
                                     }
                                 }
                             }
@@ -306,9 +312,12 @@ namespace CR4VE.GameBase.Objects
                                     {
                                         collisions.Add(t);
 
-                                        //float deltaY = Math.Abs(t.Boundary.Min.Y - this.Boundary.Max.Y);
+                                        float deltaY = Math.Abs(t.Boundary.Min.Y - this.Boundary.Max.Y);
 
                                         //this.move(new Vector3(0, deltaY, 0));
+
+                                        //DEBUG
+                                        Camera2D.realign(new Vector3(0, deltaY, 0), this.Position);
                                     }
                                 }
                             }
@@ -358,6 +367,9 @@ namespace CR4VE.GameBase.Objects
                                         this.move(new Vector3(0, -deltaY, 0));
 
                                         //DEBUG
+                                        Camera2D.realign(new Vector3(0, -deltaY, 0), this.Position);
+
+                                        //handle damaging tiles beneath player
                                         if (t.Damage != 0)
                                             Singleplayer.hud.healthLeft -= t.Damage;
                                     }

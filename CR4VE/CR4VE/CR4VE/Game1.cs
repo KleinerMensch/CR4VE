@@ -148,10 +148,10 @@ namespace CR4VE
             IsMouseVisible = false;
 
             //size of Game Window
-            graphics.PreferredBackBufferWidth = 1366;
-            graphics.PreferredBackBufferHeight = 768;
+            graphics.PreferredBackBufferWidth = 800;
+            graphics.PreferredBackBufferHeight = 600;
 
-            graphics.IsFullScreen = true;
+            //graphics.IsFullScreen = true;
 
             graphics.ApplyChanges();
 
@@ -165,7 +165,7 @@ namespace CR4VE
 
             // Gamestate am Anfang
             // zum Testen jeweiligen GameState einsetzen
-            this.GameState = EGameState.MainMenu;
+            this.GameState = EGameState.Singleplayer;
         }
 
 
