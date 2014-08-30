@@ -9,6 +9,7 @@ using CR4VE.GameBase.Camera;
 using CR4VE.GameBase.Objects;
 using CR4VE.GameBase.Objects.Terrain;
 using CR4VE.GameLogic.Controls;
+using CR4VE.GameLogic.AI;
 
 namespace CR4VE.GameBase.Objects.Terrain
 {
@@ -17,6 +18,7 @@ namespace CR4VE.GameBase.Objects.Terrain
         #region Attributes
         private List<Tile> Tiles = new List<Tile>();
         private List<Checkpoint> Checkpoints = new List<Checkpoint>();
+        private List<Enemy> Enemies = new List<Enemy>();
         private List<Powerup> Powerups = new List<Powerup>();
 
         private Vector3 startPos;
@@ -30,6 +32,10 @@ namespace CR4VE.GameBase.Objects.Terrain
         public List<Checkpoint> CheckpointList
         {
             get { return Checkpoints; }
+        }
+        public List<Enemy> EnemyList
+        {
+            get { return Enemies; }
         }
         public List<Powerup> PowerupList
         {
@@ -92,6 +98,15 @@ namespace CR4VE.GameBase.Objects.Terrain
                         //do nothing
                         case 0:
                             break;
+
+                        //ground spikes
+                        case 95:
+                            {
+                                Vector3 position = start + new Vector3(x * size, -y * size, 0) + new Vector3(3, -size/2, 3);
+                                BoundingBox boundary = new BoundingBox(position + new Vector3(-size / 2, -size / 2, -size / 2), position + new Vector3(size / 2, size / 2, size / 2));
+                                
+                                tiles.Add(new Spikes("ground", position, boundary, Tile.lethalDmg));
+                            } break;
 
                         //Checkpoint
                         case 96:
