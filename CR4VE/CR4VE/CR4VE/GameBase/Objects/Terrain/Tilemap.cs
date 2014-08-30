@@ -49,10 +49,11 @@ namespace CR4VE.GameBase.Objects.Terrain
 
         #region Constructors
         public Tilemap() { }
-        public Tilemap(List<Tile> tiles, List<Checkpoint> checkpoints, List<Powerup> powerups, Vector3 start)
+        public Tilemap(List<Tile> tiles, List<Checkpoint> checkpoints, List<Enemy> enemies, List<Powerup> powerups, Vector3 start)
         {
             this.Tiles = tiles;
             this.Checkpoints = checkpoints;
+            this.Enemies = enemies;
             this.Powerups = powerups;
 
             this.startPos = start;
@@ -66,6 +67,7 @@ namespace CR4VE.GameBase.Objects.Terrain
         {
             List<Tile> tiles = new List<Tile>();
             List<Checkpoint> checkpoints = new List<Checkpoint>();
+            List<Enemy> enemies = new List<Enemy>();
             List<Powerup> powerups = new List<Powerup>();
 
             for (int y = 0; y < map.GetLength(0); y++)
@@ -99,13 +101,22 @@ namespace CR4VE.GameBase.Objects.Terrain
                         case 0:
                             break;
 
+                        //ceiling spikes
+                        case 94:
+                            {
+                                Vector3 position = start + new Vector3(x * size, -y * size, 0) + new Vector3(0,0,0);
+                                BoundingBox boundary = new BoundingBox(position + new Vector3(-size / 2, -size / 2, -size / 2), position + new Vector3(size / 2, size / 2, size / 2));
+                                
+                                enemies.Add(new Spikes(position, "spikes_ceiling", Singleplayer.cont, boundary));
+                            } break;
+
                         //ground spikes
                         case 95:
                             {
                                 Vector3 position = start + new Vector3(x * size, -y * size, 0) + new Vector3(3, -size/2, 3);
                                 BoundingBox boundary = new BoundingBox(position + new Vector3(-size / 2, -size / 2, -size / 2), position + new Vector3(size / 2, size / 2, size / 2));
                                 
-                                tiles.Add(new Spikes("ground", position, boundary, Tile.lethalDmg));
+                                tiles.Add(new GroundSpikes("ground", position, boundary, Tile.lethalDmg));
                             } break;
 
                         //Checkpoint
@@ -141,7 +152,7 @@ namespace CR4VE.GameBase.Objects.Terrain
                 }
             }
 
-            return new Tilemap(tiles, checkpoints, powerups, start);
+            return new Tilemap(tiles, checkpoints, enemies, powerups, start);
         }
 
         public void Draw(List<Tile> visibles)
@@ -228,8 +239,8 @@ namespace CR4VE.GameBase.Objects.Terrain
 
             if (deltaXLeft < switchRange)
             {
-                Singleplayer.activeIndex1 = (int)MathHelper.Clamp(Singleplayer.activeIndex1 - 1, 0, Singleplayer.tileMaps.Length - 1);
-                Singleplayer.activeIndex2 = (int)MathHelper.Clamp(Singleplayer.activeIndex2 - 1, 1, Singleplayer.tileMaps.Length);
+                Singleplayer.activeIndex1 = (int) MathHelper.Clamp(Singleplayer.activeIndex1 - 1, 0, Singleplayer.tileMaps.Length - 1);
+                Singleplayer.activeIndex2 = (int) MathHelper.Clamp(Singleplayer.activeIndex2 - 1, 1, Singleplayer.tileMaps.Length);
             }
         }
 

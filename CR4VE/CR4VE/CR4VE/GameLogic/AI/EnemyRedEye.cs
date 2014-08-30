@@ -123,12 +123,12 @@ namespace CR4VE.GameLogic.AI
         }
         #endregion
 
-        public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
+        public override void Draw()
         {
             this.drawIn2DWorld(new Vector3(0.5f, 0.5f, 0.5f), 0, rotationY, 0);
         }
 
-        public override void DrawInArena(GameTime gameTime)
+        public override void DrawInArena()
         {
             this.drawInArena(new Vector3(0.5f, 0.5f, 0.5f), 0, rotationY, 0);
         }

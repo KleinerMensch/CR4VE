@@ -12,41 +12,41 @@ namespace CR4VE.GameLogic.AI
     class Spikes : Enemy
     {
         #region Attributes
-        Random random = new Random();
-        float rotationY = MathHelper.ToRadians(-90);
+        private readonly float rotX = MathHelper.ToRadians(90);
+
+        private bool isFalling = false;
         #endregion
 
         #region inherited Constructors
-        public Spikes():base() { }
+        public Spikes() : base() { }
         public Spikes(Vector3 pos, String modelName, ContentManager cm) : base(pos, modelName, cm) { }
         public Spikes(Vector3 pos, String modelName, ContentManager cm, BoundingBox bound) : base(pos, modelName, cm) { }
         #endregion
 
-        public override void UpdateSingleplayer(Microsoft.Xna.Framework.GameTime gameTime) {
+        public override void UpdateSingleplayer(GameTime gameTime)
+        {
+            float distance = 0;
 
-            //Vector3 playerPos = Singleplayer.player.position;
-            //Vector3 direction = this.position - playerPos;
-            float distance = this.position.X - Singleplayer.player.position.X;
+            if (!isFalling)
+                distance = Math.Abs(this.position.X - Singleplayer.player.position.X);
 
-            if (distance <= 10)
+            if (distance <= 20)
             {
-                this.position.Y --; // fällt runter
+                isFalling = true;
             }
 
-            //updating bounding box & check collision
-            this.boundary.Min = this.position + new Vector3(-2,-2,-2);
-            this.boundary.Max = this.position + new Vector3(2,2,2);
+            if (isFalling)
+                this.move(new Vector3(0, -1.5f, 0)); //faellt runter
 
             if (Singleplayer.player.boundary.Intersects(this.boundary))
             {
                 Singleplayer.hud.healthLeft -= (int)(Singleplayer.hud.fullHealth * 0.01);
             }
-
         }
 
-        public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
+        public override void Draw()
         {
-            this.drawIn2DWorld(new Vector3(1,1,1), 0, rotationY, 0);
+            this.drawIn2DWorldWithoutBones(new Vector3(1.1f, 1.1f, 1.1f), rotX, 0, 0);
         }
 
     }

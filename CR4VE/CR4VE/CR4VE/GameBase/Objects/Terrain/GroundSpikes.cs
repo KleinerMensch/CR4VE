@@ -7,7 +7,7 @@ using System.Text;
 
 namespace CR4VE.GameBase.Objects.Terrain
 {
-    public class Spikes : Tile
+    public class GroundSpikes : Tile
     {
         #region Attributes
         private String type;
@@ -21,7 +21,7 @@ namespace CR4VE.GameBase.Objects.Terrain
         #endregion
 
         #region Constructor
-        public Spikes(String spikeType, Vector3 pos, BoundingBox bound, int damage)
+        public GroundSpikes(String spikeType, Vector3 pos, BoundingBox bound, int damage)
         {
             this.position = pos;
             this.model = Content.Load<Model>("Assets/Models/Terrain/spikes_" + spikeType);
@@ -38,9 +38,6 @@ namespace CR4VE.GameBase.Objects.Terrain
 
             switch (this.Type)
             {
-                case "ceiling":
-                    break;
-
                 case "ground":
                     rotX = MathHelper.ToRadians(-90);
                     break;
