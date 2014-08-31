@@ -68,7 +68,7 @@ namespace CR4VE.GameLogic.Controls
         //MainMenu
         private static Vector3 moveVecSword;
         private static bool isMoving = false;
-        private static int menuPosIndex = 0;
+        public static int menuPosIndex = 0;
 
         private static readonly Vector3[] menuPositions = new Vector3[]
         {
@@ -89,10 +89,12 @@ namespace CR4VE.GameLogic.Controls
         {
             return currentKeyboard.IsKeyDown(key);
         }
+
         public static bool isClicked(Keys key)
         {
             return currentKeyboard.IsKeyDown(key) && previousKeyboard.IsKeyUp(key);
         }
+
         public static bool isReleased(Keys key)
         {
             return currentKeyboard.IsKeyUp(key) && previousKeyboard.IsKeyDown(key);
@@ -133,6 +135,8 @@ namespace CR4VE.GameLogic.Controls
             {
                 previousHealth = currentHealth;
                 currentHealth = Singleplayer.hud.healthLeft;
+
+                return previousHealth > currentHealth;
             }
 
            // else if (state == Game1.EGameState.Arena)
@@ -141,7 +145,7 @@ namespace CR4VE.GameLogic.Controls
             //    currentHealth = Arena.hud.healthLeft;
            // }
 
-            return previousHealth > currentHealth;
+            return false;
         }
 
         //update methods
@@ -211,6 +215,8 @@ namespace CR4VE.GameLogic.Controls
 
                 prevGamepad = currGamepad;
                 currGamepad = GamePad.GetState(PlayerIndex.One);
+
+                if (currentKeyboard.IsKeyDown(Keys.End)) Singleplayer.hud.isDead = true;
 
                 #region Calculate moveVecPlayer
                 Vector3 moveVecPlayer = new Vector3(0, 0, 0);
@@ -490,7 +496,7 @@ namespace CR4VE.GameLogic.Controls
                 {
                     //Press Start
                     case 0:
-                        if ((currentKeyboard.IsKeyDown(Keys.Enter) || currGamepad.IsButtonDown(Buttons.Start)) && !isMoving)
+                        if ((isClicked(Keys.Enter) || isClicked(Buttons.Start)) && !isMoving)
                         {
                             menuPosIndex += 1;
 
@@ -502,19 +508,19 @@ namespace CR4VE.GameLogic.Controls
                     
                     //Singleplayer
                     case 1:
-                        if ((currentKeyboard.IsKeyDown(Keys.Enter) || currGamepad.IsButtonDown(Buttons.A)) && !isMoving)
+                        if ((isClicked(Keys.Enter) || isClicked(Buttons.A)) && !isMoving)
                             return Game1.EGameState.Singleplayer;
                         break;
 
                     //Multiplayer
                     case 2:
-                        if ((currentKeyboard.IsKeyDown(Keys.Enter) || currGamepad.IsButtonDown(Buttons.A)) && !isMoving)
+                        if ((isClicked(Keys.Enter) || isClicked(Buttons.A)) && !isMoving)
                             return Game1.EGameState.Arena;
                         break;
 
                     //Options
                     case 3:
-                        if ((currentKeyboard.IsKeyDown(Keys.Enter) || currGamepad.IsButtonDown(Buttons.A)) && !isMoving)
+                        if ((isClicked(Keys.Enter) || isClicked(Buttons.A)) && !isMoving)
                         {
                             menuPosIndex = (int)MathHelper.Clamp((float)(menuPosIndex + 1), 0f, 4f);
 
@@ -526,7 +532,7 @@ namespace CR4VE.GameLogic.Controls
 
                     //Options Details
                     case 4:
-                        if ((currentKeyboard.IsKeyDown(Keys.Escape) || currGamepad.IsButtonDown(Buttons.B)) && !isMoving)
+                        if ((isClicked(Keys.Escape) || isClicked(Buttons.B)) && !isMoving)
                         {
                             menuPosIndex = (int)MathHelper.Clamp((float)(menuPosIndex - 1), 0f, 3f);
 
@@ -537,7 +543,7 @@ namespace CR4VE.GameLogic.Controls
                         break;
                 }
             }
-            Console.WriteLine(MainMenu.sword.Position);
+            
             return Game1.EGameState.MainMenu;
         }
 
@@ -548,12 +554,16 @@ namespace CR4VE.GameLogic.Controls
             currentKeyboard = Keyboard.GetState();
 
             //Rage Quit
-            if (currGamepad.IsButtonDown(Buttons.Back) || currentKeyboard.IsKeyDown(Keys.Escape))
+            if (isClicked(Buttons.Back) || isClicked(Keys.Escape))
                 return Game1.EGameState.Nothing;
 
             //back to MainMenu
-            if (currGamepad.IsButtonDown(Buttons.Start) || currentKeyboard.IsKeyDown(Keys.Enter))
+            if (isClicked(Buttons.Start) || isClicked(Keys.Enter))
+            {
+                menuPosIndex = 0;
+
                 return Game1.EGameState.MainMenu;
+            }
 
             return Game1.EGameState.GameOver;
         }

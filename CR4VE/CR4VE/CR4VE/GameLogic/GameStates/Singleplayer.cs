@@ -70,7 +70,7 @@ namespace CR4VE.GameLogic.GameStates
         
            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,96, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0},
-           {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,92, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 3, 3, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0},
+           {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,93, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 3, 3, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0},
            {1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0,98, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 3, 0, 0, 3, 3, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 3, 4, 4, 3, 3, 3, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
            {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 3, 4, 4, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0},
@@ -267,15 +267,15 @@ namespace CR4VE.GameLogic.GameStates
             //Array of all generated Tilemaps
             tileMaps = new Tilemap[]
             {
-                //Tilemap.Generate(layout1, boxSize, new Vector3(-80, 0, 0)),
-                //Tilemap.Generate(layout2, boxSize, new Vector3(510, 10, 0)),
-                //Tilemap.Generate(layout3, boxSize, new Vector3(1030, -60, 0)),
-                //Tilemap.Generate(layout4, boxSize, new Vector3(1550, -150, 0)),
-                //Tilemap.Generate(layout5, boxSize, new Vector3(2110, -280, 0)),
-                Tilemap.Generate(layout6, boxSize, new Vector3(0,  0, 0)),//2670,-290,0
-                Tilemap.Generate(layout7, boxSize, new Vector3(510,-130, 0)),//(3110,-560,0)
-                Tilemap.Generate(layout8, boxSize, new Vector3(990, -310, 0)),//(3660,-590,0)
-              //  Tilemap.Generate(layout9, boxSize, new Vector3(3110,-560,0)),
+                Tilemap.Generate(layout1, boxSize, new Vector3(-80, 0, 0)),
+                Tilemap.Generate(layout2, boxSize, new Vector3(510, 10, 0)),
+                Tilemap.Generate(layout3, boxSize, new Vector3(1030, -60, 0)),
+                Tilemap.Generate(layout4, boxSize, new Vector3(1550, -150, 0)),
+                Tilemap.Generate(layout5, boxSize, new Vector3(2110, -280, 0)),
+                Tilemap.Generate(layout6, boxSize, new Vector3(2670, -290, 0)),//2670,-290,0
+                //Tilemap.Generate(layout7, boxSize, new Vector3(3110,-130, 0)),//(3110,-560,0)
+                //Tilemap.Generate(layout8, boxSize, new Vector3(3660, -310, 0)),//(3660,-590,0)
+                //Tilemap.Generate(layout9, boxSize, new Vector3(3110,-560,0)),
             };
 
             //indices of active Tilemaps
@@ -311,6 +311,8 @@ namespace CR4VE.GameLogic.GameStates
 
             //HUD
             hud = new OpheliaHUD(cont, graphics);
+
+            Console.WriteLine("initialize");
         }
         #endregion
 
@@ -390,6 +392,10 @@ namespace CR4VE.GameLogic.GameStates
             }
             #endregion
 
+            //DEBUG
+            //Console.WriteLine(tileMaps[activeIndex1].EnemyList.Count);
+            //
+
             GameControls.updateVibration(gameTime);
 
             //notwendiger Rueckgabewert
@@ -459,6 +465,17 @@ namespace CR4VE.GameLogic.GameStates
         // loeschen aller grafischen Elemente
         public void Unload()
         {
+            Console.WriteLine("unload");
+            //tileMaps.
+            foreach (Tilemap tm in tileMaps)
+            {
+                tm.CheckpointList.Clear();
+                tm.EnemyList.Clear();
+                tm.PowerupList.Clear();
+                tm.TileList.Clear();
+            }
+
+            //cont.Unload();
             //throw new NotImplementedException();
         }
 
@@ -466,6 +483,7 @@ namespace CR4VE.GameLogic.GameStates
         // automatischer Aufruf des GarbageCollector beim Beenden des Spiels
         public void Dispose()
         {
+            
             //throw new NotImplementedException();
         }
     }

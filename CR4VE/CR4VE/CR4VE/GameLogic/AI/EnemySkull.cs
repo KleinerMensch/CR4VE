@@ -58,11 +58,6 @@ namespace CR4VE.GameLogic.AI
                 rotationY += MathHelper.ToRadians(180);
             }
 
-            else if (this.position.X < 350)
-            {
-                this.position.X++;
-            }
-
             if (Singleplayer.player.boundary.Intersects(this.boundary))
             {
                 Singleplayer.hud.healthLeft -= (int)(Singleplayer.hud.fullHealth * 0.01);
