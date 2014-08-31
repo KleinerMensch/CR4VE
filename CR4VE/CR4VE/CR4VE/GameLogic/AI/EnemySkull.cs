@@ -15,6 +15,7 @@ namespace CR4VE.GameLogic.AI
         Vector3 startPosition;
         Random random = new Random();
         float moveSpeed = -0.5f;
+
         float rotationX = 0.4f;
         float rotationY = MathHelper.ToRadians(-90);
         bool checkedStartpositionOnce = false;
@@ -33,7 +34,7 @@ namespace CR4VE.GameLogic.AI
         #endregion
 
         #region inherited Constructors
-        public EnemySkull():base() { }
+        public EnemySkull() : base() { }
         public EnemySkull(Vector3 pos, String modelName, ContentManager cm) : base(pos, modelName, cm) { }
         public EnemySkull(Vector3 pos, String modelName, ContentManager cm, BoundingBox bound) : base(pos, modelName, cm, bound) { }
         #endregion
@@ -41,8 +42,10 @@ namespace CR4VE.GameLogic.AI
         public override void UpdateSingleplayer(GameTime gameTime)
         {
             if (!checkedStartpositionOnce)
+            {
                 startPosition = this.Position;
-
+                checkedStartpositionOnce = true;
+            }
             //Fake Rotationsanimation
             rotationX -= 0.1f;
 
@@ -58,14 +61,12 @@ namespace CR4VE.GameLogic.AI
             }
             else
             {
-                direction = this.Position - startPosition;
-                direction.Normalize();
-                direction = moveSpeed * direction;
-                this.move(direction);
+                //do nothing
             }
 
             if (Singleplayer.player.boundary.Intersects(this.boundary))
             {
+                Console.WriteLine("intersection");
                 Singleplayer.hud.healthLeft -= (int)(Singleplayer.hud.fullHealth * 0.01);
             }
         }

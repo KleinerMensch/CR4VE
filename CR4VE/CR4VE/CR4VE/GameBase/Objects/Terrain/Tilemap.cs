@@ -80,6 +80,7 @@ namespace CR4VE.GameBase.Objects.Terrain
                     //Wenn Zahl zwischen 1 und 95, Tile erstellen und adden
                     switch (number)
                     {
+                        #region Terrain Tiles
                         default:
                             {
                                 Vector3 position = start + new Vector3(x * size, -y * size, 0);
@@ -93,8 +94,8 @@ namespace CR4VE.GameBase.Objects.Terrain
                                     damage = Tile.waterDmg;
                                     boundary = new BoundingBox(position + new Vector3(-size / 2, -size / 2, -size / 2), position + new Vector3(size / 2, -size/2, size / 2));
                                 }
-                                else if (number == 16)
-                                    damage = Tile.lethalDmg;
+                            //    else if (number == 16)
+                              //      damage = Tile.lethalDmg;
 
                                 //harten String noch ersetzen
                                 tiles.Add(new Tile("Box", number, position, boundary, damage));
@@ -103,6 +104,26 @@ namespace CR4VE.GameBase.Objects.Terrain
                         //do nothing
                         case 0:
                             break;
+                        #endregion
+
+                        #region Enemies
+                        //EnemyRedEye
+                        case 92:
+                            {
+                                Vector3 position = start + new Vector3(x * size, -y * size, 0);
+                                BoundingBox boundary = new BoundingBox(position + new Vector3(), position + new Vector3());
+
+                                enemies.Add(new EnemyRedEye(position, "EnemyEye", Singleplayer.cont, boundary));
+                            } break;
+
+                        //EnemySkull
+                        case 93:
+                            {
+                                Vector3 position = start + new Vector3(x * size, -y * size, 0);
+                                BoundingBox boundary = new BoundingBox(position + new Vector3(), position + new Vector3());
+
+                                enemies.Add(new EnemySkull(position, "skull", Singleplayer.cont, boundary));
+                            } break;
 
                         //ceiling spikes
                         case 94:
@@ -121,7 +142,9 @@ namespace CR4VE.GameBase.Objects.Terrain
                                 
                                 tiles.Add(new GroundSpikes("ground", position, boundary, Tile.lethalDmg));
                             } break;
+                        #endregion
 
+                        #region Checkpoints & Powerups
                         //Checkpoint
                         case 96:
                             {
@@ -150,6 +173,7 @@ namespace CR4VE.GameBase.Objects.Terrain
                                 //spaeter noch nach Leveltyp differenzieren
                                 powerups.Add(new Powerup(position, "powerup_hell_mana", Singleplayer.cont, manaBound, "mana", 1));
                             } break;
+                        #endregion
                     }
 
                 }
@@ -176,6 +200,12 @@ namespace CR4VE.GameBase.Objects.Terrain
             foreach (Powerup p in this.PowerupList)
             {
                 p.Draw();
+            }
+
+            //Enemies
+            foreach (Enemy e in this.EnemyList)
+            {
+                e.Draw();
             }
         }
 

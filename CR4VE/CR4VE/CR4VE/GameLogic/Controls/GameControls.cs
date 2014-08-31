@@ -274,12 +274,6 @@ namespace CR4VE.GameLogic.Controls
                 }
                 #endregion
 
-                Console.Clear();
-                Console.WriteLine("right: " + borderedRight);
-                Console.WriteLine("left: " + borderedLeft);
-                Console.WriteLine("top: " + borderedTop);
-                Console.WriteLine("down: " + borderedBottom);
-
                 #region collision
                 Vector3 temp = moveVecPlayer;
 
@@ -553,9 +547,11 @@ namespace CR4VE.GameLogic.Controls
 
             currentKeyboard = Keyboard.GetState();
 
+            //Rage Quit
             if (currGamepad.IsButtonDown(Buttons.Back) || currentKeyboard.IsKeyDown(Keys.Escape))
                 return Game1.EGameState.Nothing;
 
+            //back to MainMenu
             if (currGamepad.IsButtonDown(Buttons.Start) || currentKeyboard.IsKeyDown(Keys.Enter))
                 return Game1.EGameState.MainMenu;
 

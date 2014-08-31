@@ -74,7 +74,8 @@ namespace CR4VE.GameLogic.Characters
                         }
                         else
                         {
-                            foreach (Enemy enemy in Singleplayer.enemyList)
+                            #region enemyList1
+                            foreach (Enemy enemy in Singleplayer.tileMaps[Singleplayer.activeIndex1].EnemyList)
                             {
                                 if (enemyHit)
                                 {
@@ -94,6 +95,7 @@ namespace CR4VE.GameLogic.Characters
                                     }
                                 }
                             }
+                            #endregion
                         }
                     }
                     else
@@ -233,8 +235,11 @@ namespace CR4VE.GameLogic.Characters
                 #region Singleplayer
                 if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
                 {
-                    doppelgaenger = new Entity(this.position, "Enemies/skull", Singleplayer.cont);
+                    Vector3 doppelPos = new Vector3(this.position.X, this.Position.Y, 0);
+
+                    doppelgaenger = new Entity(doppelPos, "Enemies/skull", Singleplayer.cont);
                     doppelgaenger.boundary = new BoundingBox(this.position + new Vector3(-3, -3, -3), this.position + new Vector3(3, 3, 3));
+                    
                     attackList.Add(doppelgaenger);
                 }
                 #endregion
