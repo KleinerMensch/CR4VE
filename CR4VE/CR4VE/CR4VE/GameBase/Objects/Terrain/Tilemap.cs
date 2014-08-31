@@ -246,7 +246,7 @@ namespace CR4VE.GameBase.Objects.Terrain
 
         public static void updateActiveTilemaps()
         {
-            float switchRange = 100f;
+            float switchRange = 150f;
 
             float deltaXRight;
             float deltaXLeft;

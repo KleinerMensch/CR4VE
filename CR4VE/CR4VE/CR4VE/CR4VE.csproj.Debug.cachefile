@@ -99,6 +99,10 @@ Content\Assets\Models\Players\Maps\body-cos_0.xnb
 Content\Assets\Models\Players\Maps\HoernerTextur_0.xnb
 Content\Assets\Models\Maps\gold_1024x1024_0.xnb
 Content\Assets\Models\Maps\EdelsteinTextur_0.xnb
+Content\Assets\Models\Terrain\spikes_ground.xnb
+Content\Assets\Models\Enemies\spikes_ceiling.xnb
+Content\Assets\Models\Terrain\Textures\spikes2_256x256_0.xnb
+Content\Assets\Models\Enemies\Textures\spikes2_256x256_0.xnb
 Content\Assets\Sprites\Startscreen.png
 Content\Assets\Sprites\ButtonExit.png
 Content\Assets\Sprites\ButtonPlay.png

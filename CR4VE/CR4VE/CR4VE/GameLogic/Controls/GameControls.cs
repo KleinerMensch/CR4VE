@@ -138,13 +138,13 @@ namespace CR4VE.GameLogic.Controls
 
                 return previousHealth > currentHealth;
             }
-            else if (state == Game1.EGameState.Arena)
+            /*else if (state == Game1.EGameState.Arena)
             {
                 previousHealth = currentHealth;
                 currentHealth = Arena.opheliaHud.healthLeft;
 
                 return previousHealth > currentHealth;
-            }
+            }*/
 
             return false;
         }
