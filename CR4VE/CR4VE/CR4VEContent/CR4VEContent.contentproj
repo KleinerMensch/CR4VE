@@ -388,6 +388,16 @@
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
+    <Compile Include="Assets\Models\Players\albino.FBX">
+      <Name>albino</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\Enemies\hands.FBX">
+      <Name>hands</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
     <Compile Include="Assets\Models\Terrain\spikes_ground.FBX">
       <Name>spikes_ground</Name>
       <Importer>FbxImporter</Importer>
