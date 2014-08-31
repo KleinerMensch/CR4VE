@@ -41,6 +41,7 @@ namespace CR4VE.GameLogic.GameStates
         //Player
         public static Character ghost;
         public static Character player;
+        Entity opheliaSpeer;
 
         //reset point if dead
         public static Checkpoint lastCheckpoint;
@@ -272,10 +273,10 @@ namespace CR4VE.GameLogic.GameStates
                 Tilemap.Generate(layout3, boxSize, new Vector3(1030, -60, 0)),
                 Tilemap.Generate(layout4, boxSize, new Vector3(1550, -150, 0)),
                 Tilemap.Generate(layout5, boxSize, new Vector3(2110, -280, 0)),
-                Tilemap.Generate(layout6, boxSize, new Vector3(2670, -290, 0)),//2670,-290,0
-                //Tilemap.Generate(layout7, boxSize, new Vector3(3110,-130, 0)),//(3110,-560,0)
-                //Tilemap.Generate(layout8, boxSize, new Vector3(3660, -310, 0)),//(3660,-590,0)
-                //Tilemap.Generate(layout9, boxSize, new Vector3(3110,-560,0)),
+                Tilemap.Generate(layout6, boxSize, new Vector3(2670, -290, 0)),
+                Tilemap.Generate(layout7, boxSize, new Vector3(3110,-130, 0)),//(3110,-560,0)
+                Tilemap.Generate(layout8, boxSize, new Vector3(3660, -310, 0)),//(3660,-590,0)
+                Tilemap.Generate(layout9, boxSize, new Vector3(3110,-560,0)),
             };
 
             //indices of active Tilemaps
@@ -297,7 +298,9 @@ namespace CR4VE.GameLogic.GameStates
             //Player
             ghost = new Character(Vector3.Zero, "skull", content);
             player = new CharacterOphelia(new Vector3(0,0,5), "Ophelia", content, new BoundingBox(new Vector3(-2.5f, -9f, -2.5f), new Vector3(2.5f, 9f, 2.5f)));
-            
+
+            opheliaSpeer = new Entity(new Vector3(0, 0, 0), "OpheliasSpeer", content);
+
             //Checkpoints (default = Startposition)
             lastCheckpoint = new Checkpoint(Vector3.Zero, "checkpoint_hell", content);
             
@@ -438,6 +441,7 @@ namespace CR4VE.GameLogic.GameStates
                 player.drawIn2DWorld(new Vector3(0.02f, 0.02f, 0.02f), 0, MathHelper.ToRadians(90) * player.viewingDirection.X, 0);
                 player.DrawAttacks();
             }
+            opheliaSpeer.drawIn2DWorld(new Vector3(0.02f, 0.02f, 0.02f), 0, 0, 0);
 
             #region Enemies
             foreach (Enemy e in tileMaps[activeIndex1].EnemyList)
@@ -465,8 +469,8 @@ namespace CR4VE.GameLogic.GameStates
         // loeschen aller grafischen Elemente
         public void Unload()
         {
-            Console.WriteLine("unload");
-            //tileMaps.
+            Console.WriteLine("Singleplayer unloaded");
+            
             foreach (Tilemap tm in tileMaps)
             {
                 tm.CheckpointList.Clear();
@@ -474,9 +478,6 @@ namespace CR4VE.GameLogic.GameStates
                 tm.PowerupList.Clear();
                 tm.TileList.Clear();
             }
-
-            //cont.Unload();
-            //throw new NotImplementedException();
         }
 
         // Freigabe der restlichen Standardressourcen

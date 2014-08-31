@@ -22,6 +22,9 @@ Content\Assets\Sprites\SeraphinPower_RightEye.xnb
 Content\Assets\Models\Players\Maps\body-cos.xnb
 Content\Assets\Models\Players\Maps\lace.xnb
 Content\Assets\Models\Players\Maps\shadow.xnb
+Content\Assets\Models\Players\Maps\HoernerTextur.xnb
+Content\Assets\Models\Maps\EdelsteinTextur.xnb
+Content\Assets\Models\Maps\gold_1024x1024.xnb
 Content\Assets\Fonts\HUDfont.xnb
 Content\Assets\Fonts\GameOverFlo.xnb
 Content\Assets\Models\Enemies\EnemyEye.xnb
@@ -61,9 +64,7 @@ Content\Assets\Models\Players\EnemyEye.xnb
 Content\Assets\Models\Terrain\Box9.xnb
 Content\Assets\Models\mainmenu_sword.xnb
 Content\Assets\Models\Players\Ophelia.xnb
-Content\Assets\Models\Terrain\Box20.xnb
-Content\Assets\Models\Terrain\spikes_ground.xnb
-Content\Assets\Models\Enemies\spikes_ceiling.xnb
+Content\Assets\Models\OpheliasSpeer.xnb
 Content\red_eye_0.xnb
 Content\Assets\Models\Powerups\Textures\gold_256x256_0.xnb
 Content\Assets\Models\Terrain\Textures\seamless\lava_bright2_1024x1024_0.xnb
@@ -95,8 +96,9 @@ Content\Assets\Models\Players\Maps\shadow_0.xnb
 Content\Assets\Models\Players\Maps\trans_0.xnb
 Content\Assets\Models\Players\Maps\lace_0.xnb
 Content\Assets\Models\Players\Maps\body-cos_0.xnb
-Content\Assets\Models\Terrain\Textures\spikes2_256x256_0.xnb
-Content\Assets\Models\Enemies\Textures\spikes2_256x256_0.xnb
+Content\Assets\Models\Players\Maps\HoernerTextur_0.xnb
+Content\Assets\Models\Maps\gold_1024x1024_0.xnb
+Content\Assets\Models\Maps\EdelsteinTextur_0.xnb
 Content\Assets\Sprites\Startscreen.png
 Content\Assets\Sprites\ButtonExit.png
 Content\Assets\Sprites\ButtonPlay.png

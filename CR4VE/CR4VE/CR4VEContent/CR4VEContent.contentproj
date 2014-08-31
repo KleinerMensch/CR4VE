@@ -383,18 +383,8 @@
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
-    <Compile Include="Assets\Models\Terrain\Box20.FBX">
-      <Name>Box20</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-    <Compile Include="Assets\Models\Terrain\spikes_ground.FBX">
-      <Name>spikes_ground</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-    <Compile Include="Assets\Models\Enemies\spikes_ceiling.FBX">
-      <Name>spikes_ceiling</Name>
+    <Compile Include="Assets\Models\OpheliasSpeer.FBX">
+      <Name>OpheliasSpeer</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
@@ -437,6 +427,25 @@
     </Compile>
     <Compile Include="Assets\Models\Players\Maps\shadow.jpg">
       <Name>shadow</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Models\Players\Maps\HoernerTextur.png">
+      <Name>HoernerTextur</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Models\Maps\EdelsteinTextur.png">
+      <Name>EdelsteinTextur</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\Maps\gold_1024x1024.jpg">
+      <Name>gold_1024x1024</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

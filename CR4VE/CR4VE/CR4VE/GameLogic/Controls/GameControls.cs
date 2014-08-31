@@ -138,12 +138,13 @@ namespace CR4VE.GameLogic.Controls
 
                 return previousHealth > currentHealth;
             }
+            else if (state == Game1.EGameState.Arena)
+            {
+                previousHealth = currentHealth;
+                currentHealth = Arena.opheliaHud.healthLeft;
 
-           // else if (state == Game1.EGameState.Arena)
-            //{
-              //  previousHealth = currentHealth;
-            //    currentHealth = Arena.hud.healthLeft;
-           // }
+                return previousHealth > currentHealth;
+            }
 
             return false;
         }
@@ -162,8 +163,7 @@ namespace CR4VE.GameLogic.Controls
             if (vibrTimer <= 0.0f)
             {
                 GamePad.SetVibration(PlayerIndex.One, 0.0f, 0.0f);
-            }
-          
+            }          
         }
         
         public static void updateSingleplayer(GameTime gameTime, List<Tile> visibles)

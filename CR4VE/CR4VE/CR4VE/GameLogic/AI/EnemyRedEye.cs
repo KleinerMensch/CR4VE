@@ -131,9 +131,8 @@ namespace CR4VE.GameLogic.AI
         public override void Draw()
         {
             this.drawIn2DWorld(new Vector3(0.5f, 0.5f, 0.5f), 0, rotationY, 0);
-
-            foreach (Entity laser in EnemyRedEye.laserList)
-            {       
+            foreach (Entity laser in laserList)
+            {
                 laser.drawIn2DWorld(new Vector3(0.5f, 0.5f, 0.5f), 0, 0, MathHelper.ToRadians(-90) * laser.viewingDirection.X);
             }
         }
