@@ -43,6 +43,8 @@ namespace CR4VE.GameLogic.GameStates
         {
             Game1.EGameState nextState = GameControls.updateGameOver();
 
+            GameControls.updateVibration(gameTime);
+
             return nextState;
         }
         #endregion

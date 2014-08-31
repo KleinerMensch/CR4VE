@@ -22,7 +22,9 @@ namespace CR4VE.GameLogic.GameStates
         Texture2D background;
 
         SpriteFont font;
+        Vector2 fontPos_cr4ve;
         Vector2 fontPos_press;
+        Vector2 fontPos_start;
 
         //Buttons
         //Button creditsButton;
@@ -50,7 +52,9 @@ namespace CR4VE.GameLogic.GameStates
 
             //Font
             font = content.Load<SpriteFont>("Assets/Fonts/GameOverFlo");
-            fontPos_press = new Vector2(Game1.graphics.PreferredBackBufferWidth/2, Game1.graphics.PreferredBackBufferHeight);
+            fontPos_cr4ve = new Vector2(Game1.graphics.PreferredBackBufferWidth / 2 - font.MeasureString("CR4VE").X/2, 0);
+            fontPos_press = new Vector2(Game1.graphics.PreferredBackBufferWidth / 2 - font.MeasureString("PRESS").X / 2, 50);
+            fontPos_start = new Vector2(Game1.graphics.PreferredBackBufferWidth / 2 - font.MeasureString("START").X / 2, 100);
 
             //Buttons
             //exitButton = new Button(content.Load<Texture2D>("Assets/Sprites/ButtonExit"), graphics);
@@ -70,6 +74,8 @@ namespace CR4VE.GameLogic.GameStates
             //get next Gamestate based on player input
             Game1.EGameState nextState = GameControls.updateMainMenu();
 
+            GameControls.updateVibration(gameTime);
+
             return nextState;
         }
         #endregion
@@ -83,7 +89,19 @@ namespace CR4VE.GameLogic.GameStates
             graphics.Clear(Color.Black);
             
             //Fonts
-            spriteBatch.DrawString(font, "PRESS", fontPos_press, Color.White);
+            switch (GameControls.menuPosIndex)
+            {
+                case 0:
+                    {
+                        //spriteBatch.DrawString(font, "CR4VE", fontPos_cr4ve, Color.White);
+                        spriteBatch.DrawString(font, "PRESS", fontPos_press, Color.White);
+                        spriteBatch.DrawString(font, "START", fontPos_start, Color.White);
+                    } break;
+                case 1:
+                    { 
+                        
+                    } break;
+            }
 
             //Buttons
             //exitButton.Draw(spriteBatch);
