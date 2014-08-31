@@ -66,12 +66,15 @@ namespace CR4VE.GameBase.HeadUpDisplay
                 #region active Tilemap1
                 for (int i = 0; i < Singleplayer.tileMaps[ai1].PowerupList.Count; i++)
                 {
-                    if (CharacterOphelia.manaLeft < 3)
+                    if (Singleplayer.tileMaps[ai1].PowerupList[i].type == "mana")
                     {
-                        if (Singleplayer.tileMaps[ai1].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
+                        if (CharacterOphelia.manaLeft < 3)
                         {
-                            Singleplayer.tileMaps[ai1].PowerupList.Remove(Singleplayer.tileMaps[ai1].PowerupList.ElementAt(i));
-                            CharacterOphelia.manaLeft += 1;
+                            if (Singleplayer.tileMaps[ai1].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
+                            {
+                                Singleplayer.tileMaps[ai1].PowerupList.Remove(Singleplayer.tileMaps[ai1].PowerupList.ElementAt(i));
+                                CharacterOphelia.manaLeft += 1;
+                            }
                         }
                     }
                 }
@@ -79,12 +82,58 @@ namespace CR4VE.GameBase.HeadUpDisplay
                 #region active Tilemap2
                 for (int i = 0; i < Singleplayer.tileMaps[ai2].PowerupList.Count; i++)
                 {
-                    if (CharacterOphelia.manaLeft < 3)
+                    if (Singleplayer.tileMaps[ai1].PowerupList[i].type == "mana")
                     {
-                        if (Singleplayer.tileMaps[ai2].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
+                        if (CharacterOphelia.manaLeft < 3)
                         {
-                            Singleplayer.tileMaps[ai2].PowerupList.Remove(Singleplayer.tileMaps[ai2].PowerupList.ElementAt(i));
-                            CharacterOphelia.manaLeft += 1;
+                            if (Singleplayer.tileMaps[ai2].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
+                            {
+                                Singleplayer.tileMaps[ai2].PowerupList.Remove(Singleplayer.tileMaps[ai2].PowerupList.ElementAt(i));
+                                CharacterOphelia.manaLeft += 1;
+                            }
+                        }
+                    }
+                }
+                #endregion
+            }
+        }
+
+        public override void UpdateHealth()
+        {
+            
+            if (Game1.currentState == Game1.EGameState.Singleplayer)
+            {
+                int ai1 = Singleplayer.activeIndex1;
+                int ai2 = Singleplayer.activeIndex2;
+
+                #region active Tilemap1
+                for (int i = 0; i < Singleplayer.tileMaps[ai1].PowerupList.Count; i++)
+                {
+                    if (Singleplayer.tileMaps[ai1].PowerupList[i].type == "health")
+                    {
+                        if (Singleplayer.hud.healthLeft <= Singleplayer.hud.fullHealth)
+                        {
+                            if (Singleplayer.tileMaps[ai1].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
+                            {
+                                Singleplayer.tileMaps[ai1].PowerupList.Remove(Singleplayer.tileMaps[ai1].PowerupList.ElementAt(i));
+                                Singleplayer.hud.healthLeft += 50;
+                            }
+                        }
+                    }
+                }
+                #endregion
+                #region active Tilemap2
+                for (int i = 0; i < Singleplayer.tileMaps[ai2].PowerupList.Count; i++)
+                {
+                    if (Singleplayer.tileMaps[ai2].PowerupList[i].type == "health")
+                    {
+                        if (Singleplayer.hud.healthLeft <= Singleplayer.hud.fullHealth)
+                        {
+                            if (Singleplayer.tileMaps[ai2].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
+                            {
+                                Singleplayer.tileMaps[ai2].PowerupList.Remove(Singleplayer.tileMaps[ai2].PowerupList.ElementAt(i));
+                                Singleplayer.hud.healthLeft += 50;
+                            }
                         }
                     }
                 }

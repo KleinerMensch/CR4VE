@@ -121,7 +121,7 @@ namespace CR4VE.GameBase.Objects.Terrain
                         case 92:
                             {
                                 Vector3 position = start + new Vector3(x * size, -y * size, 0);
-                                BoundingBox boundary = new BoundingBox(position + new Vector3(), position + new Vector3());
+                                BoundingBox boundary = new BoundingBox(position + new Vector3(-3,-3,-3), position + new Vector3(3,3,3));
 
                                 enemies.Add(new EnemyRedEye(position, "EnemyEye", Singleplayer.cont, boundary));
                             } break;
@@ -130,7 +130,7 @@ namespace CR4VE.GameBase.Objects.Terrain
                         case 93:
                             {
                                 Vector3 position = start + new Vector3(x * size, -y * size, 0);
-                                BoundingBox boundary = new BoundingBox(position + new Vector3(), position + new Vector3());
+                                BoundingBox boundary = new BoundingBox(position + new Vector3(-3,-3,-3), position + new Vector3(3,3,3));
 
                                 enemies.Add(new EnemySkull(position, "skull", Singleplayer.cont, boundary));
                             } break;

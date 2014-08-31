@@ -84,6 +84,7 @@ namespace CR4VE.GameLogic.GameStates
 
         public Game1.EGameState Update(GameTime gameTime)
         {
+            Console.WriteLine(opheliaHud.fullHealth);
             GameControls.updateArena(gameTime);
 
             GameControls.updateVibration(gameTime);
@@ -97,6 +98,7 @@ namespace CR4VE.GameLogic.GameStates
             opheliaHud.Update();
             opheliaHud.UpdateLiquidPositionByResolution();
             opheliaHud.UpdateMana();
+            opheliaHud.UpdateHealth();
             seraphinBossHUD.Update();
             seraphinBossHUD.UpdateLiquidPositionByResolution();
             seraphinBossHUD.UpdateMana();
@@ -126,7 +128,7 @@ namespace CR4VE.GameLogic.GameStates
             player.DrawAttacks();
 
             #region Enemies
-            boss.drawInArena(new Vector3(0.75f, 0.75f, 0.75f), 0, MathHelper.ToRadians(90) + blickwinkelBoss, 0);
+            boss.drawInArena(boss.scaleForDrawMethod, 0, MathHelper.ToRadians(90) + blickwinkelBoss, 0);
             boss.DrawAttacks();
 
             //Minions etc.
