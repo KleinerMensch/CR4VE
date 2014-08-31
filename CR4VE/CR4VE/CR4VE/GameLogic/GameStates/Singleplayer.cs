@@ -38,6 +38,8 @@ namespace CR4VE.GameLogic.GameStates
 
         public static List<Tile> visibles;
 
+        public static Tilemap test;
+
         //Player
         public static Character ghost;
         public static Character player;
@@ -45,6 +47,7 @@ namespace CR4VE.GameLogic.GameStates
 
         //reset point if dead
         public static Checkpoint lastCheckpoint;
+        public static Entity ArenaKey;
         
         //Enemies
         public static List<Enemy> enemyList = new List<Enemy>();
@@ -234,7 +237,7 @@ namespace CR4VE.GameLogic.GameStates
             {19,19,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,19},
             { 0, 0, 0, 0, 0,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13, 0, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13, 0, 0, 0, 0, 0, 0, 0, 0,19},
             { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,19},
-            { 0, 0, 0,96, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,19},
+            { 0, 0, 0,96, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,88, 0,19},
             { 0, 0,15,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,19, 0,19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,19, 0,15,15,19},
             { 0,16,18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,19,19, 0, 0, 0, 0, 0, 0, 0,19,19,19, 0, 0,19, 0, 0, 0, 0, 0, 0, 0, 0,15, 0, 0, 0, 0,15, 0, 0, 0, 0, 0,19, 0, 0,16,18,18,19},
             {16,16,18, 0,15,15, 0, 0, 0,15, 0, 0, 0,15, 0, 0, 0, 0, 0,15, 0, 0,15,15, 0, 0, 0, 0, 0, 0, 0, 0, 0,15,15, 0, 0, 0,15,18,15, 0, 0,15,18, 0, 0, 0,15, 0, 0, 0,16,16,18,18,19},
@@ -280,7 +283,7 @@ namespace CR4VE.GameLogic.GameStates
                 Tilemap.Generate(layout6, boxSize, new Vector3(2670, -290, 0)),//2670,-290,0
                 Tilemap.Generate(layout7, boxSize, new Vector3(3180,-410, 0)),//(3180,-420,0)
                 Tilemap.Generate(layout8, boxSize, new Vector3(3760,-440, 0)),//(3660,-590,0)
-              //  Tilemap.Generate(layout10, boxSize, new Vector3(3110,-560,0)),
+                //Tilemap.Generate(layout9, boxSize, new Vector3(0,0,10)),
             };
 
             //indices of active Tilemaps
@@ -288,6 +291,9 @@ namespace CR4VE.GameLogic.GameStates
             activeTileMap2 = tileMaps[activeIndex2];
 
             visibles = new List<Tile>();
+
+            //DEBUG
+            test = Tilemap.Generate(layout9, boxSize, new Vector3(0, 0, -10));
             #endregion            
 
             //Camera
@@ -404,7 +410,10 @@ namespace CR4VE.GameLogic.GameStates
             GameControls.updateVibration(gameTime);
 
             //notwendiger Rueckgabewert
-            return Game1.EGameState.Singleplayer;
+            if (player.Boundary.Intersects(ArenaKey.Boundary))
+                return Game1.EGameState.Arena;
+            else
+                return Game1.EGameState.Singleplayer;
         }
         #endregion
 
@@ -431,6 +440,9 @@ namespace CR4VE.GameLogic.GameStates
             #endregion
 
             #region 3D Objects
+            //DEBUG
+            test.Draw(test.TileList);
+
             //Terrain (includes Powerups, Checkpoints)
             tileMaps[activeIndex1].Draw(visibles);
             tileMaps[activeIndex2].Draw(visibles);
@@ -443,7 +455,6 @@ namespace CR4VE.GameLogic.GameStates
                 player.drawIn2DWorld(new Vector3(0.02f, 0.02f, 0.02f), 0, MathHelper.ToRadians(90) * player.viewingDirection.X, 0);
                 player.DrawAttacks();
             }
-            opheliaSpeer.drawIn2DWorld(new Vector3(0.02f, 0.02f, 0.02f), 0, 0, 0);
 
             #region Enemies
             foreach (Enemy e in tileMaps[activeIndex1].EnemyList)
@@ -455,6 +466,8 @@ namespace CR4VE.GameLogic.GameStates
                 e.Draw();
             }
             #endregion
+
+            ArenaKey.drawIn2DWorld(new Vector3(0.03f, 0.03f, 0.03f), 0, 0, 0);
             #endregion
 
             #region HUD
