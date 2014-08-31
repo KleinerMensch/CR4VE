@@ -440,7 +440,7 @@ namespace CR4VE.GameLogic.GameStates
             tileMaps[activeIndex2].Draw(visibles);
 
             //Player or Ghost
-            if (GameControls.isGhost)
+            if (GameControls.isGhost && GameControls.moveVecGhost != Vector3.Zero)
                 ghost.drawIn2DWorld(new Vector3(0.05f, 0.05f, 0.05f), 0, 0, 0);
             else
             {

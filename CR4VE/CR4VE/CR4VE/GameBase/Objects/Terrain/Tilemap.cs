@@ -92,7 +92,7 @@ namespace CR4VE.GameBase.Objects.Terrain
                                 if (number == 4 || number == 8 || number == 14)
                                 {
                                     damage = Tile.waterDmg;
-                                    boundary = new BoundingBox(position + new Vector3(-size / 2, -size / 2, -size / 2), position + new Vector3(size / 2, 0, size / 2));
+                                    boundary = new BoundingBox(position + new Vector3(-size / 2, -size / 2, -size / 2), position + new Vector3(size / 2, -size/2 + 1, size / 2));
                                 }
                                 else if (number == 16)
                                     damage = Tile.lethalDmg;

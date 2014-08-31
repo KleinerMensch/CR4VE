@@ -41,7 +41,7 @@ namespace CR4VE.GameLogic.Controls
         //(ghost)
         private static readonly float ghostDelay = 0.01f;
         private static readonly Vector3 checkPointFall = new Vector3(0, 10f, 0);
-        private static Vector3 moveVecGhost = Vector3.Zero;
+        public static Vector3 moveVecGhost = Vector3.Zero;
         public static bool isGhost = false;
         
         //Sprungparameter
