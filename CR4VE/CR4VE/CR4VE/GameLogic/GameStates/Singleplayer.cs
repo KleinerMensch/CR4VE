@@ -41,6 +41,7 @@ namespace CR4VE.GameLogic.GameStates
         //Player
         public static Character ghost;
         public static Character player;
+        Entity opheliaSpeer;
 
         //reset point if dead
         public static Checkpoint lastCheckpoint;
@@ -70,7 +71,7 @@ namespace CR4VE.GameLogic.GameStates
         
            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,96, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0},
-           {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 3, 3, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0},
+           {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,92, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 3, 3, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0},
            {1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0,98, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 3, 0, 0, 3, 3, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 3, 4, 4, 3, 3, 3, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
            {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 3, 4, 4, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0},
@@ -301,24 +302,18 @@ namespace CR4VE.GameLogic.GameStates
             //Player
             ghost = new Character(Vector3.Zero, "skull", content);
             player = new CharacterOphelia(new Vector3(0,0,5), "Ophelia", content, new BoundingBox(new Vector3(-2.5f, -9f, -2.5f), new Vector3(2.5f, 9f, 2.5f)));
-            
+
+            opheliaSpeer = new Entity(new Vector3(0, 0, 0), "OpheliasSpeer", content);
+
             //Checkpoints (default = Startposition)
             lastCheckpoint = new Checkpoint(Vector3.Zero, "checkpoint_hell", content);
             
             #region Loading AI
             EnemyRedEye redEye;
             EnemySkull skull;
-            //EnemySpinningCrystal spinningCrystal;
-            //EnemyShootingCrystal shootingCrystal;
 
             redEye = new EnemyRedEye(new Vector3(80, 0, 0),"EnemyEye",content,new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
             skull = new EnemySkull(new Vector3(400, 0, 0), "skull", content, new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
-            //spinningCrystal = new EnemySpinningCrystal(new Vector3(200, 0, 0), "enemySpinningNoAnim", content,new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
-            //shootingCrystal = new EnemyShootingCrystal(new Vector3(500, 0, 0), "enemyShootingNoAnim", content, new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
-
-            //fill list with enemies
-            enemyList.Add(redEye);
-            enemyList.Add(skull);
             #endregion
 
             //HUD
@@ -341,6 +336,7 @@ namespace CR4VE.GameLogic.GameStates
             hud.Update();
             
             hud.UpdateMana();
+
             hud.UpdateLiquidPositionByResolution();
             
             if (hud.isDead)
@@ -431,7 +427,7 @@ namespace CR4VE.GameLogic.GameStates
             #endregion
 
             #region 3D Objects
-            //Terrain (includes Powerups and Checkpoints)
+            //Terrain (includes Powerups, Checkpoints)
             tileMaps[activeIndex1].Draw(visibles);
             tileMaps[activeIndex2].Draw(visibles);
 
@@ -443,8 +439,9 @@ namespace CR4VE.GameLogic.GameStates
                 player.drawIn2DWorld(new Vector3(0.02f, 0.02f, 0.02f), 0, MathHelper.ToRadians(90) * player.viewingDirection.X, 0);
                 player.DrawAttacks();
             }
+            opheliaSpeer.drawIn2DWorld(new Vector3(0.02f, 0.02f, 0.02f), 0, 0, 0);
 
-            #region Enemies and Minions
+            #region Enemies
             foreach (Enemy e in tileMaps[activeIndex1].EnemyList)
             {
                 e.Draw();
@@ -452,16 +449,6 @@ namespace CR4VE.GameLogic.GameStates
             foreach (Enemy e in tileMaps[activeIndex2].EnemyList)
             {
                 e.Draw();
-            }
-
-            //Minions etc.
-            foreach (Entity laser in EnemyRedEye.laserList)
-            {
-                laser.drawIn2DWorld(new Vector3(0.5f, 0.5f, 0.5f), 0, 0, MathHelper.ToRadians(-90) * laser.viewingDirection.X);
-            }
-            foreach (Entity crystal in CharacterFractus.crystalList)
-            {
-                crystal.drawIn2DWorld(new Vector3(0.1f, 0.1f, 0.1f), 0, 0, 0);
             }
             #endregion
             #endregion

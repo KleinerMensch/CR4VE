@@ -12,10 +12,13 @@ namespace CR4VE.GameLogic.AI
     class EnemySkull : Enemy
     {
         #region Attributes
+        Vector3 startPosition;
         Random random = new Random();
         float moveSpeed = -0.5f;
+
         float rotationX = 0.4f;
         float rotationY = MathHelper.ToRadians(-90);
+        bool checkedStartpositionOnce = false;
         #endregion
 
         #region Properties
@@ -31,19 +34,23 @@ namespace CR4VE.GameLogic.AI
         #endregion
 
         #region inherited Constructors
-        public EnemySkull():base() { }
+        public EnemySkull() : base() { }
         public EnemySkull(Vector3 pos, String modelName, ContentManager cm) : base(pos, modelName, cm) { }
         public EnemySkull(Vector3 pos, String modelName, ContentManager cm, BoundingBox bound) : base(pos, modelName, cm, bound) { }
         #endregion
 
         public override void UpdateSingleplayer(GameTime gameTime)
         {
-            //skull rolling over the floor
-            //this.position.X += moveSpeed;
+            if (!checkedStartpositionOnce)
+            {
+                startPosition = this.Position;
+                checkedStartpositionOnce = true;
+            }
+            //Fake Rotationsanimation
             rotationX -= 0.1f;
 
             Vector3 playerPos = Singleplayer.player.position;
-            Vector3 direction = this.position - playerPos; // für richtungsvektor
+            Vector3 direction = this.position - playerPos; // für Richtungsvektor
             float distance = direction.Length();
 
             if (distance < 50)
@@ -52,21 +59,14 @@ namespace CR4VE.GameLogic.AI
                 direction = moveSpeed * direction;
                 this.move(direction);
             }
-
-            else if (this.position.X == 350 || this.position.X == 450)
+            else
             {
-                moveSpeed *= -1;
-                rotationX *= -1;
-                rotationY += MathHelper.ToRadians(180);
-            }
-
-            else if (this.position.X < 350)
-            {
-                this.position.X++;
+                //do nothing
             }
 
             if (Singleplayer.player.boundary.Intersects(this.boundary))
             {
+                Console.WriteLine("intersection");
                 Singleplayer.hud.healthLeft -= (int)(Singleplayer.hud.fullHealth * 0.01);
             }
         }

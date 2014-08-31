@@ -62,7 +62,6 @@ namespace CR4VE.GameLogic.AI
                 }
             }
 
-
             if (Singleplayer.player.boundary.Intersects(this.boundary))
             {
                 Singleplayer.hud.healthLeft -= (int)(Singleplayer.hud.fullHealth * 0.01);

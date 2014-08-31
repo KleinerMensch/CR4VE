@@ -21,9 +21,10 @@ namespace CR4VE.GameLogic.GameStates
 
         Texture2D background;
 
+        SpriteFont font;
+        Vector2 fontPos_press;
+
         //Buttons
-        Button playButton;
-        Button exitButton;
         //Button creditsButton;
 
         //Entities
@@ -46,6 +47,10 @@ namespace CR4VE.GameLogic.GameStates
 
             //Sprites
             background = content.Load<Texture2D>("Assets/Sprites/doge");
+
+            //Font
+            font = content.Load<SpriteFont>("Assets/Fonts/GameOverFlo");
+            fontPos_press = new Vector2(Game1.graphics.PreferredBackBufferWidth/2, Game1.graphics.PreferredBackBufferHeight);
 
             //Buttons
             //exitButton = new Button(content.Load<Texture2D>("Assets/Sprites/ButtonExit"), graphics);
@@ -75,8 +80,12 @@ namespace CR4VE.GameLogic.GameStates
             #region Sprites (background)
             spriteBatch.Begin();
 
-            //spriteBatch.Draw(background, new Vector2(0,0), CameraMenu.BackgroundRectangle, Color.White);
+            graphics.Clear(Color.Black);
             
+            //Fonts
+            spriteBatch.DrawString(font, "PRESS", fontPos_press, Color.White);
+
+            //Buttons
             //exitButton.Draw(spriteBatch);
             //creditsButton.Draw(spriteBatch);
 
