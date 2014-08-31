@@ -44,6 +44,7 @@ namespace CR4VE.GameLogic.GameStates
 
         //reset point if dead
         public static Checkpoint lastCheckpoint;
+        public static Entity ArenaKey;
         
         //Enemies
         public static List<Enemy> enemyList = new List<Enemy>();
@@ -235,7 +236,7 @@ namespace CR4VE.GameLogic.GameStates
             {19,19,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,19},
             { 0, 0, 0, 0, 0,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13, 0, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13, 0, 0, 0, 0, 0, 0, 0, 0,19},
             { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,19},
-            { 0, 0, 0,96, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,19},
+            { 0, 0, 0,96, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,88, 0,19},
             { 0, 0,15,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,92, 0, 0, 0, 0, 0, 0, 0, 0,19,98,19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,97, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,19, 0,15,15,19},
             { 0,16,18, 0, 0, 0, 0, 0, 0,97, 0, 0, 0, 0, 0, 0,19,19, 0, 0, 0, 0, 0, 0, 0,19,19,19, 0, 0,19, 0, 0, 0, 0, 0, 0, 0, 0,15, 0, 0, 0,92,15, 0, 0, 0, 0, 0,19, 0, 0,16,18,18,19},
             {16,16,18, 0,15,15, 0, 0, 0,15, 0, 0, 0,15, 0, 0, 0, 0, 0,15, 0, 0,15,15, 0, 0, 0, 0, 0, 0, 0, 0, 0,15,15, 0, 0, 0,15,18,15, 0, 0,15,18, 0, 0, 0,15, 0, 0, 0,16,16,18,18,19},
@@ -281,7 +282,7 @@ namespace CR4VE.GameLogic.GameStates
                 Tilemap.Generate(layout6, boxSize, new Vector3(2670, -290, 0)),//2670,-290,0
                 Tilemap.Generate(layout7, boxSize, new Vector3(3180,-410, 0)),//(3180,-420,0)
                 Tilemap.Generate(layout8, boxSize, new Vector3(3760,-440, 0)),//(3660,-590,0)
-                Tilemap.Generate(layout9, boxSize, new Vector3(0,0,1)),
+                //Tilemap.Generate(layout9, boxSize, new Vector3(-80,0,-10)),
             };
 
             //indices of active Tilemaps
@@ -298,7 +299,7 @@ namespace CR4VE.GameLogic.GameStates
             SaveGame.Reset();
 
             //Textures
-          //  background = content.Load<Texture2D>("Assets/Sprites/stone");
+            //background = content.Load<Texture2D>("Assets/Sprites/stone");
 
             //Player
             ghost = new Character(Vector3.Zero, "skull", content);
@@ -404,7 +405,10 @@ namespace CR4VE.GameLogic.GameStates
             GameControls.updateVibration(gameTime);
 
             //notwendiger Rueckgabewert
-            return Game1.EGameState.Singleplayer;
+            if (player.Boundary.Intersects(ArenaKey.Boundary))
+                return Game1.EGameState.Arena;
+            else
+                return Game1.EGameState.Singleplayer;
         }
         #endregion
 
@@ -413,7 +417,7 @@ namespace CR4VE.GameLogic.GameStates
         {
             #region Background
             spriteBatch.Begin();
-
+            graphics.GraphicsDevice.Clear(Color.Gray);
             //width and height for spriteBatch rectangle needed to draw background texture
             Vector2 drawPos = new Vector2(Camera2D.WorldRectangle.X, Camera2D.WorldRectangle.Y);
             int drawRecWidth = graphics.PreferredBackBufferWidth;
@@ -454,6 +458,9 @@ namespace CR4VE.GameLogic.GameStates
                 e.Draw();
             }
             #endregion
+
+            if (ArenaKey.Position.X - player.Position.X < 100)
+                ArenaKey.drawIn2DWorld(new Vector3(0.03f, 0.03f, 0.03f), 0, 0, 0);
             #endregion
 
             #region HUD

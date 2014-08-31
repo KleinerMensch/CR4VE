@@ -104,6 +104,16 @@ namespace CR4VE.GameBase.Objects.Terrain
                         //do nothing
                         case 0:
                             break;
+
+                        //Arenakey
+                        case 88:
+                            {
+                                Vector3 position = start + new Vector3(x * size, -y * size, 0);
+                                BoundingBox boundary = new BoundingBox(position + new Vector3(-size / 2, -size / 2, -size / 2), position + new Vector3(size / 2, size / 2, size / 2));
+                                
+                                Singleplayer.ArenaKey = new Entity(position, "OpheliasSpeer", Singleplayer.cont, boundary);
+                            }
+                            break;
                         #endregion
 
                         #region Enemies
@@ -161,7 +171,7 @@ namespace CR4VE.GameBase.Objects.Terrain
                                 BoundingBox healthBound = new BoundingBox(position + new Vector3(-3, -3, -3), position + new Vector3(3, 3, 3));
 
                                 //spaeter noch nach Leveltyp differenzieren
-                                powerups.Add(new Powerup(position, "powerup_hell_health", Singleplayer.cont, healthBound, "health", 50));
+                                powerups.Add(new Powerup(position, "powerup_hell_health", Singleplayer.cont, healthBound, "health", 100));
                             } break;
 
                         //Mana Powerup

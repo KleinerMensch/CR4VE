@@ -528,7 +528,7 @@ namespace CR4VE.GameLogic.Controls
                         break;
 
                     //Options
-                    case 3:
+                    /*case 3:
                         if ((isClicked(Keys.Enter) || isClicked(Buttons.A)) && !isMoving)
                         {
                             menuPosIndex = (int)MathHelper.Clamp((float)(menuPosIndex + 1), 0f, 4f);
@@ -537,7 +537,7 @@ namespace CR4VE.GameLogic.Controls
 
                             moveVecSword = menuPositions[menuPosIndex] - MainMenu.sword.position;
                         }
-                        break;
+                        break;*/
 
                     //Options Details
                     case 4:

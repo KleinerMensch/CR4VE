@@ -115,8 +115,15 @@ namespace CR4VE.GameBase.HeadUpDisplay
                         {
                             if (Singleplayer.tileMaps[ai1].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
                             {
-                                Singleplayer.tileMaps[ai1].PowerupList.Remove(Singleplayer.tileMaps[ai1].PowerupList.ElementAt(i));
-                                Singleplayer.hud.healthLeft += 50;
+                                if (Singleplayer.hud.healthLeft < Singleplayer.hud.fullHealth)
+                                {
+                                    Singleplayer.hud.healthLeft += Singleplayer.tileMaps[ai1].PowerupList[i].amount;
+
+                                    if (Singleplayer.hud.fullHealth < Singleplayer.hud.healthLeft)
+                                        Singleplayer.hud.healthLeft = Singleplayer.hud.fullHealth;
+
+                                    Singleplayer.tileMaps[ai1].PowerupList.Remove(Singleplayer.tileMaps[ai1].PowerupList.ElementAt(i));
+                                }
                             }
                         }
                     }
@@ -131,8 +138,15 @@ namespace CR4VE.GameBase.HeadUpDisplay
                         {
                             if (Singleplayer.tileMaps[ai2].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
                             {
-                                Singleplayer.tileMaps[ai2].PowerupList.Remove(Singleplayer.tileMaps[ai2].PowerupList.ElementAt(i));
-                                Singleplayer.hud.healthLeft += 50;
+                                if (Singleplayer.hud.healthLeft < Singleplayer.hud.fullHealth)
+                                {
+                                    Singleplayer.hud.healthLeft += Singleplayer.tileMaps[ai2].PowerupList[i].amount;
+
+                                    if (Singleplayer.hud.fullHealth < Singleplayer.hud.healthLeft)
+                                        Singleplayer.hud.healthLeft = Singleplayer.hud.fullHealth;
+
+                                    Singleplayer.tileMaps[ai2].PowerupList.Remove(Singleplayer.tileMaps[ai2].PowerupList.ElementAt(i));
+                                }
                             }
                         }
                     }

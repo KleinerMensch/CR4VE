@@ -12,7 +12,7 @@ namespace CR4VE.GameBase.Objects
     {
         #region Attributes
         public String type;
-        int amount;
+        public int amount;
 
         //Animationsparameter
         public readonly float offsetHeight = 0.03f;
