@@ -88,6 +88,7 @@ namespace CR4VE.GameBase.HeadUpDisplay
 
         public virtual void Initialize(ContentManager content) { }
         public virtual void UpdateMana() { }
+        public virtual void UpdateHealth() { }
         public virtual void UpdateLiquidPositionByResolution() { }
         public virtual void Draw(SpriteBatch spriteBatch) { }
         #endregion

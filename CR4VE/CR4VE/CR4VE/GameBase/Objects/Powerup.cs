@@ -11,7 +11,7 @@ namespace CR4VE.GameBase.Objects
     public class Powerup : Entity
     {
         #region Attributes
-        String type;
+        public String type;
         int amount;
 
         //Animationsparameter

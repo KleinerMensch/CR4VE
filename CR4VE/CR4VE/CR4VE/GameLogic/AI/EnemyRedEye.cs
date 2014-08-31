@@ -18,6 +18,9 @@ namespace CR4VE.GameLogic.AI
         float rotationY = MathHelper.ToRadians(-90);
         float spawn = 0;
         public new Vector3 viewingDirection = new Vector3(-1, 0, 0);
+        public bool checkedStartPositionOnce = false;
+        public Vector3 startPosition;
+        public float eyeRange = 20;
         #endregion
 
         #region Properties
@@ -40,9 +43,15 @@ namespace CR4VE.GameLogic.AI
 
         public override void UpdateSingleplayer(GameTime gameTime)
         {
+            if (!checkedStartPositionOnce)
+            {
+                startPosition = this.Position;
+                checkedStartPositionOnce = true;
+            }
+
             spawn += (float)gameTime.ElapsedGameTime.TotalSeconds;
             this.move(new Vector3(moveSpeed, 0, 0));
-            if (this.position.X < 50 || this.position.X > 105)
+            if (this.position.X < startPosition.X - eyeRange || this.position.X > startPosition.X + eyeRange)
             {
                 moveSpeed *= -1;
                 viewingDirection.X *= -1;

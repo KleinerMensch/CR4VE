@@ -96,6 +96,28 @@ namespace CR4VE.GameLogic.Characters
                                 }
                             }
                             #endregion
+                            #region enemyList2
+                            foreach (Enemy enemy in Singleplayer.tileMaps[Singleplayer.activeIndex2].EnemyList)
+                            {
+                                if (enemyHit)
+                                {
+                                    launchedRanged = false;
+                                    attackList.Remove(doppelgaenger);
+                                }
+                                else
+                                {
+                                    foreach (Entity opheliaDoppelgaenger in attackList)
+                                    {
+                                        if (opheliaDoppelgaenger.boundary.Intersects(enemy.boundary))
+                                        {
+                                            enemy.hp -= 1;
+                                            enemyHit = true;
+                                            Console.WriteLine("Ophelia hit enemy by RangedAttack");
+                                        }
+                                    }
+                                }
+                            }
+                            #endregion
                         }
                     }
                     else
@@ -184,12 +206,13 @@ namespace CR4VE.GameLogic.Characters
             if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
             {
                 Vector3 speerPosition = Singleplayer.player.Position + viewingDirection * offset;
-                speer = new Entity(speerPosition, "5x5x5Box1", Singleplayer.cont);
-                speer.boundary = new BoundingBox(this.position + new Vector3(-2.5f, -2.5f, -2.5f) + viewingDirection * offset, this.position + new Vector3(2.5f, 2.5f, 2.5f) + viewingDirection * offset);
+                speer = new Entity(speerPosition, "OpheliasSpeer", Singleplayer.cont);
+                speer.boundary = new BoundingBox(this.position + new Vector3(-3f, -2.5f, -2.5f) + viewingDirection * offset, this.position + new Vector3(3f, 2.5f, 2.5f) + viewingDirection * offset);
                 attackList.Add(speer);
 
                 //Kollision mit Attacke
-                foreach (Enemy enemy in Singleplayer.enemyList)
+                #region enemyList1
+                foreach (Enemy enemy in Singleplayer.tileMaps[Singleplayer.activeIndex1].EnemyList)
                 {
                     foreach (Entity opheliaSpeer in attackList)
                     {
@@ -200,6 +223,20 @@ namespace CR4VE.GameLogic.Characters
                         }
                     }
                 }
+                #endregion
+                #region enemyList2
+                foreach (Enemy enemy in Singleplayer.tileMaps[Singleplayer.activeIndex2].EnemyList)
+                {
+                    foreach (Entity opheliaSpeer in attackList)
+                    {
+                        if (opheliaSpeer.boundary.Intersects(enemy.boundary))
+                        {
+                            enemy.hp -= 1;
+                            Console.WriteLine("Ophelia hit enemy by MeleeAttack");
+                        }
+                    }
+                }
+                #endregion
                 attackList.Remove(speer);
             }
             #endregion
@@ -268,7 +305,8 @@ namespace CR4VE.GameLogic.Characters
                     holyThunder.boundary = new BoundingBox(this.position + new Vector3(-20, -3, -20), this.position + new Vector3(20, 3, 20));
                     attackList.Add(holyThunder);
 
-                    foreach (Enemy enemy in Singleplayer.enemyList)
+                    #region enemyList1
+                    foreach (Enemy enemy in Singleplayer.tileMaps[Singleplayer.activeIndex1].EnemyList)
                     {
                         if (holyThunder.boundary.Intersects(enemy.boundary))
                         {
@@ -277,6 +315,18 @@ namespace CR4VE.GameLogic.Characters
                         }
                     }
                     attackList.Remove(holyThunder);
+                    #endregion
+                    #region enemyList2
+                    foreach (Enemy enemy in Singleplayer.tileMaps[Singleplayer.activeIndex2].EnemyList)
+                    {
+                        if (holyThunder.boundary.Intersects(enemy.boundary))
+                        {
+                            enemy.hp -= 1;
+                            Console.WriteLine("Ophelia hit enemy by AoE");
+                        }
+                    }
+                    attackList.Remove(holyThunder);
+                    #endregion
                 }
                 #endregion
                 #region Arena
@@ -303,7 +353,7 @@ namespace CR4VE.GameLogic.Characters
             if (launchedMelee)
             {
                 if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
-                    speer.drawIn2DWorld(new Vector3(1, 1, 1), 0, 0, 0);
+                    speer.drawIn2DWorld(new Vector3(0.02f, 0.02f, 0.02f), 0, 0, MathHelper.ToRadians(-90) * Singleplayer.player.viewingDirection.X);
                 if (Game1.currentState.Equals(Game1.EGameState.Arena))
                     speer.drawInArena(new Vector3(1, 1, 1), 0, 0, 0);
                 launchedMelee = false;

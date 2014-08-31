@@ -41,7 +41,6 @@ namespace CR4VE.GameLogic.GameStates
         //Player
         public static Character ghost;
         public static Character player;
-        Entity opheliaSpeer;
 
         //reset point if dead
         public static Checkpoint lastCheckpoint;
@@ -305,8 +304,6 @@ namespace CR4VE.GameLogic.GameStates
             ghost = new Character(Vector3.Zero, "skull", content);
             player = new CharacterOphelia(new Vector3(0,0,5), "Ophelia", content, new BoundingBox(new Vector3(-2.5f, -9f, -2.5f), new Vector3(2.5f, 9f, 2.5f)));
 
-            opheliaSpeer = new Entity(new Vector3(0, 0, 0), "OpheliasSpeer", content);
-
             //Checkpoints (default = Startposition)
             lastCheckpoint = new Checkpoint(Vector3.Zero, "checkpoint_hell", content);
             
@@ -338,6 +335,7 @@ namespace CR4VE.GameLogic.GameStates
             hud.Update();
             
             hud.UpdateMana();
+            hud.UpdateHealth();
 
             hud.UpdateLiquidPositionByResolution();
             
@@ -445,7 +443,6 @@ namespace CR4VE.GameLogic.GameStates
                 player.drawIn2DWorld(new Vector3(0.02f, 0.02f, 0.02f), 0, MathHelper.ToRadians(90) * player.viewingDirection.X, 0);
                 player.DrawAttacks();
             }
-            opheliaSpeer.drawIn2DWorld(new Vector3(0.02f, 0.02f, 0.02f), 0, 0, 0);
 
             #region Enemies
             foreach (Enemy e in tileMaps[activeIndex1].EnemyList)
