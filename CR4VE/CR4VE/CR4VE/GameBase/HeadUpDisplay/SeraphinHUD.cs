@@ -40,7 +40,6 @@ namespace CR4VE.GameBase.HeadUpDisplay
 
         public override void UpdateMana()
         {
-            Console.WriteLine(this.trialsLeft);
             if (Game1.currentState == Game1.EGameState.Singleplayer)
             {
                 int ai1 = Singleplayer.activeIndex1;
