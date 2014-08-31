@@ -25,7 +25,7 @@ namespace CR4VE.GameLogic.GameStates
 
         //Terrain
         static Entity terrain;
-        static Entity lava;
+        public static Entity lava;
 
         //Arena Boundaries
         public static readonly BoundingBox arenaFloorBox = new BoundingBox(new Vector3(-54, -25, -65), new Vector3(63, -15, 53));
@@ -34,6 +34,8 @@ namespace CR4VE.GameLogic.GameStates
         //moveable Entities
         public static Character player;
         public static BossHell boss;
+
+        public static readonly Vector3 startPos = new Vector3(0, -12.5f, 0);
 
         public static float blickWinkel;
         public static float blickwinkelBoss;
@@ -62,7 +64,7 @@ namespace CR4VE.GameLogic.GameStates
             lava = new Entity(new Vector3(0, -110, -30), "Terrain/lavafloor", content);
 
             //moveable Entities
-            player = new CharacterOphelia(new Vector3(0, -12.5f, 0), "Ophelia", content);
+            player = new CharacterOphelia(startPos, "Ophelia", content);
             BoundingBox playerBound = new BoundingBox(player.Position + new Vector3(-2.5f, -9, -2.5f), player.Position + new Vector3(2.5f, 9, 2.5f));
             player.Boundary = playerBound;
 
@@ -113,6 +115,7 @@ namespace CR4VE.GameLogic.GameStates
             //Terrain
             lava.drawInArena(new Vector3(1, 1, 1), 0, 0, 0);
 
+            //DEBUG boundings
             //arenaFloor.drawInArenaWithoutBones(new Vector3(12, 2, 12), 0, 0, 0);
             //arenaBoundSphere.drawInArenaWithoutBones(new Vector3(24, 24, 24), 0, 0, 0);
             

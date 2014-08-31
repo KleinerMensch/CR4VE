@@ -376,6 +376,15 @@ namespace CR4VE.GameLogic.Controls
                 fallVecPlayer *= 0.98f;
 
                 Arena.player.move(new Vector3(fallVecPlayer.X, (float) -deltaTime * G/4, fallVecPlayer.Z));
+
+                if (Arena.player.Position.Y < -100)
+                {
+                    ringOut = false;
+
+                    Arena.opheliaHud.healthLeft = 0;
+
+                    Arena.player.moveTo(Arena.startPos);                    
+                }
             }
             else
             {
@@ -514,8 +523,8 @@ namespace CR4VE.GameLogic.Controls
 
                     //Multiplayer
                     case 2:
-                        if ((isClicked(Keys.Enter) || isClicked(Buttons.A)) && !isMoving)
-                            return Game1.EGameState.Arena;
+                        /*if ((isClicked(Keys.Enter) || isClicked(Buttons.A)) && !isMoving)
+                            return Game1.EGameState.Arena;*/
                         break;
 
                     //Options
