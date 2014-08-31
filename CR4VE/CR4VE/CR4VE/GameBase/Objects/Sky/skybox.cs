@@ -5,18 +5,35 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.GamerServices;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
-using CR4VE.GameBase.Camera;
-using CR4VE.GameBase.Objects;
-using CR4VE.GameLogic.Controls;
-using CR4VE.GameLogic.GameStates;
 
 namespace CR4VE.GameBase.Objects.Sky
 {
-    class skybox : Singleplayer
+    public class Skybox
     {
-    }
-}
+      
+        private Model skyBox;
+ 
+      
+        private TextureCube skyBoxTexture;
+ 
+      
+        private Effect skyBoxEffect;
+ 
+       
+       // private float size = 50f;
+ 
+        public Skybox(string skyboxTexture, ContentManager Content)
+        {
+     
+        }
+ 
+   
+        public void Draw(Matrix view, Matrix projection, Vector3 cameraPosition)
+        {
+           
+        
+                    
+                }
+            }
+        }
+   
