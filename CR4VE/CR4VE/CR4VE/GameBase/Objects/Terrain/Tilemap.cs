@@ -267,13 +267,13 @@ namespace CR4VE.GameBase.Objects.Terrain
             if (deltaXRight > switchRange)
             {
                 Singleplayer.activeIndex1 = (int) MathHelper.Clamp(Singleplayer.activeIndex1 + 1, 0, Singleplayer.tileMaps.Length - 2);
-                Singleplayer.activeIndex2 = (int) MathHelper.Clamp(Singleplayer.activeIndex2 + 1, 1, Singleplayer.tileMaps.Length-1);
+                Singleplayer.activeIndex2 = (int) MathHelper.Clamp(Singleplayer.activeIndex2 + 1, 1, Singleplayer.tileMaps.Length - 1);
             }
 
             if (deltaXLeft < switchRange)
             {
                 Singleplayer.activeIndex1 = (int) MathHelper.Clamp(Singleplayer.activeIndex1 - 1, 0, Singleplayer.tileMaps.Length - 2);
-                Singleplayer.activeIndex2 = (int) MathHelper.Clamp(Singleplayer.activeIndex2 - 1, 1, Singleplayer.tileMaps.Length-1);
+                Singleplayer.activeIndex2 = (int) MathHelper.Clamp(Singleplayer.activeIndex2 - 1, 1, Singleplayer.tileMaps.Length - 1);
             }
         }
 
