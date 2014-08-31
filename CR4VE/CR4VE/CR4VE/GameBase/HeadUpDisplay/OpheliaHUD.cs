@@ -82,7 +82,7 @@ namespace CR4VE.GameBase.HeadUpDisplay
                 #region active Tilemap2
                 for (int i = 0; i < Singleplayer.tileMaps[ai2].PowerupList.Count; i++)
                 {
-                    if (Singleplayer.tileMaps[ai1].PowerupList[i].type == "mana")
+                    if (Singleplayer.tileMaps[ai2].PowerupList[i].type == "mana")
                     {
                         if (CharacterOphelia.manaLeft < 3)
                         {
