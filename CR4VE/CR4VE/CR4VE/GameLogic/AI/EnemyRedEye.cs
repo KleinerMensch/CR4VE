@@ -12,15 +12,17 @@ namespace CR4VE.GameLogic.AI
     class EnemyRedEye : Enemy
     {
         #region Attributes
+        public new Vector3 viewingDirection = new Vector3(-1, 0, 0);
+        public Vector3 startPosition;
         public static List<Entity> laserList = new List<Entity>();
+
         Random random = new Random();
+
+        public bool checkedStartPositionOnce = false;
+        public float eyeRange = 20;
         float moveSpeed = -0.5f;
         float rotationY = MathHelper.ToRadians(-90);
         float spawn = 0;
-        public new Vector3 viewingDirection = new Vector3(-1, 0, 0);
-        public bool checkedStartPositionOnce = false;
-        public Vector3 startPosition;
-        public float eyeRange = 20;
         #endregion
 
         #region Properties
@@ -50,6 +52,7 @@ namespace CR4VE.GameLogic.AI
             }
 
             spawn += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
             this.move(new Vector3(moveSpeed, 0, 0));
             if (this.position.X < startPosition.X - eyeRange || this.position.X > startPosition.X + eyeRange)
             {
@@ -59,24 +62,12 @@ namespace CR4VE.GameLogic.AI
             }
 
             //updating laserList
-            this.LoadEnemies(this.position, Singleplayer.cont);
+            this.LoadLaser(this.position, Singleplayer.cont);
 
             if (Singleplayer.player.boundary.Intersects(this.boundary))
             {
                 Singleplayer.hud.healthLeft -= (int)(Singleplayer.hud.fullHealth * 0.01);
             }
-
-            #region Collision with Laser
-            foreach (Entity laser in laserList)
-            {
-                laser.boundary = new BoundingBox(laser.position + new Vector3(-2, -2, -2), laser.position + new Vector3(2, 2, 2));
-                laser.position.X += laser.viewingDirection.X;
-                if (Singleplayer.player.boundary.Intersects(laser.boundary))
-                {
-                    Singleplayer.hud.healthLeft -= (int)(Singleplayer.hud.fullHealth * 0.01);
-                }
-            }
-            #endregion
         }
 
         public override void UpdateArena(GameTime gameTime)
@@ -91,7 +82,7 @@ namespace CR4VE.GameLogic.AI
             }
 
             //updating laserList
-            this.LoadEnemies(this.position, Arena.cont);
+            this.LoadLaser(this.position, Arena.cont);
 
   
             if (Arena.player.boundary.Intersects(this.boundary))
@@ -112,11 +103,11 @@ namespace CR4VE.GameLogic.AI
             #endregion
         }
 
-        #region Laser vom Auge
-        //bisher nur einzelne Nadeln gespawnt
-        public void LoadEnemies(Vector3 EyePosition, ContentManager content)
+        public void LoadLaser(Vector3 EyePosition, ContentManager content)
         {
-            // spawning laser every second
+            #region spawning laser
+            //spawning laser every second
+            //bisher nur einzelne Nadeln gespawnt
             if (spawn > 1)
             {
                 spawn = 0;
@@ -124,18 +115,32 @@ namespace CR4VE.GameLogic.AI
                     laserList.Add(new Entity(EyePosition, "Enemies/ImaFirinMahLaserr", content));
                 laserList.Last().viewingDirection = this.viewingDirection;
             }
+            #endregion
+            #region deleting laser
             for (int i = 0; i < laserList.Count; i++)
             {
-                // wenn laser zu weit weg, dann verschwindet er
-                // 'laser' verschwindet nocht nicht, wenn er den Spieler beruehrt
+                //laser verschwindet <=> bestimmte Entfernung von Startposition erreicht
                 if (laserList[i].position.X >= this.position.X + 50 || laserList[i].position.X <= this.position.X - 50)
                 {
                     laserList.RemoveAt(i);
                     i--;
                 }
             }
+            #endregion
+            #region Collision with Laser
+            for (int i = 0; i < laserList.Count; i++)
+            {
+                laserList[i].boundary = new BoundingBox(laserList[i].position + new Vector3(-2, -2, -2), laserList[i].position + new Vector3(2, 2, 2));
+                laserList[i].position.X += laserList[i].viewingDirection.X;
+                if (Singleplayer.player.boundary.Intersects(laserList[i].boundary))
+                {
+                    Singleplayer.hud.healthLeft -= 10;
+                    laserList.Remove(laserList[i]);
+                    i--;
+                }
+            }
+            #endregion
         }
-        #endregion
 
         public override void Draw()
         {
