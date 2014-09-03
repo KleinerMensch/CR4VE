@@ -17,7 +17,7 @@ namespace CR4VE.GameLogic.AI
         float moveSpeed = -0.5f;
 
         float rotationX = 0.4f;
-        float rotationY = MathHelper.ToRadians(-90);
+        float rotationY = MathHelper.ToRadians(0);
         bool checkedStartpositionOnce = false;
         #endregion
 
@@ -46,8 +46,18 @@ namespace CR4VE.GameLogic.AI
                 startPosition = this.Position;
                 checkedStartpositionOnce = true;
             }
+
             //Fake Rotationsanimation
-            rotationX -= 0.1f;
+            if (this.position.X > Singleplayer.player.position.X)
+            {
+                rotationY = MathHelper.ToRadians(-90);
+                rotationX += 0.1f;
+            }
+            else
+            {
+                rotationY = MathHelper.ToRadians(90);
+                rotationX -= 0.1f;
+            }
 
             Vector3 playerPos = Singleplayer.player.position;
             Vector3 direction = this.position - playerPos; // für Richtungsvektor
@@ -66,7 +76,6 @@ namespace CR4VE.GameLogic.AI
 
             if (Singleplayer.player.boundary.Intersects(this.boundary))
             {
-                Console.WriteLine("intersection");
                 Singleplayer.hud.healthLeft -= (int)(Singleplayer.hud.fullHealth * 0.01);
             }
         }

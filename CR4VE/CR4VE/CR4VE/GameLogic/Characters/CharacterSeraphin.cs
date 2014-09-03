@@ -37,6 +37,7 @@ namespace CR4VE.GameLogic.Characters
         public override void Update(GameTime time)
         {
             #region MinionsFromRangedAttack
+            #region Removing Minions After Defined Time
             spawn += (float)time.ElapsedGameTime.TotalSeconds;
 
             // Decrements the timespan
@@ -51,6 +52,7 @@ namespace CR4VE.GameLogic.Characters
                 timeSpan = TimeSpan.FromSeconds(10);
                 launchedRanged = false;
             }
+            #endregion
 
             foreach (Entity minion in minionList)
             {
@@ -141,7 +143,7 @@ namespace CR4VE.GameLogic.Characters
                                     {
                                         if (seraphinsLaser.boundary.Intersects(enemy.boundary))
                                         {
-                                            enemy.hp -= 1;
+                                            enemy.hp -= 3;
                                             enemyHit = true;
                                             Console.WriteLine("Seraphin hit enemy by SpecialAttack");
                                         }
@@ -187,7 +189,7 @@ namespace CR4VE.GameLogic.Characters
                                 {
                                     if (seraphinsLaser.boundary.Intersects(Arena.player.boundary))
                                     {
-                                        Arena.opheliaHud.healthLeft -= 1;
+                                        Arena.opheliaHud.healthLeft -= 3;
                                         enemyHit = true;
                                         Console.WriteLine("Seraphin hit Player by SpecialAttack");
                                     }

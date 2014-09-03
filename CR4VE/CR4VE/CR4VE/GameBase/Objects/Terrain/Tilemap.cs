@@ -171,7 +171,7 @@ namespace CR4VE.GameBase.Objects.Terrain
                                 BoundingBox healthBound = new BoundingBox(position + new Vector3(-3, -3, -3), position + new Vector3(3, 3, 3));
 
                                 //spaeter noch nach Leveltyp differenzieren
-                                powerups.Add(new Powerup(position, "powerup_hell_health", Singleplayer.cont, healthBound, "health", 100));
+                                powerups.Add(new Powerup(position, "powerup_hell_health", Singleplayer.cont, healthBound, "health", 150));
                             } break;
 
                         //Mana Powerup

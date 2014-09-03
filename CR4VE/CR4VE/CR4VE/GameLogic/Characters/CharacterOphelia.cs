@@ -308,25 +308,30 @@ namespace CR4VE.GameLogic.Characters
                     #region enemyList1
                     foreach (Enemy enemy in Singleplayer.tileMaps[Singleplayer.activeIndex1].EnemyList)
                     {
-                        if (holyThunder.boundary.Intersects(enemy.boundary))
+                        foreach (Entity opheliasHolyThunder in attackList)
                         {
-                            enemy.hp -= 1;
-                            Console.WriteLine("Ophelia hit enemy by AoE");
+                            if (opheliasHolyThunder.boundary.Intersects(enemy.boundary))
+                            {
+                                enemy.hp -= 3;
+                                Console.WriteLine("Ophelia hit enemy by AoE");
+                            }
                         }
                     }
-                    attackList.Remove(holyThunder);
                     #endregion
                     #region enemyList2
                     foreach (Enemy enemy in Singleplayer.tileMaps[Singleplayer.activeIndex2].EnemyList)
                     {
-                        if (holyThunder.boundary.Intersects(enemy.boundary))
+                        foreach (Entity opheliasHolyThunder in attackList)
                         {
-                            enemy.hp -= 1;
-                            Console.WriteLine("Ophelia hit enemy by AoE");
+                            if (opheliasHolyThunder.boundary.Intersects(enemy.boundary))
+                            {
+                                enemy.hp -= 3;
+                                Console.WriteLine("Ophelia hit enemy by AoE");
+                            }
                         }
                     }
-                    attackList.Remove(holyThunder);
                     #endregion
+                    attackList.Remove(holyThunder);
                 }
                 #endregion
                 #region Arena
@@ -336,10 +341,13 @@ namespace CR4VE.GameLogic.Characters
                     holyThunder.boundary = new BoundingBox(this.position + new Vector3(-20, -3, -20), this.position + new Vector3(20, 3, 20));
                     attackList.Add(holyThunder);
 
-                    if (holyThunder.boundary.Intersects(Arena.boss.boundary))
+                    foreach (Entity opheliasHolyThunder in attackList)
                     {
-                        Arena.seraphinBossHUD.healthLeft -= 50;
-                        Console.WriteLine("Ophelia hit Boss by AoE");
+                        if (opheliasHolyThunder.boundary.Intersects(Arena.boss.boundary))
+                        {
+                            Arena.seraphinBossHUD.healthLeft -= 50;
+                            Console.WriteLine("Ophelia hit Boss by AoE");
+                        }
                     }
                     attackList.Remove(holyThunder);
                 }
