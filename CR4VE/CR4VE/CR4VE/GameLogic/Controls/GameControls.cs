@@ -216,7 +216,8 @@ namespace CR4VE.GameLogic.Controls
                 prevGamepad = currGamepad;
                 currGamepad = GamePad.GetState(PlayerIndex.One);
 
-                if (currentKeyboard.IsKeyDown(Keys.End)) Singleplayer.hud.isDead = true;
+                //DEBUG (GameOver)
+                //if (currentKeyboard.IsKeyDown(Keys.End)) Singleplayer.hud.isDead = true;
 
                 #region Calculate moveVecPlayer
                 Vector3 moveVecPlayer = new Vector3(0, 0, 0);
