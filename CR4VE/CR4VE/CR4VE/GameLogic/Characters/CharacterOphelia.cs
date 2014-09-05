@@ -256,9 +256,9 @@ namespace CR4VE.GameLogic.Characters
                 #region Singleplayer
                 if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
                 {
-                    Vector3 doppelPos = new Vector3(this.position.X, this.Position.Y, 0);
+                    Vector3 doppelPos = new Vector3(this.position.X, this.Position.Y, 5);
 
-                    doppelgaenger = new Entity(doppelPos, "Enemies/skull", Singleplayer.cont);
+                    doppelgaenger = new Entity(doppelPos, "Players/Ophelia", Singleplayer.cont);
                     doppelgaenger.boundary = new BoundingBox(this.position + new Vector3(-3, -3, -3), this.position + new Vector3(3, 3, 3));
                     
                     attackList.Add(doppelgaenger);
@@ -267,7 +267,7 @@ namespace CR4VE.GameLogic.Characters
                 #region Arena
                 else if (Game1.currentState.Equals(Game1.EGameState.Arena))
                 {
-                    doppelgaenger = new Entity(this.position, "Enemies/skull", Arena.cont);
+                    doppelgaenger = new Entity(this.position, "Players/Ophelia", Arena.cont);
                     doppelgaenger.boundary = new BoundingBox(this.position + new Vector3(-3, -3, -3), this.position + new Vector3(3, 3, 3));
                     attackList.Add(doppelgaenger);
                 }
@@ -292,25 +292,30 @@ namespace CR4VE.GameLogic.Characters
                     #region enemyList1
                     foreach (Enemy enemy in Singleplayer.tileMaps[Singleplayer.activeIndex1].EnemyList)
                     {
-                        if (holyThunder.boundary.Intersects(enemy.boundary))
+                        foreach (Entity opheliasHolyThunder in attackList)
                         {
-                            enemy.hp -= 1;
-                            Console.WriteLine("Ophelia hit enemy by AoE");
+                            if (opheliasHolyThunder.boundary.Intersects(enemy.boundary))
+                            {
+                                enemy.hp -= 3;
+                                Console.WriteLine("Ophelia hit enemy by AoE");
+                            }
                         }
                     }
-                    attackList.Remove(holyThunder);
                     #endregion
                     #region enemyList2
                     foreach (Enemy enemy in Singleplayer.tileMaps[Singleplayer.activeIndex2].EnemyList)
                     {
-                        if (holyThunder.boundary.Intersects(enemy.boundary))
+                        foreach (Entity opheliasHolyThunder in attackList)
                         {
-                            enemy.hp -= 1;
-                            Console.WriteLine("Ophelia hit enemy by AoE");
+                            if (opheliasHolyThunder.boundary.Intersects(enemy.boundary))
+                            {
+                                enemy.hp -= 3;
+                                Console.WriteLine("Ophelia hit enemy by AoE");
+                            }
                         }
                     }
-                    attackList.Remove(holyThunder);
                     #endregion
+                    attackList.Remove(holyThunder);
                 }
                 #endregion
                 #region Arena
@@ -320,10 +325,13 @@ namespace CR4VE.GameLogic.Characters
                     holyThunder.boundary = new BoundingBox(this.position + new Vector3(-20, -3, -20), this.position + new Vector3(20, 3, 20));
                     attackList.Add(holyThunder);
 
-                    if (holyThunder.boundary.Intersects(Arena.boss.boundary))
+                    foreach (Entity opheliasHolyThunder in attackList)
                     {
-                        Arena.seraphinBossHUD.healthLeft -= 50;
-                        Console.WriteLine("Ophelia hit Boss by AoE");
+                        if (opheliasHolyThunder.boundary.Intersects(Arena.boss.boundary))
+                        {
+                            Arena.seraphinBossHUD.healthLeft -= 50;
+                            Console.WriteLine("Ophelia hit Boss by AoE");
+                        }
                     }
                     attackList.Remove(holyThunder);
                 }
@@ -347,9 +355,9 @@ namespace CR4VE.GameLogic.Characters
             if (launchedRanged)
             {
                 if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
-                    doppelgaenger.drawIn2DWorld(new Vector3(0.01f, 0.01f, 0.01f), 0, 0, 0);
+                    doppelgaenger.drawIn2DWorld(new Vector3(0.02f, 0.02f, 0.02f), 0, MathHelper.ToRadians(90)*this.viewingDirection.X, 0);
                 if (Game1.currentState.Equals(Game1.EGameState.Arena))
-                    doppelgaenger.drawInArena(new Vector3(0.01f, 0.01f, 0.01f), 0, 0, 0);
+                    doppelgaenger.drawInArena(new Vector3(0.02f, 0.02f, 0.02f), 0, MathHelper.ToRadians(90) + Arena.blickWinkel, 0);
             }
             #endregion
             #region DrawSpecial

@@ -85,7 +85,6 @@ namespace CR4VE.GameLogic.GameStates
         public Game1.EGameState Update(GameTime gameTime)
         {
             GameControls.updateArena(gameTime);
-
             GameControls.updateVibration(gameTime);
 
             player.Update(gameTime);

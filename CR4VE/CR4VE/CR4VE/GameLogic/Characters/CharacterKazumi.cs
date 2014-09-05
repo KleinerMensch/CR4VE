@@ -14,7 +14,10 @@ namespace CR4VE.GameLogic.Characters
     {
         #region Attributes
         public static new float manaLeft = 3;
+        Entity claws, fireBall, danceOfFireFox;
+
         Vector3 offset = new Vector3(8,8,8);
+        Vector3 currentViewingDirection;
         float speed = 1;
         bool enemyHit = false;
         #endregion
@@ -27,130 +30,316 @@ namespace CR4VE.GameLogic.Characters
         #endregion
 
         #region Methods
+        public override void Update(GameTime time)
+        {
+            #region UpdateFireball
+            if (launchedRanged)
+            {
+                #region Singleplayer
+                if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
+                {
+                    fireBall.move(speed * currentViewingDirection);
+
+                    //Feuerball verschwindet nach 50 Einheiten oder wenn er mit etwas kollidiert
+                    if (fireBall.position != this.position + 50 * currentViewingDirection)
+                    {
+                        launchedRanged = true;
+                        if (enemyHit)
+                        {
+                            launchedRanged = false;
+                            attackList.Remove(fireBall);
+                        }
+                        else
+                        {
+                            #region enemyList1
+                            foreach (Enemy enemy in Singleplayer.tileMaps[Singleplayer.activeIndex1].EnemyList)
+                            {
+                                if (enemyHit)
+                                {
+                                    launchedRanged = false;
+                                    attackList.Remove(fireBall);
+                                }
+                                else
+                                {
+                                    foreach (Entity kazumisFireBall in attackList)
+                                    {
+                                        if (kazumisFireBall.boundary.Intersects(enemy.boundary))
+                                        {
+                                            enemy.hp -= 2;
+                                            enemyHit = true;
+                                            Console.WriteLine("Kazumi hit enemy by RangedAttack");
+                                        }
+                                    }
+                                }
+                            }
+                            #endregion
+                            #region enemyList2
+                            foreach (Enemy enemy in Singleplayer.tileMaps[Singleplayer.activeIndex2].EnemyList)
+                            {
+                                if (enemyHit)
+                                {
+                                    launchedRanged = false;
+                                    attackList.Remove(fireBall);
+                                }
+                                else
+                                {
+                                    foreach (Entity kazumisFireBall in attackList)
+                                    {
+                                        if (kazumisFireBall.boundary.Intersects(enemy.boundary))
+                                        {
+                                            enemy.hp -= 2;
+                                            enemyHit = true;
+                                            Console.WriteLine("Kazumi hit enemy by RangedAttack");
+                                        }
+                                    }
+                                }
+                            }
+                            #endregion
+                        }
+                    }
+                    else
+                    {
+                        launchedRanged = false;
+                        attackList.Remove(fireBall);
+                    }
+                    enemyHit = false;
+                }
+                #endregion
+                #region Arena
+                else if (Game1.currentState.Equals(Game1.EGameState.Arena))
+                {
+                    fireBall.move(speed * currentViewingDirection);
+
+                    //Feuerball verschwindet nach 50 Einheiten oder wenn er mit etwas kollidiert
+                    if (fireBall.position != this.position + 50 * currentViewingDirection)
+                    {
+                        launchedRanged = true;
+                        if (enemyHit)
+                        {
+                            launchedRanged = false;
+                            attackList.Remove(fireBall);
+                        }
+                        else
+                        {
+                            if (enemyHit)
+                            {
+                                launchedRanged = false;
+                                attackList.Remove(fireBall);
+                            }
+                            else
+                            {
+                                foreach (Entity kazumisFireball in attackList)
+                                {
+                                    if (kazumisFireball.boundary.Intersects(Arena.boss.boundary))
+                                    {
+                                        //Arena.fractusHud.healthLeft -= 1;
+                                        enemyHit = true;
+                                        Console.WriteLine("Kazumi hit Boss by RangedAttack");
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                    else
+                    {
+                        launchedRanged = false;
+                        attackList.Remove(fireBall);
+                    }
+                    enemyHit = false;
+                }
+                #endregion
+            }
+            #endregion
+        }
+
         public override void MeleeAttack(GameTime time)
         {
+            launchedMelee = true;
+
+            #region Singleplayer
             if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
             {
                 Vector3 clawsPosition = Singleplayer.player.Position + viewingDirection * offset;
-                Entity claws = new Entity(clawsPosition, "5x5x5Box1", Singleplayer.cont);
+                claws = new Entity(clawsPosition, "5x5x5Box1", Singleplayer.cont);
                 claws.boundary = new BoundingBox(this.position + new Vector3(-2.5f, -2.5f, -2.5f) + viewingDirection * offset, this.position + new Vector3(2.5f, 2.5f, 2.5f) + viewingDirection * offset);
-                claws.drawInArena(new Vector3(1, 1, 1), 0, 0, 0);
+                attackList.Add(claws);
 
-                /*foreach (Enemy enemy in Singleplayer.enemyList)
+                //Kollision mit Attacke
+                #region enemyList1
+                foreach (Enemy enemy in Singleplayer.tileMaps[Singleplayer.activeIndex1].EnemyList)
                 {
-                    if (claws.boundary.Intersects(enemy.boundary))
+                    foreach (Entity kazumisClaws in attackList)
                     {
-                        enemy.health -= 1;
-                        Console.WriteLine("Kazumi hit enemy by MeleeAttack");
+                        if (kazumisClaws.boundary.Intersects(enemy.boundary))
+                        {
+                            enemy.hp -= 1;
+                            Console.WriteLine("Kazumi hit enemy by MeleeAttack");
+                        }
                     }
-                }*/
+                }
+                #endregion
+                #region enemyList2
+                foreach (Enemy enemy in Singleplayer.tileMaps[Singleplayer.activeIndex2].EnemyList)
+                {
+                    foreach (Entity kazumisClaws in attackList)
+                    {
+                        if (kazumisClaws.boundary.Intersects(enemy.boundary))
+                        {
+                            enemy.hp -= 1;
+                            Console.WriteLine("Kazumi hit enemy by MeleeAttack");
+                        }
+                    }
+                }
+                #endregion
+                attackList.Remove(claws);
             }
+            #endregion
+            #region Arena
             else if (Game1.currentState.Equals(Game1.EGameState.Arena))
             {
                 Vector3 clawsPosition = Arena.player.Position + viewingDirection * offset;
-                Entity claws = new Entity(clawsPosition, "5x5x5Box1", Arena.cont);
+                claws = new Entity(clawsPosition, "5x5x5Box1", Arena.cont);
                 claws.boundary = new BoundingBox(this.position + new Vector3(-2.5f, -2.5f, -2.5f) + viewingDirection * offset, this.position + new Vector3(2.5f, 2.5f, 2.5f) + viewingDirection * offset);
-                claws.drawInArena(new Vector3(1, 1, 1), 0, 0, 0);
+                attackList.Add(claws);
 
-                //foreach (Enemy enemy in Arena.bossList)
-                //{
-                //    if (claws.boundary.Intersects(enemy.boundary))
-                //    {
-                //        enemy.health -= 1;
-                //        Console.WriteLine("Kazumi hit enemy by MeleeAttack");
-                //    }
-                //}
+                //Kollision mit Attacke
+                foreach (Entity kazumisClaws in attackList)
+                {
+                    if (kazumisClaws.boundary.Intersects(Arena.boss.boundary))
+                    {
+                        Arena.seraphinBossHUD.healthLeft -= 5;
+                        Console.WriteLine("Kazumi hit Boss by MeleeAttack");
+                    }
+                }
+                attackList.Remove(claws);
             }
+            #endregion
         }
 
         public override void RangedAttack(GameTime time)
         {
-            if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
+            if (manaLeft > 0)
             {
-                Entity fireBall = new Entity(this.position, "Enemies/skull", Singleplayer.cont);
-                fireBall.boundary = new BoundingBox(this.position + new Vector3(-3, -3, -3), this.position + new Vector3(3, 3, 3));
+                manaLeft -= 1;
+                launchedRanged = true;
 
-                //Feuerball verschwindet nach 50 Einheiten oder wenn er mit etwas kollidiert
-                while (fireBall.position != this.position + 50 * viewingDirection)
+                #region Singleplayer
+                if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
                 {
-                    if (enemyHit) break;
-                    foreach (Enemy enemy in Singleplayer.enemyList)
-                    {
-                        if (enemyHit) break;
-                        if (fireBall.boundary.Intersects(enemy.boundary))
-                        {
-                            enemy.hp -= 1;
-                            enemyHit = true;
-                            Console.WriteLine("Kazumi hit enemy by RangedAttack");
-                        }
-                    }
-                    fireBall.position += speed * viewingDirection;
-                    fireBall.boundary.Min += speed * viewingDirection;
-                    fireBall.boundary.Max += speed * viewingDirection;
-                    fireBall.drawInArena(new Vector3(0.01f, 0.01f, 0.01f), 0, 0, 0);
+                    currentViewingDirection = Singleplayer.player.viewingDirection;
+                    fireBall = new Entity(this.position, "Enemies/skull", Singleplayer.cont);
+                    fireBall.boundary = new BoundingBox(this.position + new Vector3(-3, -3, -3), this.position + new Vector3(3, 3, 3));
+                    attackList.Add(fireBall);
                 }
-                enemyHit = false;
-            }
-            else if (Game1.currentState.Equals(Game1.EGameState.Arena))
-            {
-                Entity fireBall = new Entity(this.position, "Enemies/skull", Arena.cont);
-                fireBall.boundary = new BoundingBox(this.position + new Vector3(-3, -3, -3), this.position + new Vector3(3, 3, 3));
-
-                //Feuerball verschwindet nach 50 Einheiten oder wenn er mit etwas kollidiert
-                while (fireBall.position != this.position + 50 * viewingDirection)
+                #endregion
+                #region Arena
+                else if (Game1.currentState.Equals(Game1.EGameState.Arena))
                 {
-                    if (enemyHit) break;
-                    //foreach (Enemy enemy in Arena.bossList)
-                    //{
-                    //    if (enemyHit) break;
-                    //    if (fireBall.boundary.Intersects(enemy.boundary))
-                    //    {
-                    //        enemy.health -= 1;
-                    //        enemyHit = true;
-                    //        Console.WriteLine("Kazumi hit enemy by RangedAttack");
-                    //    }
-                    //}
-                    fireBall.position += speed * viewingDirection;
-                    fireBall.boundary.Min += speed * viewingDirection;
-                    fireBall.boundary.Max += speed * viewingDirection;
-                    fireBall.drawInArena(new Vector3(0.01f, 0.01f, 0.01f), 0, 0, 0);
+                    currentViewingDirection = Arena.player.viewingDirection;
+                    fireBall = new Entity(this.position, "Enemies/skull", Arena.cont);
+                    fireBall.boundary = new BoundingBox(this.position + new Vector3(-3, -3, -3), this.position + new Vector3(3, 3, 3));
+                    attackList.Add(fireBall);
                 }
-                enemyHit = false;
+                #endregion
             }
         }
 
         public override void SpecialAttack(GameTime time)
         {
-            if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
+            if (manaLeft >= 2)
             {
-                Entity danceOfFireFox = new Entity(this.Position, "10x10x10Box1", Singleplayer.cont);
-                danceOfFireFox.boundary = new BoundingBox(this.position + new Vector3(-20, -3, -20), this.position + new Vector3(20, 3, 20));
-                danceOfFireFox.drawInArena(Vector3.One, 0, 0, 0);
+                manaLeft -= 2;
+                launchedSpecial = true;
 
-                foreach (Enemy enemy in Singleplayer.enemyList)
+                #region Singleplayer
+                if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
                 {
-                    if (danceOfFireFox.boundary.Intersects(enemy.boundary))
-                    {
-                        enemy.hp -= 1;
-                        Console.WriteLine("Kazumi hit enemy by AoE");
-                    }
-                }
-            }
-            else if (Game1.currentState.Equals(Game1.EGameState.Arena))
-            {
-                Entity danceOfFireFox = new Entity(this.Position, "10x10x10Box1", Arena.cont);
-                danceOfFireFox.boundary = new BoundingBox(this.position + new Vector3(-20, -3, -20), this.position + new Vector3(20, 3, 20));
-                danceOfFireFox.drawInArena(Vector3.One, 0, 0, 0);
+                    danceOfFireFox = new Entity(this.Position, "Terrain/10x10x10Box1", Singleplayer.cont);
+                    danceOfFireFox.boundary = new BoundingBox(this.position + new Vector3(-20, -3, -20), this.position + new Vector3(20, 3, 20));
+                    attackList.Add(danceOfFireFox);
 
-                //foreach (Enemy enemy in Arena.bossList)
-                //{
-                //    if (danceOfFireFox.boundary.Intersects(enemy.boundary))
-                //    {
-                //        enemy.health -= 1;
-                //        Console.WriteLine("Kazumi hit enemy by AoE");
-                //    }
-                //}
+                    #region enemyList1
+                    foreach (Enemy enemy in Singleplayer.tileMaps[Singleplayer.activeIndex1].EnemyList)
+                    {
+                        foreach (Entity kazumisDanceOfFirefox in attackList)
+                        {
+                            if (kazumisDanceOfFirefox.boundary.Intersects(enemy.boundary))
+                            {
+                                enemy.hp -= 3;
+                                Console.WriteLine("Kazumi hit enemy by AoE");
+                            }
+                        }
+                    }
+                    #endregion
+                    #region enemyList2
+                    foreach (Enemy enemy in Singleplayer.tileMaps[Singleplayer.activeIndex2].EnemyList)
+                    {
+                        foreach (Entity kazumisDanceOfFirefox in attackList)
+                        {
+                            if (kazumisDanceOfFirefox.boundary.Intersects(enemy.boundary))
+                            {
+                                enemy.hp -= 3;
+                                Console.WriteLine("Kazumi hit enemy by AoE");
+                            }
+                        }
+                    }
+                    #endregion
+                    attackList.Remove(danceOfFireFox);
+                }
+                #endregion
+                #region Arena
+                else if (Game1.currentState.Equals(Game1.EGameState.Arena))
+                {
+                    danceOfFireFox = new Entity(this.Position, "Terrain/10x10x10Box1", Arena.cont);
+                    danceOfFireFox.boundary = new BoundingBox(this.position + new Vector3(-20, -3, -20), this.position + new Vector3(20, 3, 20));
+                    attackList.Add(danceOfFireFox);
+
+                    foreach (Entity kazumisDanceOfFirefox in attackList)
+                    {
+                        if (kazumisDanceOfFirefox.boundary.Intersects(Arena.boss.boundary))
+                        {
+                            //Arena.fractusBossHUD.healthLeft -= 50;
+                            Console.WriteLine("Kazumi hit Boss by AoE");
+                        }
+                    }
+                    attackList.Remove(danceOfFireFox);
+                }
+                #endregion
             }
+        }
+
+        public override void DrawAttacks()
+        {
+            #region DrawMelee
+            if (launchedMelee)
+            {
+                if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
+                    claws.drawIn2DWorld(new Vector3(1, 1, 1), 0, 0, MathHelper.ToRadians(90) * Singleplayer.player.viewingDirection.X);
+                if (Game1.currentState.Equals(Game1.EGameState.Arena))
+                    claws.drawInArena(new Vector3(1, 1, 1), 0, 0, 0);
+                launchedMelee = false;
+            }
+            #endregion
+            #region DrawRanged
+            if (launchedRanged)
+            {
+                if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
+                    fireBall.drawIn2DWorld(new Vector3(0.02f, 0.02f, 0.02f), 0, MathHelper.ToRadians(90) * this.viewingDirection.X, 0);
+                if (Game1.currentState.Equals(Game1.EGameState.Arena))
+                    fireBall.drawInArena(new Vector3(0.02f, 0.02f, 0.02f), 0, MathHelper.ToRadians(90) + Arena.blickWinkel, 0);
+            }
+            #endregion
+            #region DrawSpecial
+            if (launchedSpecial)
+            {
+                if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
+                    danceOfFireFox.drawIn2DWorld(Vector3.One, 0, 0, 0);
+                if (Game1.currentState.Equals(Game1.EGameState.Arena))
+                    danceOfFireFox.drawInArena(Vector3.One, 0, 0, 0);
+                launchedSpecial = false;
+            }
+            #endregion
         }
         #endregion
     }
