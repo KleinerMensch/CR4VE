@@ -67,8 +67,10 @@ namespace CR4VE.GameLogic.Controls
 
         //MainMenu
         private static Vector3 moveVecSword;
-        private static bool isMoving = false;
+        public static bool isMenuMoving = false;
+        public static bool fullscreenPossible = false;
         public static int menuPosIndex = 0;
+        
 
         private static readonly Vector3[] menuPositions = new Vector3[]
         {
@@ -466,51 +468,46 @@ namespace CR4VE.GameLogic.Controls
             prevGamepad = currGamepad;
             currGamepad = GamePad.GetState(PlayerIndex.One);
 
-            //DEBUG
-            /*if ((currentKeyboard.IsKeyDown(Keys.Up) || currGamepad.IsButtonDown(Buttons.DPadUp)))
-                MainMenu.sword.move(new Vector3(0, 0.5f, 0));
-            if ((currentKeyboard.IsKeyDown(Keys.Down) || currGamepad.IsButtonDown(Buttons.DPadDown)))
-                MainMenu.sword.move(new Vector3(0,-0.5f,0));*/
-
+            
             //Up- and Down movement
             if (menuPosIndex != 0 && menuPosIndex != 4)
             {
-                if ((currentKeyboard.IsKeyDown(Keys.Down) || currGamepad.IsButtonDown(Buttons.DPadDown)) && !isMoving)
+                if ((currentKeyboard.IsKeyDown(Keys.Down) || currGamepad.IsButtonDown(Buttons.DPadDown)) && !isMenuMoving)
                 {
                     menuPosIndex = (int)MathHelper.Clamp((float)(menuPosIndex + 1), 0f, 3f);
 
-                    isMoving = true;
+                    isMenuMoving = true;
 
                     moveVecSword = menuPositions[menuPosIndex] - MainMenu.sword.position;
                 }
-                if ((currentKeyboard.IsKeyDown(Keys.Up) || currGamepad.IsButtonDown(Buttons.DPadUp)) && !isMoving)
+                if ((currentKeyboard.IsKeyDown(Keys.Up) || currGamepad.IsButtonDown(Buttons.DPadUp)) && !isMenuMoving)
                 {
                     menuPosIndex = (int)MathHelper.Clamp((float)(menuPosIndex - 1), 0f, 3f);
 
-                    isMoving = true;
+                    isMenuMoving = true;
 
                     moveVecSword = menuPositions[menuPosIndex] - MainMenu.sword.position;
                 }
             }
 
-            if (isMoving)
+            if (isMenuMoving)
                 if ((MainMenu.sword.Position - menuPositions[menuPosIndex]).Length() >= 0.01f)
                     MainMenu.sword.move(moveVecSword * 0.01f);
                 else
-                    isMoving = false;
+                    isMenuMoving = false;
 
             //special cases (Start, Option, Optiondetails)
-            if (!isMoving)
+            if (!isMenuMoving)
             {
                 switch (menuPosIndex)
                 {
                     //Press Start
                     case 0:
-                        if ((isClicked(Keys.Enter) || isClicked(Buttons.Start)) && !isMoving)
+                        if ((isClicked(Keys.Enter) || isClicked(Buttons.Start)) && !isMenuMoving)
                         {
                             menuPosIndex += 1;
 
-                            isMoving = true;
+                            isMenuMoving = true;
 
                             moveVecSword = (menuPositions[menuPosIndex] - MainMenu.sword.position) * 0.5f;
                         }
@@ -518,7 +515,7 @@ namespace CR4VE.GameLogic.Controls
                     
                     //Singleplayer
                     case 1:
-                        if ((isClicked(Keys.Enter) || isClicked(Buttons.A)) && !isMoving)
+                        if ((isClicked(Keys.Enter) || isClicked(Buttons.A)) && !isMenuMoving)
                             return Game1.EGameState.Singleplayer;
                         break;
 
@@ -529,26 +526,46 @@ namespace CR4VE.GameLogic.Controls
                         break;
 
                     //Options
-                    /*case 3:
-                        if ((isClicked(Keys.Enter) || isClicked(Buttons.A)) && !isMoving)
+                    case 3:
+                        if ((isClicked(Keys.Enter) || isClicked(Buttons.A)) && !isMenuMoving)
                         {
                             menuPosIndex = (int)MathHelper.Clamp((float)(menuPosIndex + 1), 0f, 4f);
 
-                            isMoving = true;
+                            isMenuMoving = true;
 
                             moveVecSword = menuPositions[menuPosIndex] - MainMenu.sword.position;
                         }
-                        break;*/
+                        break;
 
                     //Options Details
                     case 4:
-                        if ((isClicked(Keys.Escape) || isClicked(Buttons.B)) && !isMoving)
+                        //move routine
+                        if ((isClicked(Keys.Escape) || isClicked(Buttons.B)) && !isMenuMoving)
                         {
                             menuPosIndex = (int)MathHelper.Clamp((float)(menuPosIndex - 1), 0f, 3f);
 
-                            isMoving = true;
+                            isMenuMoving = true;
 
                             moveVecSword = menuPositions[menuPosIndex] - MainMenu.sword.position;
+                        }
+
+                        //change resolution
+                        if (isClicked(Keys.Left) || isClicked(Buttons.DPadLeft))
+                        {
+                            Game1.resolutionIndex = Math.Abs((Game1.resolutionIndex - 1)) % Game1.resolutions.Length;
+
+                            CameraMenu.updateResolution();
+                        }
+
+                        //change fullscreen
+                        if ((isClicked(Keys.Right) || isClicked(Buttons.DPadRight)) && fullscreenPossible)
+                        {
+                            if (Game1.graphics.IsFullScreen)
+                                Game1.graphics.IsFullScreen = false;
+                            else
+                                Game1.graphics.IsFullScreen = true;
+
+                            CameraMenu.updateResolution();
                         }
                         break;
                 }
