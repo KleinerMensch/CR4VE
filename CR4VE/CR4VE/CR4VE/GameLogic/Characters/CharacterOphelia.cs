@@ -90,7 +90,7 @@ namespace CR4VE.GameLogic.Characters
                                         {
                                             enemy.hp -= 2;
                                             enemyHit = true;
-                                            Console.WriteLine("Ophelia hit enemy by RangedAttack");
+                                            //Console.WriteLine("Ophelia hit enemy by RangedAttack");
                                         }
                                     }
                                 }
@@ -112,7 +112,7 @@ namespace CR4VE.GameLogic.Characters
                                         {
                                             enemy.hp -= 2;
                                             enemyHit = true;
-                                            Console.WriteLine("Ophelia hit enemy by RangedAttack");
+                                            //Console.WriteLine("Ophelia hit enemy by RangedAttack");
                                         }
                                     }
                                 }
@@ -167,29 +167,13 @@ namespace CR4VE.GameLogic.Characters
                         }
                         else
                         {
-                            if (enemyHit)
+                            if (doppelgaenger.boundary.Intersects(Arena.boss.boundary))
                             {
-                                launchedRanged = false;
-                                attackList.Remove(doppelgaenger);
-                            }
-                            else
-                            {
-                                foreach (Entity opheliaDoppelgaenger in attackList)
-                                {
-                                    if (opheliaDoppelgaenger.boundary.Intersects(Arena.boss.boundary))
-                                    {
-                                        Arena.seraphinBossHUD.healthLeft -= 2;
-                                        enemyHit = true;
-                                        Console.WriteLine("Ophelia hit Boss by RangedAttack");
-                                    }
-                                }
+                                Arena.seraphinBossHUD.healthLeft -= 40;
+                                enemyHit = true;
+                                //Console.WriteLine("Ophelia hit Boss by RangedAttack");
                             }
                         }
-                    }
-                    else
-                    {
-                        launchedRanged = false;
-                        attackList.Remove(doppelgaenger);
                     }
                     enemyHit = false;
                 }
@@ -219,7 +203,7 @@ namespace CR4VE.GameLogic.Characters
                         if (opheliaSpeer.boundary.Intersects(enemy.boundary))
                         {
                             enemy.hp -= 1;
-                            Console.WriteLine("Ophelia hit enemy by MeleeAttack");
+                            //Console.WriteLine("Ophelia hit enemy by MeleeAttack");
                         }
                     }
                 }
@@ -232,7 +216,7 @@ namespace CR4VE.GameLogic.Characters
                         if (opheliaSpeer.boundary.Intersects(enemy.boundary))
                         {
                             enemy.hp -= 1;
-                            Console.WriteLine("Ophelia hit enemy by MeleeAttack");
+                            //Console.WriteLine("Ophelia hit enemy by MeleeAttack");
                         }
                     }
                 }

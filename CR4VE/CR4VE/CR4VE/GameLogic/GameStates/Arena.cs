@@ -97,10 +97,11 @@ namespace CR4VE.GameLogic.GameStates
             opheliaHud.UpdateLiquidPositionByResolution();
             opheliaHud.UpdateMana();
             opheliaHud.UpdateHealth();
+
             seraphinBossHUD.Update();
             seraphinBossHUD.UpdateLiquidPositionByResolution();
             seraphinBossHUD.UpdateMana();
-            
+
             if (opheliaHud.isDead)
             {
                 return Game1.EGameState.GameOver;

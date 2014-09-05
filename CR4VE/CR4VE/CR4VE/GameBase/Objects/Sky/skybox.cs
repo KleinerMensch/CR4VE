@@ -10,17 +10,13 @@ namespace CR4VE.GameBase.Objects.Sky
 {
     public class Skybox
     {
-      
         private Model skyBox;
- 
       
         private TextureCube skyBoxTexture;
- 
       
-        private Effect skyBoxEffect;
- 
+        private Effect skyBoxEffect; 
        
-       // private float size = 50f;
+        //private float size = 50f;
  
         public Skybox(string skyboxTexture, ContentManager Content)
         {
@@ -29,11 +25,9 @@ namespace CR4VE.GameBase.Objects.Sky
  
    
         public void Draw(Matrix view, Matrix projection, Vector3 cameraPosition)
-        {
-           
+        {  
         
-                    
-                }
-            }
         }
-   
+
+    }
+}  

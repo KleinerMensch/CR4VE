@@ -98,8 +98,7 @@ namespace CR4VE.GameBase.HeadUpDisplay
         }
 
         public override void UpdateHealth()
-        {
-            
+        {            
             if (Game1.currentState == Game1.EGameState.Singleplayer)
             {
                 int ai1 = Singleplayer.activeIndex1;
