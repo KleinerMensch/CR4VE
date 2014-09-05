@@ -14,9 +14,8 @@ namespace CR4VE.GameBase.HeadUpDisplay
     {
         #region Attributes
         private Texture2D opheliaHealthContainer, opheliaPower;
-        public Color opheliaPowerColor;
-
         private Vector2 opheliaHealthContainerPosition;
+        public Color opheliaPowerColor;
         #endregion
 
         #region inherited Constructor
