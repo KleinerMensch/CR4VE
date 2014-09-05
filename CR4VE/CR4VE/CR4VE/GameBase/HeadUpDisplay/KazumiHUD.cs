@@ -141,7 +141,7 @@ namespace CR4VE.GameBase.HeadUpDisplay
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(redLiquid, liquidPosition, new Rectangle(0, 0, redLiquid.Width, healthLeft), Color.White, MathHelper.ToRadians(180), new Vector2(redLiquid.Width / 2, redLiquid.Height / 2), spriteScale, SpriteEffects.None, 0);
-            spriteBatch.Draw(kazumiHealthContainer, kazumiHealthContainerPosition, null, Color.White, 0f, Vector2.Zero, 0.3f, SpriteEffects.None, 0);
+            spriteBatch.Draw(kazumiHealthContainer, kazumiHealthContainerPosition, null, Color.White, 0f, Vector2.Zero, spriteScale, SpriteEffects.None, 0);
 
             #region Drawing current amount of Mana
             if (CharacterKazumi.manaLeft == 3)

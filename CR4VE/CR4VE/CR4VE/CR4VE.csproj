@@ -84,6 +84,7 @@
     <Compile Include="GameBase\Camera\Camera2D.cs" />
     <Compile Include="GameBase\Camera\CameraArena.cs" />
     <Compile Include="GameBase\Camera\CameraMenu.cs" />
+    <Compile Include="GameBase\HeadUpDisplay\FractusHUD.cs" />
     <Compile Include="GameBase\HeadUpDisplay\HUD.cs" />
     <Compile Include="GameBase\HeadUpDisplay\KazumiHUD.cs" />
     <Compile Include="GameBase\HeadUpDisplay\OpheliaHUD.cs" />

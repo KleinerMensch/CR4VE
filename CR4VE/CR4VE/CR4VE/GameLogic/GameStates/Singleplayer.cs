@@ -305,7 +305,7 @@ namespace CR4VE.GameLogic.GameStates
 
             //Player
             ghost = new Character(Vector3.Zero, "skull", content);
-            player = new CharacterKazumi(new Vector3(0,0,5), "Ophelia", content, new BoundingBox(new Vector3(-2.5f, -9f, -2.5f), new Vector3(2.5f, 9f, 2.5f)));
+            player = new CharacterOphelia(new Vector3(0,0,5), "Ophelia", content, new BoundingBox(new Vector3(-2.5f, -9f, -2.5f), new Vector3(2.5f, 9f, 2.5f)));
 
             //Checkpoints (default = Startposition)
             lastCheckpoint = new Checkpoint(Vector3.Zero, "checkpoint_hell", content);
@@ -319,7 +319,7 @@ namespace CR4VE.GameLogic.GameStates
             #endregion
 
             //HUD
-            hud = new KazumiHUD(cont, graphics);
+            hud = new OpheliaHUD(cont, graphics);
         }
         #endregion
 
