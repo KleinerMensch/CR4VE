@@ -26,8 +26,6 @@ namespace CR4VE.GameLogic.GameStates
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        Texture2D background;
-
         //Terrain
         public static Tilemap[] tileMaps = new Tilemap[]{};
 
@@ -38,19 +36,21 @@ namespace CR4VE.GameLogic.GameStates
 
         public static List<Tile> visibles;
 
+        public static Entity ArenaKey;
+
         //Player
         public static Character ghost;
         public static Character player;
 
         //reset point if dead
-        public static Checkpoint lastCheckpoint;
-        public static Entity ArenaKey;
+        public static Checkpoint lastCheckpoint;        
         
         //Enemies
         public static List<Enemy> enemyList = new List<Enemy>();
 
         //HUD
         public static HUD hud;
+        public static bool isPaused = false;
         #endregion
 
         #region Konstruktor
@@ -300,23 +300,13 @@ namespace CR4VE.GameLogic.GameStates
             //SaveGame
             SaveGame.Reset();
 
-            //Textures
-            //background = content.Load<Texture2D>("Assets/Sprites/stone");
-
-            //Player
+            //Player and Ghost
             ghost = new Character(Vector3.Zero, "skull", content);
             player = new CharacterOphelia(new Vector3(0,0,5), "Ophelia", content, new BoundingBox(new Vector3(-2.5f, -9f, -2.5f), new Vector3(2.5f, 9f, 2.5f)));
+            CharacterOphelia.manaLeft = 3;
 
             //Checkpoints (default = Startposition)
             lastCheckpoint = new Checkpoint(Vector3.Zero, "checkpoint_hell", content);
-            
-            #region Loading AI
-            EnemyRedEye redEye;
-            EnemySkull skull;
-
-            redEye = new EnemyRedEye(new Vector3(80, 0, 0),"EnemyEye",content,new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
-            skull = new EnemySkull(new Vector3(400, 0, 0), "skull", content, new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
-            #endregion
 
             //HUD
             hud = new OpheliaHUD(cont, graphics);
@@ -328,83 +318,91 @@ namespace CR4VE.GameLogic.GameStates
         {
             //Viewport Culling
             visibles = Tilemap.getVisibleTiles();
-
-            GameControls.updateSingleplayer(gameTime, visibles);
-
-            //check if active Tilemaps have changed
-            Tilemap.updateActiveTilemaps();
-
-            #region HUD
-            hud.Update();
-            
-            hud.UpdateMana();
-            hud.UpdateHealth();
-
-            hud.UpdateLiquidPositionByResolution();
-            
-            if (hud.isDead)
+                        
+            if (isPaused)
             {
-                return Game1.EGameState.GameOver;
+                GameControls.updateSingleplayerPaused(visibles);
             }
-            #endregion
+            else
+            {
+                GameControls.updateSingleplayer(gameTime, visibles);
 
-            //Player
-            player.Update(gameTime);
+                //check if active Tilemaps have changed
+                Tilemap.updateActiveTilemaps();
 
-            //Powerups
-            foreach (Powerup p in tileMaps[activeIndex1].PowerupList)
-            {
-                p.Update();
-            }
-            foreach (Powerup p in tileMaps[activeIndex2].PowerupList)
-            {
-                p.Update();
-            }
-            
-            //Checkpoints
-            foreach (Checkpoint c in tileMaps[activeIndex1].CheckpointList)
-            {
-                c.Update();
-            }
-            foreach (Checkpoint c in tileMaps[activeIndex2].CheckpointList)
-            {
-                c.Update();
-            }
+                #region HUD
+                hud.Update();
 
-            #region Enemies
-            foreach (Enemy e in tileMaps[activeIndex1].EnemyList)
-            {
-                e.UpdateSingleplayer(gameTime);
-            }
-            foreach (Enemy e in tileMaps[activeIndex2].EnemyList)
-            {
-                e.UpdateSingleplayer(gameTime);
-            }
+                hud.UpdateMana();
 
-            //remove dead enemies from active lists
-            for (int i = 0; i < tileMaps[activeIndex1].EnemyList.Count; i++)
-            {
-                if (tileMaps[activeIndex1].EnemyList.ElementAt(i).isDead)
+                hud.UpdateHealth();
+
+                hud.UpdateLiquidPositionByResolution();
+
+                if (hud.isDead)
                 {
-                    tileMaps[activeIndex1].EnemyList.ElementAt(i).Destroy();
-                    tileMaps[activeIndex1].EnemyList.Remove(tileMaps[activeIndex1].EnemyList.ElementAt(i));
+                    return Game1.EGameState.GameOver;
                 }
-            }
-            for (int i = 0; i < tileMaps[activeIndex2].EnemyList.Count; i++)
-            {
-                if (tileMaps[activeIndex2].EnemyList.ElementAt(i).isDead)
+                #endregion
+
+                //Player
+                player.Update(gameTime);
+
+                //Powerups
+                foreach (Powerup p in tileMaps[activeIndex1].PowerupList)
                 {
-                    tileMaps[activeIndex2].EnemyList.ElementAt(i).Destroy();
-                    tileMaps[activeIndex2].EnemyList.Remove(tileMaps[activeIndex2].EnemyList.ElementAt(i));
+                    p.Update();
                 }
+                foreach (Powerup p in tileMaps[activeIndex2].PowerupList)
+                {
+                    p.Update();
+                }
+
+                //Checkpoints
+                foreach (Checkpoint c in tileMaps[activeIndex1].CheckpointList)
+                {
+                    c.Update();
+                }
+                foreach (Checkpoint c in tileMaps[activeIndex2].CheckpointList)
+                {
+                    c.Update();
+                }
+
+                #region Enemies
+                foreach (Enemy e in tileMaps[activeIndex1].EnemyList)
+                {
+                    e.UpdateSingleplayer(gameTime);
+                }
+                foreach (Enemy e in tileMaps[activeIndex2].EnemyList)
+                {
+                    e.UpdateSingleplayer(gameTime);
+                }
+
+                //remove dead enemies from active lists
+                for (int i = 0; i < tileMaps[activeIndex1].EnemyList.Count; i++)
+                {
+                    if (tileMaps[activeIndex1].EnemyList.ElementAt(i).isDead)
+                    {
+                        tileMaps[activeIndex1].EnemyList.ElementAt(i).Destroy();
+                        tileMaps[activeIndex1].EnemyList.Remove(tileMaps[activeIndex1].EnemyList.ElementAt(i));
+                    }
+                }
+                for (int i = 0; i < tileMaps[activeIndex2].EnemyList.Count; i++)
+                {
+                    if (tileMaps[activeIndex2].EnemyList.ElementAt(i).isDead)
+                    {
+                        tileMaps[activeIndex2].EnemyList.ElementAt(i).Destroy();
+                        tileMaps[activeIndex2].EnemyList.Remove(tileMaps[activeIndex2].EnemyList.ElementAt(i));
+                    }
+                }
+                #endregion
+
+                //DEBUG
+                //Console.WriteLine(hud.isSwimming);
+                //
+
+                GameControls.updateVibration(gameTime);
             }
-            #endregion
-
-            //DEBUG
-            //Console.WriteLine(tileMaps[activeIndex1].EnemyList.Count);
-            //
-
-            GameControls.updateVibration(gameTime);
 
             //notwendiger Rueckgabewert
             if (player.Boundary.Intersects(ArenaKey.Boundary))
@@ -479,6 +477,7 @@ namespace CR4VE.GameLogic.GameStates
         // loeschen aller grafischen Elemente
         public void Unload()
         {
+            //empty entity lists
             foreach (Tilemap tm in tileMaps)
             {
                 tm.CheckpointList.Clear();
@@ -486,6 +485,8 @@ namespace CR4VE.GameLogic.GameStates
                 tm.PowerupList.Clear();
                 tm.TileList.Clear();
             }
+
+            cont.Unload();
         }
 
         // Freigabe der restlichen Standardressourcen

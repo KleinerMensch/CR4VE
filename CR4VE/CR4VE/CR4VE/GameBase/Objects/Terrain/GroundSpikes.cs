@@ -10,7 +10,7 @@ namespace CR4VE.GameBase.Objects.Terrain
     public class GroundSpikes : Tile
     {
         #region Attributes
-        private String type;
+        
         #endregion
 
         #region Properties

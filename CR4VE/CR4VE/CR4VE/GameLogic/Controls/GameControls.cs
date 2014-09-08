@@ -170,8 +170,31 @@ namespace CR4VE.GameLogic.Controls
         
         public static void updateSingleplayer(GameTime gameTime, List<Tile> visibles)
         {
+            //get currently and previously pressed keys and mouse buttons
+            previousKeyboard = currentKeyboard;
+            currentKeyboard = Keyboard.GetState();
+
+            previousMouseState = currentMouseState;
+            currentMouseState = Mouse.GetState();
+
+            prevGamepad = currGamepad;
+            currGamepad = GamePad.GetState(PlayerIndex.One);
+
+
+            //Utilities
+            if (isClicked(Keys.Escape) || isClicked(Buttons.Start))
+                Singleplayer.isPaused = true;
+
+            //DEBUG----------------------------------
+            if (isClicked(Keys.End)) Singleplayer.hud.isDead = true;
+            //---------------------------------------
+
             if (isGhost)
             {
+                //reset damage parameters
+                Singleplayer.hud.isBurning = false;
+                Singleplayer.hud.isSwimming = false;
+
                 //set ghost = player
                 if (Singleplayer.ghost.Position == Vector3.Zero)
                 {
@@ -207,20 +230,6 @@ namespace CR4VE.GameLogic.Controls
             }
             else
             {
-                #region not dead
-                //get currently and previously pressed keys and mouse buttons
-                previousKeyboard = currentKeyboard;
-                currentKeyboard = Keyboard.GetState();
-
-                previousMouseState = currentMouseState;
-                currentMouseState = Mouse.GetState();
-
-                prevGamepad = currGamepad;
-                currGamepad = GamePad.GetState(PlayerIndex.One);
-
-                //DEBUG (GameOver)
-                //if (currentKeyboard.IsKeyDown(Keys.End)) Singleplayer.hud.isDead = true;
-
                 #region Calculate moveVecPlayer
                 Vector3 moveVecPlayer = new Vector3(0, 0, 0);
 
@@ -344,9 +353,30 @@ namespace CR4VE.GameLogic.Controls
                 }
                 #endregion
                 
+                //check parameters
                 borderedRight = Singleplayer.player.checkRightBorder(visibles);
                 borderedLeft = Singleplayer.player.checkLeftBorder(visibles);
-                #endregion
+
+                if (!borderedBottom)
+                {
+                    Singleplayer.hud.isBurning = false;
+                    Singleplayer.hud.isSwimming = false;
+                }
+            }
+        }
+        public static void updateSingleplayerPaused(List<Tile> visibles)
+        {
+            //get currently and previously pressed keys and mouse buttons
+            previousKeyboard = currentKeyboard;
+            currentKeyboard = Keyboard.GetState();
+
+            prevGamepad = currGamepad;
+            currGamepad = GamePad.GetState(PlayerIndex.One);
+
+
+            if (isClicked(Keys.Escape) || isClicked(Buttons.Start))
+            {
+                Singleplayer.isPaused = false;
             }
         }
 
@@ -474,7 +504,7 @@ namespace CR4VE.GameLogic.Controls
             {
                 if ((currentKeyboard.IsKeyDown(Keys.Down) || currGamepad.IsButtonDown(Buttons.DPadDown)) && !isMenuMoving)
                 {
-                    menuPosIndex = (int)MathHelper.Clamp((float)(menuPosIndex + 1), 0f, 3f);
+                    menuPosIndex = (int)MathHelper.Clamp((float)(menuPosIndex + 1), 1f, 3f);
 
                     isMenuMoving = true;
 
@@ -482,7 +512,7 @@ namespace CR4VE.GameLogic.Controls
                 }
                 if ((currentKeyboard.IsKeyDown(Keys.Up) || currGamepad.IsButtonDown(Buttons.DPadUp)) && !isMenuMoving)
                 {
-                    menuPosIndex = (int)MathHelper.Clamp((float)(menuPosIndex - 1), 0f, 3f);
+                    menuPosIndex = (int)MathHelper.Clamp((float)(menuPosIndex - 1), 1f, 3f);
 
                     isMenuMoving = true;
 

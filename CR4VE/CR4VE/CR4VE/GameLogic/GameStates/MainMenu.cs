@@ -77,7 +77,7 @@ namespace CR4VE.GameLogic.GameStates
 
             //Fonts
             fontPos_press = new Vector2(Game1.graphics.PreferredBackBufferWidth / 2 - font.MeasureString("PRESS").X / 2, 50);
-            fontPos_start = new Vector2(Game1.graphics.PreferredBackBufferWidth / 2 - font.MeasureString("START").X / 2, 100);
+            fontPos_start = new Vector2(Game1.graphics.PreferredBackBufferWidth / 2 - font.MeasureString("START  or  ENTER").X / 2, 100);
 
             fontPos_fullscreen = new Vector2(Game1.graphics.PreferredBackBufferWidth / 4 - font.MeasureString("Fullscreen:").X, Game1.graphics.PreferredBackBufferHeight / 2);
             fontPos_resolution = new Vector2(Game1.graphics.PreferredBackBufferWidth * 3/4, Game1.graphics.PreferredBackBufferHeight / 2);
@@ -105,7 +105,7 @@ namespace CR4VE.GameLogic.GameStates
                         if (!GameControls.isMenuMoving)
                         {
                             spriteBatch.DrawString(font, "PRESS", fontPos_press, Color.White);
-                            spriteBatch.DrawString(font, "START", fontPos_start, Color.White);
+                            spriteBatch.DrawString(font, "START  or  ENTER", fontPos_start, Color.White);
                         }
                     } break;
                 case 4:

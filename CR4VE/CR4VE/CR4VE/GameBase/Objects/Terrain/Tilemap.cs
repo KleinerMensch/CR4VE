@@ -86,19 +86,22 @@ namespace CR4VE.GameBase.Objects.Terrain
                                 Vector3 position = start + new Vector3(x * size, -y * size, 0);
                                 BoundingBox boundary = new BoundingBox(position + new Vector3(-size / 2, -size / 2, -size / 2), position + new Vector3(size / 2, size / 2, size / 2));
 
-                                //define Tile damage
-                                int damage = 0;
+                                //define Tile type
+                                String type = "default";
 
                                 if (number == 4 || number == 8 || number == 14)
                                 {
-                                    damage = Tile.waterDmg;
-                                    boundary = new BoundingBox(position + new Vector3(-size / 2, -size / 2, -size / 2), position + new Vector3(size / 2, -size/2 + 1, size / 2));
+                                    type = "water";
+                                    boundary = new BoundingBox(position + new Vector3(-size / 2, -size / 2, -size / 2), position + new Vector3(size / 2, -size / 2 + 1, size / 2));
                                 }
                                 else if (number == 16)
-                                    damage = Tile.lethalDmg;
+                                {
+                                    type = "lava";
+                                    boundary = new BoundingBox(position + new Vector3(-size / 2, -size / 2, -size / 2), position + new Vector3(size / 2, size / 4, size / 2));
+                                }
 
                                 //harten String noch ersetzen
-                                tiles.Add(new Tile("Box", number, position, boundary, damage));
+                                tiles.Add(new Tile("Box", number, position, boundary, type));
                             } break;
 
                         //do nothing

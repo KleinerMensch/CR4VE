@@ -29,6 +29,8 @@ namespace CR4VE.GameBase.HeadUpDisplay
         public int healthLeft, fullHealth;
         public int trialsLeft = 3;
         public bool isDead = false;
+        public bool isSwimming = false;
+        public bool isBurning = false;
         #endregion
 
         #region Constructor

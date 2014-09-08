@@ -34,6 +34,12 @@ namespace CR4VE.GameBase.HeadUpDisplay
             opheliaPowerColor = new Color(198, 226, 255, 0);
 
             opheliaHealthContainerPosition = new Vector2(0, graphics.PreferredBackBufferHeight - (opheliaHealthContainer.Height * spriteScale));
+
+            //set parameters
+            this.healthLeft = fullHealth;
+
+            this.isBurning = false;
+            this.isSwimming = false;
         }
 
         public override void UpdateMana()
@@ -102,6 +108,7 @@ namespace CR4VE.GameBase.HeadUpDisplay
         {            
             if (Game1.currentState == Game1.EGameState.Singleplayer)
             {
+                //check for Powerups
                 int ai1 = Singleplayer.activeIndex1;
                 int ai2 = Singleplayer.activeIndex2;
 
@@ -151,6 +158,13 @@ namespace CR4VE.GameBase.HeadUpDisplay
                     }
                 }
                 #endregion
+
+                //calculate damage by environment
+                if (isSwimming)
+                    this.healthLeft -= (int)(Singleplayer.hud.fullHealth * 0.003);
+
+                if (isBurning)
+                    this.healthLeft -= (int)(Singleplayer.hud.fullHealth * 0.01);
             }
         }
 
