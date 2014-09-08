@@ -30,6 +30,10 @@ Content\Assets\Sprites\FractusPowerLeftestCrystal.xnb
 Content\Assets\Sprites\FractusPowerMiddleCrystalLeft.xnb
 Content\Assets\Sprites\FractusPowerMiddleCrystalRight.xnb
 Content\Assets\Sprites\FractusPowerRightestCrystal.xnb
+Content\Assets\Sprites\ContinueFractus.xnb
+Content\Assets\Sprites\ContinueOphelia.xnb
+Content\Assets\Sprites\ContinueKazumi.xnb
+Content\Assets\Sprites\ContinueSeraphin.xnb
 Content\Assets\Fonts\HUDfont.xnb
 Content\Assets\Fonts\GameOverFlo.xnb
 Content\Assets\Models\Enemies\EnemyEye.xnb

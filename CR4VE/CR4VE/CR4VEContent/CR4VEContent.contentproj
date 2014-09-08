@@ -498,27 +498,49 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Sprites\ContinueFractus.png">
+      <Name>ContinueFractus</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Sprites\ContinueOphelia.png">
+      <Name>ContinueOphelia</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Sprites\ContinueKazumi.png">
+      <Name>ContinueKazumi</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Sprites\ContinueSeraphin.png">
+      <Name>ContinueSeraphin</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="Assets\Effects\Ambient.fx">
       <Name>Ambient</Name>
       <Importer>EffectImporter</Importer>
       <Processor>EffectProcessor</Processor>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Assets\Effects\DirectLight.fx">
       <Name>DirectLight</Name>
       <Importer>EffectImporter</Importer>
       <Processor>EffectProcessor</Processor>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Assets\Effects\PointLight.fx">
       <Name>PointLight</Name>
       <Importer>EffectImporter</Importer>
       <Processor>EffectProcessor</Processor>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Assets\Effects\SkyBox.fx">
       <Name>SkyBox</Name>
       <Importer>EffectImporter</Importer>

@@ -19,11 +19,11 @@ namespace CR4VE.GameBase.HeadUpDisplay
         public GraphicsDeviceManager graphics;
 
         public float spriteScale = 0.3f;
+        public float continueSpriteScale = 0.05f;
+        public float yOffset = 10f;
         public Texture2D redLiquid;
-        public SpriteFont font;
 
         public Vector2 liquidPosition;
-        public Vector2 trialsPosition;
         public bool powerIsDown = false;
 
         public int healthLeft, fullHealth;
@@ -41,10 +41,6 @@ namespace CR4VE.GameBase.HeadUpDisplay
 
             //initializing sprites that are the same for every character
             redLiquid = content.Load<Texture2D>("Assets/Sprites/HealthLiquidPrismatic");
-            font = content.Load<SpriteFont>("Assets/Fonts/HUDfont");
-
-            //trials spaeter anders visualisiert -> durch Koepfe
-            trialsPosition = new Vector2(0, 0);
 
             fullHealth = redLiquid.Height;
             healthLeft = fullHealth;
@@ -79,12 +75,6 @@ namespace CR4VE.GameBase.HeadUpDisplay
 
             if (trialsLeft < 0)
                 isDead = true;
-        }
-
-        public void DrawGenerals(SpriteBatch spriteBatch)
-        {
-            //for Singleplayer
-            spriteBatch.DrawString(font, "Continues left: " + trialsLeft.ToString(), trialsPosition, Color.White);
         }
 
         public virtual void Initialize(ContentManager content) { }

@@ -285,7 +285,7 @@ namespace CR4VE.GameLogic.GameStates
                 Tilemap.Generate(layout6, boxSize, new Vector3(2670, -290, 0)),//2670,-290,0
                 Tilemap.Generate(layout7, boxSize, new Vector3(3180,-410, 0)),//(3180,-420,0)
                 Tilemap.Generate(layout8, boxSize, new Vector3(3760,-440, 0)),//(3660,-590,0)
-                //Tilemap.Generate(layout9, boxSize, new Vector3(-80,0,-10)),
+                Tilemap.Generate(layout9, boxSize, new Vector3(-80,0,-10)),
             };
 
             //indices of active Tilemaps
@@ -451,7 +451,7 @@ namespace CR4VE.GameLogic.GameStates
                 ghost.drawIn2DWorld(new Vector3(0.05f, 0.05f, 0.05f), 0, 0, 0);
             else
             {
-                player.DrawModelWithEffect(new Vector3(0.02f, 0.02f, 0.02f), 0, MathHelper.ToRadians(90) * player.viewingDirection.X, 0);
+                player.drawIn2DWorld(new Vector3(0.02f, 0.02f, 0.02f), 0, MathHelper.ToRadians(90) * player.viewingDirection.X, 0);
                 player.DrawAttacks();
             }
 
@@ -473,7 +473,6 @@ namespace CR4VE.GameLogic.GameStates
             #region HUD
             spriteBatch.Begin();
 
-            hud.DrawGenerals(spriteBatch);
             hud.Draw(spriteBatch);
 
             spriteBatch.End();

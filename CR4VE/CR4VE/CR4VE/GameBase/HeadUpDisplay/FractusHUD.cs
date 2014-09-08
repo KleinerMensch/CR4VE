@@ -13,8 +13,8 @@ namespace CR4VE.GameBase.HeadUpDisplay
     class FractusHUD : HUD
     {
         #region Attributes
-        private Texture2D fractusHealthContainer, fractusPowerLeftestCrystal, fractusPowerRightestCrystal, fractusPowerMiddleCrystalLeft, fractusPowerMiddleCrystalRight;
-        private Vector2 fractusHealthContainerPosition;
+        private Texture2D fractusContinue, fractusHealthContainer, fractusPowerLeftestCrystal, fractusPowerRightestCrystal, fractusPowerMiddleCrystalLeft, fractusPowerMiddleCrystalRight;
+        private Vector2 fractusContinue1Position, fractusContinue2Position, fractusContinue3Position, fractusHealthContainerPosition;
         #endregion
 
         #region inherited Constructor
@@ -25,6 +25,7 @@ namespace CR4VE.GameBase.HeadUpDisplay
         public override void Initialize(ContentManager content)
         {
             #region LoadContent
+            fractusContinue = content.Load<Texture2D>("Assets/Sprites/ContinueFractus");
             fractusHealthContainer = content.Load<Texture2D>("Assets/Sprites/FractusHPBar");
             fractusPowerLeftestCrystal = content.Load<Texture2D>("Assets/Sprites/FractusPowerLeftestCrystal");
             fractusPowerRightestCrystal = content.Load<Texture2D>("Assets/Sprites/FractusPowerRightestCrystal");
@@ -33,6 +34,9 @@ namespace CR4VE.GameBase.HeadUpDisplay
             #endregion
 
             fractusHealthContainerPosition = new Vector2(0,0);
+            fractusContinue1Position = new Vector2(fractusHealthContainer.Width*spriteScale, yOffset);
+            fractusContinue2Position = new Vector2(fractusContinue1Position.X + fractusContinue.Width * continueSpriteScale, yOffset);
+            fractusContinue3Position = new Vector2(fractusContinue2Position.X + fractusContinue.Width * continueSpriteScale, yOffset);
         }
 
         public override void UpdateMana()
@@ -79,6 +83,62 @@ namespace CR4VE.GameBase.HeadUpDisplay
             #endregion
         }
 
+        public override void UpdateHealth()
+        {
+            if (Game1.currentState == Game1.EGameState.Singleplayer)
+            {
+                int ai1 = Singleplayer.activeIndex1;
+                int ai2 = Singleplayer.activeIndex2;
+
+                #region active Tilemap1
+                for (int i = 0; i < Singleplayer.tileMaps[ai1].PowerupList.Count; i++)
+                {
+                    if (Singleplayer.tileMaps[ai1].PowerupList[i].type == "health")
+                    {
+                        if (Singleplayer.hud.healthLeft <= Singleplayer.hud.fullHealth)
+                        {
+                            if (Singleplayer.tileMaps[ai1].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
+                            {
+                                if (Singleplayer.hud.healthLeft < Singleplayer.hud.fullHealth)
+                                {
+                                    Singleplayer.hud.healthLeft += Singleplayer.tileMaps[ai1].PowerupList[i].amount;
+
+                                    if (Singleplayer.hud.fullHealth < Singleplayer.hud.healthLeft)
+                                        Singleplayer.hud.healthLeft = Singleplayer.hud.fullHealth;
+
+                                    Singleplayer.tileMaps[ai1].PowerupList.Remove(Singleplayer.tileMaps[ai1].PowerupList.ElementAt(i));
+                                }
+                            }
+                        }
+                    }
+                }
+                #endregion
+                #region active Tilemap2
+                for (int i = 0; i < Singleplayer.tileMaps[ai2].PowerupList.Count; i++)
+                {
+                    if (Singleplayer.tileMaps[ai2].PowerupList[i].type == "health")
+                    {
+                        if (Singleplayer.hud.healthLeft <= Singleplayer.hud.fullHealth)
+                        {
+                            if (Singleplayer.tileMaps[ai2].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
+                            {
+                                if (Singleplayer.hud.healthLeft < Singleplayer.hud.fullHealth)
+                                {
+                                    Singleplayer.hud.healthLeft += Singleplayer.tileMaps[ai2].PowerupList[i].amount;
+
+                                    if (Singleplayer.hud.fullHealth < Singleplayer.hud.healthLeft)
+                                        Singleplayer.hud.healthLeft = Singleplayer.hud.fullHealth;
+
+                                    Singleplayer.tileMaps[ai2].PowerupList.Remove(Singleplayer.tileMaps[ai2].PowerupList.ElementAt(i));
+                                }
+                            }
+                        }
+                    }
+                }
+                #endregion
+            }
+        }
+
         public override void UpdateLiquidPositionByResolution()
         {
             if ((graphics.PreferredBackBufferWidth / graphics.PreferredBackBufferHeight == 16 / 9) || (graphics.PreferredBackBufferWidth / graphics.PreferredBackBufferHeight == 4 / 3))
@@ -122,6 +182,24 @@ namespace CR4VE.GameBase.HeadUpDisplay
             if (CharacterFractus.manaLeft < 1 && CharacterFractus.manaLeft > 0)
             {
                 spriteBatch.Draw(fractusPowerMiddleCrystalRight, fractusHealthContainerPosition, null, Color.White, 0f, Vector2.Zero, spriteScale, SpriteEffects.None, 0);
+            }
+            #endregion
+
+            #region Drawing current amount of Continues
+            if (trialsLeft == 3)
+            {
+                spriteBatch.Draw(fractusContinue, fractusContinue1Position, null, Color.White, 0, Vector2.Zero, continueSpriteScale, SpriteEffects.None, 0);
+                spriteBatch.Draw(fractusContinue, fractusContinue2Position, null, Color.White, 0, Vector2.Zero, continueSpriteScale, SpriteEffects.None, 0);
+                spriteBatch.Draw(fractusContinue, fractusContinue3Position, null, Color.White, 0, Vector2.Zero, continueSpriteScale, SpriteEffects.None, 0);
+            }
+            else if (trialsLeft == 2)
+            {
+                spriteBatch.Draw(fractusContinue, fractusContinue1Position, null, Color.White, 0, Vector2.Zero, continueSpriteScale, SpriteEffects.None, 0);
+                spriteBatch.Draw(fractusContinue, fractusContinue2Position, null, Color.White, 0, Vector2.Zero, continueSpriteScale, SpriteEffects.None, 0);
+            }
+            else if (trialsLeft == 1)
+            {
+                spriteBatch.Draw(fractusContinue, fractusContinue1Position, null, Color.White, 0, Vector2.Zero, continueSpriteScale, SpriteEffects.None, 0);
             }
             #endregion
         }

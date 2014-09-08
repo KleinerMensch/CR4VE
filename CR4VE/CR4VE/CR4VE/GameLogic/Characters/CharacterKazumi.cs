@@ -16,6 +16,8 @@ namespace CR4VE.GameLogic.Characters
         public static new float manaLeft = 3;
         Entity claws, fireBall, danceOfFireFox;
 
+        TimeSpan timeSpan = TimeSpan.FromMilliseconds(270);
+
         Vector3 offset = new Vector3(8,8,8);
         Vector3 currentViewingDirection;
         float speed = 1;
@@ -32,6 +34,20 @@ namespace CR4VE.GameLogic.Characters
         #region Methods
         public override void Update(GameTime time)
         {
+            #region Timeupdate for DrawAttacks
+            // Decrements the timespan
+            timeSpan -= time.ElapsedGameTime;
+            // If the timespan is equal or smaller time "0"
+            if (timeSpan <= TimeSpan.Zero)
+            {
+                timeSpan = TimeSpan.FromMilliseconds(270);
+                attackList.Remove(claws);
+                attackList.Remove(danceOfFireFox);
+                launchedMelee = false;
+                launchedSpecial = false;
+            }
+            #endregion
+
             #region UpdateFireball
             if (launchedRanged)
             {
@@ -156,13 +172,15 @@ namespace CR4VE.GameLogic.Characters
         public override void MeleeAttack(GameTime time)
         {
             launchedMelee = true;
+            currentViewingDirection = viewingDirection;
+            timeSpan = TimeSpan.FromMilliseconds(270);
 
             #region Singleplayer
             if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
             {
-                Vector3 clawsPosition = Singleplayer.player.Position + viewingDirection * offset;
+                Vector3 clawsPosition = Singleplayer.player.Position + currentViewingDirection * offset;
                 claws = new Entity(clawsPosition, "5x5x5Box1", Singleplayer.cont);
-                claws.boundary = new BoundingBox(this.position + new Vector3(-2.5f, -2.5f, -2.5f) + viewingDirection * offset, this.position + new Vector3(2.5f, 2.5f, 2.5f) + viewingDirection * offset);
+                claws.boundary = new BoundingBox(this.position + new Vector3(-8f, -2.5f, -2.5f) + currentViewingDirection * offset, this.position + new Vector3(8f, 2.5f, 2.5f) + currentViewingDirection * offset);
                 attackList.Add(claws);
 
                 //Kollision mit Attacke
@@ -192,15 +210,14 @@ namespace CR4VE.GameLogic.Characters
                     }
                 }
                 #endregion
-                attackList.Remove(claws);
             }
             #endregion
             #region Arena
             else if (Game1.currentState.Equals(Game1.EGameState.Arena))
             {
-                Vector3 clawsPosition = Arena.player.Position + viewingDirection * offset;
+                Vector3 clawsPosition = Arena.player.Position + currentViewingDirection * offset;
                 claws = new Entity(clawsPosition, "5x5x5Box1", Arena.cont);
-                claws.boundary = new BoundingBox(this.position + new Vector3(-2.5f, -2.5f, -2.5f) + viewingDirection * offset, this.position + new Vector3(2.5f, 2.5f, 2.5f) + viewingDirection * offset);
+                claws.boundary = new BoundingBox(this.position + new Vector3(-8f, -2.5f, -2.5f) + currentViewingDirection * offset, this.position + new Vector3(8f, 2.5f, 2.5f) + currentViewingDirection * offset);
                 attackList.Add(claws);
 
                 //Kollision mit Attacke
@@ -212,7 +229,6 @@ namespace CR4VE.GameLogic.Characters
                         Console.WriteLine("Kazumi hit Boss by MeleeAttack");
                     }
                 }
-                attackList.Remove(claws);
             }
             #endregion
         }
@@ -251,6 +267,7 @@ namespace CR4VE.GameLogic.Characters
             {
                 manaLeft -= 2;
                 launchedSpecial = true;
+                timeSpan = TimeSpan.FromMilliseconds(270);
 
                 #region Singleplayer
                 if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
@@ -285,7 +302,6 @@ namespace CR4VE.GameLogic.Characters
                         }
                     }
                     #endregion
-                    attackList.Remove(danceOfFireFox);
                 }
                 #endregion
                 #region Arena
@@ -303,7 +319,6 @@ namespace CR4VE.GameLogic.Characters
                             Console.WriteLine("Kazumi hit Boss by AoE");
                         }
                     }
-                    attackList.Remove(danceOfFireFox);
                 }
                 #endregion
             }
@@ -318,7 +333,6 @@ namespace CR4VE.GameLogic.Characters
                     claws.drawIn2DWorld(new Vector3(1, 1, 1), 0, 0, MathHelper.ToRadians(90) * Singleplayer.player.viewingDirection.X);
                 if (Game1.currentState.Equals(Game1.EGameState.Arena))
                     claws.drawInArena(new Vector3(1, 1, 1), 0, 0, 0);
-                launchedMelee = false;
             }
             #endregion
             #region DrawRanged
@@ -337,7 +351,6 @@ namespace CR4VE.GameLogic.Characters
                     danceOfFireFox.drawIn2DWorld(Vector3.One, 0, 0, 0);
                 if (Game1.currentState.Equals(Game1.EGameState.Arena))
                     danceOfFireFox.drawInArena(Vector3.One, 0, 0, 0);
-                launchedSpecial = false;
             }
             #endregion
         }
