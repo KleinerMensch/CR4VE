@@ -27,6 +27,7 @@ namespace CR4VE.GameLogic.GameStates
         SpriteBatch spriteBatch;
 
         Texture2D background;
+        public static Effect effect;
 
         //Terrain
         public static Tilemap[] tileMaps = new Tilemap[]{};
@@ -303,6 +304,9 @@ namespace CR4VE.GameLogic.GameStates
             //Textures
             //background = content.Load<Texture2D>("Assets/Sprites/stone");
 
+            //Effects
+            effect = content.Load<Effect>("Assets/Effects/DirectLight");
+
             //Player
             ghost = new Character(Vector3.Zero, "skull", content);
             player = new CharacterOphelia(new Vector3(0,0,5), "Ophelia", content, new BoundingBox(new Vector3(-2.5f, -9f, -2.5f), new Vector3(2.5f, 9f, 2.5f)));
@@ -440,6 +444,7 @@ namespace CR4VE.GameLogic.GameStates
             //Terrain (includes Powerups, Checkpoints)
             tileMaps[activeIndex1].Draw(visibles);
             tileMaps[activeIndex2].Draw(visibles);
+
 
             //Player or Ghost
             if (GameControls.isGhost && GameControls.moveVecGhost != Vector3.Zero)
