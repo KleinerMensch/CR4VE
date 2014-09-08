@@ -22,12 +22,13 @@ namespace CR4VE.GameLogic.GameStates
         Texture2D background;
 
         SpriteFont font;
-        Vector2 fontPos_cr4ve;
         Vector2 fontPos_press;
         Vector2 fontPos_start;
+        Vector2 fontPos_resolution;
+        Vector2 fontPos_resolutionValue;
+        Vector2 fontPos_fullscreen;
 
-        //Buttons
-        //Button creditsButton;
+        String resolutionString;
 
         //Entities
         public static Entity sword;
@@ -50,18 +51,16 @@ namespace CR4VE.GameLogic.GameStates
             //Sprites
             background = content.Load<Texture2D>("Assets/Sprites/doge");
 
-            //Font
+            //Fonts
             font = content.Load<SpriteFont>("Assets/Fonts/GameOverFlo");
-            fontPos_cr4ve = new Vector2(Game1.graphics.PreferredBackBufferWidth / 2 - font.MeasureString("CR4VE").X/2, 0);
             fontPos_press = new Vector2(Game1.graphics.PreferredBackBufferWidth / 2 - font.MeasureString("PRESS").X / 2, 50);
             fontPos_start = new Vector2(Game1.graphics.PreferredBackBufferWidth / 2 - font.MeasureString("START").X / 2, 100);
 
-            //Buttons
-            //exitButton = new Button(content.Load<Texture2D>("Assets/Sprites/ButtonExit"), graphics);
-            //creditsButton = new Button(content.Load<Texture2D>("Assets/Sprites/ButtonExit"), graphics);
+            fontPos_fullscreen = new Vector2(Game1.graphics.PreferredBackBufferWidth / 4 - font.MeasureString("Fullscreen:").X, Game1.graphics.PreferredBackBufferHeight / 2);
+            fontPos_resolution = new Vector2(Game1.graphics.PreferredBackBufferWidth * 3 / 4, Game1.graphics.PreferredBackBufferHeight / 2);
+            fontPos_resolutionValue = fontPos_resolution + new Vector2(0, 50);
 
-            //exitButton.setPosition(new Vector2(350, 330));
-            //creditsButton.setPosition(new Vector2(350, 360));
+            resolutionString = "< " + Game1.graphics.PreferredBackBufferWidth + " x " + Game1.graphics.PreferredBackBufferHeight;
 
             //Entities
             sword = new Entity(new Vector3(0, -238f, -10), "mainmenu_sword", content);
@@ -75,6 +74,16 @@ namespace CR4VE.GameLogic.GameStates
             Game1.EGameState nextState = GameControls.updateMainMenu();
 
             GameControls.updateVibration(gameTime);
+
+            //Fonts
+            fontPos_press = new Vector2(Game1.graphics.PreferredBackBufferWidth / 2 - font.MeasureString("PRESS").X / 2, 50);
+            fontPos_start = new Vector2(Game1.graphics.PreferredBackBufferWidth / 2 - font.MeasureString("START").X / 2, 100);
+
+            fontPos_fullscreen = new Vector2(Game1.graphics.PreferredBackBufferWidth / 4 - font.MeasureString("Fullscreen:").X, Game1.graphics.PreferredBackBufferHeight / 2);
+            fontPos_resolution = new Vector2(Game1.graphics.PreferredBackBufferWidth * 3/4, Game1.graphics.PreferredBackBufferHeight / 2);
+            fontPos_resolutionValue = fontPos_resolutionValue = fontPos_resolution + new Vector2(0, 50);
+
+            resolutionString = "< " + Game1.graphics.PreferredBackBufferWidth + " x " + Game1.graphics.PreferredBackBufferHeight;
 
             return nextState;
         }
@@ -93,20 +102,28 @@ namespace CR4VE.GameLogic.GameStates
             {
                 case 0:
                     {
-                        //spriteBatch.DrawString(font, "CR4VE", fontPos_cr4ve, Color.White);
-                        spriteBatch.DrawString(font, "PRESS", fontPos_press, Color.White);
-                        spriteBatch.DrawString(font, "START", fontPos_start, Color.White);
+                        if (!GameControls.isMenuMoving)
+                        {
+                            spriteBatch.DrawString(font, "PRESS", fontPos_press, Color.White);
+                            spriteBatch.DrawString(font, "START", fontPos_start, Color.White);
+                        }
                     } break;
-                case 1:
-                    { 
-                        
+                case 4:
+                    {
+                        if (!GameControls.isMenuMoving)
+                        {
+                            if (GameControls.fullscreenPossible)
+                            {
+                                spriteBatch.DrawString(font, "Fullscreen:", fontPos_fullscreen, Color.White);
+                                spriteBatch.DrawString(font, Game1.graphics.IsFullScreen.ToString() + " >", fontPos_fullscreen + new Vector2(0, 50), Color.White);
+                            }
+
+                            spriteBatch.DrawString(font, "Resolution:", fontPos_resolution, Color.White);
+                            spriteBatch.DrawString(font, resolutionString, fontPos_resolutionValue, Color.White);
+                        }
                     } break;
             }
-
-            //Buttons
-            //exitButton.Draw(spriteBatch);
-            //creditsButton.Draw(spriteBatch);
-
+            
             spriteBatch.End();
 
             //GraphicsDevice auf default setzen

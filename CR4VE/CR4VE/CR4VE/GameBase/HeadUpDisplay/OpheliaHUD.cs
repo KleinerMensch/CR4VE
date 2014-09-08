@@ -14,9 +14,8 @@ namespace CR4VE.GameBase.HeadUpDisplay
     {
         #region Attributes
         private Texture2D opheliaHealthContainer, opheliaPower;
-        public Color opheliaPowerColor;
-
         private Vector2 opheliaHealthContainerPosition;
+        public Color opheliaPowerColor;
         #endregion
 
         #region inherited Constructor
@@ -99,8 +98,7 @@ namespace CR4VE.GameBase.HeadUpDisplay
         }
 
         public override void UpdateHealth()
-        {
-            
+        {            
             if (Game1.currentState == Game1.EGameState.Singleplayer)
             {
                 int ai1 = Singleplayer.activeIndex1;

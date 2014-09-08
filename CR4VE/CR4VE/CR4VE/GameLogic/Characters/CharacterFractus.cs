@@ -292,7 +292,7 @@ namespace CR4VE.GameLogic.Characters
 
         public override void RangedAttack(GameTime time)
         {
-            if (manaLeft > 0)
+            if (manaLeft >= 1)
             {
                 manaLeft -= 1;
                 launchedRanged = true;

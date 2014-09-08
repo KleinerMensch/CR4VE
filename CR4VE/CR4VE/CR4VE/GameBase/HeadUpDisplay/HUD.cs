@@ -68,9 +68,10 @@ namespace CR4VE.GameBase.HeadUpDisplay
             }
             else if (Game1.currentState.Equals(Game1.EGameState.Arena))
             {
-                if (healthLeft <= 0 && trialsLeft > 0)
+                if (healthLeft <= 0 && trialsLeft >= 0)
                 {
                     trialsLeft -= 1;
+
                     //refill health
                     healthLeft = fullHealth;
                 }

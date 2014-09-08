@@ -22,6 +22,17 @@ namespace CR4VE
         public static GraphicsDeviceManager graphics;
         public static SpriteBatch spriteBatch;
         public static Game1 game = new Game1();
+
+        public static int resolutionIndex = 0;
+        public static readonly Vector2[] resolutions = new Vector2[]
+        {
+            //16:9
+            new Vector2(960, 540),
+            new Vector2(1280, 720),
+            
+            //4:3
+            new Vector2(800, 600),
+        };
         
         private EGameState gameState;
         public static EGameState currentState;
@@ -148,10 +159,10 @@ namespace CR4VE
             //IsMouseVisible = true;
 
             //size of Game Window
-            graphics.PreferredBackBufferWidth = 960;
-            graphics.PreferredBackBufferHeight = 540;
+            graphics.PreferredBackBufferWidth = (int) resolutions[resolutionIndex].X;
+            graphics.PreferredBackBufferHeight = (int) resolutions[resolutionIndex].Y;
 
-            //graphics.IsFullScreen = true;
+            graphics.IsFullScreen = false;
 
             graphics.ApplyChanges();
 

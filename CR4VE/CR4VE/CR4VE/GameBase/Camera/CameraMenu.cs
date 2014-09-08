@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using CR4VE.GameLogic.Controls;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -80,6 +81,27 @@ namespace CR4VE.GameBase.Camera
             //Viewport Matrices
             viewMatr = Matrix.CreateLookAt(position3D, target, Vector3.Up);
             projMatr = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45f), ratio, 10f, 150);
+        }
+
+        public static void updateResolution()
+        {
+            //get new resolution
+            Game1.graphics.PreferredBackBufferWidth = (int) Game1.resolutions[Game1.resolutionIndex].X;
+            Game1.graphics.PreferredBackBufferHeight = (int) Game1.resolutions[Game1.resolutionIndex].Y;
+
+            //check for fullscreen possibility
+            if (Game1.resolutions[Game1.resolutionIndex] == new Vector2(1280, 720))
+                GameControls.fullscreenPossible = true;
+            else
+                GameControls.fullscreenPossible = false;
+
+            if (!GameControls.fullscreenPossible)
+                Game1.graphics.IsFullScreen = false;
+
+            //apply changes
+            Game1.graphics.ApplyChanges();
+
+            CameraMenu.Initialize(Game1.graphics.PreferredBackBufferWidth, Game1.graphics.PreferredBackBufferHeight);
         }
 
         //transforms world coordinates to screen coordinates
