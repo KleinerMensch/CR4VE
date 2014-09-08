@@ -13,8 +13,8 @@ namespace CR4VE.GameBase.HeadUpDisplay
     class KazumiHUD : HUD
     {
         #region Attributes
-        private Texture2D kazumiHealthContainer, kazumiPowerLeftTail, kazumiPowerMiddleTail, kazumiPowerRightTail;
-        private Vector2 kazumiHealthContainerPosition;
+        private Texture2D kazumiContinue, kazumiHealthContainer, kazumiPowerLeftTail, kazumiPowerMiddleTail, kazumiPowerRightTail;
+        private Vector2 kazumiContinue1Position, kazumiContinue2Position, kazumiContinue3Position, kazumiHealthContainerPosition;
         #endregion
 
         #region inherited Constructor
@@ -25,6 +25,7 @@ namespace CR4VE.GameBase.HeadUpDisplay
         public override void Initialize(ContentManager content)
         {
             #region LoadContent
+            kazumiContinue = content.Load<Texture2D>("Assets/Sprites/ContinueKazumi");
             kazumiHealthContainer = content.Load<Texture2D>("Assets/Sprites/KazumiHPBar");
             kazumiPowerLeftTail = content.Load<Texture2D>("Assets/Sprites/KazumiPower_LeftTail");
             kazumiPowerMiddleTail = content.Load<Texture2D>("Assets/Sprites/KazumiPower_MiddleTail");
@@ -32,6 +33,10 @@ namespace CR4VE.GameBase.HeadUpDisplay
             #endregion
 
             kazumiHealthContainerPosition = new Vector2(graphics.PreferredBackBufferWidth - (kazumiHealthContainer.Width * spriteScale), graphics.PreferredBackBufferHeight - (kazumiHealthContainer.Height * spriteScale));
+
+            kazumiContinue1Position = new Vector2(kazumiHealthContainerPosition.X - kazumiContinue.Width * continueSpriteScale, graphics.PreferredBackBufferHeight - kazumiContinue.Height * continueSpriteScale - yOffset);
+            kazumiContinue2Position = new Vector2(kazumiContinue1Position.X - kazumiContinue.Width*continueSpriteScale, graphics.PreferredBackBufferHeight - kazumiContinue.Height * continueSpriteScale - yOffset);
+            kazumiContinue3Position = new Vector2(kazumiContinue2Position.X - kazumiContinue.Width * continueSpriteScale, graphics.PreferredBackBufferHeight - kazumiContinue.Height * continueSpriteScale - yOffset);
         }
 
         public override void UpdateMana()
@@ -147,8 +152,8 @@ namespace CR4VE.GameBase.HeadUpDisplay
             if (CharacterKazumi.manaLeft == 3)
             {
                 spriteBatch.Draw(kazumiPowerLeftTail, kazumiHealthContainerPosition, null, Color.White, 0f, Vector2.Zero, spriteScale, SpriteEffects.None, 0);
-                spriteBatch.Draw(kazumiPowerMiddleTail, kazumiHealthContainerPosition, null, Color.White, 0f, Vector2.Zero, spriteScale, SpriteEffects.None, 0);
                 spriteBatch.Draw(kazumiPowerRightTail, kazumiHealthContainerPosition, null, Color.White, 0f, Vector2.Zero, spriteScale, SpriteEffects.None, 0);
+                spriteBatch.Draw(kazumiPowerMiddleTail, kazumiHealthContainerPosition, null, Color.White, 0f, Vector2.Zero, spriteScale, SpriteEffects.None, 0);
             }
             if (CharacterKazumi.manaLeft > 1 && CharacterKazumi.manaLeft < 3)
             {
@@ -158,6 +163,24 @@ namespace CR4VE.GameBase.HeadUpDisplay
             if (CharacterKazumi.manaLeft <= 1 && CharacterKazumi.manaLeft > 0)
             {
                 spriteBatch.Draw(kazumiPowerMiddleTail, kazumiHealthContainerPosition, null, Color.White, 0f, Vector2.Zero, spriteScale, SpriteEffects.None, 0);
+            }
+            #endregion
+
+            #region Drawing current amount of Continues
+            if (trialsLeft == 3)
+            {
+                spriteBatch.Draw(kazumiContinue, kazumiContinue1Position, null, Color.White, 0, Vector2.Zero, continueSpriteScale, SpriteEffects.None, 0);
+                spriteBatch.Draw(kazumiContinue, kazumiContinue2Position, null, Color.White, 0, Vector2.Zero, continueSpriteScale, SpriteEffects.None, 0);
+                spriteBatch.Draw(kazumiContinue, kazumiContinue3Position, null, Color.White, 0, Vector2.Zero, continueSpriteScale, SpriteEffects.None, 0);
+            }
+            else if (trialsLeft == 2)
+            {
+                spriteBatch.Draw(kazumiContinue, kazumiContinue1Position, null, Color.White, 0, Vector2.Zero, continueSpriteScale, SpriteEffects.None, 0);
+                spriteBatch.Draw(kazumiContinue, kazumiContinue2Position, null, Color.White, 0, Vector2.Zero, continueSpriteScale, SpriteEffects.None, 0);
+            }
+            else if (trialsLeft == 1)
+            {
+                spriteBatch.Draw(kazumiContinue, kazumiContinue1Position, null, Color.White, 0, Vector2.Zero, continueSpriteScale, SpriteEffects.None, 0);
             }
             #endregion
         }
