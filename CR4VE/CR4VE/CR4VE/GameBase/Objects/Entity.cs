@@ -22,6 +22,7 @@ namespace CR4VE.GameBase.Objects
         public Vector3 position;
         public Model model;
         public BoundingBox boundary;
+        public Texture2D texture;
 
         //Blickrichtung
         public Vector3 viewingDirection = new Vector3(1, 0, 0);
@@ -515,6 +516,32 @@ namespace CR4VE.GameBase.Objects
                     Console.WriteLine("0: " + effect.DirectionalLight0.Direction);
                     Console.WriteLine("1: " + effect.DirectionalLight1.Direction);
                     Console.WriteLine("2: " + effect.DirectionalLight2.Direction);*/
+                }
+                mesh.Draw();
+            }
+        }
+
+        public void DrawModelWithEffect(Vector3 scale, float rotX, float rotY, float rotZ)
+        {
+            Matrix[] transforms = new Matrix[model.Bones.Count];
+            model.CopyAbsoluteBoneTransformsTo(transforms);
+
+            Matrix rotation = Matrix.CreateRotationX(rotX) * Matrix.CreateRotationY(rotY) * Matrix.CreateRotationZ(rotZ);
+            Matrix translation = Matrix.CreateTranslation(Camera2D.transform3D(this.Position));
+
+            Matrix world = Matrix.CreateScale(scale) * rotation * translation;
+
+            foreach (ModelMesh mesh in model.Meshes)
+            {
+                foreach (ModelMeshPart part in mesh.MeshParts)
+                {
+                    part.Effect = Singleplayer.effect;
+                    Singleplayer.effect.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * world);
+                    Singleplayer.effect.Parameters["View"].SetValue(Camera2D.ViewMatrix);
+                    Singleplayer.effect.Parameters["Projection"].SetValue(Camera2D.ProjectionMatrix);
+                    //Singleplayer.effect.Parameters["ModelTexture"].SetValue(texture);
+
+
                 }
                 mesh.Draw();
             }

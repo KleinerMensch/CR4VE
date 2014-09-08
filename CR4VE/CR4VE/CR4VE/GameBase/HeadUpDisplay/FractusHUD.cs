@@ -10,37 +10,38 @@ using System.Text;
 
 namespace CR4VE.GameBase.HeadUpDisplay
 {
-    class KazumiHUD : HUD
+    class FractusHUD : HUD
     {
         #region Attributes
-        private Texture2D kazumiContinue, kazumiHealthContainer, kazumiPowerLeftTail, kazumiPowerMiddleTail, kazumiPowerRightTail;
-        private Vector2 kazumiContinue1Position, kazumiContinue2Position, kazumiContinue3Position, kazumiHealthContainerPosition;
+        private Texture2D fractusContinue, fractusHealthContainer, fractusPowerLeftestCrystal, fractusPowerRightestCrystal, fractusPowerMiddleCrystalLeft, fractusPowerMiddleCrystalRight;
+        private Vector2 fractusContinue1Position, fractusContinue2Position, fractusContinue3Position, fractusHealthContainerPosition;
         #endregion
 
         #region inherited Constructor
-        public KazumiHUD(ContentManager content, GraphicsDeviceManager manager):base(content,manager) { }
+        public FractusHUD(ContentManager content, GraphicsDeviceManager manager):base(content,manager) { }
         #endregion
 
         #region Methods
         public override void Initialize(ContentManager content)
         {
             #region LoadContent
-            kazumiContinue = content.Load<Texture2D>("Assets/Sprites/ContinueKazumi");
-            kazumiHealthContainer = content.Load<Texture2D>("Assets/Sprites/KazumiHPBar");
-            kazumiPowerLeftTail = content.Load<Texture2D>("Assets/Sprites/KazumiPower_LeftTail");
-            kazumiPowerMiddleTail = content.Load<Texture2D>("Assets/Sprites/KazumiPower_MiddleTail");
-            kazumiPowerRightTail = content.Load<Texture2D>("Assets/Sprites/KazumiPower_RightTail");
+            fractusContinue = content.Load<Texture2D>("Assets/Sprites/ContinueFractus");
+            fractusHealthContainer = content.Load<Texture2D>("Assets/Sprites/FractusHPBar");
+            fractusPowerLeftestCrystal = content.Load<Texture2D>("Assets/Sprites/FractusPowerLeftestCrystal");
+            fractusPowerRightestCrystal = content.Load<Texture2D>("Assets/Sprites/FractusPowerRightestCrystal");
+            fractusPowerMiddleCrystalLeft = content.Load<Texture2D>("Assets/Sprites/FractusPowerMiddleCrystalLeft");
+            fractusPowerMiddleCrystalRight = content.Load<Texture2D>("Assets/Sprites/FractusPowerMiddleCrystalRight");
             #endregion
 
-            kazumiHealthContainerPosition = new Vector2(graphics.PreferredBackBufferWidth - (kazumiHealthContainer.Width * spriteScale), graphics.PreferredBackBufferHeight - (kazumiHealthContainer.Height * spriteScale));
-
-            kazumiContinue1Position = new Vector2(kazumiHealthContainerPosition.X - kazumiContinue.Width * continueSpriteScale, graphics.PreferredBackBufferHeight - kazumiContinue.Height * continueSpriteScale - yOffset);
-            kazumiContinue2Position = new Vector2(kazumiContinue1Position.X - kazumiContinue.Width*continueSpriteScale, graphics.PreferredBackBufferHeight - kazumiContinue.Height * continueSpriteScale - yOffset);
-            kazumiContinue3Position = new Vector2(kazumiContinue2Position.X - kazumiContinue.Width * continueSpriteScale, graphics.PreferredBackBufferHeight - kazumiContinue.Height * continueSpriteScale - yOffset);
+            fractusHealthContainerPosition = new Vector2(0,0);
+            fractusContinue1Position = new Vector2(fractusHealthContainer.Width*spriteScale, yOffset);
+            fractusContinue2Position = new Vector2(fractusContinue1Position.X + fractusContinue.Width * continueSpriteScale, yOffset);
+            fractusContinue3Position = new Vector2(fractusContinue2Position.X + fractusContinue.Width * continueSpriteScale, yOffset);
         }
 
         public override void UpdateMana()
         {
+            #region Singleplayer
             if (Game1.currentState == Game1.EGameState.Singleplayer)
             {
                 int ai1 = Singleplayer.activeIndex1;
@@ -51,12 +52,12 @@ namespace CR4VE.GameBase.HeadUpDisplay
                 {
                     if (Singleplayer.tileMaps[ai1].PowerupList[i].type == "mana")
                     {
-                        if (CharacterKazumi.manaLeft < 3)
+                        if (CharacterFractus.manaLeft < 3)
                         {
                             if (Singleplayer.tileMaps[ai1].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
                             {
                                 Singleplayer.tileMaps[ai1].PowerupList.Remove(Singleplayer.tileMaps[ai1].PowerupList.ElementAt(i));
-                                CharacterKazumi.manaLeft += 1;
+                                CharacterFractus.manaLeft += 1;
                             }
                         }
                     }
@@ -67,18 +68,19 @@ namespace CR4VE.GameBase.HeadUpDisplay
                 {
                     if (Singleplayer.tileMaps[ai2].PowerupList[i].type == "mana")
                     {
-                        if (CharacterKazumi.manaLeft < 3)
+                        if (CharacterFractus.manaLeft < 3)
                         {
                             if (Singleplayer.tileMaps[ai2].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
                             {
                                 Singleplayer.tileMaps[ai2].PowerupList.Remove(Singleplayer.tileMaps[ai2].PowerupList.ElementAt(i));
-                                CharacterKazumi.manaLeft += 1;
+                                CharacterFractus.manaLeft += 1;
                             }
                         }
                     }
                 }
                 #endregion
             }
+            #endregion
         }
 
         public override void UpdateHealth()
@@ -140,47 +142,64 @@ namespace CR4VE.GameBase.HeadUpDisplay
         public override void UpdateLiquidPositionByResolution()
         {
             if ((graphics.PreferredBackBufferWidth / graphics.PreferredBackBufferHeight == 16 / 9) || (graphics.PreferredBackBufferWidth / graphics.PreferredBackBufferHeight == 4 / 3))
-                liquidPosition = kazumiHealthContainerPosition + new Vector2(65.2f, 156.5f);
+                liquidPosition = fractusHealthContainerPosition + new Vector2(114, 83.5f);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(redLiquid, liquidPosition, new Rectangle(0, 0, redLiquid.Width, healthLeft), Color.White, MathHelper.ToRadians(180), new Vector2(redLiquid.Width / 2, redLiquid.Height / 2), spriteScale, SpriteEffects.None, 0);
-            spriteBatch.Draw(kazumiHealthContainer, kazumiHealthContainerPosition, null, Color.White, 0f, Vector2.Zero, spriteScale, SpriteEffects.None, 0);
+            spriteBatch.Draw(fractusHealthContainer, fractusHealthContainerPosition, null, Color.White, 0f, Vector2.Zero, spriteScale, SpriteEffects.None, 0);
 
             #region Drawing current amount of Mana
-            if (CharacterKazumi.manaLeft == 3)
+            if (CharacterFractus.manaLeft == 3)
             {
-                spriteBatch.Draw(kazumiPowerLeftTail, kazumiHealthContainerPosition, null, Color.White, 0f, Vector2.Zero, spriteScale, SpriteEffects.None, 0);
-                spriteBatch.Draw(kazumiPowerRightTail, kazumiHealthContainerPosition, null, Color.White, 0f, Vector2.Zero, spriteScale, SpriteEffects.None, 0);
-                spriteBatch.Draw(kazumiPowerMiddleTail, kazumiHealthContainerPosition, null, Color.White, 0f, Vector2.Zero, spriteScale, SpriteEffects.None, 0);
+                spriteBatch.Draw(fractusPowerLeftestCrystal, fractusHealthContainerPosition, null, Color.White, 0f, Vector2.Zero, spriteScale, SpriteEffects.None, 0);
+                spriteBatch.Draw(fractusPowerMiddleCrystalRight , fractusHealthContainerPosition, null, Color.White, 0f, Vector2.Zero, spriteScale, SpriteEffects.None, 0);
+                spriteBatch.Draw(fractusPowerMiddleCrystalLeft, fractusHealthContainerPosition, null, Color.White, 0f, Vector2.Zero, spriteScale, SpriteEffects.None, 0);
+                spriteBatch.Draw(fractusPowerRightestCrystal, fractusHealthContainerPosition, null, Color.White, 0f, Vector2.Zero, spriteScale, SpriteEffects.None, 0);
             }
-            if (CharacterKazumi.manaLeft > 1 && CharacterKazumi.manaLeft < 3)
+            if (CharacterFractus.manaLeft > 2 && CharacterFractus.manaLeft < 3)
             {
-                spriteBatch.Draw(kazumiPowerLeftTail, kazumiHealthContainerPosition, null, Color.White, 0f, Vector2.Zero, spriteScale, SpriteEffects.None, 0);
-                spriteBatch.Draw(kazumiPowerMiddleTail, kazumiHealthContainerPosition, null, Color.White, 0f, Vector2.Zero, spriteScale, SpriteEffects.None, 0);
+                spriteBatch.Draw(fractusPowerLeftestCrystal, fractusHealthContainerPosition, null, Color.White, 0f, Vector2.Zero, spriteScale, SpriteEffects.None, 0);
+                spriteBatch.Draw(fractusPowerMiddleCrystalLeft, fractusHealthContainerPosition, null, Color.White, 0f, Vector2.Zero, spriteScale, SpriteEffects.None, 0);
+                spriteBatch.Draw(fractusPowerMiddleCrystalRight, fractusHealthContainerPosition, null, Color.White, 0f, Vector2.Zero, spriteScale, SpriteEffects.None, 0);
             }
-            if (CharacterKazumi.manaLeft <= 1 && CharacterKazumi.manaLeft > 0)
+            if (CharacterFractus.manaLeft == 2)
             {
-                spriteBatch.Draw(kazumiPowerMiddleTail, kazumiHealthContainerPosition, null, Color.White, 0f, Vector2.Zero, spriteScale, SpriteEffects.None, 0);
+                spriteBatch.Draw(fractusPowerMiddleCrystalRight, fractusHealthContainerPosition, null, Color.White, 0f, Vector2.Zero, spriteScale, SpriteEffects.None, 0);
+                spriteBatch.Draw(fractusPowerMiddleCrystalLeft, fractusHealthContainerPosition, null, Color.White, 0f, Vector2.Zero, spriteScale, SpriteEffects.None, 0);
+                spriteBatch.Draw(fractusPowerRightestCrystal, fractusHealthContainerPosition, null, Color.White, 0f, Vector2.Zero, spriteScale, SpriteEffects.None, 0);
+            }
+            if (CharacterFractus.manaLeft > 1 && CharacterFractus.manaLeft < 2)
+            {
+                spriteBatch.Draw(fractusPowerMiddleCrystalRight, fractusHealthContainerPosition, null, Color.White, 0f, Vector2.Zero, spriteScale, SpriteEffects.None, 0);
+                spriteBatch.Draw(fractusPowerMiddleCrystalLeft, fractusHealthContainerPosition, null, Color.White, 0f, Vector2.Zero, spriteScale, SpriteEffects.None, 0);
+            }
+            if (CharacterFractus.manaLeft == 1)
+            {
+                spriteBatch.Draw(fractusPowerMiddleCrystalLeft, fractusHealthContainerPosition, null, Color.White, 0f, Vector2.Zero, spriteScale, SpriteEffects.None, 0);
+            }
+            if (CharacterFractus.manaLeft < 1 && CharacterFractus.manaLeft > 0)
+            {
+                spriteBatch.Draw(fractusPowerMiddleCrystalRight, fractusHealthContainerPosition, null, Color.White, 0f, Vector2.Zero, spriteScale, SpriteEffects.None, 0);
             }
             #endregion
 
             #region Drawing current amount of Continues
             if (trialsLeft == 3)
             {
-                spriteBatch.Draw(kazumiContinue, kazumiContinue1Position, null, Color.White, 0, Vector2.Zero, continueSpriteScale, SpriteEffects.None, 0);
-                spriteBatch.Draw(kazumiContinue, kazumiContinue2Position, null, Color.White, 0, Vector2.Zero, continueSpriteScale, SpriteEffects.None, 0);
-                spriteBatch.Draw(kazumiContinue, kazumiContinue3Position, null, Color.White, 0, Vector2.Zero, continueSpriteScale, SpriteEffects.None, 0);
+                spriteBatch.Draw(fractusContinue, fractusContinue1Position, null, Color.White, 0, Vector2.Zero, continueSpriteScale, SpriteEffects.None, 0);
+                spriteBatch.Draw(fractusContinue, fractusContinue2Position, null, Color.White, 0, Vector2.Zero, continueSpriteScale, SpriteEffects.None, 0);
+                spriteBatch.Draw(fractusContinue, fractusContinue3Position, null, Color.White, 0, Vector2.Zero, continueSpriteScale, SpriteEffects.None, 0);
             }
             else if (trialsLeft == 2)
             {
-                spriteBatch.Draw(kazumiContinue, kazumiContinue1Position, null, Color.White, 0, Vector2.Zero, continueSpriteScale, SpriteEffects.None, 0);
-                spriteBatch.Draw(kazumiContinue, kazumiContinue2Position, null, Color.White, 0, Vector2.Zero, continueSpriteScale, SpriteEffects.None, 0);
+                spriteBatch.Draw(fractusContinue, fractusContinue1Position, null, Color.White, 0, Vector2.Zero, continueSpriteScale, SpriteEffects.None, 0);
+                spriteBatch.Draw(fractusContinue, fractusContinue2Position, null, Color.White, 0, Vector2.Zero, continueSpriteScale, SpriteEffects.None, 0);
             }
             else if (trialsLeft == 1)
             {
-                spriteBatch.Draw(kazumiContinue, kazumiContinue1Position, null, Color.White, 0, Vector2.Zero, continueSpriteScale, SpriteEffects.None, 0);
+                spriteBatch.Draw(fractusContinue, fractusContinue1Position, null, Color.White, 0, Vector2.Zero, continueSpriteScale, SpriteEffects.None, 0);
             }
             #endregion
         }

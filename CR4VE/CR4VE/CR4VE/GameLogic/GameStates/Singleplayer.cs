@@ -26,6 +26,9 @@ namespace CR4VE.GameLogic.GameStates
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        Texture2D background;
+        public static Effect effect;
+
         //Terrain
         public static Tilemap[] tileMaps = new Tilemap[]{};
 
@@ -227,7 +230,7 @@ namespace CR4VE.GameLogic.GameStates
             {13,13, 0, 0, 0, 0, 0, 0,19, 0,19,19,19,19,19,19,19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,15,15,15,15,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,19,19, 0, 0, 0,19, 0, 0,19,19, 0, 0, 0, 0, 0},
             {13,13,15,15,15, 0,96, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,18,18,18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {13,13,18,18,18,15,15, 0, 0, 0, 0, 0, 0, 0, 0,97, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,15,18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,19,19, 0, 0},
-            {13,13,18,18,18,18,18, 0, 0, 0, 0, 0,15, 0,15,15,15, 0, 0,15, 0, 0, 0, 0,15, 0, 0,18,18,97, 0, 0,15,15, 0, 0,15, 0, 0, 0,18,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {13,13,18,18,18,18,18, 0, 0, 0, 0, 0,15, 0,15,15,15, 0, 0,15, 0, 0, 0, 0,15, 0, 0,18,18,97, 0, 0,15,15, 0, 0,15, 0, 0, 0,18,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,19},
             {13,13,18,18,18,18,18,15,15, 0, 0,15,18,15,18,18,18,16,16,18, 0, 0, 0, 0,18,16,16,18,18,15,15,15,18,18,16,16,18,15,15,15,18,18,15,15,15,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {13,13,18,18,18,18,18,18,18,16,16,18,18,18,18,18,18,16,16,18, 0, 0, 0,15,18,16,16,18,18,18,18,18,18,18,16,16,18,18,18,18,18,18,18,18,18,18,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,16},
             {13,13,18,18,18,18,18,18,18,16,16,18,18,18,18,18,18,16,16,18, 0,98, 0, 0,18,16,16,18,18,18,18,18,18,18,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16},
@@ -284,7 +287,7 @@ namespace CR4VE.GameLogic.GameStates
                 Tilemap.Generate(layout6, boxSize, new Vector3(2670, -290, 0)),//2670,-290,0
                 Tilemap.Generate(layout7, boxSize, new Vector3(3180,-410, 0)),//(3180,-420,0)
                 Tilemap.Generate(layout8, boxSize, new Vector3(3760,-440, 0)),//(3660,-590,0)
-                //Tilemap.Generate(layout9, boxSize, new Vector3(-80,0,-10)),
+                Tilemap.Generate(layout9, boxSize, new Vector3(-80,0,-10)),
             };
 
             //indices of active Tilemaps
@@ -300,7 +303,13 @@ namespace CR4VE.GameLogic.GameStates
             //SaveGame
             SaveGame.Reset();
 
-            //Player and Ghost
+            //Textures
+            //background = content.Load<Texture2D>("Assets/Sprites/stone");
+
+            //Effects
+            effect = content.Load<Effect>("Assets/Effects/DirectLight");
+
+            //Player
             ghost = new Character(Vector3.Zero, "skull", content);
             player = new CharacterOphelia(new Vector3(0,0,5), "Ophelia", content, new BoundingBox(new Vector3(-2.5f, -9f, -2.5f), new Vector3(2.5f, 9f, 2.5f)));
             CharacterOphelia.manaLeft = 3;
@@ -439,6 +448,7 @@ namespace CR4VE.GameLogic.GameStates
             tileMaps[activeIndex1].Draw(visibles);
             tileMaps[activeIndex2].Draw(visibles);
 
+
             //Player or Ghost
             if (GameControls.isGhost && GameControls.moveVecGhost != Vector3.Zero)
                 ghost.drawIn2DWorld(new Vector3(0.05f, 0.05f, 0.05f), 0, 0, 0);
@@ -466,7 +476,6 @@ namespace CR4VE.GameLogic.GameStates
             #region HUD
             spriteBatch.Begin();
 
-            hud.DrawGenerals(spriteBatch);
             hud.Draw(spriteBatch);
 
             spriteBatch.End();

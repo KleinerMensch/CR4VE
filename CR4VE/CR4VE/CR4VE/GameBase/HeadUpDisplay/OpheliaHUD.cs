@@ -13,10 +13,9 @@ namespace CR4VE.GameBase.HeadUpDisplay
     class OpheliaHUD : HUD
     {
         #region Attributes
-        private Texture2D opheliaHealthContainer, opheliaPower;
+        private Texture2D opheliaContinue, opheliaHealthContainer, opheliaPower;
+        private Vector2 opheliaContinue1Position, opheliaContinue2Position, opheliaContinue3Position, opheliaHealthContainerPosition;
         public Color opheliaPowerColor;
-
-        private Vector2 opheliaHealthContainerPosition;
         #endregion
 
         #region inherited Constructor
@@ -27,6 +26,7 @@ namespace CR4VE.GameBase.HeadUpDisplay
         public override void Initialize(ContentManager content)
         {
             #region LoadContent
+            opheliaContinue = content.Load<Texture2D>("Assets/Sprites/ContinueOphelia");
             opheliaHealthContainer = content.Load<Texture2D>("Assets/Sprites/OpheliaHPBar");
             opheliaPower = content.Load<Texture2D>("Assets/Sprites/OpheliaPower");
             #endregion
@@ -34,6 +34,9 @@ namespace CR4VE.GameBase.HeadUpDisplay
             opheliaPowerColor = new Color(198, 226, 255, 0);
 
             opheliaHealthContainerPosition = new Vector2(0, graphics.PreferredBackBufferHeight - (opheliaHealthContainer.Height * spriteScale));
+            opheliaContinue1Position = new Vector2(opheliaHealthContainer.Width * spriteScale, graphics.PreferredBackBufferHeight - (opheliaContinue.Height * continueSpriteScale) - yOffset);
+            opheliaContinue2Position = new Vector2(opheliaContinue1Position.X + opheliaContinue.Width*continueSpriteScale, graphics.PreferredBackBufferHeight - (opheliaContinue.Height * continueSpriteScale) - yOffset);
+            opheliaContinue3Position = new Vector2(opheliaContinue2Position.X + opheliaContinue.Width * continueSpriteScale, graphics.PreferredBackBufferHeight - (opheliaContinue.Height * continueSpriteScale) - yOffset);
 
             //set parameters
             this.healthLeft = fullHealth;
@@ -182,6 +185,24 @@ namespace CR4VE.GameBase.HeadUpDisplay
             spriteBatch.Draw(redLiquid, liquidPosition, new Rectangle(0, 0, redLiquid.Width, (int) (percentagedHealthLeft*redLiquid.Height)), Color.White, MathHelper.ToRadians(180), new Vector2(redLiquid.Width / 2, redLiquid.Height / 2), spriteScale, SpriteEffects.None, 0);
             spriteBatch.Draw(opheliaHealthContainer, opheliaHealthContainerPosition, null, Color.White, 0f, Vector2.Zero, spriteScale, SpriteEffects.None, 0);
             spriteBatch.Draw(opheliaPower, opheliaHealthContainerPosition+ new Vector2(0,4), null, opheliaPowerColor, 0f, Vector2.Zero, spriteScale, SpriteEffects.None, 0);
+
+            #region Drawing current amount of Continues
+            if (trialsLeft == 3)
+            {
+                spriteBatch.Draw(opheliaContinue, opheliaContinue1Position, null, Color.White, 0, Vector2.Zero, continueSpriteScale, SpriteEffects.None, 0);
+                spriteBatch.Draw(opheliaContinue, opheliaContinue2Position, null, Color.White, 0, Vector2.Zero, continueSpriteScale, SpriteEffects.None, 0);
+                spriteBatch.Draw(opheliaContinue, opheliaContinue3Position, null, Color.White, 0, Vector2.Zero, continueSpriteScale, SpriteEffects.None, 0);
+            }
+            else if (trialsLeft == 2)
+            {
+                spriteBatch.Draw(opheliaContinue, opheliaContinue1Position, null, Color.White, 0, Vector2.Zero, continueSpriteScale, SpriteEffects.None, 0);
+                spriteBatch.Draw(opheliaContinue, opheliaContinue2Position, null, Color.White, 0, Vector2.Zero, continueSpriteScale, SpriteEffects.None, 0);
+            }
+            else if (trialsLeft == 1)
+            {
+                spriteBatch.Draw(opheliaContinue, opheliaContinue1Position, null, Color.White, 0, Vector2.Zero, continueSpriteScale, SpriteEffects.None, 0);
+            }
+            #endregion
         }
         #endregion
     }

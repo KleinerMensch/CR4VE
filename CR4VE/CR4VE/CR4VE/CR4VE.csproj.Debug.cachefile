@@ -25,6 +25,15 @@ Content\Assets\Models\Players\Maps\shadow.xnb
 Content\Assets\Models\Players\Maps\HoernerTextur.xnb
 Content\Assets\Models\Maps\EdelsteinTextur.xnb
 Content\Assets\Models\Maps\gold_1024x1024.xnb
+Content\Assets\Sprites\FractusHPBar.xnb
+Content\Assets\Sprites\FractusPowerLeftestCrystal.xnb
+Content\Assets\Sprites\FractusPowerMiddleCrystalLeft.xnb
+Content\Assets\Sprites\FractusPowerMiddleCrystalRight.xnb
+Content\Assets\Sprites\FractusPowerRightestCrystal.xnb
+Content\Assets\Sprites\ContinueFractus.xnb
+Content\Assets\Sprites\ContinueOphelia.xnb
+Content\Assets\Sprites\ContinueKazumi.xnb
+Content\Assets\Sprites\ContinueSeraphin.xnb
 Content\Assets\Fonts\HUDfont.xnb
 Content\Assets\Fonts\GameOverFlo.xnb
 Content\Assets\Models\Enemies\EnemyEye.xnb
@@ -65,6 +74,10 @@ Content\Assets\Models\Terrain\Box9.xnb
 Content\Assets\Models\mainmenu_sword.xnb
 Content\Assets\Models\Players\Ophelia.xnb
 Content\Assets\Models\OpheliasSpeer.xnb
+Content\Assets\Models\Players\albino.xnb
+Content\Assets\Models\Enemies\hands.xnb
+Content\Assets\Models\Terrain\spikes_ground.xnb
+Content\Assets\Models\Enemies\spikes_ceiling.xnb
 Content\red_eye_0.xnb
 Content\Assets\Models\Powerups\Textures\gold_256x256_0.xnb
 Content\Assets\Models\Terrain\Textures\seamless\lava_bright2_1024x1024_0.xnb
@@ -91,6 +104,7 @@ Content\dark_stone_texture_by_sagemeline_0.xnb
 Content\Assets\Models\Powerups\UV Maps\powerup_hell_energy_0.xnb
 Content\red_eye_1.xnb
 Content\MG_2640-seamless_0.xnb
+Content\Assets\Models\Textures\HELLSWORD_SELFCOLORED_0.xnb
 Content\Assets\Models\Players\Maps\shadow_0.xnb
 Content\Assets\Models\Players\Maps\trans_0.xnb
 Content\Assets\Models\Players\Maps\lace_0.xnb
@@ -98,17 +112,16 @@ Content\Assets\Models\Players\Maps\body-cos_0.xnb
 Content\Assets\Models\Players\Maps\HoernerTextur_0.xnb
 Content\Assets\Models\Maps\gold_1024x1024_0.xnb
 Content\Assets\Models\Maps\EdelsteinTextur_0.xnb
-Content\Assets\Models\Players\albino.xnb
-Content\Assets\Models\Enemies\hands.xnb
-Content\Assets\Models\Terrain\spikes_ground.xnb
-Content\Assets\Models\Enemies\spikes_ceiling.xnb
-Content\Assets\Models\Textures\HELLSWORD_SELFCOLORED_0.xnb
 Content\Blue-Turquoise-Spotted-Glazed-Ti_0.xnb
 Content\trans_mask_0.xnb
 Content\eyediff3_0.xnb
 Content\Blue-Turquoise-Spotted-Glazed-Ti_1.xnb
 Content\Assets\Models\Terrain\Textures\spikes2_256x256_0.xnb
 Content\Assets\Models\Enemies\Textures\spikes2_256x256_0.xnb
+Content\Assets\Effects\Ambient.xnb
+Content\Assets\Effects\DirectLight.xnb
+Content\Assets\Effects\PointLight.xnb
+Content\Assets\Effects\SkyBox.xnb
 Content\Assets\Sprites\Startscreen.png
 Content\Assets\Sprites\ButtonExit.png
 Content\Assets\Sprites\ButtonPlay.png
