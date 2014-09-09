@@ -80,7 +80,7 @@ namespace CR4VE.GameLogic.Characters
 
                     //calculates which enemy is next to it
                     #region enemyList1
-                    foreach (Enemy enemy in Singleplayer.tileMaps[Singleplayer.activeIndex1].EnemyList)
+                    foreach (Enemy enemy in Singleplayer.gameMaps[Singleplayer.activeIndex1].EnemyList)
                     {
                         dir = minion.position - enemy.position;
                         distance = dir.Length();
@@ -92,7 +92,7 @@ namespace CR4VE.GameLogic.Characters
                     }
                     #endregion
                     #region enemyList2
-                    foreach (Enemy enemy in Singleplayer.tileMaps[Singleplayer.activeIndex2].EnemyList)
+                    foreach (Enemy enemy in Singleplayer.gameMaps[Singleplayer.activeIndex2].EnemyList)
                     {
                         dir = minion.position - enemy.position;
                         distance = dir.Length();
@@ -110,7 +110,7 @@ namespace CR4VE.GameLogic.Characters
 
                     //checking collision
                     #region enemyList1
-                    foreach (Enemy enemy in Singleplayer.tileMaps[Singleplayer.activeIndex1].EnemyList)
+                    foreach (Enemy enemy in Singleplayer.gameMaps[Singleplayer.activeIndex1].EnemyList)
                     {
                         if (minion.boundary.Intersects(enemy.boundary))
                         {
@@ -120,7 +120,7 @@ namespace CR4VE.GameLogic.Characters
                     }
                     #endregion
                     #region enemyList2
-                    foreach (Enemy enemy in Singleplayer.tileMaps[Singleplayer.activeIndex2].EnemyList)
+                    foreach (Enemy enemy in Singleplayer.gameMaps[Singleplayer.activeIndex2].EnemyList)
                     {
                         if (minion.boundary.Intersects(enemy.boundary))
                         {
@@ -173,7 +173,7 @@ namespace CR4VE.GameLogic.Characters
                         else
                         {
                             #region enemyList1
-                            foreach (Enemy enemy in Singleplayer.tileMaps[Singleplayer.activeIndex1].EnemyList)
+                            foreach (Enemy enemy in Singleplayer.gameMaps[Singleplayer.activeIndex1].EnemyList)
                             {
                                 if (enemyHit)
                                 {
@@ -195,7 +195,7 @@ namespace CR4VE.GameLogic.Characters
                             }
                             #endregion
                             #region enemyList2
-                            foreach (Enemy enemy in Singleplayer.tileMaps[Singleplayer.activeIndex2].EnemyList)
+                            foreach (Enemy enemy in Singleplayer.gameMaps[Singleplayer.activeIndex2].EnemyList)
                             {
                                 if (enemyHit)
                                 {
@@ -291,7 +291,7 @@ namespace CR4VE.GameLogic.Characters
                 attackList.Add(algaWhip);
 
                 #region enemyList1
-                foreach (Enemy enemy in Singleplayer.tileMaps[Singleplayer.activeIndex1].EnemyList)
+                foreach (Enemy enemy in Singleplayer.gameMaps[Singleplayer.activeIndex1].EnemyList)
                 {
                     foreach (Entity seraphinsWhip in attackList)
                     {
@@ -304,7 +304,7 @@ namespace CR4VE.GameLogic.Characters
                 }
                 #endregion
                 #region enemyList2
-                foreach (Enemy enemy in Singleplayer.tileMaps[Singleplayer.activeIndex2].EnemyList)
+                foreach (Enemy enemy in Singleplayer.gameMaps[Singleplayer.activeIndex2].EnemyList)
                 {
                     foreach (Entity seraphinsWhip in attackList)
                     {

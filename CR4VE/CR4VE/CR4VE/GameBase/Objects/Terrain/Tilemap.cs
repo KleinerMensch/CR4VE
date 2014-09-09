@@ -100,7 +100,6 @@ namespace CR4VE.GameBase.Objects.Terrain
                                     boundary = new BoundingBox(position + new Vector3(-size / 2, -size / 2, -size / 2), position + new Vector3(size / 2, size / 4, size / 2));
                                 }
 
-                                //harten String noch ersetzen
                                 tiles.Add(new Tile("Box", number, position, boundary, type));
                             } break;
 
@@ -227,9 +226,18 @@ namespace CR4VE.GameBase.Objects.Terrain
             int i1 = Singleplayer.activeIndex1;
             int i2 = Singleplayer.activeIndex2;
 
+            Tilemap[] currentMaps;
+
             List<Tile> result = new List<Tile>();
 
-            foreach (Tile t in Singleplayer.tileMaps[i1].TileList)
+            //get currently active TileMaps
+            if (Singleplayer.isTutorial)
+                currentMaps = Singleplayer.tutorialMaps;
+            else
+                currentMaps = Singleplayer.gameMaps;
+
+
+            foreach (Tile t in currentMaps[i1].TileList)
             {
                 //slightly larger Frustum than Camera2D.BoundingFrustum to prevent clipping errors
                 Matrix clippView = Matrix.CreateLookAt(Camera2D.FrustumPosition + new Vector3(0, 0, 50), Camera2D.FrustumTarget, Vector3.Up);
@@ -241,7 +249,7 @@ namespace CR4VE.GameBase.Objects.Terrain
                     result.Add(t);
                 }
             }
-            foreach (Tile t in Singleplayer.tileMaps[i2].TileList)
+            foreach (Tile t in currentMaps[i2].TileList)
             {
                 //slightly larger Frustum than Camera2D.BoundingFrustum to prevent clipping errors
                 Matrix clippView = Matrix.CreateLookAt(Camera2D.FrustumPosition + new Vector3(0, 0, 50), Camera2D.FrustumTarget, Vector3.Up);
@@ -259,34 +267,41 @@ namespace CR4VE.GameBase.Objects.Terrain
 
         public static void updateActiveTilemaps()
         {
+            Tilemap[] currentMaps;
+
             float switchRange = 150f;
 
             float deltaXRight;
             float deltaXLeft;
 
+            if (Singleplayer.isTutorial)
+                currentMaps = Singleplayer.tutorialMaps;
+            else
+                currentMaps = Singleplayer.gameMaps;
+
             //get distance to switch point
             if (GameControls.isGhost)
             {
-                deltaXRight = Singleplayer.ghost.Position.X - Singleplayer.tileMaps[Singleplayer.activeIndex2].StartPosition.X;
-                deltaXLeft = Singleplayer.ghost.Position.X - Singleplayer.tileMaps[Singleplayer.activeIndex1].StartPosition.X;
+                deltaXRight = Singleplayer.ghost.Position.X - currentMaps[Singleplayer.activeIndex2].StartPosition.X;
+                deltaXLeft = Singleplayer.ghost.Position.X - currentMaps[Singleplayer.activeIndex1].StartPosition.X;
             }
             else
             {
-                deltaXRight = Singleplayer.player.Position.X - Singleplayer.tileMaps[Singleplayer.activeIndex2].StartPosition.X;
-                deltaXLeft = Singleplayer.player.Position.X - Singleplayer.tileMaps[Singleplayer.activeIndex1].StartPosition.X;
+                deltaXRight = Singleplayer.player.Position.X - currentMaps[Singleplayer.activeIndex2].StartPosition.X;
+                deltaXLeft = Singleplayer.player.Position.X - currentMaps[Singleplayer.activeIndex1].StartPosition.X;
             }
 
             //change indices if necessary
             if (deltaXRight > switchRange)
             {
-                Singleplayer.activeIndex1 = (int) MathHelper.Clamp(Singleplayer.activeIndex1 + 1, 0, Singleplayer.tileMaps.Length - 2);
-                Singleplayer.activeIndex2 = (int) MathHelper.Clamp(Singleplayer.activeIndex2 + 1, 1, Singleplayer.tileMaps.Length - 1);
+                Singleplayer.activeIndex1 = (int)MathHelper.Clamp(Singleplayer.activeIndex1 + 1, 0, currentMaps.Length - 2);
+                Singleplayer.activeIndex2 = (int)MathHelper.Clamp(Singleplayer.activeIndex2 + 1, 1, currentMaps.Length - 1);
             }
 
             if (deltaXLeft < switchRange)
             {
-                Singleplayer.activeIndex1 = (int) MathHelper.Clamp(Singleplayer.activeIndex1 - 1, 0, Singleplayer.tileMaps.Length - 2);
-                Singleplayer.activeIndex2 = (int) MathHelper.Clamp(Singleplayer.activeIndex2 - 1, 1, Singleplayer.tileMaps.Length - 1);
+                Singleplayer.activeIndex1 = (int)MathHelper.Clamp(Singleplayer.activeIndex1 - 1, 0, currentMaps.Length - 2);
+                Singleplayer.activeIndex2 = (int)MathHelper.Clamp(Singleplayer.activeIndex2 - 1, 1, currentMaps.Length - 1);
             }
         }
 

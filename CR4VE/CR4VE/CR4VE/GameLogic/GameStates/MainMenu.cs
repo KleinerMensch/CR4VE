@@ -117,6 +117,11 @@ namespace CR4VE.GameLogic.GameStates
                                 spriteBatch.DrawString(font, "Fullscreen:", fontPos_fullscreen, Color.White);
                                 spriteBatch.DrawString(font, Game1.graphics.IsFullScreen.ToString() + " >", fontPos_fullscreen + new Vector2(0, 50), Color.White);
                             }
+                            else
+                            {
+                                spriteBatch.DrawString(font, "Fullscreen:", fontPos_fullscreen, Color.Gray);
+                                spriteBatch.DrawString(font, Game1.graphics.IsFullScreen.ToString() + " >", fontPos_fullscreen + new Vector2(0, 50), Color.Gray);
+                            }
 
                             spriteBatch.DrawString(font, "Resolution:", fontPos_resolution, Color.White);
                             spriteBatch.DrawString(font, resolutionString, fontPos_resolutionValue, Color.White);
