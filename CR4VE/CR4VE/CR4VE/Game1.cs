@@ -46,7 +46,7 @@ namespace CR4VE
         private Multiplayer multiPlayer = null;
         private Singleplayer singlePlayer = null;
         private StartScreen startScreen = null;
-        private Tutorial tutorial = null;
+     
 
         public enum EGameState
         {
@@ -153,7 +153,7 @@ namespace CR4VE
             this.singlePlayer = new Singleplayer();
             this.startScreen = new StartScreen();
             this.arena = new Arena();
-            this.tutorial = new Tutorial();
+            
         }
 
 
@@ -179,7 +179,7 @@ namespace CR4VE
 
             // Gamestate am Anfang
             // zum Testen jeweiligen GameState einsetzen
-            this.GameState = EGameState.MainMenu;
+            this.GameState = EGameState.Singleplayer;
         }
 
 
@@ -246,11 +246,7 @@ namespace CR4VE
                         this.GameState = currentState;
                     break;
 
-                case EGameState.Tutorial:
-                    currentState = this.tutorial.Update(gameTime);
-                    if (currentState != EGameState.Tutorial)
-                        this.GameState = currentState;
-                    break;
+                
             }
             #endregion
 
@@ -289,9 +285,7 @@ namespace CR4VE
                 case EGameState.Arena:
                     this.arena.Draw(gameTime);
                     break;
-                case EGameState.Tutorial:
-                    this.tutorial.Draw(gameTime);
-                    break;
+                
             }
             #endregion
 

@@ -121,7 +121,6 @@
     <Compile Include="GameLogic\GameStates\Multiplayer.cs" />
     <Compile Include="GameLogic\GameStates\Singleplayer.cs" />
     <Compile Include="GameLogic\GameStates\StartScreen.cs" />
-    <Compile Include="GameLogic\GameStates\Tutorial.cs" />
     <Compile Include="GameLogic\SaveGame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
