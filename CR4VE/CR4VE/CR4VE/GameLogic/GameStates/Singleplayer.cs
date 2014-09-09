@@ -37,8 +37,7 @@ namespace CR4VE.GameLogic.GameStates
         public static bool isTutorial = true;
 
         //TileMap parameters
-        public static Tilemap activeTileMap1;
-        public static Tilemap activeTileMap2;
+        public static Tilemap[] currentMaps;
         public static int activeIndex1;
         public static int activeIndex2;
 
@@ -325,27 +324,21 @@ namespace CR4VE.GameLogic.GameStates
                 Tilemap.Generate(layout3, boxSize, new Vector3(1030, -60, 0)),
                 Tilemap.Generate(layout4, boxSize, new Vector3(1550, -150, 0)),
                 Tilemap.Generate(layout5, boxSize, new Vector3(2110, -260, 0)),
-                Tilemap.Generate(layout6, boxSize, new Vector3(2670, -290, 0)),//2670,-290,0
-                Tilemap.Generate(layout7, boxSize, new Vector3(3180,-410, 0)),//(3180,-420,0)
-                Tilemap.Generate(layout8, boxSize, new Vector3(3760,-440, 0)),//(3660,-590,0)
+                Tilemap.Generate(layout6, boxSize, new Vector3(2670, -290, 0)),
+                Tilemap.Generate(layout7, boxSize, new Vector3(3180,-410, 0)),
+                Tilemap.Generate(layout8, boxSize, new Vector3(3760,-440, 0)),
                 Tilemap.Generate(layout9, boxSize, new Vector3(-80,0,-10)),
             };
 
-            //set start indices
-            Singleplayer.activeIndex1 = 0;
-            Singleplayer.activeIndex2 = 1;
-
             //get active Tilemaps
             if (isTutorial)
-            {
-                activeTileMap1 = tutorialMaps[activeIndex1];
-                activeTileMap2 = tutorialMaps[activeIndex2];
-            }
+                currentMaps = tutorialMaps;
             else
-            {
-                activeTileMap1 = gameMaps[activeIndex1];
-                activeTileMap2 = gameMaps[activeIndex2];
-            }
+                currentMaps = gameMaps;
+
+            //set start indices
+            activeIndex1 = 0;
+            activeIndex2 = 1;
 
             visibles = new List<Tile>();
             #endregion            
@@ -379,7 +372,7 @@ namespace CR4VE.GameLogic.GameStates
         public Game1.EGameState Update(GameTime gameTime)
         {
             //Viewport Culling
-            visibles = Tilemap.getVisibleTiles();
+            visibles = Tilemap.getVisibleTiles(currentMaps);
                         
 
             if (isPaused)
@@ -391,7 +384,7 @@ namespace CR4VE.GameLogic.GameStates
                 GameControls.updateSingleplayer(gameTime, visibles);
 
                 //check if active Tilemaps have changed
-                Tilemap.updateActiveTilemaps();
+                Tilemap.updateActiveTilemaps(currentMaps);
 
                 #region HUD
                 hud.Update();
@@ -412,50 +405,50 @@ namespace CR4VE.GameLogic.GameStates
                 player.Update(gameTime);
 
                 //Powerups
-                foreach (Powerup p in gameMaps[activeIndex1].PowerupList)
+                foreach (Powerup p in currentMaps[activeIndex1].PowerupList)
                 {
                     p.Update();
                 }
-                foreach (Powerup p in gameMaps[activeIndex2].PowerupList)
+                foreach (Powerup p in currentMaps[activeIndex2].PowerupList)
                 {
                     p.Update();
                 }
 
                 //Checkpoints
-                foreach (Checkpoint c in gameMaps[activeIndex1].CheckpointList)
+                foreach (Checkpoint c in currentMaps[activeIndex1].CheckpointList)
                 {
                     c.Update();
                 }
-                foreach (Checkpoint c in gameMaps[activeIndex2].CheckpointList)
+                foreach (Checkpoint c in currentMaps[activeIndex2].CheckpointList)
                 {
                     c.Update();
                 }
 
                 #region Enemies
-                foreach (Enemy e in gameMaps[activeIndex1].EnemyList)
+                foreach (Enemy e in currentMaps[activeIndex1].EnemyList)
                 {
                     e.UpdateSingleplayer(gameTime);
                 }
-                foreach (Enemy e in gameMaps[activeIndex2].EnemyList)
+                foreach (Enemy e in currentMaps[activeIndex2].EnemyList)
                 {
                     e.UpdateSingleplayer(gameTime);
                 }
 
                 //remove dead enemies from active lists
-                for (int i = 0; i < gameMaps[activeIndex1].EnemyList.Count; i++)
+                for (int i = 0; i < currentMaps[activeIndex1].EnemyList.Count; i++)
                 {
-                    if (gameMaps[activeIndex1].EnemyList.ElementAt(i).isDead)
+                    if (currentMaps[activeIndex1].EnemyList.ElementAt(i).isDead)
                     {
-                        gameMaps[activeIndex1].EnemyList.ElementAt(i).Destroy();
-                        gameMaps[activeIndex1].EnemyList.Remove(gameMaps[activeIndex1].EnemyList.ElementAt(i));
+                        currentMaps[activeIndex1].EnemyList.ElementAt(i).Destroy();
+                        currentMaps[activeIndex1].EnemyList.Remove(currentMaps[activeIndex1].EnemyList.ElementAt(i));
                     }
                 }
-                for (int i = 0; i < gameMaps[activeIndex2].EnemyList.Count; i++)
+                for (int i = 0; i < currentMaps[activeIndex2].EnemyList.Count; i++)
                 {
-                    if (gameMaps[activeIndex2].EnemyList.ElementAt(i).isDead)
+                    if (currentMaps[activeIndex2].EnemyList.ElementAt(i).isDead)
                     {
-                        gameMaps[activeIndex2].EnemyList.ElementAt(i).Destroy();
-                        gameMaps[activeIndex2].EnemyList.Remove(gameMaps[activeIndex2].EnemyList.ElementAt(i));
+                        currentMaps[activeIndex2].EnemyList.ElementAt(i).Destroy();
+                        currentMaps[activeIndex2].EnemyList.Remove(currentMaps[activeIndex2].EnemyList.ElementAt(i));
                     }
                 }
                 #endregion
@@ -480,7 +473,9 @@ namespace CR4VE.GameLogic.GameStates
         {
             #region Background
             spriteBatch.Begin();
+
             graphics.GraphicsDevice.Clear(Color.Gray);
+
             //width and height for spriteBatch rectangle needed to draw background texture
             Vector2 drawPos = new Vector2(Camera2D.WorldRectangle.X, Camera2D.WorldRectangle.Y);
             int drawRecWidth = graphics.PreferredBackBufferWidth;
@@ -488,7 +483,7 @@ namespace CR4VE.GameLogic.GameStates
             
             Rectangle drawRec = new Rectangle((int)Camera2D.Position2D.X, (int)Camera2D.Position2D.Y, drawRecWidth, drawRecHeight);
             
-         //   spriteBatch.Draw(background, drawPos, drawRec, Color.White);
+            //spriteBatch.Draw(background, drawPos, drawRec, Color.White);
             
             spriteBatch.End();
 
@@ -499,9 +494,8 @@ namespace CR4VE.GameLogic.GameStates
 
             #region 3D Objects
             //Terrain (includes Powerups, Checkpoints)
-            gameMaps[activeIndex1].Draw(visibles);
-            gameMaps[activeIndex2].Draw(visibles);
-
+            currentMaps[activeIndex1].Draw(visibles);
+            currentMaps[activeIndex2].Draw(visibles);
 
             //Player or Ghost
             if (GameControls.isGhost && GameControls.moveVecGhost != Vector3.Zero)
@@ -513,16 +507,17 @@ namespace CR4VE.GameLogic.GameStates
             }
 
             #region Enemies
-            foreach (Enemy e in gameMaps[activeIndex1].EnemyList)
+            foreach (Enemy e in currentMaps[activeIndex1].EnemyList)
             {
                 e.Draw();
             }
-            foreach (Enemy e in gameMaps[activeIndex2].EnemyList)
+            foreach (Enemy e in currentMaps[activeIndex2].EnemyList)
             {
                 e.Draw();
             }
             #endregion
 
+            //Arenakey
             if (ArenaKey.Position.X - player.Position.X < 100)
                 ArenaKey.drawIn2DWorld(new Vector3(0.03f, 0.03f, 0.03f), 0, 0, 0);
             #endregion
@@ -533,6 +528,10 @@ namespace CR4VE.GameLogic.GameStates
             hud.Draw(spriteBatch);
 
             spriteBatch.End();
+
+            //GraphicsDevice auf default setzen
+            graphics.GraphicsDevice.BlendState = BlendState.Opaque;
+            graphics.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             #endregion
         }
         #endregion
@@ -542,6 +541,13 @@ namespace CR4VE.GameLogic.GameStates
         {
             //empty entity lists
             foreach (Tilemap tm in gameMaps)
+            {
+                tm.CheckpointList.Clear();
+                tm.EnemyList.Clear();
+                tm.PowerupList.Clear();
+                tm.TileList.Clear();
+            }
+            foreach (Tilemap tm in tutorialMaps)
             {
                 tm.CheckpointList.Clear();
                 tm.EnemyList.Clear();

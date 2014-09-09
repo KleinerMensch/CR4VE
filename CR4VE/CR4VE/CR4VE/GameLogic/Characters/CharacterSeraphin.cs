@@ -291,7 +291,7 @@ namespace CR4VE.GameLogic.Characters
                 attackList.Add(algaWhip);
 
                 #region enemyList1
-                foreach (Enemy enemy in Singleplayer.gameMaps[Singleplayer.activeIndex1].EnemyList)
+                foreach (Enemy enemy in Singleplayer.currentMaps[Singleplayer.activeIndex1].EnemyList)
                 {
                     foreach (Entity seraphinsWhip in attackList)
                     {
@@ -304,7 +304,7 @@ namespace CR4VE.GameLogic.Characters
                 }
                 #endregion
                 #region enemyList2
-                foreach (Enemy enemy in Singleplayer.gameMaps[Singleplayer.activeIndex2].EnemyList)
+                foreach (Enemy enemy in Singleplayer.currentMaps[Singleplayer.activeIndex2].EnemyList)
                 {
                     foreach (Entity seraphinsWhip in attackList)
                     {
@@ -349,7 +349,7 @@ namespace CR4VE.GameLogic.Characters
                 #region Singleplayer
                 if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
                 {
-                    minionList.Add(new Entity(this.position, "Enemies/EnemyEye", CR4VE.GameLogic.GameStates.Singleplayer.cont));
+                    minionList.Add(new Entity(this.position, "Enemies/EnemyEye", Singleplayer.cont));
                 }
                 #endregion
                 #region Arena

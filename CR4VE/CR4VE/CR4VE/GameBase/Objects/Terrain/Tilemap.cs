@@ -221,20 +221,12 @@ namespace CR4VE.GameBase.Objects.Terrain
             }
         }
 
-        public static List<Tile> getVisibleTiles()
+        public static List<Tile> getVisibleTiles(Tilemap[] currentMaps)
         {
             int i1 = Singleplayer.activeIndex1;
             int i2 = Singleplayer.activeIndex2;
 
-            Tilemap[] currentMaps;
-
             List<Tile> result = new List<Tile>();
-
-            //get currently active TileMaps
-            if (Singleplayer.isTutorial)
-                currentMaps = Singleplayer.tutorialMaps;
-            else
-                currentMaps = Singleplayer.gameMaps;
 
 
             foreach (Tile t in currentMaps[i1].TileList)
@@ -265,19 +257,12 @@ namespace CR4VE.GameBase.Objects.Terrain
             return result;
         }
 
-        public static void updateActiveTilemaps()
+        public static void updateActiveTilemaps(Tilemap[] currentMaps)
         {
-            Tilemap[] currentMaps;
-
             float switchRange = 150f;
 
             float deltaXRight;
             float deltaXLeft;
-
-            if (Singleplayer.isTutorial)
-                currentMaps = Singleplayer.tutorialMaps;
-            else
-                currentMaps = Singleplayer.gameMaps;
 
             //get distance to switch point
             if (GameControls.isGhost)
@@ -304,7 +289,6 @@ namespace CR4VE.GameBase.Objects.Terrain
                 Singleplayer.activeIndex2 = (int)MathHelper.Clamp(Singleplayer.activeIndex2 - 1, 1, currentMaps.Length - 1);
             }
         }
-
         #endregion
     }
 }

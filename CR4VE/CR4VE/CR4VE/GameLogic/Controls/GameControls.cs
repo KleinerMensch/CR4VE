@@ -545,6 +545,11 @@ namespace CR4VE.GameLogic.Controls
                     
                     //Singleplayer
                     case 1:
+                        //toggle tutorial
+                        if ((isClicked(Keys.Left) || isClicked(Keys.Right) || 
+                                isClicked(Buttons.DPadLeft) || isClicked(Buttons.DPadRight)) && !isMenuMoving)
+                            Singleplayer.isTutorial = !Singleplayer.isTutorial;
+
                         if ((isClicked(Keys.Enter) || isClicked(Buttons.A)) && !isMenuMoving)
                             return Game1.EGameState.Singleplayer;
                         break;
@@ -587,13 +592,10 @@ namespace CR4VE.GameLogic.Controls
                             CameraMenu.updateResolution();
                         }
 
-                        //change fullscreen
+                        //toggle fullscreen
                         if ((isClicked(Keys.Right) || isClicked(Buttons.DPadRight)) && fullscreenPossible)
                         {
-                            if (Game1.graphics.IsFullScreen)
-                                Game1.graphics.IsFullScreen = false;
-                            else
-                                Game1.graphics.IsFullScreen = true;
+                            Game1.graphics.IsFullScreen = !Game1.graphics.IsFullScreen;
 
                             CameraMenu.updateResolution();
                         }
