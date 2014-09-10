@@ -1,5 +1,6 @@
 ﻿using CR4VE.GameBase.Objects;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -36,7 +37,7 @@ namespace CR4VE.GameLogic.Characters
         }
         #endregion
 
-        public virtual void Update(GameTime time) { }
+        public virtual void Update(GameTime time, SoundEffect effect) { }
         public virtual void MeleeAttack(GameTime time) { }
         public virtual void RangedAttack(GameTime time) { }
         public virtual void SpecialAttack(GameTime time) { }

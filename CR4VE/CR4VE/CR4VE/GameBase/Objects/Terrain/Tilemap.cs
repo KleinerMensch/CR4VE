@@ -154,6 +154,16 @@ namespace CR4VE.GameBase.Objects.Terrain
                                 
                                 tiles.Add(new GroundSpikes("ground", position, boundary, Tile.lethalDmg));
                             } break;
+
+                        //hands
+                        case 99:
+                            {
+                                Vector3 position = start + new Vector3(x * size, -y * size, 0);
+                                BoundingBox boundary = new BoundingBox(position + new Vector3(-size / 2, -size / 2.5f, -size / 2), position + new Vector3(size / 2, 0, size / 2));
+                                
+                                enemies.Add(new Hands(position, "spikes_ceiling", Singleplayer.cont, boundary));
+                            } break;
+
                         #endregion
 
                         #region Checkpoints & Powerups

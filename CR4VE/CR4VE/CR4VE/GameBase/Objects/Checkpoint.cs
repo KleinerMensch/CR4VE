@@ -2,12 +2,15 @@
 using CR4VE.GameLogic;
 using CR4VE.GameLogic.GameStates;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
 
 namespace CR4VE.GameBase.Objects
 {
@@ -33,10 +36,14 @@ namespace CR4VE.GameBase.Objects
         #endregion
 
         #region Methods
-        public void Update()
+        public void Update(SoundEffect effect)
         {
             if (this.Boundary.Intersects(Singleplayer.player.Boundary))
             {
+                effect.Play();
+                //MediaPlayer.Play(Singleplayer.song);
+                //MediaPlayer.IsRepeating = true;
+                
                 Singleplayer.lastCheckpoint = this;
 
                 //update SaveGame.txt

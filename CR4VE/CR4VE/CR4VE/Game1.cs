@@ -22,6 +22,7 @@ namespace CR4VE
         public static GraphicsDeviceManager graphics;
         public static SpriteBatch spriteBatch;
         public static Game1 game = new Game1();
+        
 
         public static int resolutionIndex = 0;
         public static readonly Vector2[] resolutions = new Vector2[]
@@ -46,6 +47,7 @@ namespace CR4VE
         private Multiplayer multiPlayer = null;
         private Singleplayer singlePlayer = null;
         private StartScreen startScreen = null;
+     
 
         public enum EGameState
         {
@@ -152,6 +154,7 @@ namespace CR4VE
             this.singlePlayer = new Singleplayer();
             this.startScreen = new StartScreen();
             this.arena = new Arena();
+            
         }
 
 
@@ -177,7 +180,7 @@ namespace CR4VE
 
             // Gamestate am Anfang
             // zum Testen jeweiligen GameState einsetzen
-            this.GameState = EGameState.MainMenu;
+            this.GameState = EGameState.Singleplayer;
         }
 
 
@@ -243,6 +246,8 @@ namespace CR4VE
                     if (currentState != EGameState.Arena)
                         this.GameState = currentState;
                     break;
+
+                
             }
             #endregion
 
@@ -281,6 +286,7 @@ namespace CR4VE
                 case EGameState.Arena:
                     this.arena.Draw(gameTime);
                     break;
+                
             }
             #endregion
 
