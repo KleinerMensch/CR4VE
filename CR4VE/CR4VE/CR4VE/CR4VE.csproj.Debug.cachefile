@@ -129,6 +129,8 @@ Content\Assets\Models\Enemies\Textures\spikes2_256x256_0.xnb
 Content\tileable-icy-and-watery-blue-tex_0.xnb
 Content\Icy Walk_0.xnb
 Content\tileable-icy-and-watery-blue-tex_1.xnb
+Content\Assets\Sounds\itemCollect.xnb
+Content\Assets\Sounds\CheckpointHell.xnb
 Content\Assets\Sprites\Startscreen.png
 Content\Assets\Sprites\ButtonExit.png
 Content\Assets\Sprites\ButtonPlay.png

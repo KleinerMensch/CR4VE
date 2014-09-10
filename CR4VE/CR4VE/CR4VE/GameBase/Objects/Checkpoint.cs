@@ -18,6 +18,8 @@ namespace CR4VE.GameBase.Objects
     {
         #region Attributes
         private String type;
+
+        private bool soundPlayed = false;
         #endregion
 
         #region Constructor
@@ -44,9 +46,19 @@ namespace CR4VE.GameBase.Objects
 
                 //update SaveGame.txt
                 if (this.type == "hell")
+                {
+                    if (!soundPlayed)
+                    {
+                        Sounds.checkpointHell.Play();
+
+                        soundPlayed = true;
+                    }
                     SaveGame.setHellReset(this.Position);
+                }
                 else
                     SaveGame.setCrystalReset(this.Position);
+
+               
             }
         }
 

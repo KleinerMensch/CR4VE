@@ -80,8 +80,7 @@ namespace CR4VE.GameLogic.GameStates
             cont = content;
 
             //Sounds
-            //soundeffect = content.Load<SoundEffect>("Assets/Sounds/scream");
-            //song = content.Load<Song>("Assets/Sounds/scream");
+            Sounds.Initialize(cont);
 
             #region Terrain
             //Tutorial
@@ -429,7 +428,7 @@ namespace CR4VE.GameLogic.GameStates
                 #endregion
 
                 //Player
-                player.Update(gameTime, soundeffect);
+                player.Update(gameTime);
 
                 //Powerups
                 foreach (Powerup p in currentMaps[activeIndex1].PowerupList)
@@ -444,11 +443,11 @@ namespace CR4VE.GameLogic.GameStates
                 //Checkpoints
                 foreach (Checkpoint c in currentMaps[activeIndex1].CheckpointList)
                 {
-                    c.Update(soundeffect);
+                    c.Update();
                 }
                 foreach (Checkpoint c in currentMaps[activeIndex2].CheckpointList)
                 {
-                    c.Update(soundeffect);
+                    c.Update();
                 }
 
                 #region Enemies

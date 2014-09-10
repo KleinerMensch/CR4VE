@@ -56,6 +56,9 @@ namespace CR4VE.GameBase.HeadUpDisplay
             {
                 if (healthLeft <= 0 && !GameControls.isGhost)
                 {
+                    Sounds.scream.Play();
+
+
                     trialsLeft -= 1;
 
                     GameControls.isGhost = true;
