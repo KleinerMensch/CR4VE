@@ -1,4 +1,5 @@
 ﻿using CR4VE.GameBase.Objects;
+using CR4VE.GameLogic.Controls;
 using CR4VE.GameLogic.GameStates;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -63,7 +64,7 @@ namespace CR4VE.GameLogic.AI
             Vector3 direction = this.position - playerPos; // für Richtungsvektor
             float distance = direction.Length();
 
-            if (distance < 50)
+            if (distance < 50 && !GameControls.isGhost)
             {
                 direction.Normalize();
                 direction = moveSpeed * direction;

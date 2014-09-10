@@ -36,7 +36,7 @@ namespace CR4VE.GameLogic.Controls
 
         private static bool borderedLeft = false;
         private static bool borderedRight = false;
-        private static bool borderedTop = false;
+        //private static bool borderedTop = false;
         private static bool borderedBottom = false;
         //(ghost)
         private static readonly float ghostDelay = 0.01f;
@@ -50,6 +50,7 @@ namespace CR4VE.GameLogic.Controls
 
         private static double startFallTime;
         private static double startJumpTime;
+        private static double startPauseTime;
         private static double currentTime;
         
         public static bool isJumping = false;
@@ -183,7 +184,11 @@ namespace CR4VE.GameLogic.Controls
 
             //Utilities
             if (isClicked(Keys.Escape) || isClicked(Buttons.Start))
+            {
+                startPauseTime = gameTime.TotalGameTime.TotalSeconds;
+
                 Singleplayer.isPaused = true;
+            }
 
             //DEBUG----------------------------------
             if (isClicked(Keys.End)) Singleplayer.hud.isDead = true;
