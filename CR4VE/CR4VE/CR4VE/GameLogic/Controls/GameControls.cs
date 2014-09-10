@@ -50,6 +50,7 @@ namespace CR4VE.GameLogic.Controls
 
         private static double startFallTime;
         private static double startJumpTime;
+        private static double startPauseTime;
         private static double currentTime;
         
         public static bool isJumping = false;
@@ -183,7 +184,11 @@ namespace CR4VE.GameLogic.Controls
 
             //Utilities
             if (isClicked(Keys.Escape) || isClicked(Buttons.Start))
+            {
+                startPauseTime = gameTime.TotalGameTime.TotalSeconds;
+
                 Singleplayer.isPaused = true;
+            }
 
             //DEBUG----------------------------------
             if (isClicked(Keys.End)) Singleplayer.hud.isDead = true;

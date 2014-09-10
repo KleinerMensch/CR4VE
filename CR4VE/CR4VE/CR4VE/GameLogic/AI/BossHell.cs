@@ -49,7 +49,7 @@ namespace CR4VE.GameLogic.AI
         public BossHell(Vector3 pos, String modelName, ContentManager cm, BoundingBox bound) : base(pos, modelName, cm, bound) { }
         #endregion
 
-        public override void Update(GameTime time, SoundEffect effect)
+        public override void Update(GameTime time)
         {
             if (Arena.seraphinBossHUD.isDead)
             {
