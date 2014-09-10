@@ -447,7 +447,7 @@ namespace CR4VE.GameLogic.GameStates
                 #endregion
 
                 //Player
-                player.Update(gameTime);
+                player.Update(gameTime, soundeffect);
 
                 //Powerups
                 foreach (Powerup p in currentMaps[activeIndex1].PowerupList)
@@ -462,11 +462,11 @@ namespace CR4VE.GameLogic.GameStates
                 //Checkpoints
                 foreach (Checkpoint c in currentMaps[activeIndex1].CheckpointList)
                 {
-                    c.Update();
+                    c.Update(soundeffect);
                 }
                 foreach (Checkpoint c in currentMaps[activeIndex2].CheckpointList)
                 {
-                    c.Update();
+                    c.Update(soundeffect);
                 }
 
                 #region Enemies
