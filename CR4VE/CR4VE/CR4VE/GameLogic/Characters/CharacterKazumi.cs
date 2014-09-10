@@ -33,7 +33,7 @@ namespace CR4VE.GameLogic.Characters
         #endregion
 
         #region Methods
-        public override void Update(GameTime time, SoundEffect effect)
+        public override void Update(GameTime time)
         {
             #region Timeupdate for DrawAttacks
             // Decrements the timespan

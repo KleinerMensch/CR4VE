@@ -36,7 +36,7 @@ namespace CR4VE.GameLogic.Controls
 
         private static bool borderedLeft = false;
         private static bool borderedRight = false;
-        //private static bool borderedTop = false;
+        private static bool borderedTop = false;
         private static bool borderedBottom = false;
         //(ghost)
         private static readonly float ghostDelay = 0.01f;

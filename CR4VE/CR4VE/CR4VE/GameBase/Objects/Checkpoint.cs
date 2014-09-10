@@ -36,14 +36,10 @@ namespace CR4VE.GameBase.Objects
         #endregion
 
         #region Methods
-        public void Update(SoundEffect effect)
+        public void Update()
         {
             if (this.Boundary.Intersects(Singleplayer.player.Boundary))
             {
-                effect.Play();
-                //MediaPlayer.Play(Singleplayer.song);
-                //MediaPlayer.IsRepeating = true;
-                
                 Singleplayer.lastCheckpoint = this;
 
                 //update SaveGame.txt

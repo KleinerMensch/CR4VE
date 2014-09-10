@@ -27,12 +27,11 @@ namespace CR4VE.GameLogic.GameStates
         SpriteBatch spriteBatch;
 
         Texture2D background;
+
         public static Effect effect;
 
         //Terrain (Singleplayer)
         public static Tilemap[] gameMaps = new Tilemap[] { };
-        public static SoundEffect soundeffect;
-        public static Song song;
 
         //Terrain
         public static Tilemap[] tileMaps = new Tilemap[]{};
@@ -63,6 +62,8 @@ namespace CR4VE.GameLogic.GameStates
         //HUD
         public static HUD hud;
         public static bool isPaused = false;
+
+        //Sounds
         #endregion
 
         #region Konstruktor
@@ -77,7 +78,9 @@ namespace CR4VE.GameLogic.GameStates
             spriteBatch = CR4VE.Game1.spriteBatch;
             graphics = CR4VE.Game1.graphics;
             cont = content;
-            soundeffect = content.Load<SoundEffect>("Assets/Sounds/scream");
+
+            //Sounds
+            //soundeffect = content.Load<SoundEffect>("Assets/Sounds/scream");
             //song = content.Load<Song>("Assets/Sounds/scream");
 
             #region Terrain
@@ -416,29 +419,8 @@ namespace CR4VE.GameLogic.GameStates
                 hud.UpdateMana();
 
                 hud.UpdateHealth();
-            //Player
-            player.Update(gameTime, soundeffect);
 
                 hud.UpdateLiquidPositionByResolution();
-            //Powerups
-            foreach (Powerup p in tileMaps[activeIndex1].PowerupList)
-            {
-                p.Update();
-            }
-            foreach (Powerup p in tileMaps[activeIndex2].PowerupList)
-            {
-                p.Update();
-            }
-            
-            //Checkpoints
-            foreach (Checkpoint c in tileMaps[activeIndex1].CheckpointList)
-            {
-                c.Update(soundeffect);
-            }
-            foreach (Checkpoint c in tileMaps[activeIndex2].CheckpointList)
-            {
-                c.Update(soundeffect);
-            }
 
                 if (hud.isDead)
                 {
@@ -496,14 +478,16 @@ namespace CR4VE.GameLogic.GameStates
                         currentMaps[activeIndex2].EnemyList.Remove(currentMaps[activeIndex2].EnemyList.ElementAt(i));
                     }
                 }
-                #endregion
-
-                //DEBUG
-                //Console.WriteLine();
-                //
+                #endregion                
 
                 GameControls.updateVibration(gameTime);
             }
+
+            //DEBUG-----------------------------------
+            //Console.WriteLine();
+            Sounds.Update();
+            //----------------------------------------
+
 
             //notwendiger Rueckgabewert
             if (player.Boundary.Intersects(ArenaKey.Boundary))

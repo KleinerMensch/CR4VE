@@ -37,7 +37,7 @@ namespace CR4VE.GameLogic.Characters
         }
         #endregion
 
-        public virtual void Update(GameTime time, SoundEffect effect) { }
+        public virtual void Update(GameTime time) { }
         public virtual void MeleeAttack(GameTime time) { }
         public virtual void RangedAttack(GameTime time) { }
         public virtual void SpecialAttack(GameTime time) { }
