@@ -86,19 +86,21 @@ namespace CR4VE.GameBase.Objects.Terrain
                                 Vector3 position = start + new Vector3(x * size, -y * size, 0);
                                 BoundingBox boundary = new BoundingBox(position + new Vector3(-size / 2, -size / 2, -size / 2), position + new Vector3(size / 2, size / 2, size / 2));
 
-                                //define Tile damage
-                                int damage = 0;
+                                //define Tile type
+                                String type = "default";
 
                                 if (number == 4 || number == 8 || number == 14)
                                 {
-                                    damage = Tile.waterDmg;
-                                    boundary = new BoundingBox(position + new Vector3(-size / 2, -size / 2, -size / 2), position + new Vector3(size / 2, -size/2 + 1, size / 2));
+                                    type = "water";
+                                    boundary = new BoundingBox(position + new Vector3(-size / 2, -size / 2, -size / 2), position + new Vector3(size / 2, -size / 2 + 1, size / 2));
                                 }
                                 else if (number == 16)
-                                    damage = Tile.lethalDmg;
+                                {
+                                    type = "lava";
+                                    boundary = new BoundingBox(position + new Vector3(-size / 2, -size / 2, -size / 2), position + new Vector3(size / 2, size / 4, size / 2));
+                                }
 
-                                //harten String noch ersetzen
-                                tiles.Add(new Tile("Box", number, position, boundary, damage));
+                                tiles.Add(new Tile("Box", number, position, boundary, type));
                             } break;
 
                         //do nothing
@@ -229,14 +231,15 @@ namespace CR4VE.GameBase.Objects.Terrain
             }
         }
 
-        public static List<Tile> getVisibleTiles()
+        public static List<Tile> getVisibleTiles(Tilemap[] currentMaps)
         {
             int i1 = Singleplayer.activeIndex1;
             int i2 = Singleplayer.activeIndex2;
 
             List<Tile> result = new List<Tile>();
 
-            foreach (Tile t in Singleplayer.tileMaps[i1].TileList)
+
+            foreach (Tile t in currentMaps[i1].TileList)
             {
                 //slightly larger Frustum than Camera2D.BoundingFrustum to prevent clipping errors
                 Matrix clippView = Matrix.CreateLookAt(Camera2D.FrustumPosition + new Vector3(0, 0, 50), Camera2D.FrustumTarget, Vector3.Up);
@@ -248,7 +251,7 @@ namespace CR4VE.GameBase.Objects.Terrain
                     result.Add(t);
                 }
             }
-            foreach (Tile t in Singleplayer.tileMaps[i2].TileList)
+            foreach (Tile t in currentMaps[i2].TileList)
             {
                 //slightly larger Frustum than Camera2D.BoundingFrustum to prevent clipping errors
                 Matrix clippView = Matrix.CreateLookAt(Camera2D.FrustumPosition + new Vector3(0, 0, 50), Camera2D.FrustumTarget, Vector3.Up);
@@ -264,7 +267,7 @@ namespace CR4VE.GameBase.Objects.Terrain
             return result;
         }
 
-        public static void updateActiveTilemaps()
+        public static void updateActiveTilemaps(Tilemap[] currentMaps)
         {
             float switchRange = 150f;
 
@@ -274,29 +277,28 @@ namespace CR4VE.GameBase.Objects.Terrain
             //get distance to switch point
             if (GameControls.isGhost)
             {
-                deltaXRight = Singleplayer.ghost.Position.X - Singleplayer.tileMaps[Singleplayer.activeIndex2].StartPosition.X;
-                deltaXLeft = Singleplayer.ghost.Position.X - Singleplayer.tileMaps[Singleplayer.activeIndex1].StartPosition.X;
+                deltaXRight = Singleplayer.ghost.Position.X - currentMaps[Singleplayer.activeIndex2].StartPosition.X;
+                deltaXLeft = Singleplayer.ghost.Position.X - currentMaps[Singleplayer.activeIndex1].StartPosition.X;
             }
             else
             {
-                deltaXRight = Singleplayer.player.Position.X - Singleplayer.tileMaps[Singleplayer.activeIndex2].StartPosition.X;
-                deltaXLeft = Singleplayer.player.Position.X - Singleplayer.tileMaps[Singleplayer.activeIndex1].StartPosition.X;
+                deltaXRight = Singleplayer.player.Position.X - currentMaps[Singleplayer.activeIndex2].StartPosition.X;
+                deltaXLeft = Singleplayer.player.Position.X - currentMaps[Singleplayer.activeIndex1].StartPosition.X;
             }
 
             //change indices if necessary
             if (deltaXRight > switchRange)
             {
-                Singleplayer.activeIndex1 = (int) MathHelper.Clamp(Singleplayer.activeIndex1 + 1, 0, Singleplayer.tileMaps.Length - 2);
-                Singleplayer.activeIndex2 = (int) MathHelper.Clamp(Singleplayer.activeIndex2 + 1, 1, Singleplayer.tileMaps.Length - 1);
+                Singleplayer.activeIndex1 = (int)MathHelper.Clamp(Singleplayer.activeIndex1 + 1, 0, currentMaps.Length - 2);
+                Singleplayer.activeIndex2 = (int)MathHelper.Clamp(Singleplayer.activeIndex2 + 1, 1, currentMaps.Length - 1);
             }
 
             if (deltaXLeft < switchRange)
             {
-                Singleplayer.activeIndex1 = (int) MathHelper.Clamp(Singleplayer.activeIndex1 - 1, 0, Singleplayer.tileMaps.Length - 2);
-                Singleplayer.activeIndex2 = (int) MathHelper.Clamp(Singleplayer.activeIndex2 - 1, 1, Singleplayer.tileMaps.Length - 1);
+                Singleplayer.activeIndex1 = (int)MathHelper.Clamp(Singleplayer.activeIndex1 - 1, 0, currentMaps.Length - 2);
+                Singleplayer.activeIndex2 = (int)MathHelper.Clamp(Singleplayer.activeIndex2 - 1, 1, currentMaps.Length - 1);
             }
         }
-
         #endregion
     }
 }

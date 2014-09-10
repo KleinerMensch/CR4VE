@@ -17,8 +17,11 @@ namespace CR4VE.GameLogic.Characters
         #region Attributes
         public static new float manaLeft = 3;
         Entity speer, doppelgaenger, holyThunder;
+        Vector3 currentViewingDirection;
 
-        Vector3 offset = new Vector3(8, 8, 8);
+        TimeSpan timeSpan = TimeSpan.FromMilliseconds(270);
+
+        Vector3 offset = new Vector3(12, 12, 12);
         float speedDoppel = 1;
         bool enemyHit = false;
         #endregion
@@ -33,39 +36,55 @@ namespace CR4VE.GameLogic.Characters
         #region Methods
         public override void Update(GameTime time, SoundEffect effect)
         {
+            #region Timeupdate for DrawAttacks
+            // Decrements the timespan
+            timeSpan -= time.ElapsedGameTime;
+            // If the timespan is equal or smaller time "0"
+            if (timeSpan <= TimeSpan.Zero)
+            {
+                timeSpan = TimeSpan.FromMilliseconds(270);
+                attackList.Remove(speer);
+                attackList.Remove(holyThunder);
+                launchedMelee = false;
+                launchedSpecial = false;
+            }
+            #endregion
+
             #region UpdateDoppelgaenger
             if (launchedRanged)
             {
                 #region Singleplayer
                 if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
                 {
-                    //Doppelganger movement
-                    GamePadState curGamepad = GamePad.GetState(PlayerIndex.One);
+                    ////Doppelganger movement
+                    //GamePadState curGamepad = GamePad.GetState(PlayerIndex.One);
 
-                    Vector3 moveVecDoppelPad = new Vector3(curGamepad.ThumbSticks.Right, 0);
+                    //Vector3 moveVecDoppelPad = new Vector3(curGamepad.ThumbSticks.Right, 0);
 
-                    if (moveVecDoppelPad != Vector3.Zero)
-                        doppelgaenger.move(moveVecDoppelPad);
-                    else
-                    {
-                        KeyboardState curKeyboard = Keyboard.GetState();
+                    //if (moveVecDoppelPad != Vector3.Zero)
+                    //    doppelgaenger.move(moveVecDoppelPad);
+                    //else
+                    //{
+                    //    KeyboardState curKeyboard = Keyboard.GetState();
 
-                        Vector3 moveVecDoppelBoard = Vector3.Zero;
+                    //    Vector3 moveVecDoppelBoard = Vector3.Zero;
 
-                        if (curKeyboard.IsKeyDown(Keys.Up)) moveVecDoppelBoard += new Vector3(0, speedDoppel, 0);
-                        if (curKeyboard.IsKeyDown(Keys.Left)) moveVecDoppelBoard += new Vector3(-speedDoppel, 0, 0);
-                        if (curKeyboard.IsKeyDown(Keys.Down)) moveVecDoppelBoard += new Vector3(0, -speedDoppel, 0);
-                        if (curKeyboard.IsKeyDown(Keys.Right)) moveVecDoppelBoard += new Vector3(speedDoppel, 0, 0);
+                    //    if (curKeyboard.IsKeyDown(Keys.Up)) moveVecDoppelBoard += new Vector3(0, speedDoppel, 0);
+                    //    if (curKeyboard.IsKeyDown(Keys.Left)) moveVecDoppelBoard += new Vector3(-speedDoppel, 0, 0);
+                    //    if (curKeyboard.IsKeyDown(Keys.Down)) moveVecDoppelBoard += new Vector3(0, -speedDoppel, 0);
+                    //    if (curKeyboard.IsKeyDown(Keys.Right)) moveVecDoppelBoard += new Vector3(speedDoppel, 0, 0);
 
-                        if (moveVecDoppelBoard.Length() > 1) moveVecDoppelBoard.Normalize();
+                    //    if (moveVecDoppelBoard.Length() > 1) moveVecDoppelBoard.Normalize();
 
-                        doppelgaenger.move(moveVecDoppelBoard);
-                    }
+                    //    doppelgaenger.move(moveVecDoppelBoard);
+                    //}
+
+                    doppelgaenger.move(new Vector3(speedDoppel, 0, 0) * currentViewingDirection);
 
                     //Doppelgaenger schnellt hervor und verschwindet
                     //nach 50 Einheiten oder wenn er mit etwas kollidiert
                     //Effekt kann noch veraendert werden
-                    if (doppelgaenger.position != this.position + 50 * viewingDirection)
+                    if (doppelgaenger.position != this.position + 50 * currentViewingDirection)
                     {
                         launchedRanged = true;
                         if (enemyHit)
@@ -76,7 +95,7 @@ namespace CR4VE.GameLogic.Characters
                         else
                         {
                             #region enemyList1
-                            foreach (Enemy enemy in Singleplayer.tileMaps[Singleplayer.activeIndex1].EnemyList)
+                            foreach (Enemy enemy in Singleplayer.currentMaps[Singleplayer.activeIndex1].EnemyList)
                             {
                                 if (enemyHit)
                                 {
@@ -98,7 +117,7 @@ namespace CR4VE.GameLogic.Characters
                             }
                             #endregion
                             #region enemyList2
-                            foreach (Enemy enemy in Singleplayer.tileMaps[Singleplayer.activeIndex2].EnemyList)
+                            foreach (Enemy enemy in Singleplayer.currentMaps[Singleplayer.activeIndex2].EnemyList)
                             {
                                 if (enemyHit)
                                 {
@@ -186,51 +205,52 @@ namespace CR4VE.GameLogic.Characters
         public override void MeleeAttack(GameTime time)
         {
             launchedMelee = true;
+            timeSpan = TimeSpan.FromMilliseconds(270);
+            currentViewingDirection = viewingDirection;
 
             #region Singleplayer
             if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
             {
-                Vector3 speerPosition = Singleplayer.player.Position + viewingDirection * offset;
+                Vector3 speerPosition = Singleplayer.player.Position + currentViewingDirection * offset;
                 speer = new Entity(speerPosition, "OpheliasSpeer", Singleplayer.cont);
-                speer.boundary = new BoundingBox(this.position + new Vector3(-3f, -2.5f, -2.5f) + viewingDirection * offset, this.position + new Vector3(3f, 2.5f, 2.5f) + viewingDirection * offset);
+                speer.boundary = new BoundingBox(this.position + new Vector3(-12f, -2.5f, -2.5f) + currentViewingDirection * offset, this.position + new Vector3(12f, 2.5f, 2.5f) + currentViewingDirection * offset);
                 attackList.Add(speer);
 
                 //Kollision mit Attacke
                 #region enemyList1
-                foreach (Enemy enemy in Singleplayer.tileMaps[Singleplayer.activeIndex1].EnemyList)
+                foreach (Enemy enemy in Singleplayer.currentMaps[Singleplayer.activeIndex1].EnemyList)
                 {
                     foreach (Entity opheliaSpeer in attackList)
                     {
                         if (opheliaSpeer.boundary.Intersects(enemy.boundary))
                         {
                             enemy.hp -= 1;
-                            //Console.WriteLine("Ophelia hit enemy by MeleeAttack");
+                            Console.WriteLine("Ophelia hit enemy by MeleeAttack");
                         }
                     }
                 }
                 #endregion
                 #region enemyList2
-                foreach (Enemy enemy in Singleplayer.tileMaps[Singleplayer.activeIndex2].EnemyList)
+                foreach (Enemy enemy in Singleplayer.currentMaps[Singleplayer.activeIndex2].EnemyList)
                 {
                     foreach (Entity opheliaSpeer in attackList)
                     {
                         if (opheliaSpeer.boundary.Intersects(enemy.boundary))
                         {
                             enemy.hp -= 1;
-                            //Console.WriteLine("Ophelia hit enemy by MeleeAttack");
+                            Console.WriteLine("Ophelia hit enemy by MeleeAttack");
                         }
                     }
                 }
                 #endregion
-                attackList.Remove(speer);
             }
             #endregion
             #region Arena
             else if (Game1.currentState.Equals(Game1.EGameState.Arena))
             {
-                Vector3 speerPosition = Arena.player.Position + viewingDirection * offset;
+                Vector3 speerPosition = Arena.player.Position + currentViewingDirection * offset;
                 speer = new Entity(speerPosition, "5x5x5Box1", Arena.cont);
-                speer.boundary = new BoundingBox(this.position + new Vector3(-2.5f, -2.5f, -2.5f) + viewingDirection * offset, this.position + new Vector3(2.5f, 2.5f, 2.5f) + viewingDirection * offset);
+                speer.boundary = new BoundingBox(this.position + new Vector3(-12f, -2.5f, -2.5f) + currentViewingDirection * offset, this.position + new Vector3(12f, 2.5f, 2.5f) + currentViewingDirection * offset);
                 attackList.Add(speer);
 
                 //Kollision mit Attacke
@@ -242,7 +262,6 @@ namespace CR4VE.GameLogic.Characters
                         Console.WriteLine("Ophelia hit Boss by MeleeAttack");
                     }
                 }
-                attackList.Remove(speer);
             }
             #endregion
         }
@@ -253,6 +272,7 @@ namespace CR4VE.GameLogic.Characters
             {
                 manaLeft -= 1;
                 launchedRanged = true;
+                currentViewingDirection = viewingDirection;
 
                 #region Singleplayer
                 if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
@@ -260,8 +280,7 @@ namespace CR4VE.GameLogic.Characters
                     Vector3 doppelPos = new Vector3(this.position.X, this.Position.Y, 5);
 
                     doppelgaenger = new Entity(doppelPos, "Players/Ophelia", Singleplayer.cont);
-                    doppelgaenger.boundary = new BoundingBox(this.position + new Vector3(-3, -3, -3), this.position + new Vector3(3, 3, 3));
-                    
+                    doppelgaenger.boundary = new BoundingBox(this.position + new Vector3(-2.5f, -9f, -2.5f), this.position + new Vector3(2.5f, 9f, 2.5f));
                     attackList.Add(doppelgaenger);
                 }
                 #endregion
@@ -269,7 +288,7 @@ namespace CR4VE.GameLogic.Characters
                 else if (Game1.currentState.Equals(Game1.EGameState.Arena))
                 {
                     doppelgaenger = new Entity(this.position, "Players/Ophelia", Arena.cont);
-                    doppelgaenger.boundary = new BoundingBox(this.position + new Vector3(-3, -3, -3), this.position + new Vector3(3, 3, 3));
+                    doppelgaenger.boundary = new BoundingBox(this.position + new Vector3(-2.5f, -9f, -2.5f), this.position + new Vector3(2.5f, 9f, 2.5f));
                     attackList.Add(doppelgaenger);
                 }
                 #endregion
@@ -282,6 +301,7 @@ namespace CR4VE.GameLogic.Characters
             {
                 manaLeft -= 2;
                 launchedSpecial = true;
+                timeSpan = TimeSpan.FromMilliseconds(270);
 
                 #region Singleplayer
                 if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
@@ -291,7 +311,7 @@ namespace CR4VE.GameLogic.Characters
                     attackList.Add(holyThunder);
 
                     #region enemyList1
-                    foreach (Enemy enemy in Singleplayer.tileMaps[Singleplayer.activeIndex1].EnemyList)
+                    foreach (Enemy enemy in Singleplayer.currentMaps[Singleplayer.activeIndex1].EnemyList)
                     {
                         foreach (Entity opheliasHolyThunder in attackList)
                         {
@@ -304,7 +324,7 @@ namespace CR4VE.GameLogic.Characters
                     }
                     #endregion
                     #region enemyList2
-                    foreach (Enemy enemy in Singleplayer.tileMaps[Singleplayer.activeIndex2].EnemyList)
+                    foreach (Enemy enemy in Singleplayer.currentMaps[Singleplayer.activeIndex2].EnemyList)
                     {
                         foreach (Entity opheliasHolyThunder in attackList)
                         {
@@ -316,7 +336,6 @@ namespace CR4VE.GameLogic.Characters
                         }
                     }
                     #endregion
-                    attackList.Remove(holyThunder);
                 }
                 #endregion
                 #region Arena
@@ -334,7 +353,6 @@ namespace CR4VE.GameLogic.Characters
                             Console.WriteLine("Ophelia hit Boss by AoE");
                         }
                     }
-                    attackList.Remove(holyThunder);
                 }
                 #endregion
             }
@@ -346,17 +364,16 @@ namespace CR4VE.GameLogic.Characters
             if (launchedMelee)
             {
                 if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
-                    speer.drawIn2DWorld(new Vector3(0.02f, 0.02f, 0.02f), 0, 0, MathHelper.ToRadians(-90) * Singleplayer.player.viewingDirection.X);
+                    speer.drawIn2DWorld(new Vector3(0.02f, 0.02f, 0.02f), 0, 0, MathHelper.ToRadians(-90) * currentViewingDirection.X);
                 if (Game1.currentState.Equals(Game1.EGameState.Arena))
                     speer.drawInArena(new Vector3(1, 1, 1), 0, 0, 0);
-                launchedMelee = false;
             }
             #endregion
             #region DrawRanged
             if (launchedRanged)
             {
                 if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
-                    doppelgaenger.drawIn2DWorld(new Vector3(0.02f, 0.02f, 0.02f), 0, MathHelper.ToRadians(90)*this.viewingDirection.X, 0);
+                    doppelgaenger.drawIn2DWorld(new Vector3(0.02f, 0.02f, 0.02f), 0, MathHelper.ToRadians(90) * currentViewingDirection.X, 0);
                 if (Game1.currentState.Equals(Game1.EGameState.Arena))
                     doppelgaenger.drawInArena(new Vector3(0.02f, 0.02f, 0.02f), 0, MathHelper.ToRadians(90) + Arena.blickWinkel, 0);
             }
@@ -368,7 +385,6 @@ namespace CR4VE.GameLogic.Characters
                     holyThunder.drawIn2DWorld(Vector3.One, 0, 0, 0);
                 if (Game1.currentState.Equals(Game1.EGameState.Arena))
                     holyThunder.drawInArena(Vector3.One, 0, 0, 0);
-                launchedSpecial = false;
             }
             #endregion
         }

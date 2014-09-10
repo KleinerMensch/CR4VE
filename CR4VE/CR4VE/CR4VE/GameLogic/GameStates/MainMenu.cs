@@ -24,6 +24,7 @@ namespace CR4VE.GameLogic.GameStates
         SpriteFont font;
         Vector2 fontPos_press;
         Vector2 fontPos_start;
+        Vector2 fontPos_tutorial;
         Vector2 fontPos_resolution;
         Vector2 fontPos_resolutionValue;
         Vector2 fontPos_fullscreen;
@@ -56,6 +57,8 @@ namespace CR4VE.GameLogic.GameStates
             fontPos_press = new Vector2(Game1.graphics.PreferredBackBufferWidth / 2 - font.MeasureString("PRESS").X / 2, 50);
             fontPos_start = new Vector2(Game1.graphics.PreferredBackBufferWidth / 2 - font.MeasureString("START").X / 2, 100);
 
+            fontPos_tutorial = new Vector2(Game1.graphics.PreferredBackBufferWidth * 3 / 4, Game1.graphics.PreferredBackBufferHeight / 4);
+
             fontPos_fullscreen = new Vector2(Game1.graphics.PreferredBackBufferWidth / 4 - font.MeasureString("Fullscreen:").X, Game1.graphics.PreferredBackBufferHeight / 2);
             fontPos_resolution = new Vector2(Game1.graphics.PreferredBackBufferWidth * 3 / 4, Game1.graphics.PreferredBackBufferHeight / 2);
             fontPos_resolutionValue = fontPos_resolution + new Vector2(0, 50);
@@ -77,7 +80,7 @@ namespace CR4VE.GameLogic.GameStates
 
             //Fonts
             fontPos_press = new Vector2(Game1.graphics.PreferredBackBufferWidth / 2 - font.MeasureString("PRESS").X / 2, 50);
-            fontPos_start = new Vector2(Game1.graphics.PreferredBackBufferWidth / 2 - font.MeasureString("START").X / 2, 100);
+            fontPos_start = new Vector2(Game1.graphics.PreferredBackBufferWidth / 2 - font.MeasureString("START  or  ENTER").X / 2, 100);
 
             fontPos_fullscreen = new Vector2(Game1.graphics.PreferredBackBufferWidth / 4 - font.MeasureString("Fullscreen:").X, Game1.graphics.PreferredBackBufferHeight / 2);
             fontPos_resolution = new Vector2(Game1.graphics.PreferredBackBufferWidth * 3/4, Game1.graphics.PreferredBackBufferHeight / 2);
@@ -100,14 +103,27 @@ namespace CR4VE.GameLogic.GameStates
             //Fonts
             switch (GameControls.menuPosIndex)
             {
+                //Start
                 case 0:
                     {
                         if (!GameControls.isMenuMoving)
                         {
                             spriteBatch.DrawString(font, "PRESS", fontPos_press, Color.White);
-                            spriteBatch.DrawString(font, "START", fontPos_start, Color.White);
+                            spriteBatch.DrawString(font, "START  or  ENTER", fontPos_start, Color.White);
                         }
                     } break;
+
+                //Singleplayer
+                case 1:
+                    {
+                        if (!GameControls.isMenuMoving)
+                        {
+                            spriteBatch.DrawString(font, "Play Tutorial?", fontPos_tutorial, Color.White);
+                            spriteBatch.DrawString(font, "< " + Singleplayer.isTutorial.ToString() + " >", fontPos_tutorial + new Vector2(0, 50), Color.White);
+                        }
+                    }  break;
+
+                //more detailed options
                 case 4:
                     {
                         if (!GameControls.isMenuMoving)
@@ -116,6 +132,11 @@ namespace CR4VE.GameLogic.GameStates
                             {
                                 spriteBatch.DrawString(font, "Fullscreen:", fontPos_fullscreen, Color.White);
                                 spriteBatch.DrawString(font, Game1.graphics.IsFullScreen.ToString() + " >", fontPos_fullscreen + new Vector2(0, 50), Color.White);
+                            }
+                            else
+                            {
+                                spriteBatch.DrawString(font, "Fullscreen:", fontPos_fullscreen, Color.Gray);
+                                spriteBatch.DrawString(font, Game1.graphics.IsFullScreen.ToString() + " >", fontPos_fullscreen + new Vector2(0, 50), Color.Gray);
                             }
 
                             spriteBatch.DrawString(font, "Resolution:", fontPos_resolution, Color.White);

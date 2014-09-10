@@ -25,7 +25,7 @@ namespace CR4VE.GameBase.Objects
         {
             this.position = pos;
             this.model = cm.Load<Model>("Assets/Models/Checkpoints/" + modelName);
-            this.boundary = new BoundingBox(pos + new Vector3(-2.5f, -1000f, -2.5f), pos + new Vector3(2.5f, 1000f, 2.5f));
+            this.boundary = new BoundingBox(pos + new Vector3(-2.5f, -2.5f, -2.5f), pos + new Vector3(2.5f, 7.5f, 2.5f));
 
             //type
             if (modelName == "checkpoint_hell")

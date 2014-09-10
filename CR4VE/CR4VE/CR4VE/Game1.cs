@@ -47,6 +47,7 @@ namespace CR4VE
         private Multiplayer multiPlayer = null;
         private Singleplayer singlePlayer = null;
         private StartScreen startScreen = null;
+     
 
         public enum EGameState
         {
@@ -59,6 +60,7 @@ namespace CR4VE
             Nothing,
             Singleplayer,
             StartScreen,
+            Tutorial,
         }
         #endregion
 
@@ -152,6 +154,7 @@ namespace CR4VE
             this.singlePlayer = new Singleplayer();
             this.startScreen = new StartScreen();
             this.arena = new Arena();
+            
         }
 
 
@@ -243,6 +246,8 @@ namespace CR4VE
                     if (currentState != EGameState.Arena)
                         this.GameState = currentState;
                     break;
+
+                
             }
             #endregion
 
@@ -281,6 +286,7 @@ namespace CR4VE
                 case EGameState.Arena:
                     this.arena.Draw(gameTime);
                     break;
+                
             }
             #endregion
 

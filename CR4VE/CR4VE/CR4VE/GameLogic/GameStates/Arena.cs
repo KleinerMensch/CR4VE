@@ -64,7 +64,7 @@ namespace CR4VE.GameLogic.GameStates
             lava = new Entity(new Vector3(0, -110, -30), "Terrain/lavafloor", content);
 
             //moveable Entities
-            player = new CharacterOphelia(startPos, "Ophelia", content);
+            player = new CharacterSeraphin(startPos, "Ophelia", content);
             BoundingBox playerBound = new BoundingBox(player.Position + new Vector3(-2.5f, -9, -2.5f), player.Position + new Vector3(2.5f, 9, 2.5f));
             player.Boundary = playerBound;
 
@@ -141,7 +141,6 @@ namespace CR4VE.GameLogic.GameStates
             spriteBatch.Begin();
 
             seraphinBossHUD.Draw(spriteBatch);
-            opheliaHud.DrawGenerals(spriteBatch);
             opheliaHud.Draw(spriteBatch);
 
             spriteBatch.End();

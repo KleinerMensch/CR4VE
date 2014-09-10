@@ -13,8 +13,8 @@ namespace CR4VE.GameBase.HeadUpDisplay
     class KazumiHUD : HUD
     {
         #region Attributes
-        private Texture2D kazumiHealthContainer, kazumiPowerLeftTail, kazumiPowerMiddleTail, kazumiPowerRightTail;
-        private Vector2 kazumiHealthContainerPosition;
+        private Texture2D kazumiContinue, kazumiHealthContainer, kazumiPowerLeftTail, kazumiPowerMiddleTail, kazumiPowerRightTail;
+        private Vector2 kazumiContinue1Position, kazumiContinue2Position, kazumiContinue3Position, kazumiHealthContainerPosition;
         #endregion
 
         #region inherited Constructor
@@ -25,6 +25,7 @@ namespace CR4VE.GameBase.HeadUpDisplay
         public override void Initialize(ContentManager content)
         {
             #region LoadContent
+            kazumiContinue = content.Load<Texture2D>("Assets/Sprites/ContinueKazumi");
             kazumiHealthContainer = content.Load<Texture2D>("Assets/Sprites/KazumiHPBar");
             kazumiPowerLeftTail = content.Load<Texture2D>("Assets/Sprites/KazumiPower_LeftTail");
             kazumiPowerMiddleTail = content.Load<Texture2D>("Assets/Sprites/KazumiPower_MiddleTail");
@@ -32,6 +33,10 @@ namespace CR4VE.GameBase.HeadUpDisplay
             #endregion
 
             kazumiHealthContainerPosition = new Vector2(graphics.PreferredBackBufferWidth - (kazumiHealthContainer.Width * spriteScale), graphics.PreferredBackBufferHeight - (kazumiHealthContainer.Height * spriteScale));
+
+            kazumiContinue1Position = new Vector2(kazumiHealthContainerPosition.X - kazumiContinue.Width * continueSpriteScale, graphics.PreferredBackBufferHeight - kazumiContinue.Height * continueSpriteScale - yOffset);
+            kazumiContinue2Position = new Vector2(kazumiContinue1Position.X - kazumiContinue.Width*continueSpriteScale, graphics.PreferredBackBufferHeight - kazumiContinue.Height * continueSpriteScale - yOffset);
+            kazumiContinue3Position = new Vector2(kazumiContinue2Position.X - kazumiContinue.Width * continueSpriteScale, graphics.PreferredBackBufferHeight - kazumiContinue.Height * continueSpriteScale - yOffset);
         }
 
         public override void UpdateMana()
@@ -42,15 +47,15 @@ namespace CR4VE.GameBase.HeadUpDisplay
                 int ai2 = Singleplayer.activeIndex2;
 
                 #region active Tilemap1
-                for (int i = 0; i < Singleplayer.tileMaps[ai1].PowerupList.Count; i++)
+                for (int i = 0; i < Singleplayer.currentMaps[ai1].PowerupList.Count; i++)
                 {
-                    if (Singleplayer.tileMaps[ai1].PowerupList[i].type == "mana")
+                    if (Singleplayer.currentMaps[ai1].PowerupList[i].type == "mana")
                     {
                         if (CharacterKazumi.manaLeft < 3)
                         {
-                            if (Singleplayer.tileMaps[ai1].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
+                            if (Singleplayer.currentMaps[ai1].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
                             {
-                                Singleplayer.tileMaps[ai1].PowerupList.Remove(Singleplayer.tileMaps[ai1].PowerupList.ElementAt(i));
+                                Singleplayer.currentMaps[ai1].PowerupList.Remove(Singleplayer.currentMaps[ai1].PowerupList.ElementAt(i));
                                 CharacterKazumi.manaLeft += 1;
                             }
                         }
@@ -58,15 +63,15 @@ namespace CR4VE.GameBase.HeadUpDisplay
                 }
                 #endregion
                 #region active Tilemap2
-                for (int i = 0; i < Singleplayer.tileMaps[ai2].PowerupList.Count; i++)
+                for (int i = 0; i < Singleplayer.currentMaps[ai2].PowerupList.Count; i++)
                 {
-                    if (Singleplayer.tileMaps[ai2].PowerupList[i].type == "mana")
+                    if (Singleplayer.currentMaps[ai2].PowerupList[i].type == "mana")
                     {
                         if (CharacterKazumi.manaLeft < 3)
                         {
-                            if (Singleplayer.tileMaps[ai2].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
+                            if (Singleplayer.currentMaps[ai2].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
                             {
-                                Singleplayer.tileMaps[ai2].PowerupList.Remove(Singleplayer.tileMaps[ai2].PowerupList.ElementAt(i));
+                                Singleplayer.currentMaps[ai2].PowerupList.Remove(Singleplayer.currentMaps[ai2].PowerupList.ElementAt(i));
                                 CharacterKazumi.manaLeft += 1;
                             }
                         }
@@ -84,22 +89,22 @@ namespace CR4VE.GameBase.HeadUpDisplay
                 int ai2 = Singleplayer.activeIndex2;
 
                 #region active Tilemap1
-                for (int i = 0; i < Singleplayer.tileMaps[ai1].PowerupList.Count; i++)
+                for (int i = 0; i < Singleplayer.currentMaps[ai1].PowerupList.Count; i++)
                 {
-                    if (Singleplayer.tileMaps[ai1].PowerupList[i].type == "health")
+                    if (Singleplayer.currentMaps[ai1].PowerupList[i].type == "health")
                     {
                         if (Singleplayer.hud.healthLeft <= Singleplayer.hud.fullHealth)
                         {
-                            if (Singleplayer.tileMaps[ai1].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
+                            if (Singleplayer.currentMaps[ai1].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
                             {
                                 if (Singleplayer.hud.healthLeft < Singleplayer.hud.fullHealth)
                                 {
-                                    Singleplayer.hud.healthLeft += Singleplayer.tileMaps[ai1].PowerupList[i].amount;
+                                    Singleplayer.hud.healthLeft += Singleplayer.currentMaps[ai1].PowerupList[i].amount;
 
                                     if (Singleplayer.hud.fullHealth < Singleplayer.hud.healthLeft)
                                         Singleplayer.hud.healthLeft = Singleplayer.hud.fullHealth;
 
-                                    Singleplayer.tileMaps[ai1].PowerupList.Remove(Singleplayer.tileMaps[ai1].PowerupList.ElementAt(i));
+                                    Singleplayer.currentMaps[ai1].PowerupList.Remove(Singleplayer.currentMaps[ai1].PowerupList.ElementAt(i));
                                 }
                             }
                         }
@@ -107,22 +112,22 @@ namespace CR4VE.GameBase.HeadUpDisplay
                 }
                 #endregion
                 #region active Tilemap2
-                for (int i = 0; i < Singleplayer.tileMaps[ai2].PowerupList.Count; i++)
+                for (int i = 0; i < Singleplayer.currentMaps[ai2].PowerupList.Count; i++)
                 {
-                    if (Singleplayer.tileMaps[ai2].PowerupList[i].type == "health")
+                    if (Singleplayer.currentMaps[ai2].PowerupList[i].type == "health")
                     {
                         if (Singleplayer.hud.healthLeft <= Singleplayer.hud.fullHealth)
                         {
-                            if (Singleplayer.tileMaps[ai2].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
+                            if (Singleplayer.currentMaps[ai2].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
                             {
                                 if (Singleplayer.hud.healthLeft < Singleplayer.hud.fullHealth)
                                 {
-                                    Singleplayer.hud.healthLeft += Singleplayer.tileMaps[ai2].PowerupList[i].amount;
+                                    Singleplayer.hud.healthLeft += Singleplayer.currentMaps[ai2].PowerupList[i].amount;
 
                                     if (Singleplayer.hud.fullHealth < Singleplayer.hud.healthLeft)
                                         Singleplayer.hud.healthLeft = Singleplayer.hud.fullHealth;
 
-                                    Singleplayer.tileMaps[ai2].PowerupList.Remove(Singleplayer.tileMaps[ai2].PowerupList.ElementAt(i));
+                                    Singleplayer.currentMaps[ai2].PowerupList.Remove(Singleplayer.currentMaps[ai2].PowerupList.ElementAt(i));
                                 }
                             }
                         }
@@ -147,8 +152,8 @@ namespace CR4VE.GameBase.HeadUpDisplay
             if (CharacterKazumi.manaLeft == 3)
             {
                 spriteBatch.Draw(kazumiPowerLeftTail, kazumiHealthContainerPosition, null, Color.White, 0f, Vector2.Zero, spriteScale, SpriteEffects.None, 0);
-                spriteBatch.Draw(kazumiPowerMiddleTail, kazumiHealthContainerPosition, null, Color.White, 0f, Vector2.Zero, spriteScale, SpriteEffects.None, 0);
                 spriteBatch.Draw(kazumiPowerRightTail, kazumiHealthContainerPosition, null, Color.White, 0f, Vector2.Zero, spriteScale, SpriteEffects.None, 0);
+                spriteBatch.Draw(kazumiPowerMiddleTail, kazumiHealthContainerPosition, null, Color.White, 0f, Vector2.Zero, spriteScale, SpriteEffects.None, 0);
             }
             if (CharacterKazumi.manaLeft > 1 && CharacterKazumi.manaLeft < 3)
             {
@@ -158,6 +163,24 @@ namespace CR4VE.GameBase.HeadUpDisplay
             if (CharacterKazumi.manaLeft <= 1 && CharacterKazumi.manaLeft > 0)
             {
                 spriteBatch.Draw(kazumiPowerMiddleTail, kazumiHealthContainerPosition, null, Color.White, 0f, Vector2.Zero, spriteScale, SpriteEffects.None, 0);
+            }
+            #endregion
+
+            #region Drawing current amount of Continues
+            if (trialsLeft == 3)
+            {
+                spriteBatch.Draw(kazumiContinue, kazumiContinue1Position, null, Color.White, 0, Vector2.Zero, continueSpriteScale, SpriteEffects.None, 0);
+                spriteBatch.Draw(kazumiContinue, kazumiContinue2Position, null, Color.White, 0, Vector2.Zero, continueSpriteScale, SpriteEffects.None, 0);
+                spriteBatch.Draw(kazumiContinue, kazumiContinue3Position, null, Color.White, 0, Vector2.Zero, continueSpriteScale, SpriteEffects.None, 0);
+            }
+            else if (trialsLeft == 2)
+            {
+                spriteBatch.Draw(kazumiContinue, kazumiContinue1Position, null, Color.White, 0, Vector2.Zero, continueSpriteScale, SpriteEffects.None, 0);
+                spriteBatch.Draw(kazumiContinue, kazumiContinue2Position, null, Color.White, 0, Vector2.Zero, continueSpriteScale, SpriteEffects.None, 0);
+            }
+            else if (trialsLeft == 1)
+            {
+                spriteBatch.Draw(kazumiContinue, kazumiContinue1Position, null, Color.White, 0, Vector2.Zero, continueSpriteScale, SpriteEffects.None, 0);
             }
             #endregion
         }

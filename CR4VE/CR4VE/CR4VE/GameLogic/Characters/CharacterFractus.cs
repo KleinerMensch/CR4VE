@@ -18,7 +18,9 @@ namespace CR4VE.GameLogic.Characters
         public static List<Entity> crystalList = new List<Entity>();
         Entity crystalShield, crystals;
         Enemy nearestEnemy = new Enemy();
-        TimeSpan timeSpan = TimeSpan.FromSeconds(10);
+
+        TimeSpan timeSpanForHealthAbsorbingCrystals = TimeSpan.FromSeconds(10);
+        TimeSpan timeSpan = TimeSpan.FromMilliseconds(270);
 
         Vector3 currentViewingDirection;
         float speed = 1;
@@ -35,6 +37,18 @@ namespace CR4VE.GameLogic.Characters
         #region Methods
         public override void Update(GameTime time, SoundEffect effect)
         {
+            #region Timeupdate for DrawAttacks
+            // Decrements the timespan
+            timeSpan -= time.ElapsedGameTime;
+            // If the timespan is equal or smaller time "0"
+            if (timeSpan <= TimeSpan.Zero)
+            {
+                timeSpan = TimeSpan.FromMilliseconds(270);
+                attackList.Remove(crystalShield);
+                launchedMelee = false;
+            }
+            #endregion
+
             #region Update Crystals From Rangedattack
             if (launchedRanged)
             {
@@ -57,7 +71,7 @@ namespace CR4VE.GameLogic.Characters
                         else
                         {
                             #region enemyList1
-                            foreach (Enemy enemy in Singleplayer.tileMaps[Singleplayer.activeIndex1].EnemyList)
+                            foreach (Enemy enemy in Singleplayer.gameMaps[Singleplayer.activeIndex1].EnemyList)
                             {
                                 if (enemyHit)
                                 {
@@ -79,7 +93,7 @@ namespace CR4VE.GameLogic.Characters
                             }
                             #endregion
                             #region enemyList2
-                            foreach (Enemy enemy in Singleplayer.tileMaps[Singleplayer.activeIndex2].EnemyList)
+                            foreach (Enemy enemy in Singleplayer.gameMaps[Singleplayer.activeIndex2].EnemyList)
                             {
                                 if (enemyHit)
                                 {
@@ -162,15 +176,15 @@ namespace CR4VE.GameLogic.Characters
             #region Update HealthAbsorbingCrystals From Specialattack
             #region Removing Crystals After Defined Time
             // Decrements the timespan
-            timeSpan -= time.ElapsedGameTime;
+            timeSpanForHealthAbsorbingCrystals -= time.ElapsedGameTime;
             // If the timespan is equal or smaller time "0"
-            if (timeSpan <= TimeSpan.Zero && crystalList.Count > 0)
+            if (timeSpanForHealthAbsorbingCrystals <= TimeSpan.Zero && crystalList.Count > 0)
             {
                 // Remove the object from list
                 crystalList.RemoveAt(0);
                 // Re initializes the timespan for the next time
                 // minion vanishes after 10 seconds
-                timeSpan = TimeSpan.FromSeconds(10);
+                timeSpanForHealthAbsorbingCrystals = TimeSpan.FromSeconds(10);
                 launchedSpecial = false;
             }
             #endregion
@@ -185,7 +199,7 @@ namespace CR4VE.GameLogic.Characters
 
                     //calculating nearest enemy
                     #region enemyList1
-                    foreach (Enemy enemy in Singleplayer.tileMaps[Singleplayer.activeIndex1].EnemyList)
+                    foreach (Enemy enemy in Singleplayer.gameMaps[Singleplayer.activeIndex1].EnemyList)
                     {
                         float distance = (crystal.position - enemy.position).Length();
                         if (distance < minDistance)
@@ -196,7 +210,7 @@ namespace CR4VE.GameLogic.Characters
                     }
                     #endregion
                     #region enemyList2
-                    foreach (Enemy enemy in Singleplayer.tileMaps[Singleplayer.activeIndex2].EnemyList)
+                    foreach (Enemy enemy in Singleplayer.gameMaps[Singleplayer.activeIndex2].EnemyList)
                     {
                         float distance = (crystal.position - enemy.position).Length();
                         if (distance < minDistance)
@@ -249,6 +263,7 @@ namespace CR4VE.GameLogic.Characters
         public override void MeleeAttack(GameTime time)
         {
             launchedMelee = true;
+            timeSpan = TimeSpan.FromMilliseconds(270);
 
             #region Singleplayer
             if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
@@ -257,7 +272,8 @@ namespace CR4VE.GameLogic.Characters
                 crystalShield.boundary = new BoundingBox(this.position + new Vector3(-10, -3, -10), this.position + new Vector3(10, 3, 10));
                 attackList.Add(crystalShield);
 
-                foreach (Enemy enemy in Singleplayer.enemyList)
+                #region enemyList1
+                foreach (Enemy enemy in Singleplayer.gameMaps[Singleplayer.activeIndex1].EnemyList)
                 {
                     foreach (Entity fractusShield in attackList)
                     {
@@ -268,7 +284,20 @@ namespace CR4VE.GameLogic.Characters
                         }
                     }
                 }
-                attackList.Remove(crystalShield);
+                #endregion
+                #region enemyList2
+                foreach (Enemy enemy in Singleplayer.gameMaps[Singleplayer.activeIndex2].EnemyList)
+                {
+                    foreach (Entity fractusShield in attackList)
+                    {
+                        if (fractusShield.boundary.Intersects(enemy.boundary))
+                        {
+                            enemy.hp -= 1;
+                            Console.WriteLine("Fractus hit enemy by crystalShield");
+                        }
+                    }
+                }
+                #endregion
             }
             #endregion
             #region Arena
@@ -286,7 +315,6 @@ namespace CR4VE.GameLogic.Characters
                         Console.WriteLine("Fractus hit Player by crystalShield");
                     }
                 }
-                attackList.Remove(crystalShield);
             }
             #endregion
         }
@@ -325,6 +353,7 @@ namespace CR4VE.GameLogic.Characters
             {
                 manaLeft -= 1.5f;
                 launchedSpecial = true;
+                timeSpanForHealthAbsorbingCrystals = TimeSpan.FromSeconds(10);
 
                 #region Singleplayer
                 if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
@@ -354,7 +383,6 @@ namespace CR4VE.GameLogic.Characters
                     crystalShield.drawIn2DWorld(new Vector3(1, 1, 1), 0, 0, 0);
                 if (Game1.currentState.Equals(Game1.EGameState.Arena))
                     crystalShield.drawInArena(new Vector3(1, 1, 1), 0, 0, 0);
-                launchedMelee = false;
             }
             #endregion
             #region DrawRanged
