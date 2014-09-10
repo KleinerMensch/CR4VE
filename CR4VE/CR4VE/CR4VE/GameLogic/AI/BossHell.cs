@@ -2,6 +2,7 @@
 using CR4VE.GameLogic.Characters;
 using CR4VE.GameLogic.GameStates;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -48,7 +49,7 @@ namespace CR4VE.GameLogic.AI
         public BossHell(Vector3 pos, String modelName, ContentManager cm, BoundingBox bound) : base(pos, modelName, cm, bound) { }
         #endregion
 
-        public override void Update(GameTime time)
+        public override void Update(GameTime time, SoundEffect effect)
         {
             if (Arena.seraphinBossHUD.isDead)
             {

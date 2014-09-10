@@ -74,6 +74,10 @@ Content\Assets\Models\Players\albino.xnb
 Content\Assets\Models\Enemies\hands.xnb
 Content\Assets\Models\Terrain\spikes_ground.xnb
 Content\Assets\Models\Enemies\spikes_ceiling.xnb
+Content\Assets\Effects\Ambient.xnb
+Content\Assets\Effects\DirectLight.xnb
+Content\Assets\Effects\PointLight.xnb
+Content\Assets\Effects\SkyBox.xnb
 Content\red_eye_0.xnb
 Content\Assets\Models\Powerups\Textures\gold_256x256_0.xnb
 Content\Assets\Models\Terrain\Textures\seamless\lava_bright2_1024x1024_0.xnb
@@ -114,10 +118,7 @@ Content\eyediff3_0.xnb
 Content\Blue-Turquoise-Spotted-Glazed-Ti_1.xnb
 Content\Assets\Models\Terrain\Textures\spikes2_256x256_0.xnb
 Content\Assets\Models\Enemies\Textures\spikes2_256x256_0.xnb
-Content\Assets\Effects\Ambient.xnb
-Content\Assets\Effects\DirectLight.xnb
-Content\Assets\Effects\PointLight.xnb
-Content\Assets\Effects\SkyBox.xnb
+Content\Assets\Sounds\scream.xnb
 Content\Assets\Sprites\Startscreen.png
 Content\Assets\Sprites\ButtonExit.png
 Content\Assets\Sprites\ButtonPlay.png

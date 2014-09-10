@@ -22,6 +22,7 @@ namespace CR4VE
         public static GraphicsDeviceManager graphics;
         public static SpriteBatch spriteBatch;
         public static Game1 game = new Game1();
+        
 
         public static int resolutionIndex = 0;
         public static readonly Vector2[] resolutions = new Vector2[]

@@ -18,6 +18,7 @@ namespace CR4VE.GameLogic.AI
         private float distanceY = 0;
 
         private bool isUP = false;
+        private bool triggered = false;
         #endregion
 
         #region Properties
@@ -38,6 +39,37 @@ namespace CR4VE.GameLogic.AI
 
         public override void UpdateSingleplayer(GameTime gameTime)
         {
+            float distance = 0;
+
+            if (!isUP && !triggered)
+                distance = Math.Abs(this.position.X - Singleplayer.player.position.X);
+
+            if (distance <= 20 && !triggered)
+            {
+                isUP = true;
+                triggered = true;
+            }
+
+            if (isUP)
+            {
+                this.move(new Vector3(0, 0.5f, 0)); 
+                this.distanceY += 0.5f;
+            }
+
+            if (distanceY < 15)
+            {
+                isUP = true;
+            }
+            else
+            {
+                isUP = false;
+            }
+
+            if (Singleplayer.player.boundary.Intersects(this.boundary))
+            {
+                Singleplayer.hud.healthLeft -= (int)(Singleplayer.hud.fullHealth * 0.1);
+                this.hp = 0;
+            }
         }
 
         public override void Draw()

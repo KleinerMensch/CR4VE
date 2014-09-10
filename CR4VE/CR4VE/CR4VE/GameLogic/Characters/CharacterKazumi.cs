@@ -2,6 +2,7 @@
 using CR4VE.GameLogic.AI;
 using CR4VE.GameLogic.GameStates;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using System;
 using System.Collections.Generic;
@@ -30,7 +31,7 @@ namespace CR4VE.GameLogic.Characters
         #endregion
 
         #region Methods
-        public override void Update(GameTime time)
+        public override void Update(GameTime time, SoundEffect effect)
         {
             #region UpdateFireball
             if (launchedRanged)

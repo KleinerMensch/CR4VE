@@ -87,10 +87,10 @@ namespace CR4VE.GameLogic.GameStates
             GameControls.updateArena(gameTime);
             GameControls.updateVibration(gameTime);
 
-            player.Update(gameTime);
+            player.Update(gameTime, Singleplayer.soundeffect);
             sphere.Center = player.position;
 
-            boss.Update(gameTime);
+            boss.Update(gameTime, Singleplayer.soundeffect);
             
             #region HUD
             opheliaHud.Update();

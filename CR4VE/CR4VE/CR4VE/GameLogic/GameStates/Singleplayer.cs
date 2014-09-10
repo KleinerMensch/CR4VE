@@ -29,6 +29,9 @@ namespace CR4VE.GameLogic.GameStates
         Texture2D background;
         public static Effect effect;
 
+        public static SoundEffect soundeffect;
+        public static Song song;
+
         //Terrain
         public static Tilemap[] tileMaps = new Tilemap[]{};
 
@@ -66,6 +69,8 @@ namespace CR4VE.GameLogic.GameStates
             spriteBatch = CR4VE.Game1.spriteBatch;
             graphics = CR4VE.Game1.graphics;
             cont = content;
+            soundeffect = content.Load<SoundEffect>("Assets/Sounds/scream");
+            //song = content.Load<Song>("Assets/Sounds/scream");
 
             #region Terrain
             #region layout1
@@ -353,7 +358,7 @@ namespace CR4VE.GameLogic.GameStates
             #endregion
 
             //Player
-            player.Update(gameTime);
+            player.Update(gameTime, soundeffect);
 
             //Powerups
             foreach (Powerup p in tileMaps[activeIndex1].PowerupList)
@@ -368,11 +373,11 @@ namespace CR4VE.GameLogic.GameStates
             //Checkpoints
             foreach (Checkpoint c in tileMaps[activeIndex1].CheckpointList)
             {
-                c.Update();
+                c.Update(soundeffect);
             }
             foreach (Checkpoint c in tileMaps[activeIndex2].CheckpointList)
             {
-                c.Update();
+                c.Update(soundeffect);
             }
 
             #region Enemies
