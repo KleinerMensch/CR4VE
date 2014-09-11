@@ -18,6 +18,8 @@ namespace CR4VE.GameBase.Objects
     {
         #region Attributes
         private String type;
+
+        public bool soundPlayed;
         #endregion
 
         #region Constructor

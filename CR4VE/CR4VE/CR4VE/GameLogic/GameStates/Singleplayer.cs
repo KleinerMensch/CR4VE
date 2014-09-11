@@ -26,16 +26,11 @@ namespace CR4VE.GameLogic.GameStates
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        Texture2D background;
-
-        public static Effect effect;
+        //Lighting Effects
+        public static Effect effect_directLight;
 
         //Terrain (Singleplayer)
         public static Tilemap[] gameMaps = new Tilemap[] { };
-
-        //Terrain
-        public static Tilemap[] tileMaps = new Tilemap[]{};
-
         //Terrain (Tutorial)
         public static Tilemap[] tutorialMaps = new Tilemap[] { };
         public static bool isTutorial = true;
@@ -54,16 +49,18 @@ namespace CR4VE.GameLogic.GameStates
         public static Character player;
 
         //reset point if dead
-        public static Checkpoint lastCheckpoint;        
-        
-        //Enemies
-        public static List<Enemy> enemyList = new List<Enemy>();
+        public static Checkpoint lastCheckpoint;
 
         //HUD
         public static HUD hud;
         public static bool isPaused = false;
 
-        //Sounds
+        //Textures
+        public static bool isPopup;
+        private static Texture2D menu_pause;
+        private static Texture2D[] tutSprites;
+        public static int tutIndex;
+        public static bool tutStop;
         #endregion
 
         #region Konstruktor
@@ -79,28 +76,29 @@ namespace CR4VE.GameLogic.GameStates
             graphics = CR4VE.Game1.graphics;
             cont = content;
 
-            //Sounds
-            //soundeffect = content.Load<SoundEffect>("Assets/Sounds/scream");
-            //song = content.Load<Song>("Assets/Sounds/scream");
+            //needed parameters
+            GameControls.initializeSingleplayer();
+
+            isPaused = false;
+            isPopup = false;
+            tutIndex = -1;
+            tutStop = false;
 
             #region Terrain
             //Tutorial
             #region tutorialLayout1
-            int[,] tutorialLayout1 = new int[,] {
-
-           
+            int[,] tutorialLayout1 = new int[,] {           
             
            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-           { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,97, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-           { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,98, 0},
+           { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+           { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,97, 0},
            { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1},
-           { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,96, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
+           { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
            { 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,93, 0, 0, 1, 1, 3, 1, 0, 0, 0, 0},
            { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 1, 1, 1, 3,14,14, 3,14,14, 3, 3, 3, 3,14,14,14,14,14,14,14,14,14, 3, 1, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 1, 1, 1, 1},
            { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,14,14, 3,14,14, 3, 3, 3, 3,14,14,14,14,14,14,14,14,14, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
            { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,14,14, 3,14,14, 3, 3, 3, 3,14,14,14,14,14,14,14,14,14, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
            { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,14,14, 3,14,14, 3, 3, 3, 3,14,14,14,14,14,14,14,14,14, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3}};
-          
             #endregion
 
             #region tutorialLayout2
@@ -111,16 +109,16 @@ namespace CR4VE.GameLogic.GameStates
            { 0, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
            { 0, 0, 0, 0, 0, 0, 0,13,13,13, 0, 0, 0,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13},
-           { 1, 1, 0, 0,93, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,97, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13},
-           { 3, 3, 1, 1, 1, 1,13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,98, 0, 0, 0, 0, 0, 0, 0, 0,19, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13},
-           { 3, 3, 3, 3, 3, 3, 3,13,13, 0, 0, 0, 0, 0, 0, 0, 0, 0,92, 0, 0,13, 0, 0, 0, 0, 0, 0,19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13},
+           { 0, 1, 0, 0,93, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,97, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13},
+           { 1, 3, 1, 1, 1, 1,13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,98, 0, 0, 0, 0, 0, 0, 0, 0,19, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13},
+           { 3, 3, 3, 3, 3, 3, 3,13,13, 0, 0,96, 0, 0, 0, 0, 0, 0,92, 0, 0,13, 0, 0, 0, 0, 0, 0,19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13},
            { 3, 3, 3, 3, 3, 3, 3, 3, 3,13,13,13,13,13, 0, 0,13,13,13,13,13,13, 0, 0,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13},
-           { 3, 3, 3, 3, 3, 3, 3, 3, 3,13,13,13,13,13,14,14,13,13,13,13,13,13,14,14,18,15,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13,13,13,13,13,13,13,13,13},
-           { 3, 3, 3, 3, 3, 3, 3, 3, 3,13,13,13,13,13,14,14,13,13,13,13,13,13,14,14,13,13,18,15, 0,92, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,92, 0, 0, 0, 0, 0,19, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13,13,13,13,13,13},
-           { 0, 0, 0, 0, 0, 0, 0, 0, 3,13,13,13,13,13,14,14,13,13,13,13,13,13,14,14,13,13,13,18,15,15,15, 0, 0,15,15, 0, 0, 0,15,15,15,15,15,15,15,15,15,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13,13,13},
+           { 3, 3, 3, 3, 3, 3, 3, 3, 3,13,13,13,13,13,14,14,13,13,13,13,13,13,14,14,18,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13,13,13,13,13,13,13,13,13},
+           { 3, 3, 3, 3, 3, 3, 3, 3, 3,13,13,13,13,13,14,14,13,13,13,13,13,13,14,14,13,13,15, 0, 0,92, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,92, 0, 0, 0, 0, 0,19, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13,13,13,13,13,13},
+           { 0, 0, 0, 3, 3, 3, 3, 3, 3,13,13,13,13,13,14,14,13,13,13,13,13,13,14,14,13,13,13,15,15,15,15, 0, 0,15,15, 0, 0, 0,15,15,15,15,15,15,15,15,15,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13,13,13},
            { 0, 0, 0, 0, 0, 0, 0, 0, 3,13,13,13,13,13,14,14,13,13,13,13,13,13,14,14,13,13,13,13,18,18,18,16,16,18,18,16,16,16,18,18,18,18,18,18,18,18,18,18,15, 0, 0, 0,19, 0, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13,13},
            { 0, 0, 0, 0, 0, 0, 0, 0, 3,13,13,13,13,13,14,14,13,13,13,13,13,13,14,14,13,13,13,13,13,18,18,16,16,18,18,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13},
-           { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,14,14,13,13,13,13,13,13,18,16,16,18,18,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16, 0, 0, 0,19, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13},
+           { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,13,13,14,14,13,13,13,13,13,13,18,16,16,18,18,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16, 0, 0, 0,19, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13},
            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,14,14,13,13,13,13,13,13,13,16,16,18,18,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13},
            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,14,14,13,13,13,13,13,13,13,16,16,18,18,16,16,16,16,18,18,18,18,16,16,16,16,16,16,16,16,16,16, 0, 0, 0,15,15,15,15, 0,13,13,13,13,13,13,13},
            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,14,14,13,13,18,18,18,18,18,16,16,18,18,16,16,16,16,18,18,18,18,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,13,13,13,13,13,13,13},
@@ -377,10 +375,21 @@ namespace CR4VE.GameLogic.GameStates
             SaveGame.Reset();
 
             //Textures
-            //background = content.Load<Texture2D>("Assets/Sprites/stone");
+            menu_pause = content.Load<Texture2D>("Assets/Sprites/menu_pause");
+            if (isTutorial)
+            {
+                tutSprites = new Texture2D[]
+                {
+                    content.Load<Texture2D>("Assets/Sprites/popup_tutorial1"),
+                    content.Load<Texture2D>("Assets/Sprites/popup_tutorial2"),
+                    content.Load<Texture2D>("Assets/Sprites/popup_tutorial3"),
+                    content.Load<Texture2D>("Assets/Sprites/popup_tutorial4"),
+                    content.Load<Texture2D>("Assets/Sprites/popup_tutorial5"),
+                };
+            }
 
             //Effects
-            effect = content.Load<Effect>("Assets/Effects/DirectLight");
+            effect_directLight = content.Load<Effect>("Assets/Effects/DirectLight");
 
             //Player
             ghost = new Character(Vector3.Zero, "skull", content);
@@ -404,11 +413,17 @@ namespace CR4VE.GameLogic.GameStates
 
             if (isPaused)
             {
-                GameControls.updateSingleplayerPaused(visibles);
+                if (isTutorial)
+                    GameControls.updateTutorial();
+
+                return GameControls.updateSingleplayerPaused(gameTime, visibles);
             }
             else
             {
                 GameControls.updateSingleplayer(gameTime, visibles);
+                
+                if (isTutorial)
+                    GameControls.updateTutorial();
 
                 //check if active Tilemaps have changed
                 Tilemap.updateActiveTilemaps(currentMaps);
@@ -483,11 +498,12 @@ namespace CR4VE.GameLogic.GameStates
                 GameControls.updateVibration(gameTime);
             }
 
-            //DEBUG-----------------------------------
-            //Console.WriteLine();
-            Sounds.Update();
-            //----------------------------------------
-
+            //DEBUG---------------------------
+            Console.Clear();
+            Console.WriteLine(tutIndex);
+            //Console.WriteLine(isPopup);
+            Console.WriteLine(player.Position);
+            //--------------------------------
 
             //notwendiger Rueckgabewert
             if (player.Boundary.Intersects(ArenaKey.Boundary))
@@ -505,15 +521,17 @@ namespace CR4VE.GameLogic.GameStates
 
             graphics.GraphicsDevice.Clear(Color.Gray);
 
+            #region filling world rectangle
             //width and height for spriteBatch rectangle needed to draw background texture
-            Vector2 drawPos = new Vector2(Camera2D.WorldRectangle.X, Camera2D.WorldRectangle.Y);
+            /*Vector2 drawPos = new Vector2(Camera2D.WorldRectangle.X, Camera2D.WorldRectangle.Y);
             int drawRecWidth = graphics.PreferredBackBufferWidth;
             int drawRecHeight = graphics.PreferredBackBufferHeight;
             
-            Rectangle drawRec = new Rectangle((int)Camera2D.Position2D.X, (int)Camera2D.Position2D.Y, drawRecWidth, drawRecHeight);
-            
+            Rectangle drawRec = new Rectangle((int)Camera2D.Position2D.X, (int)Camera2D.Position2D.Y, drawRecWidth, drawRecHeight);*/
+
             //spriteBatch.Draw(background, drawPos, drawRec, Color.White);
-            
+            #endregion
+
             spriteBatch.End();
 
             //GraphicsDevice auf default setzen
@@ -555,6 +573,23 @@ namespace CR4VE.GameLogic.GameStates
             spriteBatch.Begin();
 
             hud.Draw(spriteBatch);
+
+            if (isTutorial && isPopup)
+            {
+                Vector2 popupPos = new Vector2(graphics.PreferredBackBufferWidth / 2 - tutSprites[tutIndex].Bounds.Width / 2,
+                                                graphics.PreferredBackBufferHeight / 2 - tutSprites[tutIndex].Bounds.Height / 2);
+
+                spriteBatch.Draw(tutSprites[tutIndex], popupPos, Color.White);
+
+                spriteBatch.DrawString(cont.Load<SpriteFont>("Assets/Fonts/HUDfont"), "Press START or ENTER to close", new Vector2(0, 0), Color.White);
+            }
+            else if (isPaused)
+            {
+                Vector2 menuPos = new Vector2(graphics.PreferredBackBufferWidth / 2 - menu_pause.Bounds.Width / 2, 
+                                                graphics.PreferredBackBufferHeight / 2 - menu_pause.Bounds.Height / 2);
+
+                spriteBatch.Draw(menu_pause, menuPos, Color.White);
+            }
 
             spriteBatch.End();
 

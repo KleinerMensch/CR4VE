@@ -134,7 +134,7 @@ namespace CR4VE.GameLogic.AI
                 laserList[i].position.X += laserList[i].viewingDirection.X;
                 if (Singleplayer.player.boundary.Intersects(laserList[i].boundary))
                 {
-                    Singleplayer.hud.healthLeft -= 10;
+                    Singleplayer.hud.healthLeft -= 30;
                     laserList.Remove(laserList[i]);
                     i--;
                 }

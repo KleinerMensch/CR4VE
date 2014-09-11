@@ -31,7 +31,7 @@ namespace CR4VE.GameLogic.GameStates
 
             background = content.Load<Texture2D>("Assets/Sprites/TryAgain");
 
-            font = content.Load<SpriteFont>("Assets/Fonts/GameOverFlo");
+            font = content.Load<SpriteFont>("Assets/Fonts/HUDfont");
 
             fontPosition = new Vector2(graphics.PreferredBackBufferWidth/2, graphics.PreferredBackBufferHeight/2);
             fontGap = fontPosition + new Vector2(0, -1);
@@ -56,8 +56,8 @@ namespace CR4VE.GameLogic.GameStates
             spriteBatch.Begin();
 
             spriteBatch.DrawString(font, "GAME OVER"/*"Game Over Flo"*/, fontPosition, Color.White);
-            spriteBatch.DrawString(font, "Start / Enter - Back to Main Menu", new Vector2(fontPosition.X, fontPosition.Y + 50), Color.White);
-            spriteBatch.DrawString(font, "Select / Esc  - Quit Game", new Vector2(fontPosition.X, fontPosition.Y + 75), Color.White);
+            spriteBatch.DrawString(font, "Backspace / Back - Back to Main Menu", new Vector2(fontPosition.X, fontPosition.Y + 50), Color.White);
+            spriteBatch.DrawString(font, "End / R3  - Quit Game", new Vector2(fontPosition.X, fontPosition.Y + 75), Color.White);
 
             spriteBatch.End();
 
