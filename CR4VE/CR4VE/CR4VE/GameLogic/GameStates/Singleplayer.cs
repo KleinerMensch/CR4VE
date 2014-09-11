@@ -313,14 +313,6 @@ namespace CR4VE.GameLogic.GameStates
 
             //Checkpoints (default = Startposition)
             lastCheckpoint = new Checkpoint(Vector3.Zero, "checkpoint_hell", content);
-            
-            #region Loading AI
-            EnemyRedEye redEye;
-            EnemySkull skull;
-
-            redEye = new EnemyRedEye(new Vector3(80, 0, 0),"EnemyEye",content,new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
-            skull = new EnemySkull(new Vector3(400, 0, 0), "skull", content, new BoundingBox(new Vector3(-3, -3, -3), new Vector3(3, 3, 3)));
-            #endregion
 
             //HUD
             hud = new OpheliaHUD(cont, graphics);

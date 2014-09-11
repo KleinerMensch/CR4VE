@@ -21,7 +21,7 @@ namespace CR4VE.GameLogic.GameStates
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        public static HUD opheliaHud, seraphinBossHUD;
+        public static HUD opheliaHud, seraphinBossHUD, fractusBossHUD;
 
         //Terrain
         static Entity terrain;
@@ -33,7 +33,7 @@ namespace CR4VE.GameLogic.GameStates
 
         //moveable Entities
         public static Character player;
-        public static BossHell boss;
+        public static Character boss;
 
         public static readonly Vector3 startPos = new Vector3(0, -12.5f, 0);
 
@@ -41,6 +41,7 @@ namespace CR4VE.GameLogic.GameStates
         public static float blickwinkelBoss;
 
         public static BoundingSphere sphere;
+        public static BoundingSphere rangeOfMeleeFromBoss;
         #endregion
 
         #region Konstruktor
@@ -64,21 +65,24 @@ namespace CR4VE.GameLogic.GameStates
             lava = new Entity(new Vector3(0, -110, -30), "Terrain/lavafloor", content);
 
             //moveable Entities
-            player = new CharacterSeraphin(startPos, "Ophelia", content);
+            player = new CharacterOphelia(startPos, "Ophelia", content);
             BoundingBox playerBound = new BoundingBox(player.Position + new Vector3(-2.5f, -9, -2.5f), player.Position + new Vector3(2.5f, 9, 2.5f));
             player.Boundary = playerBound;
 
-            sphere = new BoundingSphere(player.position, 6);
+            sphere = new BoundingSphere(player.position, 30);
+            rangeOfMeleeFromBoss = new BoundingSphere(player.position, 6);
+            //testBox = new Entity(boss.position, "Terrain10x10x10Box1", content);
 
             #region Loading AI
-            //Boss
-            boss = new BossHell(new Vector3(60, 0, 0), "albino", content);
-            boss.boundary = new BoundingBox(boss.position + new Vector3(-6, -6, -6), boss.position + new Vector3(6, 6, 6));
+            //Boss je nachdem, wer der Player ist
+            boss = new BossCrystal(new Vector3(60, 0, 0), "Ophelia", content);
+            boss.boundary = new BoundingBox(boss.position + new Vector3(-3, -3, -3), boss.position + new Vector3(3, 3, 3));
             #endregion
 
             //HUD
             opheliaHud = new OpheliaHUD(content, graphics);
-            seraphinBossHUD = new SeraphinHUD(content, graphics);
+            seraphinBossHUD = new BossHellHUD(content, graphics);
+            fractusBossHUD = new BossCrystalHUD(content, graphics);
             cont = content;
         }
 
@@ -89,6 +93,7 @@ namespace CR4VE.GameLogic.GameStates
 
             player.Update(gameTime);
             sphere.Center = player.position;
+            rangeOfMeleeFromBoss.Center = player.position;
 
             boss.Update(gameTime);
             
@@ -100,7 +105,9 @@ namespace CR4VE.GameLogic.GameStates
 
             seraphinBossHUD.Update();
             seraphinBossHUD.UpdateLiquidPositionByResolution();
-            seraphinBossHUD.UpdateMana();
+
+            fractusBossHUD.Update();
+            fractusBossHUD.UpdateLiquidPositionByResolution();
 
             if (opheliaHud.isDead)
             {
@@ -127,20 +134,15 @@ namespace CR4VE.GameLogic.GameStates
             player.DrawAttacks();
 
             #region Enemies
-            boss.drawInArena(boss.scaleForDrawMethod, 0, MathHelper.ToRadians(90) + blickwinkelBoss, 0);
+            boss.drawInArena(/*new Vector3(0.75f, 0.75f, 0.75f)*/new Vector3(0.03f, 0.03f, 0.03f)/*boss.scaleForDrawMethod*/, 0, MathHelper.ToRadians(90) + blickwinkelBoss, 0);
             boss.DrawAttacks();
-
-            //Minions etc.
-            foreach (Entity crystal in CharacterFractus.crystalList)
-            {
-                crystal.drawInArena(new Vector3(0.1f, 0.1f, 0.1f), 0, 0, 0);
-            }
             #endregion
-            
+
             #region HUD
             spriteBatch.Begin();
 
-            seraphinBossHUD.Draw(spriteBatch);
+            //seraphinBossHUD.Draw(spriteBatch);
+            fractusBossHUD.Draw(spriteBatch);
             opheliaHud.Draw(spriteBatch);
 
             spriteBatch.End();

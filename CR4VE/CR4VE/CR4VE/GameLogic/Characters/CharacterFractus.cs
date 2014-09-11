@@ -1,4 +1,5 @@
-﻿using CR4VE.GameBase.Objects;
+﻿using CR4VE.GameBase.HeadUpDisplay;
+using CR4VE.GameBase.Objects;
 using CR4VE.GameLogic.AI;
 using CR4VE.GameLogic.GameStates;
 using Microsoft.Xna.Framework;
