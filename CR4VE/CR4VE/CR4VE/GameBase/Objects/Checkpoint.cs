@@ -2,12 +2,15 @@
 using CR4VE.GameLogic;
 using CR4VE.GameLogic.GameStates;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
 
 namespace CR4VE.GameBase.Objects
 {
@@ -15,6 +18,8 @@ namespace CR4VE.GameBase.Objects
     {
         #region Attributes
         private String type;
+
+        private bool soundPlayed = false;
         #endregion
 
         #region Constructor
@@ -22,7 +27,7 @@ namespace CR4VE.GameBase.Objects
         {
             this.position = pos;
             this.model = cm.Load<Model>("Assets/Models/Checkpoints/" + modelName);
-            this.boundary = new BoundingBox(pos + new Vector3(-2.5f, -1000f, -2.5f), pos + new Vector3(2.5f, 1000f, 2.5f));
+            this.boundary = new BoundingBox(pos + new Vector3(-2.5f, -2.5f, -2.5f), pos + new Vector3(2.5f, 7.5f, 2.5f));
 
             //type
             if (modelName == "checkpoint_hell")
@@ -41,9 +46,19 @@ namespace CR4VE.GameBase.Objects
 
                 //update SaveGame.txt
                 if (this.type == "hell")
+                {
+                    if (!soundPlayed)
+                    {
+                        Sounds.checkpointHell.Play();
+
+                        soundPlayed = true;
+                    }
                     SaveGame.setHellReset(this.Position);
+                }
                 else
                     SaveGame.setCrystalReset(this.Position);
+
+               
             }
         }
 

@@ -27,31 +27,43 @@ namespace CR4VE.GameLogic.GameStates
         SpriteBatch spriteBatch;
 
         Texture2D background;
+
         public static Effect effect;
+
+        //Terrain (Singleplayer)
+        public static Tilemap[] gameMaps = new Tilemap[] { };
 
         //Terrain
         public static Tilemap[] tileMaps = new Tilemap[]{};
 
-        public static Tilemap activeTileMap1;
-        public static Tilemap activeTileMap2;
-        public static int activeIndex1 = 0;
-        public static int activeIndex2 = 1;
+        //Terrain (Tutorial)
+        public static Tilemap[] tutorialMaps = new Tilemap[] { };
+        public static bool isTutorial = true;
+
+        //TileMap parameters
+        public static Tilemap[] currentMaps;
+        public static int activeIndex1;
+        public static int activeIndex2;
 
         public static List<Tile> visibles;
+
+        public static Entity ArenaKey;
 
         //Player
         public static Character ghost;
         public static Character player;
 
         //reset point if dead
-        public static Checkpoint lastCheckpoint;
-        public static Entity ArenaKey;
+        public static Checkpoint lastCheckpoint;        
         
         //Enemies
         public static List<Enemy> enemyList = new List<Enemy>();
 
         //HUD
         public static HUD hud;
+        public static bool isPaused = false;
+
+        //Sounds
         #endregion
 
         #region Konstruktor
@@ -67,20 +79,69 @@ namespace CR4VE.GameLogic.GameStates
             graphics = CR4VE.Game1.graphics;
             cont = content;
 
+            //Sounds
+            Sounds.Initialize(cont);
+
             #region Terrain
+            //Tutorial
+            #region tutorialLayout1
+            int[,] tutorialLayout1 = new int[,] {
+
+           
+            
+           { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+           { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,97, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+           { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,98, 0},
+           { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1},
+           { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,96, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
+           { 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,93, 0, 0, 1, 1, 3, 1, 0, 0, 0, 0},
+           { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 1, 1, 1, 3,14,14, 3,14,14, 3, 3, 3, 3,14,14,14,14,14,14,14,14,14, 3, 1, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 1, 1, 1, 1},
+           { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,14,14, 3,14,14, 3, 3, 3, 3,14,14,14,14,14,14,14,14,14, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
+           { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,14,14, 3,14,14, 3, 3, 3, 3,14,14,14,14,14,14,14,14,14, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
+           { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,14,14, 3,14,14, 3, 3, 3, 3,14,14,14,14,14,14,14,14,14, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3}};
+          
+            #endregion
+
+            #region tutorialLayout2
+            int[,] tutorialLayout2 = new int[,] {
+
+           { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+           { 0, 0, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+           { 0, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+           { 0, 0, 0, 0, 0, 0, 0,13,13,13, 0, 0, 0,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+           { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13},
+           { 1, 1, 0, 0,93, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,97, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13},
+           { 3, 3, 1, 1, 1, 1,13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,98, 0, 0, 0, 0, 0, 0, 0, 0,19, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13},
+           { 3, 3, 3, 3, 3, 3, 3,13,13, 0, 0, 0, 0, 0, 0, 0, 0, 0,92, 0, 0,13, 0, 0, 0, 0, 0, 0,19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13},
+           { 3, 3, 3, 3, 3, 3, 3, 3, 3,13,13,13,13,13, 0, 0,13,13,13,13,13,13, 0, 0,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13},
+           { 3, 3, 3, 3, 3, 3, 3, 3, 3,13,13,13,13,13,14,14,13,13,13,13,13,13,14,14,18,15,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13,13,13,13,13,13,13,13,13},
+           { 3, 3, 3, 3, 3, 3, 3, 3, 3,13,13,13,13,13,14,14,13,13,13,13,13,13,14,14,13,13,18,15, 0,92, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,92, 0, 0, 0, 0, 0,19, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13,13,13,13,13,13},
+           { 0, 0, 0, 0, 0, 0, 0, 0, 3,13,13,13,13,13,14,14,13,13,13,13,13,13,14,14,13,13,13,18,15,15,15, 0, 0,15,15, 0, 0, 0,15,15,15,15,15,15,15,15,15,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13,13,13},
+           { 0, 0, 0, 0, 0, 0, 0, 0, 3,13,13,13,13,13,14,14,13,13,13,13,13,13,14,14,13,13,13,13,18,18,18,16,16,18,18,16,16,16,18,18,18,18,18,18,18,18,18,18,15, 0, 0, 0,19, 0, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13,13},
+           { 0, 0, 0, 0, 0, 0, 0, 0, 3,13,13,13,13,13,14,14,13,13,13,13,13,13,14,14,13,13,13,13,13,18,18,16,16,18,18,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13},
+           { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,14,14,13,13,13,13,13,13,18,16,16,18,18,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16, 0, 0, 0,19, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13},
+           { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,14,14,13,13,13,13,13,13,13,16,16,18,18,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13},
+           { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,14,14,13,13,13,13,13,13,13,16,16,18,18,16,16,16,16,18,18,18,18,16,16,16,16,16,16,16,16,16,16, 0, 0, 0,15,15,15,15, 0,13,13,13,13,13,13,13},
+           { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,14,14,13,13,18,18,18,18,18,16,16,18,18,16,16,16,16,18,18,18,18,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,13,13,13,13,13,13,13},
+           { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,16,16,16, 16,16,16,16,16,16,16,16,16,16,16,16,13,13,13,13,13,13,13,13},
+           { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,16,16,16,16,16,16,16,16,16,16,16,13,13,13,13,13,13,13,13,13},
+           { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,16,16,16,16,16,16,16,16,16,16,13,13,13,13,13,13,13,13,13,13}};
+            #endregion
+
+            //Main Game
             #region layout1
             int[,] layout1 = new int[,] {
         
-           {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,96, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,98,93, 0, 0, 0},
-           {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0,97, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,97, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0},
-           {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 3, 3, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0},
-           {1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0,93, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0,97, 0, 0, 0, 1, 0, 0, 3, 0, 0, 3, 3, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-           {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 3, 4, 4, 3, 3, 3, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-           {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 3, 4, 4, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0},
-           {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 3, 4, 4, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0},
-           {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 3, 4, 4, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0},
-           {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 3, 4, 4, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0}};
-            #endregion
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,96, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,98,93, 0, 0, 0},
+            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0,97, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,97, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0},
+            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 3, 3, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0},
+            {1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0,93, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0,97, 0, 0, 0, 1, 0, 0, 3, 0, 0, 3, 3, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 3, 4, 4, 3, 3, 3, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 3, 4, 4, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0},
+            {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 3, 4, 4, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0},
+            {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 3, 4, 4, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0},
+            {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 3, 4, 4, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0}};
+            #endregion  
 
             #region layout2
             int[,] layout2 = new int[,] { 
@@ -228,7 +289,7 @@ namespace CR4VE.GameLogic.GameStates
             {13,13, 0, 0, 0, 0, 0, 0,19, 0,19,19,19,19,19,19,19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,15,15,15,15,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,19,19, 0, 0, 0,19, 0, 0,19,19, 0, 0, 0, 0, 0},
             {13,13,15,15,15, 0,96, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,18,18,18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {13,13,18,18,18,15,15, 0, 0, 0, 0, 0, 0, 0, 0,97, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,15,18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,19,19, 0, 0},
-            {13,13,18,18,18,18,18, 0, 0, 0, 0, 0,15, 0,15,15,15, 0, 0,15, 0, 0, 0, 0,15, 0, 0,18,18,97, 0, 0,15,15, 0, 0,15, 0, 0, 0,18,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {13,13,18,18,18,18,18, 0, 0, 0, 0, 0,15, 0,15,15,15, 0, 0,15, 0, 0, 0, 0,15, 0, 0,18,18,97, 0, 0,15,15, 0, 0,15, 0, 0, 0,18,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,19},
             {13,13,18,18,18,18,18,15,15, 0, 0,15,18,15,18,18,18,16,16,18, 0, 0, 0, 0,18,16,16,18,18,15,15,15,18,18,16,16,18,15,15,15,18,18,15,15,15,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {13,13,18,18,18,18,18,18,18,16,16,18,18,18,18,18,18,16,16,18, 0, 0, 0,15,18,16,16,18,18,18,18,18,18,18,16,16,18,18,18,18,18,18,18,18,18,18,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,16},
             {13,13,18,18,18,18,18,18,18,16,16,18,18,18,18,18,18,16,16,18, 0,98, 0, 0,18,16,16,18,18,18,18,18,18,18,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16},
@@ -274,23 +335,36 @@ namespace CR4VE.GameLogic.GameStates
 
             int boxSize = 10;
 
-            //Array of all generated Tilemaps
-            tileMaps = new Tilemap[]
+            //Arrays of generated Tilemaps
+            tutorialMaps = new Tilemap[]
             {
+                Tilemap.Generate(tutorialLayout1, boxSize, new Vector3(-80, 0, 0)),
+                Tilemap.Generate(tutorialLayout2, boxSize, new Vector3(480, 0, 0)),
+            };
+
+            gameMaps = new Tilemap[]
+            {   //Höhlenlevel
                 Tilemap.Generate(layout1, boxSize, new Vector3(-80, 0, 0)),
                 Tilemap.Generate(layout2, boxSize, new Vector3(510, 10, 0)),
                 Tilemap.Generate(layout3, boxSize, new Vector3(1030, -60, 0)),
                 Tilemap.Generate(layout4, boxSize, new Vector3(1550, -150, 0)),
                 Tilemap.Generate(layout5, boxSize, new Vector3(2110, -260, 0)),
-                Tilemap.Generate(layout6, boxSize, new Vector3(2670, -290, 0)),//2670,-290,0
-                Tilemap.Generate(layout7, boxSize, new Vector3(3180,-410, 0)),//(3180,-420,0)
-                Tilemap.Generate(layout8, boxSize, new Vector3(3760,-440, 0)),//(3660,-590,0)
+                Tilemap.Generate(layout6, boxSize, new Vector3(2670, -290, 0)),
+                Tilemap.Generate(layout7, boxSize, new Vector3(3180,-410, 0)),
+                Tilemap.Generate(layout8, boxSize, new Vector3(3760,-440, 0)),
                 Tilemap.Generate(layout9, boxSize, new Vector3(-80,0,-10)),
+          
             };
 
-            //indices of active Tilemaps
-            activeTileMap1 = tileMaps[activeIndex1];
-            activeTileMap2 = tileMaps[activeIndex2];
+            //get active Tilemaps
+            if (isTutorial)
+                currentMaps = tutorialMaps;
+            else
+                currentMaps = gameMaps;
+
+            //set start indices
+            activeIndex1 = 0;
+            activeIndex2 = 1;
 
             visibles = new List<Tile>();
             #endregion            
@@ -310,6 +384,7 @@ namespace CR4VE.GameLogic.GameStates
             //Player
             ghost = new Character(Vector3.Zero, "skull", content);
             player = new CharacterOphelia(new Vector3(0,0,5), "Ophelia", content, new BoundingBox(new Vector3(-2.5f, -9f, -2.5f), new Vector3(2.5f, 9f, 2.5f)));
+            CharacterOphelia.manaLeft = 3;
 
             //Checkpoints (default = Startposition)
             lastCheckpoint = new Checkpoint(Vector3.Zero, "checkpoint_hell", content);
@@ -323,84 +398,95 @@ namespace CR4VE.GameLogic.GameStates
         public Game1.EGameState Update(GameTime gameTime)
         {
             //Viewport Culling
-            visibles = Tilemap.getVisibleTiles();
+            visibles = Tilemap.getVisibleTiles(currentMaps);
+                        
 
-            GameControls.updateSingleplayer(gameTime, visibles);
-
-            //check if active Tilemaps have changed
-            Tilemap.updateActiveTilemaps();
-
-            #region HUD
-            hud.Update();
-            
-            hud.UpdateMana();
-            hud.UpdateHealth();
-
-            hud.UpdateLiquidPositionByResolution();
-            
-            if (hud.isDead)
+            if (isPaused)
             {
-                return Game1.EGameState.GameOver;
+                GameControls.updateSingleplayerPaused(visibles);
             }
-            #endregion
+            else
+            {
+                GameControls.updateSingleplayer(gameTime, visibles);
 
-            //Player
-            player.Update(gameTime);
+                //check if active Tilemaps have changed
+                Tilemap.updateActiveTilemaps(currentMaps);
 
-            //Powerups
-            foreach (Powerup p in tileMaps[activeIndex1].PowerupList)
-            {
-                p.Update();
-            }
-            foreach (Powerup p in tileMaps[activeIndex2].PowerupList)
-            {
-                p.Update();
-            }
-            
-            //Checkpoints
-            foreach (Checkpoint c in tileMaps[activeIndex1].CheckpointList)
-            {
-                c.Update();
-            }
-            foreach (Checkpoint c in tileMaps[activeIndex2].CheckpointList)
-            {
-                c.Update();
-            }
+                #region HUD
+                hud.Update();
 
-            #region Enemies
-            foreach (Enemy e in tileMaps[activeIndex1].EnemyList)
-            {
-                e.UpdateSingleplayer(gameTime);
-            }
-            foreach (Enemy e in tileMaps[activeIndex2].EnemyList)
-            {
-                e.UpdateSingleplayer(gameTime);
-            }
+                hud.UpdateMana();
 
-            //remove dead enemies from active lists
-            for (int i = 0; i < tileMaps[activeIndex1].EnemyList.Count; i++)
-            {
-                if (tileMaps[activeIndex1].EnemyList.ElementAt(i).isDead)
+                hud.UpdateHealth();
+
+                hud.UpdateLiquidPositionByResolution();
+
+                if (hud.isDead)
                 {
-                    tileMaps[activeIndex1].EnemyList.ElementAt(i).Destroy();
-                    tileMaps[activeIndex1].EnemyList.Remove(tileMaps[activeIndex1].EnemyList.ElementAt(i));
+                    return Game1.EGameState.GameOver;
                 }
-            }
-            for (int i = 0; i < tileMaps[activeIndex2].EnemyList.Count; i++)
-            {
-                if (tileMaps[activeIndex2].EnemyList.ElementAt(i).isDead)
+                #endregion
+
+                //Player
+                player.Update(gameTime);
+
+                //Powerups
+                foreach (Powerup p in currentMaps[activeIndex1].PowerupList)
                 {
-                    tileMaps[activeIndex2].EnemyList.ElementAt(i).Destroy();
-                    tileMaps[activeIndex2].EnemyList.Remove(tileMaps[activeIndex2].EnemyList.ElementAt(i));
+                    p.Update();
                 }
+                foreach (Powerup p in currentMaps[activeIndex2].PowerupList)
+                {
+                    p.Update();
+                }
+
+                //Checkpoints
+                foreach (Checkpoint c in currentMaps[activeIndex1].CheckpointList)
+                {
+                    c.Update();
+                }
+                foreach (Checkpoint c in currentMaps[activeIndex2].CheckpointList)
+                {
+                    c.Update();
+                }
+
+                #region Enemies
+                foreach (Enemy e in currentMaps[activeIndex1].EnemyList)
+                {
+                    e.UpdateSingleplayer(gameTime);
+                }
+                foreach (Enemy e in currentMaps[activeIndex2].EnemyList)
+                {
+                    e.UpdateSingleplayer(gameTime);
+                }
+
+                //remove dead enemies from active lists
+                for (int i = 0; i < currentMaps[activeIndex1].EnemyList.Count; i++)
+                {
+                    if (currentMaps[activeIndex1].EnemyList.ElementAt(i).isDead)
+                    {
+                        currentMaps[activeIndex1].EnemyList.ElementAt(i).Destroy();
+                        currentMaps[activeIndex1].EnemyList.Remove(currentMaps[activeIndex1].EnemyList.ElementAt(i));
+                    }
+                }
+                for (int i = 0; i < currentMaps[activeIndex2].EnemyList.Count; i++)
+                {
+                    if (currentMaps[activeIndex2].EnemyList.ElementAt(i).isDead)
+                    {
+                        currentMaps[activeIndex2].EnemyList.ElementAt(i).Destroy();
+                        currentMaps[activeIndex2].EnemyList.Remove(currentMaps[activeIndex2].EnemyList.ElementAt(i));
+                    }
+                }
+                #endregion                
+
+                GameControls.updateVibration(gameTime);
             }
-            #endregion
 
-            //DEBUG
-            //Console.WriteLine(tileMaps[activeIndex1].EnemyList.Count);
-            //
+            //DEBUG-----------------------------------
+            //Console.WriteLine();
+            Sounds.Update();
+            //----------------------------------------
 
-            GameControls.updateVibration(gameTime);
 
             //notwendiger Rueckgabewert
             if (player.Boundary.Intersects(ArenaKey.Boundary))
@@ -415,7 +501,9 @@ namespace CR4VE.GameLogic.GameStates
         {
             #region Background
             spriteBatch.Begin();
+
             graphics.GraphicsDevice.Clear(Color.Gray);
+
             //width and height for spriteBatch rectangle needed to draw background texture
             Vector2 drawPos = new Vector2(Camera2D.WorldRectangle.X, Camera2D.WorldRectangle.Y);
             int drawRecWidth = graphics.PreferredBackBufferWidth;
@@ -423,7 +511,7 @@ namespace CR4VE.GameLogic.GameStates
             
             Rectangle drawRec = new Rectangle((int)Camera2D.Position2D.X, (int)Camera2D.Position2D.Y, drawRecWidth, drawRecHeight);
             
-         //   spriteBatch.Draw(background, drawPos, drawRec, Color.White);
+            //spriteBatch.Draw(background, drawPos, drawRec, Color.White);
             
             spriteBatch.End();
 
@@ -434,9 +522,8 @@ namespace CR4VE.GameLogic.GameStates
 
             #region 3D Objects
             //Terrain (includes Powerups, Checkpoints)
-            tileMaps[activeIndex1].Draw(visibles);
-            tileMaps[activeIndex2].Draw(visibles);
-
+            currentMaps[activeIndex1].Draw(visibles);
+            currentMaps[activeIndex2].Draw(visibles);
 
             //Player or Ghost
             if (GameControls.isGhost && GameControls.moveVecGhost != Vector3.Zero)
@@ -448,16 +535,17 @@ namespace CR4VE.GameLogic.GameStates
             }
 
             #region Enemies
-            foreach (Enemy e in tileMaps[activeIndex1].EnemyList)
+            foreach (Enemy e in currentMaps[activeIndex1].EnemyList)
             {
                 e.Draw();
             }
-            foreach (Enemy e in tileMaps[activeIndex2].EnemyList)
+            foreach (Enemy e in currentMaps[activeIndex2].EnemyList)
             {
                 e.Draw();
             }
             #endregion
 
+            //Arenakey
             if (ArenaKey.Position.X - player.Position.X < 100)
                 ArenaKey.drawIn2DWorld(new Vector3(0.03f, 0.03f, 0.03f), 0, 0, 0);
             #endregion
@@ -468,6 +556,10 @@ namespace CR4VE.GameLogic.GameStates
             hud.Draw(spriteBatch);
 
             spriteBatch.End();
+
+            //GraphicsDevice auf default setzen
+            graphics.GraphicsDevice.BlendState = BlendState.Opaque;
+            graphics.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             #endregion
         }
         #endregion
@@ -475,13 +567,23 @@ namespace CR4VE.GameLogic.GameStates
         // loeschen aller grafischen Elemente
         public void Unload()
         {
-            foreach (Tilemap tm in tileMaps)
+            //empty entity lists
+            foreach (Tilemap tm in gameMaps)
             {
                 tm.CheckpointList.Clear();
                 tm.EnemyList.Clear();
                 tm.PowerupList.Clear();
                 tm.TileList.Clear();
             }
+            foreach (Tilemap tm in tutorialMaps)
+            {
+                tm.CheckpointList.Clear();
+                tm.EnemyList.Clear();
+                tm.PowerupList.Clear();
+                tm.TileList.Clear();
+            }
+
+            cont.Unload();
         }
 
         // Freigabe der restlichen Standardressourcen

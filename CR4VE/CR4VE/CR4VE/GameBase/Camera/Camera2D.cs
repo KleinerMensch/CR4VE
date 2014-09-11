@@ -30,9 +30,9 @@ namespace CR4VE.GameBase.Camera
         //Grenzen fuer Kamerabewegung
         //(spaeter durch prozentuale Angaben ersetzen)
         private static readonly int topLimit = 20;
-        private static readonly int botLimit = -20;
-        private static readonly int leftLimit = -20;
-        private static readonly int rightLimit = 20;
+        private static readonly int botLimit = -10;
+        private static readonly int leftLimit = -10;
+        private static readonly int rightLimit = 10;
         #endregion
 
         #region Properties
@@ -119,6 +119,9 @@ namespace CR4VE.GameBase.Camera
         #region Methods
         public static void Initialize(int width, int height)
         {
+            //virtual Cam
+            camPosition2D = new Vector2(0, 0);
+
             //Screen Resolution
             ViewPortWidth = width;
             ViewPortHeight = height;

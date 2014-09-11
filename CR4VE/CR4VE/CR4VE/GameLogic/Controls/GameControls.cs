@@ -50,6 +50,7 @@ namespace CR4VE.GameLogic.Controls
 
         private static double startFallTime;
         private static double startJumpTime;
+        private static double startPauseTime;
         private static double currentTime;
         
         public static bool isJumping = false;
@@ -170,8 +171,35 @@ namespace CR4VE.GameLogic.Controls
         
         public static void updateSingleplayer(GameTime gameTime, List<Tile> visibles)
         {
+            //get currently and previously pressed keys and mouse buttons
+            previousKeyboard = currentKeyboard;
+            currentKeyboard = Keyboard.GetState();
+
+            previousMouseState = currentMouseState;
+            currentMouseState = Mouse.GetState();
+
+            prevGamepad = currGamepad;
+            currGamepad = GamePad.GetState(PlayerIndex.One);
+
+
+            //Utilities
+            if (isClicked(Keys.Escape) || isClicked(Buttons.Start))
+            {
+                startPauseTime = gameTime.TotalGameTime.TotalSeconds;
+
+                Singleplayer.isPaused = true;
+            }
+
+            //DEBUG----------------------------------
+            if (isClicked(Keys.End)) Singleplayer.hud.isDead = true;
+            //---------------------------------------
+
             if (isGhost)
             {
+                //reset damage parameters
+                Singleplayer.hud.isBurning = false;
+                Singleplayer.hud.isSwimming = false;
+
                 //set ghost = player
                 if (Singleplayer.ghost.Position == Vector3.Zero)
                 {
@@ -207,20 +235,6 @@ namespace CR4VE.GameLogic.Controls
             }
             else
             {
-                #region not dead
-                //get currently and previously pressed keys and mouse buttons
-                previousKeyboard = currentKeyboard;
-                currentKeyboard = Keyboard.GetState();
-
-                previousMouseState = currentMouseState;
-                currentMouseState = Mouse.GetState();
-
-                prevGamepad = currGamepad;
-                currGamepad = GamePad.GetState(PlayerIndex.One);
-
-                //DEBUG (GameOver)
-                //if (currentKeyboard.IsKeyDown(Keys.End)) Singleplayer.hud.isDead = true;
-
                 #region Calculate moveVecPlayer
                 Vector3 moveVecPlayer = new Vector3(0, 0, 0);
 
@@ -344,9 +358,30 @@ namespace CR4VE.GameLogic.Controls
                 }
                 #endregion
                 
+                //check parameters
                 borderedRight = Singleplayer.player.checkRightBorder(visibles);
                 borderedLeft = Singleplayer.player.checkLeftBorder(visibles);
-                #endregion
+
+                if (!borderedBottom)
+                {
+                    Singleplayer.hud.isBurning = false;
+                    Singleplayer.hud.isSwimming = false;
+                }
+            }
+        }
+        public static void updateSingleplayerPaused(List<Tile> visibles)
+        {
+            //get currently and previously pressed keys and mouse buttons
+            previousKeyboard = currentKeyboard;
+            currentKeyboard = Keyboard.GetState();
+
+            prevGamepad = currGamepad;
+            currGamepad = GamePad.GetState(PlayerIndex.One);
+
+
+            if (isClicked(Keys.Escape) || isClicked(Buttons.Start))
+            {
+                Singleplayer.isPaused = false;
             }
         }
 
@@ -474,7 +509,7 @@ namespace CR4VE.GameLogic.Controls
             {
                 if ((currentKeyboard.IsKeyDown(Keys.Down) || currGamepad.IsButtonDown(Buttons.DPadDown)) && !isMenuMoving)
                 {
-                    menuPosIndex = (int)MathHelper.Clamp((float)(menuPosIndex + 1), 0f, 3f);
+                    menuPosIndex = (int)MathHelper.Clamp((float)(menuPosIndex + 1), 1f, 3f);
 
                     isMenuMoving = true;
 
@@ -482,7 +517,7 @@ namespace CR4VE.GameLogic.Controls
                 }
                 if ((currentKeyboard.IsKeyDown(Keys.Up) || currGamepad.IsButtonDown(Buttons.DPadUp)) && !isMenuMoving)
                 {
-                    menuPosIndex = (int)MathHelper.Clamp((float)(menuPosIndex - 1), 0f, 3f);
+                    menuPosIndex = (int)MathHelper.Clamp((float)(menuPosIndex - 1), 1f, 3f);
 
                     isMenuMoving = true;
 
@@ -515,6 +550,11 @@ namespace CR4VE.GameLogic.Controls
                     
                     //Singleplayer
                     case 1:
+                        //toggle tutorial
+                        if ((isClicked(Keys.Left) || isClicked(Keys.Right) || 
+                                isClicked(Buttons.DPadLeft) || isClicked(Buttons.DPadRight)) && !isMenuMoving)
+                            Singleplayer.isTutorial = !Singleplayer.isTutorial;
+
                         if ((isClicked(Keys.Enter) || isClicked(Buttons.A)) && !isMenuMoving)
                             return Game1.EGameState.Singleplayer;
                         break;
@@ -557,13 +597,10 @@ namespace CR4VE.GameLogic.Controls
                             CameraMenu.updateResolution();
                         }
 
-                        //change fullscreen
+                        //toggle fullscreen
                         if ((isClicked(Keys.Right) || isClicked(Buttons.DPadRight)) && fullscreenPossible)
                         {
-                            if (Game1.graphics.IsFullScreen)
-                                Game1.graphics.IsFullScreen = false;
-                            else
-                                Game1.graphics.IsFullScreen = true;
+                            Game1.graphics.IsFullScreen = !Game1.graphics.IsFullScreen;
 
                             CameraMenu.updateResolution();
                         }

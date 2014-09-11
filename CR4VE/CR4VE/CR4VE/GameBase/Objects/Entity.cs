@@ -217,7 +217,6 @@ namespace CR4VE.GameBase.Objects
 
                                         this.move(new Vector3(-deltaX,0,0));
 
-                                        //DEBUG
                                         Camera2D.realign(new Vector3(-deltaX, 0, 0), this.Position);
                                     }
                                 }
@@ -267,7 +266,6 @@ namespace CR4VE.GameBase.Objects
 
                                         this.move(new Vector3(deltaX, 0, 0));
 
-                                        //DEBUG
                                         Camera2D.realign(new Vector3(deltaX, 0, 0), this.Position);
                                     }
                                 }
@@ -317,7 +315,6 @@ namespace CR4VE.GameBase.Objects
 
                                         //this.move(new Vector3(0, deltaY, 0));
 
-                                        //DEBUG
                                         Camera2D.realign(new Vector3(0, deltaY, 0), this.Position);
                                     }
                                 }
@@ -367,12 +364,26 @@ namespace CR4VE.GameBase.Objects
 
                                         this.move(new Vector3(0, -deltaY, 0));
 
-                                        //DEBUG
                                         Camera2D.realign(new Vector3(0, -deltaY, 0), this.Position);
 
                                         //handle damaging tiles beneath player
-                                        if (t.Damage != 0)
-                                            Singleplayer.hud.healthLeft -= t.Damage;
+                                        switch (t.Type)
+                                        {
+                                            case "lava":
+                                                Singleplayer.hud.isBurning = true;
+                                                break;
+
+                                            case "water":
+                                                Singleplayer.hud.isSwimming = true;
+                                                break;
+
+                                            case "ground":
+                                                Singleplayer.hud.healthLeft = 0;
+                                                break;
+                                            
+                                            default:
+                                                break;
+                                        }
                                     }
                                 }
                             }

@@ -14,7 +14,7 @@ namespace CR4VE.GameLogic.AI
         #region Attributes
         public new Vector3 viewingDirection = new Vector3(-1, 0, 0);
         public Vector3 startPosition;
-        public static List<Entity> laserList = new List<Entity>();
+        public List<Entity> laserList = new List<Entity>();
 
         Random random = new Random();
 

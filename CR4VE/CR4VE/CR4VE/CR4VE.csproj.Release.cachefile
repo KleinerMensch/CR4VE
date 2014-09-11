@@ -109,6 +109,26 @@ Content\eyediff3_0.xnb
 Content\Blue-Turquoise-Spotted-Glazed-Ti_1.xnb
 Content\Assets\Models\Terrain\Textures\spikes2_256x256_0.xnb
 Content\Assets\Models\Enemies\Textures\spikes2_256x256_0.xnb
+Content\Assets\Sprites\FractusHPBar.xnb
+Content\Assets\Sprites\FractusPowerLeftestCrystal.xnb
+Content\Assets\Sprites\FractusPowerMiddleCrystalLeft.xnb
+Content\Assets\Sprites\FractusPowerMiddleCrystalRight.xnb
+Content\Assets\Sprites\FractusPowerRightestCrystal.xnb
+Content\Assets\Sprites\ContinueFractus.xnb
+Content\Assets\Sprites\ContinueOphelia.xnb
+Content\Assets\Sprites\ContinueKazumi.xnb
+Content\Assets\Sprites\ContinueSeraphin.xnb
+Content\Assets\Effects\Ambient.xnb
+Content\Assets\Effects\DirectLight.xnb
+Content\Assets\Effects\PointLight.xnb
+Content\Assets\Effects\SkyBox.xnb
+Content\Assets\Models\Terrain\Box21.xnb
+Content\Assets\Models\Terrain\Box22.xnb
+Content\Assets\Models\Terrain\Box20.xnb
+Content\Assets\Sounds\scream.xnb
+Content\tileable-icy-and-watery-blue-tex_0.xnb
+Content\Icy Walk_0.xnb
+Content\tileable-icy-and-watery-blue-tex_1.xnb
 Content\Assets\Sprites\Startscreen.png
 Content\Assets\Sprites\ButtonExit.png
 Content\Assets\Sprites\ButtonPlay.png

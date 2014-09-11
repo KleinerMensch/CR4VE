@@ -13,6 +13,7 @@ namespace CR4VE.GameBase.Objects
         #region Attributes
         public String type;
         public int amount;
+        public bool soundPlayed = false;
 
         //Animationsparameter
         public readonly float offsetHeight = 0.03f;

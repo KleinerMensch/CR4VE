@@ -22,9 +22,11 @@ namespace CR4VE.GameBase.Objects.Terrain
         private static ContentManager content = Singleplayer.cont;
 
         //Damage Values
-        public static readonly int waterDmg = 210;
-        public static readonly int lethalDmg = 1000;
+        public static readonly int waterDmg = 10;
+        public static readonly int lethalDmg = 50;
         protected int dmg;
+
+        protected String type = "default";
         #endregion
 
         #region Properties
@@ -37,16 +39,40 @@ namespace CR4VE.GameBase.Objects.Terrain
         {
             get { return this.dmg; }
         }
+        public String Type
+        {
+            get { return type; }
+        }
         #endregion
 
         #region Constructors
         public Tile() { }
-        public Tile(String modelType, int modelNumber, Vector3 pos, BoundingBox bound, int damage)
+        public Tile(String modelName, int modelNumber, Vector3 pos, BoundingBox bound, String type)
         {
             this.position = pos;
-            this.model = Content.Load<Model>("Assets/Models/Terrain/" + modelType + modelNumber);
+            this.model = Content.Load<Model>("Assets/Models/Terrain/" + modelName + modelNumber);
             this.boundary = bound;
-            this.dmg = damage;
+            this.type = type;
+
+            //define tile damage
+            switch (type)
+            {
+                case "ground":
+                    this.dmg = lethalDmg;
+                    break;
+
+                case "lava":
+                    this.dmg = lethalDmg;
+                    break;
+
+                case "water":
+                    this.dmg = waterDmg;
+                    break;
+
+                default:
+                    this.dmg = 0;
+                    break;
+            }
         }
         #endregion
 

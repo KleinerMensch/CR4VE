@@ -48,15 +48,15 @@ namespace CR4VE.GameBase.HeadUpDisplay
                 int ai2 = Singleplayer.activeIndex2;
 
                 #region active Tilemap1
-                for (int i = 0; i < Singleplayer.tileMaps[ai1].PowerupList.Count; i++)
+                for (int i = 0; i < Singleplayer.currentMaps[ai1].PowerupList.Count; i++)
                 {
-                    if (Singleplayer.tileMaps[ai1].PowerupList[i].type == "mana")
+                    if (Singleplayer.currentMaps[ai1].PowerupList[i].type == "mana")
                     {
                         if (CharacterFractus.manaLeft < 3)
                         {
-                            if (Singleplayer.tileMaps[ai1].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
+                            if (Singleplayer.currentMaps[ai1].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
                             {
-                                Singleplayer.tileMaps[ai1].PowerupList.Remove(Singleplayer.tileMaps[ai1].PowerupList.ElementAt(i));
+                                Singleplayer.currentMaps[ai1].PowerupList.Remove(Singleplayer.currentMaps[ai1].PowerupList.ElementAt(i));
                                 CharacterFractus.manaLeft += 1;
                             }
                         }
@@ -64,15 +64,15 @@ namespace CR4VE.GameBase.HeadUpDisplay
                 }
                 #endregion
                 #region active Tilemap2
-                for (int i = 0; i < Singleplayer.tileMaps[ai2].PowerupList.Count; i++)
+                for (int i = 0; i < Singleplayer.currentMaps[ai2].PowerupList.Count; i++)
                 {
-                    if (Singleplayer.tileMaps[ai2].PowerupList[i].type == "mana")
+                    if (Singleplayer.currentMaps[ai2].PowerupList[i].type == "mana")
                     {
                         if (CharacterFractus.manaLeft < 3)
                         {
-                            if (Singleplayer.tileMaps[ai2].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
+                            if (Singleplayer.currentMaps[ai2].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
                             {
-                                Singleplayer.tileMaps[ai2].PowerupList.Remove(Singleplayer.tileMaps[ai2].PowerupList.ElementAt(i));
+                                Singleplayer.currentMaps[ai2].PowerupList.Remove(Singleplayer.currentMaps[ai2].PowerupList.ElementAt(i));
                                 CharacterFractus.manaLeft += 1;
                             }
                         }
@@ -91,22 +91,22 @@ namespace CR4VE.GameBase.HeadUpDisplay
                 int ai2 = Singleplayer.activeIndex2;
 
                 #region active Tilemap1
-                for (int i = 0; i < Singleplayer.tileMaps[ai1].PowerupList.Count; i++)
+                for (int i = 0; i < Singleplayer.currentMaps[ai1].PowerupList.Count; i++)
                 {
-                    if (Singleplayer.tileMaps[ai1].PowerupList[i].type == "health")
+                    if (Singleplayer.currentMaps[ai1].PowerupList[i].type == "health")
                     {
                         if (Singleplayer.hud.healthLeft <= Singleplayer.hud.fullHealth)
                         {
-                            if (Singleplayer.tileMaps[ai1].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
+                            if (Singleplayer.currentMaps[ai1].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
                             {
                                 if (Singleplayer.hud.healthLeft < Singleplayer.hud.fullHealth)
                                 {
-                                    Singleplayer.hud.healthLeft += Singleplayer.tileMaps[ai1].PowerupList[i].amount;
+                                    Singleplayer.hud.healthLeft += Singleplayer.currentMaps[ai1].PowerupList[i].amount;
 
                                     if (Singleplayer.hud.fullHealth < Singleplayer.hud.healthLeft)
                                         Singleplayer.hud.healthLeft = Singleplayer.hud.fullHealth;
 
-                                    Singleplayer.tileMaps[ai1].PowerupList.Remove(Singleplayer.tileMaps[ai1].PowerupList.ElementAt(i));
+                                    Singleplayer.currentMaps[ai1].PowerupList.Remove(Singleplayer.currentMaps[ai1].PowerupList.ElementAt(i));
                                 }
                             }
                         }
@@ -114,22 +114,22 @@ namespace CR4VE.GameBase.HeadUpDisplay
                 }
                 #endregion
                 #region active Tilemap2
-                for (int i = 0; i < Singleplayer.tileMaps[ai2].PowerupList.Count; i++)
+                for (int i = 0; i < Singleplayer.currentMaps[ai2].PowerupList.Count; i++)
                 {
-                    if (Singleplayer.tileMaps[ai2].PowerupList[i].type == "health")
+                    if (Singleplayer.currentMaps[ai2].PowerupList[i].type == "health")
                     {
                         if (Singleplayer.hud.healthLeft <= Singleplayer.hud.fullHealth)
                         {
-                            if (Singleplayer.tileMaps[ai2].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
+                            if (Singleplayer.currentMaps[ai2].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
                             {
                                 if (Singleplayer.hud.healthLeft < Singleplayer.hud.fullHealth)
                                 {
-                                    Singleplayer.hud.healthLeft += Singleplayer.tileMaps[ai2].PowerupList[i].amount;
+                                    Singleplayer.hud.healthLeft += Singleplayer.currentMaps[ai2].PowerupList[i].amount;
 
                                     if (Singleplayer.hud.fullHealth < Singleplayer.hud.healthLeft)
                                         Singleplayer.hud.healthLeft = Singleplayer.hud.fullHealth;
 
-                                    Singleplayer.tileMaps[ai2].PowerupList.Remove(Singleplayer.tileMaps[ai2].PowerupList.ElementAt(i));
+                                    Singleplayer.currentMaps[ai2].PowerupList.Remove(Singleplayer.currentMaps[ai2].PowerupList.ElementAt(i));
                                 }
                             }
                         }

@@ -1,4 +1,5 @@
-﻿using CR4VE.GameLogic.Characters;
+﻿using CR4VE.GameLogic;
+using CR4VE.GameLogic.Characters;
 using CR4VE.GameLogic.GameStates;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -37,6 +38,12 @@ namespace CR4VE.GameBase.HeadUpDisplay
             opheliaContinue1Position = new Vector2(opheliaHealthContainer.Width * spriteScale, graphics.PreferredBackBufferHeight - (opheliaContinue.Height * continueSpriteScale) - yOffset);
             opheliaContinue2Position = new Vector2(opheliaContinue1Position.X + opheliaContinue.Width*continueSpriteScale, graphics.PreferredBackBufferHeight - (opheliaContinue.Height * continueSpriteScale) - yOffset);
             opheliaContinue3Position = new Vector2(opheliaContinue2Position.X + opheliaContinue.Width * continueSpriteScale, graphics.PreferredBackBufferHeight - (opheliaContinue.Height * continueSpriteScale) - yOffset);
+
+            //set parameters
+            this.healthLeft = fullHealth;
+
+            this.isBurning = false;
+            this.isSwimming = false;
         }
 
         public override void UpdateMana()
@@ -67,15 +74,22 @@ namespace CR4VE.GameBase.HeadUpDisplay
                 int ai2 = Singleplayer.activeIndex2;
 
                 #region active Tilemap1
-                for (int i = 0; i < Singleplayer.tileMaps[ai1].PowerupList.Count; i++)
+                for (int i = 0; i < Singleplayer.currentMaps[ai1].PowerupList.Count; i++)
                 {
-                    if (Singleplayer.tileMaps[ai1].PowerupList[i].type == "mana")
+                    if (Singleplayer.currentMaps[ai1].PowerupList[i].type == "mana")
                     {
                         if (CharacterOphelia.manaLeft < 3)
                         {
-                            if (Singleplayer.tileMaps[ai1].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
+                            if (Singleplayer.currentMaps[ai1].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
                             {
-                                Singleplayer.tileMaps[ai1].PowerupList.Remove(Singleplayer.tileMaps[ai1].PowerupList.ElementAt(i));
+                                if (!Singleplayer.currentMaps[ai1].PowerupList[i].soundPlayed)
+                                {
+                                    Sounds.collectSound.Play();
+
+                                    Singleplayer.currentMaps[ai1].PowerupList[i].soundPlayed = true;
+                                }
+
+                                Singleplayer.currentMaps[ai1].PowerupList.Remove(Singleplayer.currentMaps[ai1].PowerupList.ElementAt(i));
                                 CharacterOphelia.manaLeft += 1;
                             }
                         }
@@ -83,15 +97,22 @@ namespace CR4VE.GameBase.HeadUpDisplay
                 }
                 #endregion
                 #region active Tilemap2
-                for (int i = 0; i < Singleplayer.tileMaps[ai2].PowerupList.Count; i++)
+                for (int i = 0; i < Singleplayer.currentMaps[ai2].PowerupList.Count; i++)
                 {
-                    if (Singleplayer.tileMaps[ai2].PowerupList[i].type == "mana")
+                    if (Singleplayer.currentMaps[ai2].PowerupList[i].type == "mana")
                     {
                         if (CharacterOphelia.manaLeft < 3)
                         {
-                            if (Singleplayer.tileMaps[ai2].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
+                            if (Singleplayer.currentMaps[ai2].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
                             {
-                                Singleplayer.tileMaps[ai2].PowerupList.Remove(Singleplayer.tileMaps[ai2].PowerupList.ElementAt(i));
+                                if (!Singleplayer.currentMaps[ai2].PowerupList[i].soundPlayed)
+                                {
+                                    Sounds.collectSound.Play();
+
+                                    Singleplayer.currentMaps[ai2].PowerupList[i].soundPlayed = true;
+                                }
+
+                                Singleplayer.currentMaps[ai2].PowerupList.Remove(Singleplayer.currentMaps[ai2].PowerupList.ElementAt(i));
                                 CharacterOphelia.manaLeft += 1;
                             }
                         }
@@ -105,26 +126,34 @@ namespace CR4VE.GameBase.HeadUpDisplay
         {            
             if (Game1.currentState == Game1.EGameState.Singleplayer)
             {
+                //check for Powerups
                 int ai1 = Singleplayer.activeIndex1;
                 int ai2 = Singleplayer.activeIndex2;
 
                 #region active Tilemap1
-                for (int i = 0; i < Singleplayer.tileMaps[ai1].PowerupList.Count; i++)
+                for (int i = 0; i < Singleplayer.currentMaps[ai1].PowerupList.Count; i++)
                 {
-                    if (Singleplayer.tileMaps[ai1].PowerupList[i].type == "health")
+                    if (Singleplayer.currentMaps[ai1].PowerupList[i].type == "health")
                     {
                         if (Singleplayer.hud.healthLeft <= Singleplayer.hud.fullHealth)
                         {
-                            if (Singleplayer.tileMaps[ai1].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
+                            if (Singleplayer.currentMaps[ai1].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
                             {
                                 if (Singleplayer.hud.healthLeft < Singleplayer.hud.fullHealth)
                                 {
-                                    Singleplayer.hud.healthLeft += Singleplayer.tileMaps[ai1].PowerupList[i].amount;
+                                    Singleplayer.hud.healthLeft += Singleplayer.currentMaps[ai1].PowerupList[i].amount;
+
+                                    if (!Singleplayer.currentMaps[ai1].PowerupList[i].soundPlayed)
+                                    {
+                                        Sounds.collectSound.Play();
+
+                                        Singleplayer.currentMaps[ai1].PowerupList[i].soundPlayed = true;
+                                    }
 
                                     if (Singleplayer.hud.fullHealth < Singleplayer.hud.healthLeft)
                                         Singleplayer.hud.healthLeft = Singleplayer.hud.fullHealth;
 
-                                    Singleplayer.tileMaps[ai1].PowerupList.Remove(Singleplayer.tileMaps[ai1].PowerupList.ElementAt(i));
+                                    Singleplayer.currentMaps[ai1].PowerupList.Remove(Singleplayer.currentMaps[ai1].PowerupList.ElementAt(i));
                                 }
                             }
                         }
@@ -132,28 +161,42 @@ namespace CR4VE.GameBase.HeadUpDisplay
                 }
                 #endregion
                 #region active Tilemap2
-                for (int i = 0; i < Singleplayer.tileMaps[ai2].PowerupList.Count; i++)
+                for (int i = 0; i < Singleplayer.currentMaps[ai2].PowerupList.Count; i++)
                 {
-                    if (Singleplayer.tileMaps[ai2].PowerupList[i].type == "health")
+                    if (Singleplayer.currentMaps[ai2].PowerupList[i].type == "health")
                     {
                         if (Singleplayer.hud.healthLeft <= Singleplayer.hud.fullHealth)
                         {
-                            if (Singleplayer.tileMaps[ai2].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
+                            if (Singleplayer.currentMaps[ai2].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
                             {
                                 if (Singleplayer.hud.healthLeft < Singleplayer.hud.fullHealth)
                                 {
-                                    Singleplayer.hud.healthLeft += Singleplayer.tileMaps[ai2].PowerupList[i].amount;
+                                    Singleplayer.hud.healthLeft += Singleplayer.currentMaps[ai2].PowerupList[i].amount;
+
+                                    if (!Singleplayer.currentMaps[ai2].PowerupList[i].soundPlayed)
+                                    {
+                                        Sounds.collectSound.Play();
+
+                                        Singleplayer.currentMaps[ai2].PowerupList[i].soundPlayed = true;
+                                    }
 
                                     if (Singleplayer.hud.fullHealth < Singleplayer.hud.healthLeft)
                                         Singleplayer.hud.healthLeft = Singleplayer.hud.fullHealth;
 
-                                    Singleplayer.tileMaps[ai2].PowerupList.Remove(Singleplayer.tileMaps[ai2].PowerupList.ElementAt(i));
+                                    Singleplayer.currentMaps[ai2].PowerupList.Remove(Singleplayer.currentMaps[ai2].PowerupList.ElementAt(i));
                                 }
                             }
                         }
                     }
                 }
                 #endregion
+
+                //calculate damage by environment
+                if (isSwimming)
+                    this.healthLeft -= (int)(Singleplayer.hud.fullHealth * 0.003);
+
+                if (isBurning)
+                    this.healthLeft -= (int)(Singleplayer.hud.fullHealth * 0.01);
             }
         }
 
