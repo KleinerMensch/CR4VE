@@ -87,6 +87,9 @@ namespace CR4VE
                     case EGameState.Singleplayer:
                         this.singlePlayer.Unload();
                         break;
+                    case EGameState.Arena:
+                        this.arena.Unload();
+                        break;
                     case EGameState.Multiplayer:
                         this.multiPlayer.Unload();
                         break;
@@ -98,9 +101,6 @@ namespace CR4VE
                         break;
                     case EGameState.Credits:
                         this.credits.Unload();
-                        break;
-                    case EGameState.Arena:
-                        this.arena.Unload();
                         break;
                 }
 
@@ -120,6 +120,9 @@ namespace CR4VE
                     case EGameState.Singleplayer:
                         this.singlePlayer.Initialize(Content);
                         break;
+                    case EGameState.Arena:
+                        this.arena.Initialize(Content);
+                        break;
                     case EGameState.Multiplayer:
                         this.multiPlayer.Initialize(Content);
                         break;
@@ -131,9 +134,6 @@ namespace CR4VE
                         break;
                     case EGameState.Credits:
                         this.credits.Initialize(Content);
-                        break;
-                    case EGameState.Arena:
-                        this.arena.Initialize(Content);
                         break;
                 }
                 #endregion
@@ -151,9 +151,9 @@ namespace CR4VE
             this.gameOver = new GameOver();
             this.menu = new MainMenu();
             this.multiPlayer = new Multiplayer();
+            this.arena = new Arena();
             this.singlePlayer = new Singleplayer();
             this.startScreen = new StartScreen();
-            this.arena = new Arena();
             
         }
 
@@ -217,6 +217,12 @@ namespace CR4VE
                         this.GameState = currentState;
                     break;
 
+                case EGameState.Arena:
+                    currentState = this.arena.Update(gameTime);
+                    if (currentState != EGameState.Arena)
+                        this.GameState = currentState;
+                    break;
+
                 case EGameState.Multiplayer:
                     currentState = this.multiPlayer.Update(gameTime);
                     if (currentState != EGameState.Multiplayer)
@@ -238,12 +244,6 @@ namespace CR4VE
                 case EGameState.Credits:
                     currentState = this.credits.Update(gameTime);
                     if (currentState != EGameState.Credits)
-                        this.GameState = currentState;
-                    break;
-
-                case EGameState.Arena:
-                    currentState = this.arena.Update(gameTime);
-                    if (currentState != EGameState.Arena)
                         this.GameState = currentState;
                     break;
 

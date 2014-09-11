@@ -2,7 +2,6 @@
 using CR4VE.GameLogic.AI;
 using CR4VE.GameLogic.GameStates;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using System;
 using System.Collections.Generic;
@@ -19,8 +18,11 @@ namespace CR4VE.GameLogic.Characters
 
         TimeSpan timeSpan = TimeSpan.FromMilliseconds(270);
 
+        Vector3 currentCharacterPosition;
+        Vector3 clawsPosition;
         Vector3 offset = new Vector3(8,8,8);
         Vector3 currentViewingDirection;
+        float currentBlickwinkel;
         float speed = 1;
         bool enemyHit = false;
         #endregion
@@ -49,6 +51,68 @@ namespace CR4VE.GameLogic.Characters
             }
             #endregion
 
+            #region Update Melee By Characterposition
+            if (launchedMelee)
+            {
+                #region Singleplayer
+                if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
+                {
+                    clawsPosition = Singleplayer.player.Position + viewingDirection * offset;
+                    claws = new Entity(clawsPosition, "5x5x5Box1", Singleplayer.cont);
+                    claws.boundary = new BoundingBox(this.position + new Vector3(-8f, -2.5f, -2.5f) + viewingDirection * offset, this.position + new Vector3(8f, 2.5f, 2.5f) + currentViewingDirection * offset);
+                    attackList.Add(claws);
+
+                    //Kollision mit Attacke
+                    #region enemyList1
+                    foreach (Enemy enemy in Singleplayer.currentMaps[Singleplayer.activeIndex1].EnemyList)
+                    {
+                        foreach (Entity kazumisClaws in attackList)
+                        {
+                            if (kazumisClaws.boundary.Intersects(enemy.boundary))
+                            {
+                                enemy.hp -= 1;
+                                Console.WriteLine("Kazumi hit enemy by MeleeAttack");
+                            }
+                        }
+                    }
+                    #endregion
+                    #region enemyList2
+                    foreach (Enemy enemy in Singleplayer.currentMaps[Singleplayer.activeIndex2].EnemyList)
+                    {
+                        foreach (Entity kazumisClaws in attackList)
+                        {
+                            if (kazumisClaws.boundary.Intersects(enemy.boundary))
+                            {
+                                enemy.hp -= 1;
+                                Console.WriteLine("Kazumi hit enemy by MeleeAttack");
+                            }
+                        }
+                    }
+                    #endregion
+                }
+                #endregion
+                #region Arena
+                else if (Game1.currentState.Equals(Game1.EGameState.Arena))
+                {
+                    clawsPosition = Arena.player.Position + viewingDirection * offset;
+                    claws = new Entity(clawsPosition, "5x5x5Box1", Arena.cont);
+                    claws.boundary = new BoundingBox(this.position + new Vector3(-8f, -2.5f, -2.5f) + viewingDirection * offset, this.position + new Vector3(8f, 2.5f, 2.5f) + currentViewingDirection * offset);
+                    attackList.Add(claws);
+
+                    //Kollision mit Attacke
+                    foreach (Entity kazumisClaws in attackList)
+                    {
+                        if (kazumisClaws.boundary.Intersects(Arena.boss.boundary))
+                        {
+                            Arena.seraphinBossHUD.healthLeft -= 5;
+                            Console.WriteLine("Kazumi hit Boss by MeleeAttack");
+                        }
+                    }
+                }
+                #endregion
+            }
+            #endregion
+
             #region UpdateFireball
             if (launchedRanged)
             {
@@ -69,7 +133,7 @@ namespace CR4VE.GameLogic.Characters
                         else
                         {
                             #region enemyList1
-                            foreach (Enemy enemy in Singleplayer.gameMaps[Singleplayer.activeIndex1].EnemyList)
+                            foreach (Enemy enemy in Singleplayer.currentMaps[Singleplayer.activeIndex1].EnemyList)
                             {
                                 if (enemyHit)
                                 {
@@ -91,7 +155,7 @@ namespace CR4VE.GameLogic.Characters
                             }
                             #endregion
                             #region enemyList2
-                            foreach (Enemy enemy in Singleplayer.gameMaps[Singleplayer.activeIndex2].EnemyList)
+                            foreach (Enemy enemy in Singleplayer.currentMaps[Singleplayer.activeIndex2].EnemyList)
                             {
                                 if (enemyHit)
                                 {
@@ -127,8 +191,13 @@ namespace CR4VE.GameLogic.Characters
                 {
                     fireBall.move(speed * currentViewingDirection);
 
+                    if (fireBall.position == currentCharacterPosition + 50 * currentViewingDirection)
+                    {
+                        attackList.Remove(fireBall);
+                        launchedRanged = false;
+                    }
                     //Feuerball verschwindet nach 50 Einheiten oder wenn er mit etwas kollidiert
-                    if (fireBall.position != this.position + 50 * currentViewingDirection)
+                    if (fireBall.position != currentCharacterPosition + 50 * currentViewingDirection)
                     {
                         launchedRanged = true;
                         if (enemyHit)
@@ -175,63 +244,6 @@ namespace CR4VE.GameLogic.Characters
             launchedMelee = true;
             currentViewingDirection = viewingDirection;
             timeSpan = TimeSpan.FromMilliseconds(270);
-
-            #region Singleplayer
-            if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
-            {
-                Vector3 clawsPosition = Singleplayer.player.Position + currentViewingDirection * offset;
-                claws = new Entity(clawsPosition, "5x5x5Box1", Singleplayer.cont);
-                claws.boundary = new BoundingBox(this.position + new Vector3(-8f, -2.5f, -2.5f) + currentViewingDirection * offset, this.position + new Vector3(8f, 2.5f, 2.5f) + currentViewingDirection * offset);
-                attackList.Add(claws);
-
-                //Kollision mit Attacke
-                #region enemyList1
-                foreach (Enemy enemy in Singleplayer.gameMaps[Singleplayer.activeIndex1].EnemyList)
-                {
-                    foreach (Entity kazumisClaws in attackList)
-                    {
-                        if (kazumisClaws.boundary.Intersects(enemy.boundary))
-                        {
-                            enemy.hp -= 1;
-                            Console.WriteLine("Kazumi hit enemy by MeleeAttack");
-                        }
-                    }
-                }
-                #endregion
-                #region enemyList2
-                foreach (Enemy enemy in Singleplayer.gameMaps[Singleplayer.activeIndex2].EnemyList)
-                {
-                    foreach (Entity kazumisClaws in attackList)
-                    {
-                        if (kazumisClaws.boundary.Intersects(enemy.boundary))
-                        {
-                            enemy.hp -= 1;
-                            Console.WriteLine("Kazumi hit enemy by MeleeAttack");
-                        }
-                    }
-                }
-                #endregion
-            }
-            #endregion
-            #region Arena
-            else if (Game1.currentState.Equals(Game1.EGameState.Arena))
-            {
-                Vector3 clawsPosition = Arena.player.Position + currentViewingDirection * offset;
-                claws = new Entity(clawsPosition, "5x5x5Box1", Arena.cont);
-                claws.boundary = new BoundingBox(this.position + new Vector3(-8f, -2.5f, -2.5f) + currentViewingDirection * offset, this.position + new Vector3(8f, 2.5f, 2.5f) + currentViewingDirection * offset);
-                attackList.Add(claws);
-
-                //Kollision mit Attacke
-                foreach (Entity kazumisClaws in attackList)
-                {
-                    if (kazumisClaws.boundary.Intersects(Arena.boss.boundary))
-                    {
-                        Arena.seraphinBossHUD.healthLeft -= 5;
-                        Console.WriteLine("Kazumi hit Boss by MeleeAttack");
-                    }
-                }
-            }
-            #endregion
         }
 
         public override void RangedAttack(GameTime time)
@@ -240,6 +252,8 @@ namespace CR4VE.GameLogic.Characters
             {
                 manaLeft -= 1;
                 launchedRanged = true;
+                currentCharacterPosition = this.Position;
+                currentBlickwinkel = Arena.blickWinkel;
 
                 #region Singleplayer
                 if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
@@ -278,7 +292,7 @@ namespace CR4VE.GameLogic.Characters
                     attackList.Add(danceOfFireFox);
 
                     #region enemyList1
-                    foreach (Enemy enemy in Singleplayer.gameMaps[Singleplayer.activeIndex1].EnemyList)
+                    foreach (Enemy enemy in Singleplayer.currentMaps[Singleplayer.activeIndex1].EnemyList)
                     {
                         foreach (Entity kazumisDanceOfFirefox in attackList)
                         {
@@ -291,7 +305,7 @@ namespace CR4VE.GameLogic.Characters
                     }
                     #endregion
                     #region enemyList2
-                    foreach (Enemy enemy in Singleplayer.gameMaps[Singleplayer.activeIndex2].EnemyList)
+                    foreach (Enemy enemy in Singleplayer.currentMaps[Singleplayer.activeIndex2].EnemyList)
                     {
                         foreach (Entity kazumisDanceOfFirefox in attackList)
                         {
@@ -331,7 +345,7 @@ namespace CR4VE.GameLogic.Characters
             if (launchedMelee)
             {
                 if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
-                    claws.drawIn2DWorld(new Vector3(1, 1, 1), 0, 0, MathHelper.ToRadians(90) * Singleplayer.player.viewingDirection.X);
+                    claws.drawIn2DWorld(new Vector3(1, 1, 1), 0, 0, MathHelper.ToRadians(90) * viewingDirection.X);
                 if (Game1.currentState.Equals(Game1.EGameState.Arena))
                     claws.drawInArena(new Vector3(1, 1, 1), 0, 0, 0);
             }
@@ -340,9 +354,9 @@ namespace CR4VE.GameLogic.Characters
             if (launchedRanged)
             {
                 if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
-                    fireBall.drawIn2DWorld(new Vector3(0.02f, 0.02f, 0.02f), 0, MathHelper.ToRadians(90) * this.viewingDirection.X, 0);
+                    fireBall.drawIn2DWorld(new Vector3(0.02f, 0.02f, 0.02f), 0, MathHelper.ToRadians(90) * currentViewingDirection.X, 0);
                 if (Game1.currentState.Equals(Game1.EGameState.Arena))
-                    fireBall.drawInArena(new Vector3(0.02f, 0.02f, 0.02f), 0, MathHelper.ToRadians(90) + Arena.blickWinkel, 0);
+                    fireBall.drawInArena(new Vector3(0.02f, 0.02f, 0.02f), 0, MathHelper.ToRadians(90) + currentBlickwinkel, 0);
             }
             #endregion
             #region DrawSpecial

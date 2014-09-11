@@ -76,6 +76,9 @@ namespace CR4VE.GameLogic.GameStates
             graphics = CR4VE.Game1.graphics;
             cont = content;
 
+            //Sounds
+            Sounds.Initialize(cont);
+
             //needed parameters
             GameControls.initializeSingleplayer();
 

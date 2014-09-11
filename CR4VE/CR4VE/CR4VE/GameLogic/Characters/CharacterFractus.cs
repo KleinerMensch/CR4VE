@@ -1,4 +1,5 @@
-﻿using CR4VE.GameBase.Objects;
+﻿using CR4VE.GameBase.HeadUpDisplay;
+using CR4VE.GameBase.Objects;
 using CR4VE.GameLogic.AI;
 using CR4VE.GameLogic.GameStates;
 using Microsoft.Xna.Framework;
@@ -71,7 +72,7 @@ namespace CR4VE.GameLogic.Characters
                         else
                         {
                             #region enemyList1
-                            foreach (Enemy enemy in Singleplayer.gameMaps[Singleplayer.activeIndex1].EnemyList)
+                            foreach (Enemy enemy in Singleplayer.currentMaps[Singleplayer.activeIndex1].EnemyList)
                             {
                                 if (enemyHit)
                                 {
@@ -93,7 +94,7 @@ namespace CR4VE.GameLogic.Characters
                             }
                             #endregion
                             #region enemyList2
-                            foreach (Enemy enemy in Singleplayer.gameMaps[Singleplayer.activeIndex2].EnemyList)
+                            foreach (Enemy enemy in Singleplayer.currentMaps[Singleplayer.activeIndex2].EnemyList)
                             {
                                 if (enemyHit)
                                 {
@@ -199,7 +200,7 @@ namespace CR4VE.GameLogic.Characters
 
                     //calculating nearest enemy
                     #region enemyList1
-                    foreach (Enemy enemy in Singleplayer.gameMaps[Singleplayer.activeIndex1].EnemyList)
+                    foreach (Enemy enemy in Singleplayer.currentMaps[Singleplayer.activeIndex1].EnemyList)
                     {
                         float distance = (crystal.position - enemy.position).Length();
                         if (distance < minDistance)
@@ -210,7 +211,7 @@ namespace CR4VE.GameLogic.Characters
                     }
                     #endregion
                     #region enemyList2
-                    foreach (Enemy enemy in Singleplayer.gameMaps[Singleplayer.activeIndex2].EnemyList)
+                    foreach (Enemy enemy in Singleplayer.currentMaps[Singleplayer.activeIndex2].EnemyList)
                     {
                         float distance = (crystal.position - enemy.position).Length();
                         if (distance < minDistance)
@@ -273,7 +274,7 @@ namespace CR4VE.GameLogic.Characters
                 attackList.Add(crystalShield);
 
                 #region enemyList1
-                foreach (Enemy enemy in Singleplayer.gameMaps[Singleplayer.activeIndex1].EnemyList)
+                foreach (Enemy enemy in Singleplayer.currentMaps[Singleplayer.activeIndex1].EnemyList)
                 {
                     foreach (Entity fractusShield in attackList)
                     {
@@ -286,7 +287,7 @@ namespace CR4VE.GameLogic.Characters
                 }
                 #endregion
                 #region enemyList2
-                foreach (Enemy enemy in Singleplayer.gameMaps[Singleplayer.activeIndex2].EnemyList)
+                foreach (Enemy enemy in Singleplayer.currentMaps[Singleplayer.activeIndex2].EnemyList)
                 {
                     foreach (Entity fractusShield in attackList)
                     {

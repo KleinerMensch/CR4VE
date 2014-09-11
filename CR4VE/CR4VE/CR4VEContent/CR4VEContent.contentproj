@@ -408,18 +408,18 @@
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
-    <Compile Include="Assets\Models\Terrain\Box21.FBX">
-      <Name>Box21</Name>
+    <Compile Include="Assets\Models\Powerups\powerup_crystal_mana.FBX">
+      <Name>powerup_crystal_mana</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
-    <Compile Include="Assets\Models\Terrain\Box22.FBX">
-      <Name>Box22</Name>
+    <Compile Include="Assets\Models\Players\Kazumi.FBX">
+      <Name>Kazumi</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
-    <Compile Include="Assets\Models\Terrain\Box20.FBX">
-      <Name>Box20</Name>
+    <Compile Include="Assets\Models\Checkpoints\checkpoint_crystal.FBX">
+      <Name>checkpoint_crystal</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
@@ -563,6 +563,82 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Models\Powerups\Textures\gold_256x256.jpg">
+      <Name>gold_256x256</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\Powerups\Textures\powerup_hell_energy.jpg">
+      <Name>powerup_hell_energy</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\Powerups\UV Maps\powerup_hell_energy.jpg">
+      <Name>powerup_hell_energy</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Textures\UV Maps\powerup_crystal_energy.jpg">
+      <Name>powerup_crystal_energy</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Models\Ophelia\Maps\body-cos.jpg">
+      <Name>body-cos</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Models\Ophelia\Maps\HoernerTextur.png">
+      <Name>HoernerTextur</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Models\Ophelia\Maps\lace.jpg">
+      <Name>lace</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Models\Ophelia\Maps\shadow.jpg">
+      <Name>shadow</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Models\Ophelia\Maps\mimi.jpg">
+      <Name>mimi</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Textures\UV Maps\checkpoint_crystal.jpg">
+      <Name>checkpoint_crystal</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Sounds\CheckpointHell.wav">
+      <Name>CheckpointHell</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Sounds\itemCollect.wav">
+      <Name>itemCollect</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
     <Compile Include="Assets\Sounds\scream.wav">
       <Name>scream</Name>
       <Importer>WavImporter</Importer>

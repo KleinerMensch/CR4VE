@@ -2,7 +2,6 @@
 using CR4VE.GameLogic.AI;
 using CR4VE.GameLogic.GameStates;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using System;
 using System.Collections.Generic;
@@ -25,10 +24,14 @@ namespace CR4VE.GameLogic.Characters
         float distance;
 
         Vector3 currentViewingDirection;
+        Vector3 currentCharacterPosition;
+        Vector3 algaWhipPosition;
         Vector3 offset = new Vector3(8,8,8);
+        float currentBlickwinkel;
         float speed = 1;
         float moveSpeed = -0.2f;
         bool enemyHit = false;
+        private float blickWinkelMinion;
         #endregion
 
         #region inherited Constructors
@@ -50,6 +53,66 @@ namespace CR4VE.GameLogic.Characters
                 timeSpan = TimeSpan.FromMilliseconds(270);
                 attackList.Remove(algaWhip);
                 launchedMelee = false;
+            }
+            #endregion
+
+            #region Update Melee By Characterposition
+            if (launchedMelee)
+            {
+                #region Singleplayer
+                if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
+                {
+                    algaWhipPosition = Singleplayer.player.Position + viewingDirection * offset;
+                    algaWhip = new Entity(algaWhipPosition, "5x5x5Box1", Singleplayer.cont);
+                    algaWhip.boundary = new BoundingBox(this.position + new Vector3(-8f, -2.5f, -2.5f) + viewingDirection * offset, this.position + new Vector3(8f, 2.5f, 2.5f) + currentViewingDirection * offset);
+                    attackList.Add(algaWhip);
+
+                    #region enemyList1
+                    foreach (Enemy enemy in Singleplayer.currentMaps[Singleplayer.activeIndex1].EnemyList)
+                    {
+                        foreach (Entity seraphinsWhip in attackList)
+                        {
+                            if (seraphinsWhip.boundary.Intersects(enemy.boundary))
+                            {
+                                enemy.hp -= 1;
+                                Console.WriteLine("Seraphin hit enemy by MeleeAttack");
+                            }
+                        }
+                    }
+                    #endregion
+                    #region enemyList2
+                    foreach (Enemy enemy in Singleplayer.currentMaps[Singleplayer.activeIndex2].EnemyList)
+                    {
+                        foreach (Entity seraphinsWhip in attackList)
+                        {
+                            if (seraphinsWhip.boundary.Intersects(enemy.boundary))
+                            {
+                                enemy.hp -= 1;
+                                Console.WriteLine("Seraphin hit enemy by MeleeAttack");
+                            }
+                        }
+                    }
+                    #endregion
+                }
+                #endregion
+                #region Arena
+                else if (Game1.currentState.Equals(Game1.EGameState.Arena))
+                {
+                    algaWhipPosition = this.position + viewingDirection * offset;
+                    algaWhip = new Entity(algaWhipPosition, "5x5x5Box1", Arena.cont);
+                    algaWhip.boundary = new BoundingBox(this.position + new Vector3(-8f, -2.5f, -2.5f) + viewingDirection * offset, this.position + new Vector3(8f, 2.5f, 2.5f) + currentViewingDirection * offset);
+                    attackList.Add(algaWhip);
+
+                    foreach (Entity seraphinsWhip in attackList)
+                    {
+                        if (seraphinsWhip.boundary.Intersects(Arena.player.boundary))
+                        {
+                            Arena.opheliaHud.healthLeft -= 1;
+                            Console.WriteLine("Seraphin hit Player by MeleeAttack");
+                        }
+                    }
+                }
+                #endregion
             }
             #endregion
 
@@ -81,7 +144,7 @@ namespace CR4VE.GameLogic.Characters
 
                     //calculates which enemy is next to it
                     #region enemyList1
-                    foreach (Enemy enemy in Singleplayer.gameMaps[Singleplayer.activeIndex1].EnemyList)
+                    foreach (Enemy enemy in Singleplayer.currentMaps[Singleplayer.activeIndex1].EnemyList)
                     {
                         dir = minion.position - enemy.position;
                         distance = dir.Length();
@@ -93,7 +156,7 @@ namespace CR4VE.GameLogic.Characters
                     }
                     #endregion
                     #region enemyList2
-                    foreach (Enemy enemy in Singleplayer.gameMaps[Singleplayer.activeIndex2].EnemyList)
+                    foreach (Enemy enemy in Singleplayer.currentMaps[Singleplayer.activeIndex2].EnemyList)
                     {
                         dir = minion.position - enemy.position;
                         distance = dir.Length();
@@ -107,11 +170,13 @@ namespace CR4VE.GameLogic.Characters
 
                     direction.Normalize();
                     direction = moveSpeed * direction;
+                    minion.viewingDirection = direction;
+                    blickWinkelMinion = (float)Math.Atan2(minion.viewingDirection.Y, minion.viewingDirection.X);
                     minion.position += direction;
 
                     //checking collision
                     #region enemyList1
-                    foreach (Enemy enemy in Singleplayer.gameMaps[Singleplayer.activeIndex1].EnemyList)
+                    foreach (Enemy enemy in Singleplayer.currentMaps[Singleplayer.activeIndex1].EnemyList)
                     {
                         if (minion.boundary.Intersects(enemy.boundary))
                         {
@@ -121,7 +186,7 @@ namespace CR4VE.GameLogic.Characters
                     }
                     #endregion
                     #region enemyList2
-                    foreach (Enemy enemy in Singleplayer.gameMaps[Singleplayer.activeIndex2].EnemyList)
+                    foreach (Enemy enemy in Singleplayer.currentMaps[Singleplayer.activeIndex2].EnemyList)
                     {
                         if (minion.boundary.Intersects(enemy.boundary))
                         {
@@ -140,6 +205,8 @@ namespace CR4VE.GameLogic.Characters
                     Vector3 direction = minion.position - Arena.player.position;
                     direction.Normalize();
                     direction = moveSpeed * direction;
+                    minion.viewingDirection = direction;
+                    blickWinkelMinion = (float)Math.Atan2(-minion.viewingDirection.Z, minion.viewingDirection.X);
                     minion.position += direction;
 
                     if (minion.boundary.Intersects(Arena.player.boundary))
@@ -158,12 +225,10 @@ namespace CR4VE.GameLogic.Characters
                 #region Singleplayer
                 if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
                 {
-                    laser.position += speed * currentViewingDirection;
-                    laser.boundary.Min += speed * currentViewingDirection;
-                    laser.boundary.Max += speed * currentViewingDirection;
+                    laser.move(speed * currentViewingDirection);
 
                     //Laser verschwindet nach 50 Einheiten oder wenn er mit etwas kollidiert
-                    if (laser.position != this.position + 50 * currentViewingDirection)
+                    if (laser.position != currentCharacterPosition + 50 * currentViewingDirection)
                     {
                         launchedSpecial = true;
                         if (enemyHit)
@@ -174,7 +239,7 @@ namespace CR4VE.GameLogic.Characters
                         else
                         {
                             #region enemyList1
-                            foreach (Enemy enemy in Singleplayer.gameMaps[Singleplayer.activeIndex1].EnemyList)
+                            foreach (Enemy enemy in Singleplayer.currentMaps[Singleplayer.activeIndex1].EnemyList)
                             {
                                 if (enemyHit)
                                 {
@@ -196,7 +261,7 @@ namespace CR4VE.GameLogic.Characters
                             }
                             #endregion
                             #region enemyList2
-                            foreach (Enemy enemy in Singleplayer.gameMaps[Singleplayer.activeIndex2].EnemyList)
+                            foreach (Enemy enemy in Singleplayer.currentMaps[Singleplayer.activeIndex2].EnemyList)
                             {
                                 if (enemyHit)
                                 {
@@ -230,12 +295,15 @@ namespace CR4VE.GameLogic.Characters
                 #region Arena
                 else if (Game1.currentState.Equals(Game1.EGameState.Arena))
                 {
-                    laser.position += speed * currentViewingDirection;
-                    laser.boundary.Min += speed * currentViewingDirection;
-                    laser.boundary.Max += speed * currentViewingDirection;
+                    laser.move(speed * currentViewingDirection);
 
+                    if (laser.position == currentCharacterPosition + 50 * currentViewingDirection)
+                    {
+                        attackList.Remove(laser);
+                        launchedSpecial = false;
+                    }
                     //Laser verschwindet nach 50 Einheiten oder wenn er mit etwas kollidiert
-                    if (laser.position != this.position + 50 * currentViewingDirection)
+                    if (laser.position != currentCharacterPosition + 50 * currentViewingDirection)
                     {
                         launchedSpecial = true;
                         if (enemyHit)
@@ -282,61 +350,6 @@ namespace CR4VE.GameLogic.Characters
             launchedMelee = true;
             currentViewingDirection = viewingDirection;
             timeSpan = TimeSpan.FromMilliseconds(270);
-
-            #region Singleplayer
-            if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
-            {
-                Vector3 algaWhipPosition = Singleplayer.player.Position + currentViewingDirection * offset;
-                algaWhip = new Entity(algaWhipPosition, "5x5x5Box1", Singleplayer.cont);
-                algaWhip.boundary = new BoundingBox(this.position + new Vector3(-8f, -2.5f, -2.5f) + currentViewingDirection * offset, this.position + new Vector3(8f, 2.5f, 2.5f) + currentViewingDirection * offset);
-                attackList.Add(algaWhip);
-
-                #region enemyList1
-                foreach (Enemy enemy in Singleplayer.currentMaps[Singleplayer.activeIndex1].EnemyList)
-                {
-                    foreach (Entity seraphinsWhip in attackList)
-                    {
-                        if (seraphinsWhip.boundary.Intersects(enemy.boundary))
-                        {
-                            enemy.hp -= 1;
-                            Console.WriteLine("Seraphin hit enemy by MeleeAttack");
-                        }
-                    }
-                }
-                #endregion
-                #region enemyList2
-                foreach (Enemy enemy in Singleplayer.currentMaps[Singleplayer.activeIndex2].EnemyList)
-                {
-                    foreach (Entity seraphinsWhip in attackList)
-                    {
-                        if (seraphinsWhip.boundary.Intersects(enemy.boundary))
-                        {
-                            enemy.hp -= 1;
-                            Console.WriteLine("Seraphin hit enemy by MeleeAttack");
-                        }
-                    }
-                }
-                #endregion
-            }
-            #endregion
-            #region Arena
-            else if (Game1.currentState.Equals(Game1.EGameState.Arena))
-            {
-                Vector3 algaWhipPosition = this.position + currentViewingDirection * offset;
-                algaWhip = new Entity(algaWhipPosition, "5x5x5Box1", Arena.cont);
-                algaWhip.boundary = new BoundingBox(this.position + new Vector3(-8f, -2.5f, -2.5f) + currentViewingDirection * offset, this.position + new Vector3(8f, 2.5f, 2.5f) + currentViewingDirection * offset);
-                attackList.Add(algaWhip);
-
-                foreach (Entity seraphinsWhip in attackList)
-                {
-                    if (seraphinsWhip.boundary.Intersects(Arena.player.boundary))
-                    {
-                        Arena.opheliaHud.healthLeft -= 1;
-                        Console.WriteLine("Seraphin hit Player by MeleeAttack");
-                    }
-                }
-            }
-            #endregion
         }
 
         public override void RangedAttack(GameTime time)
@@ -350,7 +363,7 @@ namespace CR4VE.GameLogic.Characters
                 #region Singleplayer
                 if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
                 {
-                    minionList.Add(new Entity(this.position, "Enemies/EnemyEye", Singleplayer.cont));
+                    minionList.Add(new Entity(this.position, "Enemies/EnemyEye", CR4VE.GameLogic.GameStates.Singleplayer.cont));
                 }
                 #endregion
                 #region Arena
@@ -373,6 +386,8 @@ namespace CR4VE.GameLogic.Characters
             {
                 manaLeft -= 3;
                 launchedSpecial = true;
+                currentBlickwinkel = Arena.blickWinkel;
+                currentCharacterPosition = this.Position;
 
                 #region Singleplayer
                 if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
@@ -401,7 +416,7 @@ namespace CR4VE.GameLogic.Characters
             if (launchedMelee)
             {
                 if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
-                    algaWhip.drawIn2DWorld(new Vector3(1, 1, 1), 0, 0, 0);
+                    algaWhip.drawIn2DWorld(new Vector3(1, 1, 1), 0, 0, MathHelper.ToRadians(-90) * viewingDirection.X);
                 if (Game1.currentState.Equals(Game1.EGameState.Arena))
                     algaWhip.drawInArena(new Vector3(1, 1, 1), 0, 0, 0);
             }
@@ -413,14 +428,14 @@ namespace CR4VE.GameLogic.Characters
                 {
                     foreach (Entity minion in minionList)
                     {
-                        minion.drawIn2DWorld(new Vector3(0.5f, 0.5f, 0.5f), 0, 0, 0);
+                        minion.drawIn2DWorld(new Vector3(0.5f, 0.5f, 0.5f), 0, MathHelper.ToRadians(90) + blickWinkelMinion, 0);
                     }
                 }
                 else if (Game1.currentState.Equals(Game1.EGameState.Arena))
                 {
                     foreach (Entity minion in minionList)
                     {
-                        minion.drawInArena(new Vector3(0.5f, 0.5f, 0.5f), 0, 0, 0);
+                        minion.drawInArena(new Vector3(0.5f, 0.5f, 0.5f), 0, MathHelper.ToRadians(90) + blickWinkelMinion, 0);
                     }
                 }
             }
@@ -429,9 +444,9 @@ namespace CR4VE.GameLogic.Characters
             if (launchedSpecial)
             {
                 if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
-                    laser.drawIn2DWorld(new Vector3(0.01f, 0.01f, 0.01f), 0, 0, 0);
+                    laser.drawIn2DWorld(new Vector3(0.01f, 0.01f, 0.01f), 0, MathHelper.ToRadians(90) * currentViewingDirection.X, 0);
                 if (Game1.currentState.Equals(Game1.EGameState.Arena))
-                    laser.drawInArena(new Vector3(0.01f, 0.01f, 0.01f), 0, 0, 0);
+                    laser.drawInArena(new Vector3(0.01f, 0.01f, 0.01f), 0, MathHelper.ToRadians(90) + currentBlickwinkel, 0);
             }
             #endregion
         }

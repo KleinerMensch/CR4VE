@@ -17,7 +17,7 @@ namespace CR4VE.GameLogic.AI
         float moveSpeed = -0.5f;
         float rotationY = MathHelper.ToRadians(-90);
         float spawn = 0;
-        Vector3 viewingDirection = new Vector3(-1, 0, 0);
+        new Vector3 viewingDirection = new Vector3(-1, 0, 0);
         #endregion
 
         #region Properties

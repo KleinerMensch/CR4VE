@@ -39,15 +39,10 @@ namespace CR4VE.GameBase.HeadUpDisplay
             seraphinContinue1Position = new Vector2(graphics.PreferredBackBufferWidth - seraphinHealthContainer.Width * spriteScale - seraphinContinue.Width*continueSpriteScale, yOffset);
             seraphinContinue2Position = new Vector2(seraphinContinue1Position.X - seraphinContinue.Width * continueSpriteScale, yOffset);
             seraphinContinue3Position = new Vector2(seraphinContinue2Position.X - seraphinContinue.Width * continueSpriteScale, yOffset);
-
-            //Abfrage funktioniert nicht -> schaut nicht, in welchem State man gerade ist
-            if (Game1.currentState.Equals(Game1.EGameState.Arena))
-                trialsLeft = 0;
         }
 
         public override void UpdateMana()
         {
-            Console.WriteLine(trialsLeft);
             if (Game1.currentState == Game1.EGameState.Singleplayer)
             {
                 int ai1 = Singleplayer.activeIndex1;

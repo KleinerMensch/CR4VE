@@ -1,4 +1,5 @@
-﻿using CR4VE.GameLogic.Characters;
+﻿using CR4VE.GameLogic;
+using CR4VE.GameLogic.Characters;
 using CR4VE.GameLogic.GameStates;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -81,6 +82,13 @@ namespace CR4VE.GameBase.HeadUpDisplay
                         {
                             if (Singleplayer.currentMaps[ai1].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
                             {
+                                if (!Singleplayer.currentMaps[ai1].PowerupList[i].soundPlayed)
+                                {
+                                    Sounds.collectSound.Play();
+
+                                    Singleplayer.currentMaps[ai1].PowerupList[i].soundPlayed = true;
+                                }
+
                                 Singleplayer.currentMaps[ai1].PowerupList.Remove(Singleplayer.currentMaps[ai1].PowerupList.ElementAt(i));
                                 CharacterOphelia.manaLeft += 1;
                             }
@@ -97,6 +105,13 @@ namespace CR4VE.GameBase.HeadUpDisplay
                         {
                             if (Singleplayer.currentMaps[ai2].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
                             {
+                                if (!Singleplayer.currentMaps[ai2].PowerupList[i].soundPlayed)
+                                {
+                                    Sounds.collectSound.Play();
+
+                                    Singleplayer.currentMaps[ai2].PowerupList[i].soundPlayed = true;
+                                }
+
                                 Singleplayer.currentMaps[ai2].PowerupList.Remove(Singleplayer.currentMaps[ai2].PowerupList.ElementAt(i));
                                 CharacterOphelia.manaLeft += 1;
                             }
@@ -128,6 +143,13 @@ namespace CR4VE.GameBase.HeadUpDisplay
                                 {
                                     Singleplayer.hud.healthLeft += Singleplayer.currentMaps[ai1].PowerupList[i].amount;
 
+                                    if (!Singleplayer.currentMaps[ai1].PowerupList[i].soundPlayed)
+                                    {
+                                        Sounds.collectSound.Play();
+
+                                        Singleplayer.currentMaps[ai1].PowerupList[i].soundPlayed = true;
+                                    }
+
                                     if (Singleplayer.hud.fullHealth < Singleplayer.hud.healthLeft)
                                         Singleplayer.hud.healthLeft = Singleplayer.hud.fullHealth;
 
@@ -150,6 +172,13 @@ namespace CR4VE.GameBase.HeadUpDisplay
                                 if (Singleplayer.hud.healthLeft < Singleplayer.hud.fullHealth)
                                 {
                                     Singleplayer.hud.healthLeft += Singleplayer.currentMaps[ai2].PowerupList[i].amount;
+
+                                    if (!Singleplayer.currentMaps[ai2].PowerupList[i].soundPlayed)
+                                    {
+                                        Sounds.collectSound.Play();
+
+                                        Singleplayer.currentMaps[ai2].PowerupList[i].soundPlayed = true;
+                                    }
 
                                     if (Singleplayer.hud.fullHealth < Singleplayer.hud.healthLeft)
                                         Singleplayer.hud.healthLeft = Singleplayer.hud.fullHealth;
