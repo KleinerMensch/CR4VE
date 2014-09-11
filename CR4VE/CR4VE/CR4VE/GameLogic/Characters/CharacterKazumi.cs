@@ -155,7 +155,7 @@ namespace CR4VE.GameLogic.Characters
                             }
                             #endregion
                             #region enemyList2
-                            foreach (Enemy enemy in Singleplayer.tileMaps[Singleplayer.activeIndex2].EnemyList)
+                            foreach (Enemy enemy in Singleplayer.currentMaps[Singleplayer.activeIndex2].EnemyList)
                             {
                                 if (enemyHit)
                                 {
