@@ -535,10 +535,10 @@ namespace CR4VE.GameBase.Objects
             {
                 foreach (ModelMeshPart part in mesh.MeshParts)
                 {
-                    part.Effect = Singleplayer.effect;
-                    Singleplayer.effect.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * world);
-                    Singleplayer.effect.Parameters["View"].SetValue(Camera2D.ViewMatrix);
-                    Singleplayer.effect.Parameters["Projection"].SetValue(Camera2D.ProjectionMatrix);
+                    part.Effect = Singleplayer.effect_directLight;
+                    Singleplayer.effect_directLight.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * world);
+                    Singleplayer.effect_directLight.Parameters["View"].SetValue(Camera2D.ViewMatrix);
+                    Singleplayer.effect_directLight.Parameters["Projection"].SetValue(Camera2D.ProjectionMatrix);
                     //Singleplayer.effect.Parameters["ModelTexture"].SetValue(texture);
 
 

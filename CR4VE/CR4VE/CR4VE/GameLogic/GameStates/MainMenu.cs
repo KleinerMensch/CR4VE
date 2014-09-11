@@ -47,6 +47,8 @@ namespace CR4VE.GameLogic.GameStates
             graphics = CR4VE.Game1.graphics.GraphicsDevice;
             spriteBatch = CR4VE.Game1.spriteBatch;
 
+            GameControls.menuPosIndex = 0;
+
             //Camera
             CameraMenu.Initialize(Game1.graphics.PreferredBackBufferWidth, Game1.graphics.PreferredBackBufferHeight);
 
@@ -54,7 +56,7 @@ namespace CR4VE.GameLogic.GameStates
             background = content.Load<Texture2D>("Assets/Sprites/doge");
 
             #region Fonts
-            font = content.Load<SpriteFont>("Assets/Fonts/GameOverFlo");
+            font = content.Load<SpriteFont>("Assets/Fonts/HUDfont");
             fontPos_press = new Vector2(Game1.graphics.PreferredBackBufferWidth / 2 - font.MeasureString("PRESS").X / 2, 50);
             fontPos_start = new Vector2(Game1.graphics.PreferredBackBufferWidth / 2 - font.MeasureString("START").X / 2, 100);
 
