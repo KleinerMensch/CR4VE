@@ -64,7 +64,7 @@ namespace CR4VE.GameLogic.Characters
 
                     //Kollision mit Attacke
                     #region enemyList1
-                    foreach (Enemy enemy in Singleplayer.tileMaps[Singleplayer.activeIndex1].EnemyList)
+                    foreach (Enemy enemy in Singleplayer.currentMaps[Singleplayer.activeIndex1].EnemyList)
                     {
                         foreach (Entity kazumisClaws in attackList)
                         {
@@ -77,7 +77,7 @@ namespace CR4VE.GameLogic.Characters
                     }
                     #endregion
                     #region enemyList2
-                    foreach (Enemy enemy in Singleplayer.tileMaps[Singleplayer.activeIndex2].EnemyList)
+                    foreach (Enemy enemy in Singleplayer.currentMaps[Singleplayer.activeIndex2].EnemyList)
                     {
                         foreach (Entity kazumisClaws in attackList)
                         {
@@ -133,7 +133,7 @@ namespace CR4VE.GameLogic.Characters
                         else
                         {
                             #region enemyList1
-                            foreach (Enemy enemy in Singleplayer.tileMaps[Singleplayer.activeIndex1].EnemyList)
+                            foreach (Enemy enemy in Singleplayer.currentMaps[Singleplayer.activeIndex1].EnemyList)
                             {
                                 if (enemyHit)
                                 {
@@ -292,7 +292,7 @@ namespace CR4VE.GameLogic.Characters
                     attackList.Add(danceOfFireFox);
 
                     #region enemyList1
-                    foreach (Enemy enemy in Singleplayer.tileMaps[Singleplayer.activeIndex1].EnemyList)
+                    foreach (Enemy enemy in Singleplayer.currentMaps[Singleplayer.activeIndex1].EnemyList)
                     {
                         foreach (Entity kazumisDanceOfFirefox in attackList)
                         {
@@ -305,7 +305,7 @@ namespace CR4VE.GameLogic.Characters
                     }
                     #endregion
                     #region enemyList2
-                    foreach (Enemy enemy in Singleplayer.tileMaps[Singleplayer.activeIndex2].EnemyList)
+                    foreach (Enemy enemy in Singleplayer.currentMaps[Singleplayer.activeIndex2].EnemyList)
                     {
                         foreach (Entity kazumisDanceOfFirefox in attackList)
                         {
