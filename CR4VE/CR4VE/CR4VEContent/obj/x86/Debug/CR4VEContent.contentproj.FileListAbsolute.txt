@@ -7,3 +7,4 @@ C:\Users\Flori\Documents\Dropbox\OVGU\3D-SoPro\CR4VE\CR4VE\CR4VEContent\obj\x86\
 C:\Users\Maria\Desktop\CR4VE\CR4VE\CR4VE\CR4VEContent\obj\x86\Debug\CR4VEContent.contentprojResolveAssemblyReference.cache
 C:\Users\user\Desktop\Cr4ve_sopro\CR4VE\CR4VE\CR4VE\CR4VEContent\obj\x86\Debug\CR4VEContent.contentprojResolveAssemblyReference.cache
 C:\Users\user\Desktop\albino_cr4ve\CR4VE\CR4VE\CR4VE\CR4VEContent\obj\x86\Debug\CR4VEContent.contentprojResolveAssemblyReference.cache
+C:\Users\user\Desktop\albino_cr4ve\Neuer Ordner\CR4VE\CR4VE\CR4VE\CR4VEContent\obj\x86\Debug\CR4VEContent.contentprojResolveAssemblyReference.cache
