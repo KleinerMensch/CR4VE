@@ -2,7 +2,7 @@ float4x4 World;
 float4x4 View;
 float4x4 Projection;
  
-float3 CameraPosition;
+float3 Camera2D;
  
 Texture SkyBoxTexture; 
 samplerCUBE SkyBoxSampler = sampler_state 
@@ -44,7 +44,7 @@ VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
     output.Position = mul(viewPosition, Projection);
 
 	float4 VertexPosition = mul(input.Position, World);
-	output.TextureCoordinate = VertexPosition - CameraPosition;
+	output.TextureCoordinate = VertexPosition - Camera2D;
     // TODO: add your vertex shader code here.
 
     return output;
