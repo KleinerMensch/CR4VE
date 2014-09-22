@@ -435,6 +435,11 @@
       <Processor>TextureProcessor</Processor>
       <ProcessorParameters_PremultiplyAlpha>False</ProcessorParameters_PremultiplyAlpha>
     </Compile>
+    <Compile Include="Assets\Models\10x10x10Box1.FBX">
+      <Name>10x10x10Box1</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
     <None Include="Assets\Text\SaveGame.txt">
       <Name>SaveGame</Name>
     </None>

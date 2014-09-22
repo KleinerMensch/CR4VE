@@ -389,7 +389,7 @@ namespace CR4VE.GameLogic.Characters
                 #region Singleplayer
                 if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
                 {
-                    danceOfFireFox = new Entity(this.Position, "Terrain/10x10x10Box1", Singleplayer.cont);
+                    danceOfFireFox = new Entity(this.Position, "10x10x10Box1", Singleplayer.cont);
                     danceOfFireFox.boundary = new BoundingBox(this.position + new Vector3(-20, -3, -20), this.position + new Vector3(20, 3, 20));
                     aoeList.Add(danceOfFireFox);
 
@@ -424,7 +424,7 @@ namespace CR4VE.GameLogic.Characters
                 #region Arena
                 else if (Game1.currentState.Equals(Game1.EGameState.Arena))
                 {
-                    danceOfFireFox = new Entity(this.Position, "Terrain/10x10x10Box1", Arena.cont);
+                    danceOfFireFox = new Entity(this.Position, "10x10x10Box1", Arena.cont);
                     danceOfFireFox.boundary = new BoundingBox(this.position + new Vector3(-20, -3, -20), this.position + new Vector3(20, 3, 20));
                     aoeList.Add(danceOfFireFox);
 
@@ -441,7 +441,7 @@ namespace CR4VE.GameLogic.Characters
                 #region Multiplayer
                 else if (Game1.currentState.Equals(Game1.EGameState.Multiplayer))
                 {
-                    danceOfFireFox = new Entity(this.Position, "Terrain/10x10x10Box1", Multiplayer.cont);
+                    danceOfFireFox = new Entity(this.Position, "10x10x10Box1", Multiplayer.cont);
                     danceOfFireFox.boundary = new BoundingBox(this.position + new Vector3(-20, -3, -20), this.position + new Vector3(20, 3, 20));
                     aoeList.Add(danceOfFireFox);
 

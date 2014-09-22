@@ -434,7 +434,7 @@ namespace CR4VE.GameLogic.Characters
                 #region Singleplayer
                 if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
                 {
-                    holyThunder = new Entity(this.Position, "Terrain/10x10x10Box1", Singleplayer.cont);
+                    holyThunder = new Entity(this.Position, "10x10x10Box1", Singleplayer.cont);
                     holyThunder.boundary = new BoundingBox(this.position + new Vector3(-20, -3, -20), this.position + new Vector3(20, 3, 20));
                     aoeList.Add(holyThunder);
 
@@ -469,7 +469,7 @@ namespace CR4VE.GameLogic.Characters
                 #region Arena
                 else if (Game1.currentState.Equals(Game1.EGameState.Arena))
                 {
-                    holyThunder = new Entity(this.Position, "Terrain/10x10x10Box1", Arena.cont);
+                    holyThunder = new Entity(this.Position, "10x10x10Box1", Arena.cont);
                     holyThunder.boundary = new BoundingBox(this.position + new Vector3(-20, -3, -20), this.position + new Vector3(20, 3, 20));
                     aoeList.Add(holyThunder);
 
@@ -486,7 +486,7 @@ namespace CR4VE.GameLogic.Characters
                 #region Multiplayer
                 else if (Game1.currentState.Equals(Game1.EGameState.Multiplayer))
                 {
-                    holyThunder = new Entity(this.Position, "Terrain/10x10x10Box1", Multiplayer.cont);
+                    holyThunder = new Entity(this.Position, "10x10x10Box1", Multiplayer.cont);
                     holyThunder.boundary = new BoundingBox(this.position + new Vector3(-20, -3, -20), this.position + new Vector3(20, 3, 20));
                     aoeList.Add(holyThunder);
 
