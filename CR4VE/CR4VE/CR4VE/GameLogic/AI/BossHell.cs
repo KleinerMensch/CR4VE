@@ -17,33 +17,34 @@ namespace CR4VE.GameLogic.AI
     {
         #region Attributes
         public new static List<Entity> minionList = new List<Entity>();
-        Entity algaWhip, laser;
-        Vector3 currentViewingDirection;
-        Vector3 currentCharacterPosition;
-        Vector3 offset = new Vector3(70, 70, 70);
-        bool playerHit = false;
+        public new List<Entity> meleeAttackList = new List<Entity>();
+        Entity algaWhip;
+        BoundingSphere rangeOfLaser;
 
-        float laserSpeed = 1;
-        float moveSpeed = -0.2f;
+        Vector3 currentCharacterPosition;
+        Vector3 algaWhipPosition;
+        Vector3 offset = new Vector3(5, 0, 5);
+
+        bool playerHit = false;
+        bool playerHitByMelee = false;
+        bool listContainsAlgaWhip = false;
+
+        float laserSpeed = 2;
+        float moveSpeed = 0.2f;
         float minionSpeed = 0.5f;
-        float spawn = 0;
 
         private static readonly TimeSpan meleeAttackTimer = TimeSpan.FromSeconds(1);
         private static readonly TimeSpan rangedAttackTimer = TimeSpan.FromSeconds(2);
         private static readonly TimeSpan specialAttackTimer = TimeSpan.FromSeconds(3);
 
-        TimeSpan timeSpanForSpawningMinions = TimeSpan.FromSeconds(10);
-        TimeSpan timeSpanForResettingMana = TimeSpan.FromSeconds(5);
+        TimeSpan timeSpanForSpawningMinions = TimeSpan.FromSeconds(5);
+        TimeSpan timeSpanForResettingMana = TimeSpan.FromSeconds(10);
         TimeSpan timeSpan = TimeSpan.FromMilliseconds(270);
         private TimeSpan lastAttack;
 
-        //fuer die Minionbewegung (von Maria)
-        static float rTimer = 10.0f;
-        static float chaseTimer = 5.0f;
-
-        private float blickWinkelMinion;
-
-        public Vector3 scaleForDrawMethod = new Vector3(0.75f, 0.75f, 0.75f);
+        ////fuer die Minionbewegung (von Maria)
+        //static float rTimer = 10.0f;
+        //static float chaseTimer = 5.0f;
         #endregion
 
         #region inherited Constructors
@@ -53,6 +54,7 @@ namespace CR4VE.GameLogic.AI
         public BossHell(Vector3 pos, String modelName, ContentManager cm, BoundingBox bound) : base(pos, modelName, cm, bound) { }
         #endregion
 
+        #region Methods
         public override void Update(GameTime time)
         {
             #region Handling Death Of Boss
@@ -60,14 +62,14 @@ namespace CR4VE.GameLogic.AI
             {
                 this.model = Arena.cont.Load<Model>("Assets/Models/Players/skull");
                 this.boundary = new BoundingBox(Vector3.Zero, Vector3.Zero);
-                scaleForDrawMethod = new Vector3(0.05f, 0.05f, 0.05f);
                 this.viewingDirection = new Vector3(0, 0, 1);
 
                 #region Attacks Minions When Boss Is Dead
-                    launchedMelee = false;
-                    launchedRanged = false;
-                    launchedSpecial = false;
-                    attackList.RemoveRange(0, attackList.Count);
+                launchedMelee = false;
+                launchedRanged = false;
+                launchedSpecial = false;
+                attackList.Clear();
+                meleeAttackList.Clear();
                 #endregion
             }
             #endregion
@@ -75,92 +77,103 @@ namespace CR4VE.GameLogic.AI
             #region Boss while living
             else
             {
+                //boss always looking at player
                 viewingDirection = Arena.player.Position - this.Position;
+                viewingDirection.Normalize();
                 Arena.blickwinkelBoss = (float)Math.Atan2(-Arena.boss.viewingDirection.Z, Arena.boss.viewingDirection.X);
 
                 #region UpdateContinuesFromBoss
-                //Update Leben vom Boss
                 if (Arena.seraphinBossHUD.healthLeft < 0)
                     Arena.seraphinBossHUD.trialsLeft -= 1;
                 #endregion
 
-                // soll global angelegt werden, damit von allen Klassen genutzt werden kann
-                Random r = new Random();
-                double help = r.NextDouble() * Math.PI * 2.0;
-                Vector3 tmp = new Vector3((float)Math.Sin(help), (float)Math.Cos(help), 0);
+                ////soll global angelegt werden, damit von allen Klassen genutzt werden kann
+                ////von Maria
+                //Random r = new Random();
+                //double help = r.NextDouble() * Math.PI * 2.0;
+                //Vector3 tmp = new Vector3((float)Math.Sin(help), (float)Math.Cos(help), 0);
 
                 #region ResetMana
                 timeSpanForResettingMana -= time.ElapsedGameTime;
-                // If the timespan is equal or smaller time "0"
                 if (timeSpanForResettingMana <= TimeSpan.Zero)
                 {
                     manaLeft = 3;
-                    timeSpanForResettingMana = TimeSpan.FromSeconds(5);
+                    timeSpanForResettingMana = TimeSpan.FromSeconds(10);
                 }
                 #endregion
 
+                #region Boss follows Player if Player too far away
+                if (!Arena.sphere.Intersects(this.boundary))
+                {
+                    Vector3 playerPos = Arena.player.position;
+                    //Richtungsvektor = Zielposition - jetzige position
+                    Vector3 direction = playerPos - this.position;
+                    float distance = direction.Length();
+
+                    if (distance < 100)
+                    {
+                        direction.Normalize();
+                        direction = moveSpeed * direction;
+                        this.move(direction);
+                    }
+                }
+                #endregion
+
+                #region MeleeAttack
                 #region Timeupdate for DrawAttacks
                 timeSpan -= time.ElapsedGameTime;
                 if (timeSpan <= TimeSpan.Zero)
                 {
                     timeSpan = TimeSpan.FromMilliseconds(270);
-                    attackList.Remove(algaWhip);
+                    meleeAttackList.Clear();
+
                     launchedMelee = false;
+                    listContainsAlgaWhip = false;
                 }
                 #endregion
 
-                #region UpdateLaserFromSpecialAttack
-                if (launchedSpecial)
+                if (launchedMelee)
                 {
-                    laser.move(laserSpeed * currentViewingDirection);
+                    algaWhipPosition = this.position + viewingDirection * offset;
+                    algaWhip = new Entity(algaWhipPosition, "5x5x5Box1", Arena.cont);
+                    algaWhip.boundary = new BoundingBox(algaWhipPosition + new Vector3(-2.5f, -2.5f, -2.5f), algaWhipPosition + new Vector3(2.5f, 2.5f, 2.5f));
 
-                    //Laser verschwindet nach 50 Einheiten oder wenn er mit etwas kollidiert
-                    if (laser.position != currentCharacterPosition + 50 * currentViewingDirection)
+                    if (!listContainsAlgaWhip)
                     {
-                        launchedSpecial = true;
-                        if (playerHit)
-                        {
-                            launchedSpecial = false;
-                            attackList.Remove(laser);
-                        }
-                        else
-                        {
-                            if (playerHit)
-                            {
-                                launchedSpecial = false;
-                                attackList.Remove(laser);
-                            }
-                            else
-                            {
-                                foreach (Entity seraphinsLaser in attackList)
-                                {
-                                    if (seraphinsLaser.boundary.Intersects(Arena.player.boundary))
-                                    {
-                                        Arena.opheliaHud.healthLeft -= 50;
-                                        playerHit = true;
-                                        Console.WriteLine("Boss hit Player by SpecialAttack");
-                                    }
-                                }
-                            }
-
-                        }
+                        meleeAttackList.Add(algaWhip);
+                        listContainsAlgaWhip = true;
                     }
                     else
                     {
-                        launchedSpecial = false;
-                        attackList.Remove(laser);
+                        meleeAttackList.Clear();
+                        meleeAttackList.Add(algaWhip);
                     }
-                    playerHit = false;
+
+                    foreach (Entity seraphinsWhip in meleeAttackList)
+                    {
+                        if (playerHitByMelee)
+                            break;
+                        if (seraphinsWhip.boundary.Intersects(Arena.player.boundary))
+                        {
+                            //Arena.opheliaHud.healthLeft -= 1;
+                            playerHitByMelee = true;
+                            Console.WriteLine("Boss hit Player by MeleeAttack");
+                        }
+                    }
+                }
+                //launching melee if player gets too near
+                if (lastAttack + meleeAttackTimer < time.TotalGameTime && Arena.rangeOfMeleeFromBoss.Intersects(Arena.player.Boundary))
+                {
+                    this.MeleeAttack(time);
+                    lastAttack = time.TotalGameTime;
                 }
                 #endregion
 
-                #region Updating Minions
+                #region Updating Minions from Ranged Attack
                 #region Minions verschwinden nach 10 Sekunden
                 timeSpanForSpawningMinions -= time.ElapsedGameTime;
-                // If the timespan is equal or smaller time "0"
                 if (timeSpanForSpawningMinions <= TimeSpan.Zero && minionList.Count > 0)
                 {
-                    // Remove the object from list
                     minionList.RemoveAt(0);
                     // Re initializes the timespan for the next time
                     // minion vanishes after 10 seconds
@@ -202,7 +215,6 @@ namespace CR4VE.GameLogic.AI
                     direction.Normalize();
                     direction = minionSpeed * direction;
                     minion.viewingDirection = direction;
-                    blickWinkelMinion = (float)Math.Atan2(-minion.viewingDirection.Z, minion.viewingDirection.X);
                     minion.move(direction);
 
                     if (minion.boundary.Intersects(Arena.player.boundary))
@@ -211,35 +223,60 @@ namespace CR4VE.GameLogic.AI
                         Console.WriteLine("Boss hit enemy by RangedAttack");
                     }
                 }
-                #endregion
 
-                #region Boss follows Player if Player too far away
-                if (!Arena.sphere.Intersects(this.boundary))
+                //Minion nur gespawned, wenn noch keiner da ist
+                if (manaLeft > 0 && minionList.Count == 0)
                 {
-                    Vector3 playerPos = Arena.player.position;
-                    Vector3 direction = this.position - playerPos;
-                    float distance = direction.Length();
-                    
-                    if (distance < 100)
+                    if (lastAttack + lastAttack + rangedAttackTimer < time.TotalGameTime)
                     {
-                        direction.Normalize();
-                        direction = moveSpeed * direction;
-                        this.viewingDirection = direction;
-                        Arena.blickwinkelBoss = (float)Math.Atan2(-Arena.boss.viewingDirection.Z, Arena.boss.viewingDirection.X);
-                        this.move(direction);
+                        this.RangedAttack(time);
+                        lastAttack = time.TotalGameTime;
+                        manaLeft -= 1;
                     }
                 }
                 #endregion
 
-                #region MeleeAttack
-                if (lastAttack + meleeAttackTimer < time.TotalGameTime && Arena.rangeOfMeleeFromBoss.Intersects(this.boundary))
+                #region SpecialAttack
+                #region UpdateLaserFromSpecialAttack
+                if (launchedSpecial)
                 {
-                    this.MeleeAttack(time);
-                    lastAttack = time.TotalGameTime;
+                    for (int i = 0; i < attackList.Count; i++)
+                    {
+                        //Laser schießt nach vorn
+                        attackList[i].move(laserSpeed * attackList[i].viewingDirection);
+
+                        //verschwindet nach 50 Einheiten
+                        if (!attackList[i].boundary.Intersects(rangeOfLaser))
+                        {
+                            attackList.Remove(attackList[i]);
+                            if (attackList.Count == 0)
+                                launchedSpecial = false;
+                            break;
+                        }
+                        else
+                        {
+                            launchedSpecial = true;
+
+                            if (attackList[i].boundary.Intersects(Arena.player.boundary))
+                            {
+                                Arena.opheliaHud.healthLeft -= 40;
+                                playerHit = true;
+                                Console.WriteLine("Boss hit Player by SpecialAttack");
+                            }
+                            //verschwindet auch bei Kollision
+                            if (playerHit)
+                            {
+                                if (attackList.Count == 0)
+                                    launchedSpecial = false;
+                                attackList.Remove(attackList[i]);
+                            }
+
+                        }
+                        playerHit = false;
+                    }
                 }
                 #endregion
 
-                #region SpecialAttack
                 if (manaLeft == 3 && lastAttack + specialAttackTimer < time.TotalGameTime)
                 {
                     this.SpecialAttack(time);
@@ -247,17 +284,6 @@ namespace CR4VE.GameLogic.AI
                     manaLeft -= 3;
                 }
                 #endregion
-
-                //Minion nur gespawned, wenn noch keiner da ist
-                if (manaLeft > 0 && minionList.Count <= 1)
-                {
-                    if ((lastAttack+lastAttack+lastAttack) + rangedAttackTimer < time.TotalGameTime)
-                    {
-                        this.RangedAttack(time);
-                        lastAttack = time.TotalGameTime;
-                        manaLeft -= 1;
-                    }
-                }
             }
             #endregion
         }
@@ -266,20 +292,7 @@ namespace CR4VE.GameLogic.AI
         {
             launchedMelee = true;
             timeSpan = TimeSpan.FromMilliseconds(270);
-
-            Vector3 algaWhipPosition = this.position + viewingDirection * offset;
-            algaWhip = new Entity(algaWhipPosition, "5x5x5Box1", Arena.cont);
-            algaWhip.boundary = new BoundingBox(this.position + new Vector3(-3, -3, -3) + viewingDirection * offset, this.position + new Vector3(3, 3, 3) + viewingDirection * offset);
-            attackList.Add(algaWhip);
-
-            foreach (Entity seraphinsWhip in attackList)
-            {
-                if (seraphinsWhip.boundary.Intersects(Arena.player.boundary))
-                {
-                    Arena.opheliaHud.healthLeft -= 1;
-                    Console.WriteLine("Boss hit Player by MeleeAttack");
-                }
-            }
+            playerHitByMelee = false;
         }
 
         public override void RangedAttack(GameTime time)
@@ -288,7 +301,7 @@ namespace CR4VE.GameLogic.AI
             {
                 manaLeft -= 1;
                 launchedRanged = true;
-                timeSpanForSpawningMinions = TimeSpan.FromSeconds(10);
+                timeSpanForSpawningMinions = TimeSpan.FromSeconds(5);
 
                 minionList.Add(new Entity(this.position, "Enemies/EnemyEye", CR4VE.GameLogic.GameStates.Arena.cont));
 
@@ -304,11 +317,11 @@ namespace CR4VE.GameLogic.AI
             {
                 manaLeft -= 3;
                 launchedSpecial = true;
-
                 currentCharacterPosition = this.position;
-                this.viewingDirection = Arena.player.Position - this.position;
-                currentViewingDirection = this.viewingDirection;
-                laser = new Entity(this.position, "Enemies/skull", Arena.cont);
+                rangeOfLaser = new BoundingSphere(currentCharacterPosition, 50);
+
+                Entity laser = new Entity(this.position, "Enemies/skull", Arena.cont);
+                laser.viewingDirection = this.viewingDirection;
                 laser.boundary = new BoundingBox(this.position + new Vector3(-3, -3, -3), this.position + new Vector3(3, 3, 3));
                 attackList.Add(laser);
             }
@@ -319,7 +332,10 @@ namespace CR4VE.GameLogic.AI
             #region DrawMelee
             if (launchedMelee)
             {
-                algaWhip.drawInArena(new Vector3(1, 1, 1), 0, 0, 0);
+                foreach (Entity whip in meleeAttackList)
+                {
+                    whip.drawInArena(new Vector3(1, 1, 1), 0, 0, 0);
+                }
             }
             #endregion
             #region DrawRanged
@@ -327,16 +343,22 @@ namespace CR4VE.GameLogic.AI
             {
                 foreach (Entity minion in minionList)
                 {
-                    minion.drawInArena(new Vector3(0.5f, 0.5f, 0.5f), 0, MathHelper.ToRadians(90) + blickWinkelMinion, 0);
+                    float minionBlickwinkel = (float)Math.Atan2(-minion.viewingDirection.Z, minion.viewingDirection.X);
+                    minion.drawInArena(new Vector3(0.5f, 0.5f, 0.5f), 0, MathHelper.ToRadians(90) + minionBlickwinkel, 0);
                 }
             }
             #endregion
             #region DrawSpecial
             if (launchedSpecial)
             {
-                laser.drawInArena(new Vector3(0.01f, 0.01f, 0.01f), 0, 0, 0);
+                foreach (Entity lazer in attackList)
+                {
+                    float laserBlickwinkel = (float)Math.Atan2(-lazer.viewingDirection.Z, lazer.viewingDirection.X);
+                    lazer.drawInArena(new Vector3(0.01f, 0.01f, 0.01f), 0, MathHelper.ToRadians(90) + laserBlickwinkel, 0);
+                }
             }
             #endregion
         }
+        #endregion
     }
 }

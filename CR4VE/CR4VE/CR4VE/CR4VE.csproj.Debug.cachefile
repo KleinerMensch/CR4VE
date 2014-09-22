@@ -144,6 +144,12 @@ Content\Assets\Textures\UV Maps\checkpoint_crystal_0.xnb
 Content\Assets\Sounds\CheckpointHell.xnb
 Content\Assets\Sounds\itemCollect.xnb
 Content\Assets\Sounds\scream.xnb
+Content\Assets\Sprites\menu_pause.xnb
+Content\Assets\Sprites\popup_tutorial1.xnb
+Content\Assets\Sprites\popup_tutorial2.xnb
+Content\Assets\Sprites\popup_tutorial3.xnb
+Content\Assets\Sprites\popup_tutorial4.xnb
+Content\Assets\Sprites\popup_tutorial5.xnb
 Content\Assets\Sprites\Startscreen.png
 Content\Assets\Sprites\ButtonExit.png
 Content\Assets\Sprites\ButtonPlay.png

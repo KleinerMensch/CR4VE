@@ -396,6 +396,7 @@ namespace CR4VE.GameLogic.GameStates
 
             //Player
             ghost = new Character(Vector3.Zero, "skull", content);
+            //player = new CharacterKazumi(new Vector3(0, 0, 5), "Kazumi", content, new BoundingBox(new Vector3(-2.5f, -9f, -2.5f), new Vector3(2.5f, 9f, 2.5f)));
             player = new CharacterOphelia(new Vector3(0,0,5), "Ophelia", content, new BoundingBox(new Vector3(-2.5f, -9f, -2.5f), new Vector3(2.5f, 9f, 2.5f)));
             CharacterOphelia.manaLeft = 3;
 
@@ -501,12 +502,12 @@ namespace CR4VE.GameLogic.GameStates
                 GameControls.updateVibration(gameTime);
             }
 
-            //DEBUG---------------------------
-            Console.Clear();
-            Console.WriteLine(tutIndex);
-            //Console.WriteLine(isPopup);
-            Console.WriteLine(player.Position);
-            //--------------------------------
+            ////DEBUG---------------------------
+            //Console.Clear();
+            //Console.WriteLine(tutIndex);
+            ////Console.WriteLine(isPopup);
+            //Console.WriteLine(player.Position);
+            ////--------------------------------
 
             //notwendiger Rueckgabewert
             if (player.Boundary.Intersects(ArenaKey.Boundary))

@@ -21,7 +21,7 @@ namespace CR4VE.GameLogic.GameStates
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        public static HUD opheliaHud, seraphinBossHUD, fractusBossHUD;
+        public static HUD opheliaHud, seraphinBossHUD, kazumiHud, fractusBossHUD;
 
         //Terrain
         static Entity terrain;
@@ -35,6 +35,9 @@ namespace CR4VE.GameLogic.GameStates
         public static Character player;
         public static Character boss;
 
+        public Vector3 scaleForBossFractus = new Vector3(0.03f, 0.03f, 0.03f);
+        public Vector3 scaleForBossSeraphin = new Vector3(0.75f, 0.75f, 0.75f);
+
         public static readonly Vector3 startPos = new Vector3(0, -12.5f, 0);
 
         public static float blickWinkel;
@@ -42,6 +45,7 @@ namespace CR4VE.GameLogic.GameStates
 
         public static BoundingSphere sphere;
         public static BoundingSphere rangeOfMeleeFromBoss;
+        Entity testBoundingBox;
         #endregion
 
         #region Konstruktor
@@ -65,23 +69,27 @@ namespace CR4VE.GameLogic.GameStates
             lava = new Entity(new Vector3(0, -110, -30), "Terrain/lavafloor", content);
 
             //moveable Entities
-            player = new CharacterOphelia(startPos, "Ophelia", content);
+            player = new CharacterOphelia(startPos, "Ophelia", content); //Ophelia
+            //player = new CharacterKazumi(startPos, "Kazumi", content); //Kazumi
+
             BoundingBox playerBound = new BoundingBox(player.Position + new Vector3(-2.5f, -9, -2.5f), player.Position + new Vector3(2.5f, 9, 2.5f));
             player.Boundary = playerBound;
 
             sphere = new BoundingSphere(player.position, 30);
-            rangeOfMeleeFromBoss = new BoundingSphere(player.position, 6);
-            //testBox = new Entity(boss.position, "Terrain10x10x10Box1", content);
 
             #region Loading AI
             //Boss je nachdem, wer der Player ist
-            boss = new BossCrystal(new Vector3(60, 0, 0), "Ophelia", content);
-            boss.boundary = new BoundingBox(boss.position + new Vector3(-3, -3, -3), boss.position + new Vector3(3, 3, 3));
+            boss = new BossHell(new Vector3(60, 0, 0), "Kazumi", content);
+            boss.boundary = new BoundingBox(boss.position + new Vector3(-2.5f, -9, -2.5f), boss.position + new Vector3(2.5f, 9, 2.5f));
+            rangeOfMeleeFromBoss = new BoundingSphere(player.position, 4);
             #endregion
+
+            testBoundingBox = new Entity(boss.position, "5x5x5Box1", content);
 
             //HUD
             opheliaHud = new OpheliaHUD(content, graphics);
             seraphinBossHUD = new BossHellHUD(content, graphics);
+            kazumiHud = new KazumiHUD(content, graphics);
             fractusBossHUD = new BossCrystalHUD(content, graphics);
             cont = content;
         }
@@ -93,9 +101,11 @@ namespace CR4VE.GameLogic.GameStates
 
             player.Update(gameTime);
             sphere.Center = player.position;
-            rangeOfMeleeFromBoss.Center = player.position;
+            rangeOfMeleeFromBoss.Center = boss.position;
 
             boss.Update(gameTime);
+
+            testBoundingBox.moveTo(boss.position);
             
             #region HUD
             opheliaHud.Update();
@@ -103,13 +113,18 @@ namespace CR4VE.GameLogic.GameStates
             opheliaHud.UpdateMana();
             opheliaHud.UpdateHealth();
 
+            kazumiHud.Update();
+            kazumiHud.UpdateLiquidPositionByResolution();
+            kazumiHud.UpdateMana();
+            kazumiHud.UpdateHealth();
+
             seraphinBossHUD.Update();
             seraphinBossHUD.UpdateLiquidPositionByResolution();
 
             fractusBossHUD.Update();
             fractusBossHUD.UpdateLiquidPositionByResolution();
 
-            if (opheliaHud.isDead)
+            if (opheliaHud.isDead || kazumiHud.isDead)
             {
                 return Game1.EGameState.GameOver;
             }
@@ -133,17 +148,20 @@ namespace CR4VE.GameLogic.GameStates
             player.drawInArena(new Vector3(0.02f, 0.02f, 0.02f), 0, MathHelper.ToRadians(90) + blickWinkel, 0);
             player.DrawAttacks();
 
+            //testBoundingBox.drawInArena(Vector3.One, 0, MathHelper.ToRadians(90) + blickwinkelBoss, 0);
+
             #region Enemies
-            boss.drawInArena(/*new Vector3(0.75f, 0.75f, 0.75f)*/new Vector3(0.03f, 0.03f, 0.03f)/*boss.scaleForDrawMethod*/, 0, MathHelper.ToRadians(90) + blickwinkelBoss, 0);
+            boss.drawInArena(scaleForBossFractus, 0, MathHelper.ToRadians(90) + blickwinkelBoss, 0);
             boss.DrawAttacks();
             #endregion
 
             #region HUD
             spriteBatch.Begin();
 
-            //seraphinBossHUD.Draw(spriteBatch);
-            fractusBossHUD.Draw(spriteBatch);
             opheliaHud.Draw(spriteBatch);
+            seraphinBossHUD.Draw(spriteBatch);
+            kazumiHud.Draw(spriteBatch);
+            fractusBossHUD.Draw(spriteBatch);
 
             spriteBatch.End();
 
