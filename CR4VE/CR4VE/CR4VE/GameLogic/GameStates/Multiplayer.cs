@@ -25,6 +25,8 @@ namespace CR4VE.GameLogic.GameStates
         public static Character player3;
         public static Character player4;
 
+        public static float blickWinkelPlayer1;
+
         public static Entity terrain;
         public static Entity lava;
         #endregion
@@ -42,11 +44,14 @@ namespace CR4VE.GameLogic.GameStates
 
             CameraArena.Initialize(800,600);
 
-            player1 = new Character(new Vector3(0, 0, 0), "sphereD5", content);
+            player1 = new CharacterKazumi(new Vector3(0, -12.5f, 0), "Kazumi", content);
 
             terrain = new Entity(new Vector3(4, -20, -5), "Terrain/arena_hell", content);
 
             lava = new Entity(new Vector3(0, -50, -30), "Terrain/lavafloor", content);
+            
+            //fuer Attacken wichtig
+            cont = content;
         }
         #endregion
 
@@ -54,6 +59,8 @@ namespace CR4VE.GameLogic.GameStates
         public Game1.EGameState Update(GameTime gameTime)
         {
             GameControls.updateMultiplayer(gameTime);
+
+            player1.Update(gameTime);
 
             return Game1.EGameState.Multiplayer;
         }
@@ -68,7 +75,8 @@ namespace CR4VE.GameLogic.GameStates
             terrain.drawInArena(new Vector3(0.4f, 0.4f, 0.4f), 0, MathHelper.ToRadians(30), 0);
 
             //players
-            player1.drawInArenaWithoutBones(new Vector3(0.75f, 0.75f, 0.75f), 0, 0, 0);
+            player1.drawInArena(new Vector3(0.02f, 0.02f, 0.02f), 0, MathHelper.ToRadians(90) + blickWinkelPlayer1, 0);
+            player1.DrawAttacks();
         }
         #endregion
 

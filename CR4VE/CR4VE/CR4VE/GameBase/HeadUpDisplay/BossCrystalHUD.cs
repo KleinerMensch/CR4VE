@@ -43,7 +43,7 @@ namespace CR4VE.GameBase.HeadUpDisplay
         public override void UpdateLiquidPositionByResolution()
         {
             if ((graphics.PreferredBackBufferWidth / graphics.PreferredBackBufferHeight == 16 / 9) || (graphics.PreferredBackBufferWidth / graphics.PreferredBackBufferHeight == 4 / 3))
-                liquidPosition = fractusHealthContainerPosition + new Vector2(114, 83.5f);
+                liquidPosition = fractusHealthContainerPosition + new Vector2(115f, 83.7f);
         }
 
         public override void Draw(SpriteBatch spriteBatch)

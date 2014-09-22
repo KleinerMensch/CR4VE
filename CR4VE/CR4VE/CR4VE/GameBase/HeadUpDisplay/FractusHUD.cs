@@ -41,6 +41,7 @@ namespace CR4VE.GameBase.HeadUpDisplay
 
         public override void UpdateMana()
         {
+            Console.WriteLine(CharacterFractus.manaLeft);
             #region Singleplayer
             if (Game1.currentState == Game1.EGameState.Singleplayer)
             {
@@ -52,7 +53,15 @@ namespace CR4VE.GameBase.HeadUpDisplay
                 {
                     if (Singleplayer.currentMaps[ai1].PowerupList[i].type == "mana")
                     {
-                        if (CharacterFractus.manaLeft < 3)
+                        if (CharacterFractus.manaLeft == 2.5f)
+                        {
+                            if (Singleplayer.currentMaps[ai1].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
+                            {
+                                Singleplayer.currentMaps[ai1].PowerupList.Remove(Singleplayer.currentMaps[ai1].PowerupList.ElementAt(i));
+                                CharacterFractus.manaLeft += 0.5f;
+                            }
+                        }
+                        else if (CharacterFractus.manaLeft < 3)
                         {
                             if (Singleplayer.currentMaps[ai1].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
                             {
@@ -68,7 +77,15 @@ namespace CR4VE.GameBase.HeadUpDisplay
                 {
                     if (Singleplayer.currentMaps[ai2].PowerupList[i].type == "mana")
                     {
-                        if (CharacterFractus.manaLeft < 3)
+                        if (CharacterFractus.manaLeft == 2.5f)
+                        {
+                            if (Singleplayer.currentMaps[ai2].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
+                            {
+                                Singleplayer.currentMaps[ai2].PowerupList.Remove(Singleplayer.currentMaps[ai2].PowerupList.ElementAt(i));
+                                CharacterFractus.manaLeft += 0.5f;
+                            }
+                        }
+                        else if (CharacterFractus.manaLeft < 3)
                         {
                             if (Singleplayer.currentMaps[ai2].PowerupList[i].boundary.Intersects(Singleplayer.player.boundary))
                             {
@@ -142,7 +159,7 @@ namespace CR4VE.GameBase.HeadUpDisplay
         public override void UpdateLiquidPositionByResolution()
         {
             if ((graphics.PreferredBackBufferWidth / graphics.PreferredBackBufferHeight == 16 / 9) || (graphics.PreferredBackBufferWidth / graphics.PreferredBackBufferHeight == 4 / 3))
-                liquidPosition = fractusHealthContainerPosition + new Vector2(114, 83.5f);
+                liquidPosition = fractusHealthContainerPosition + new Vector2(115f, 83.7f);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
