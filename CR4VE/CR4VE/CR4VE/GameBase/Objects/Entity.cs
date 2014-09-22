@@ -537,6 +537,8 @@ namespace CR4VE.GameBase.Objects
                     effect.Projection = Camera2D.ProjectionMatrix;
                     effect.World = transforms[mesh.ParentBone.Index] * world;
 
+                    Vector3 lightPos0 = new Vector3(-50, -50, 50);
+
                  // Beleuchtung x,y,z
                     //effect.EnableDefaultLighting();
                     effect.LightingEnabled = true;

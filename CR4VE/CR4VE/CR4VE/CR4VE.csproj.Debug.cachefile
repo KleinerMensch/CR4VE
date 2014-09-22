@@ -152,7 +152,6 @@ Content\Assets\Models\Ophelia\Maps\lace_0.xnb
 Content\Assets\Models\Ophelia\Maps\body-cos_0.xnb
 Content\Assets\Models\Ophelia\Maps\mimi_0.xnb
 Content\Assets\Textures\UV Maps\checkpoint_crystal_0.xnb
-Content\Assets\Sprites\CR4VE_Ambigramm.xnb
 Content\Assets\Models\Terrain\Box33.xnb
 Content\Assets\Models\Terrain\Box20.xnb
 Content\Assets\Models\Terrain\Box21.xnb
@@ -168,6 +167,7 @@ Content\Assets\Models\Terrain\Box23.xnb
 Content\Frozen Bubbles_0.xnb
 Content\Assets\Models\Terrain\Box24.xnb
 Content\Snow_0.xnb
+Content\Assets\Sprites\CR4VE_Ambigramm.xnb
 Content\Assets\Sprites\Startscreen.png
 Content\Assets\Sprites\ButtonExit.png
 Content\Assets\Sprites\ButtonPlay.png
