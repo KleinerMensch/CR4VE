@@ -22,6 +22,7 @@ namespace CR4VE.GameBase.Objects.Terrain
         private List<Powerup> Powerups = new List<Powerup>();
 
         private Vector3 startPos;
+        private float speed = 0.9f;
         #endregion
 
         #region Properties
