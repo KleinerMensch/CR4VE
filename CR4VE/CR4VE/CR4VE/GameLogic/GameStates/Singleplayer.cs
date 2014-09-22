@@ -27,7 +27,12 @@ namespace CR4VE.GameLogic.GameStates
         SpriteBatch spriteBatch;
 
         //Lighting Effects
-        public static Effect effect_directLight;
+        //public static Effect effect_directLight;
+        public static Texture2D texture;
+
+        //sky
+        SkyBox skybox;
+        SkyBox skybox2;
 
         //Terrain (Singleplayer)
         public static Tilemap[] gameMaps = new Tilemap[] { };
@@ -392,7 +397,11 @@ namespace CR4VE.GameLogic.GameStates
             }
 
             //Effects
-            effect_directLight = content.Load<Effect>("Assets/Effects/DirectLight");
+            //effect_directLight = content.Load<Effect>("Assets/Effects/DirectLight");
+
+            //Skybox
+            skybox =  new SkyBox(new Vector3(0, 0, -13), "Assets/Skybox/cube_hell", content);
+            skybox2 = new SkyBox(new Vector3(4190, 0, -13), "Assets/Skybox/black", content);
 
             //Player
             ghost = new Character(Vector3.Zero, "skull", content);
@@ -414,7 +423,6 @@ namespace CR4VE.GameLogic.GameStates
             //Viewport Culling
             visibles = Tilemap.getVisibleTiles(currentMaps);
                         
-
             if (isPaused)
             {
                 if (isTutorial)
@@ -556,6 +564,10 @@ namespace CR4VE.GameLogic.GameStates
                 player.drawIn2DWorld(new Vector3(0.02f, 0.02f, 0.02f), 0, MathHelper.ToRadians(90) * player.viewingDirection.X, 0);
                 player.DrawAttacks();
             }
+
+            //SkyBox
+            skybox.Drawsky(new Vector3(4000f, 50f, -2.5f), 0, 0, 0);
+            skybox2.Drawsky(new Vector3(200f, 50f, -2.5f), 0, 0, 0);
 
             #region Enemies
             foreach (Enemy e in currentMaps[activeIndex1].EnemyList)

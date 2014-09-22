@@ -180,7 +180,7 @@ namespace CR4VE
 
             // Gamestate am Anfang
             // zum Testen jeweiligen GameState einsetzen
-            this.GameState = EGameState.Multiplayer;
+            this.GameState = EGameState.MainMenu;
         }
 
 
