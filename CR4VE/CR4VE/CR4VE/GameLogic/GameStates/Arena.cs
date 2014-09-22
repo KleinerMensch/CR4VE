@@ -70,11 +70,11 @@ namespace CR4VE.GameLogic.GameStates
 
             //moveable Entities
             player = new CharacterOphelia(startPos, "Ophelia", content); //Ophelia
+            CharacterOphelia.manaLeft = 3;
             //player = new CharacterKazumi(startPos, "Kazumi", content); //Kazumi
-
+            
             BoundingBox playerBound = new BoundingBox(player.Position + new Vector3(-2.5f, -9, -2.5f), player.Position + new Vector3(2.5f, 9, 2.5f));
             player.Boundary = playerBound;
-
             sphere = new BoundingSphere(player.position, 30);
 
             #region Loading AI
@@ -85,12 +85,18 @@ namespace CR4VE.GameLogic.GameStates
             #endregion
 
             testBoundingBox = new Entity(boss.position, "5x5x5Box1", content);
-
-            //HUD
+            
+            #region Initialize and Reset HUD
             opheliaHud = new OpheliaHUD(content, graphics);
+            opheliaHud.healthLeft = opheliaHud.fullHealth;
             seraphinBossHUD = new BossHellHUD(content, graphics);
+            seraphinBossHUD.healthLeft = seraphinBossHUD.fullHealth;
             kazumiHud = new KazumiHUD(content, graphics);
+            kazumiHud.healthLeft = kazumiHud.fullHealth;
             fractusBossHUD = new BossCrystalHUD(content, graphics);
+            fractusBossHUD.healthLeft = fractusBossHUD.fullHealth;
+            #endregion
+
             cont = content;
         }
 
