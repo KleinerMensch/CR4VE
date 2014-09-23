@@ -69,8 +69,9 @@ namespace CR4VE.GameLogic.GameStates
             lava = new Entity(new Vector3(0, -110, -30), "Terrain/lavafloor", content);
 
             //moveable Entities
-            //player = new CharacterOphelia(startPos, "Ophelia", content); //Ophelia
-            player = new CharacterKazumi(startPos, "Kazumi", content); //Kazumi
+            player = new CharacterOphelia(startPos, "Ophelia", content); //Ophelia
+            //player = new CharacterKazumi(startPos, "Kazumi", content); //Kazumi
+            //player = new CharacterFractus(startPos, "Ophelia", content);
 
             //reset mana
             CharacterOphelia.manaLeft = 3;
@@ -82,7 +83,7 @@ namespace CR4VE.GameLogic.GameStates
 
             #region Loading AI
             //Boss je nachdem, wer der Player ist
-            boss = new BossCrystal(new Vector3(60, 0, 0), "Kazumi", content);
+            boss = new BossHell(new Vector3(60, 0, 0), "Kazumi", content);
             boss.boundary = new BoundingBox(boss.position + new Vector3(-4f, -9, -2.5f), boss.position + new Vector3(4f, 9, 2.5f));
             rangeOfMeleeFromBoss = new BoundingSphere(player.position, 4);
             #endregion
@@ -99,6 +100,8 @@ namespace CR4VE.GameLogic.GameStates
             fractusBossHUD = new BossCrystalHUD(content, graphics);
             fractusBossHUD.healthLeft = fractusBossHUD.fullHealth;
             #endregion
+
+            Sounds.Initialize(content);
 
             cont = content;
         }

@@ -72,12 +72,15 @@ namespace CR4VE.GameLogic.GameStates
 
             //Entities
             sword = new Entity(new Vector3(0, -238f, -10), "mainmenu_sword", content);
+
+            Sounds.Initialize(content);
         }
         #endregion
 
         #region Update
         public Game1.EGameState Update(GameTime gameTime)
         {
+            Sounds.menu.Play();
             //get next GameState based on player input
             Game1.EGameState nextState = GameControls.updateMainMenu();
 

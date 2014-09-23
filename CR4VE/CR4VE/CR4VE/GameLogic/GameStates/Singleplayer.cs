@@ -37,7 +37,7 @@ namespace CR4VE.GameLogic.GameStates
         //Terrain (Singleplayer)
         public static Tilemap[] gameMaps_hell= new Tilemap[] { };
         public static Tilemap[] gameMaps_crystal = new Tilemap[] { };
-        public static bool isCrystal = true;
+        public static bool isCrystal = false;
         //Terrain (Tutorial)
         public static Tilemap[] tutorialMaps = new Tilemap[] { };
         public static bool isTutorial = false;
