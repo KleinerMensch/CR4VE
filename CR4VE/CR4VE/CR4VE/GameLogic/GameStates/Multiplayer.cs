@@ -42,7 +42,7 @@ namespace CR4VE.GameLogic.GameStates
             spriteBatch = CR4VE.Game1.spriteBatch;
             graphics = CR4VE.Game1.graphics;
 
-            CameraArena.Initialize(800,600);
+            CameraArena.Initialize(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
 
             player1 = new CharacterKazumi(new Vector3(0, -12.5f, 0), "Kazumi", content);
 
