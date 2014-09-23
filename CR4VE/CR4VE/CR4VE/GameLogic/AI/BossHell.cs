@@ -41,6 +41,7 @@ namespace CR4VE.GameLogic.AI
         TimeSpan timeSpanForResettingMana = TimeSpan.FromSeconds(10);
         TimeSpan timeSpan = TimeSpan.FromMilliseconds(270);
         private TimeSpan lastAttack;
+        public bool soundPlayed = false;
 
         ////fuer die Minionbewegung (von Maria)
         //static float rTimer = 10.0f;
@@ -60,7 +61,13 @@ namespace CR4VE.GameLogic.AI
             #region Handling Death Of Boss
             if (Arena.seraphinBossHUD.isDead)
             {
-                Sounds.SeraphinScream.Play();
+                if (!soundPlayed)
+                {
+                    Sounds.SeraphinScream.Play();
+
+                    soundPlayed = true;
+                }
+
                 this.model = Arena.cont.Load<Model>("Assets/Models/Players/skull");
                 this.boundary = new BoundingBox(Vector3.Zero, Vector3.Zero);
                 this.viewingDirection = new Vector3(0, 0, 1);
