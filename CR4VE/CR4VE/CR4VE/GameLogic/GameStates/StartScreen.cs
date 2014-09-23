@@ -12,8 +12,12 @@ namespace CR4VE.GameLogic.GameStates
     class StartScreen : GameStateInterface
     {
         #region Attribute
+        GraphicsDeviceManager gDevice;
         SpriteBatch spriteBatch;
         Texture2D background;
+
+        Color cr4veColor = Color.White;
+        int countForBlink = 0;
 
         // zum Test
         bool firstupdate;
@@ -29,7 +33,8 @@ namespace CR4VE.GameLogic.GameStates
         {
             firstupdate = true;
             spriteBatch = CR4VE.Game1.spriteBatch;
-            background = content.Load<Texture2D>("Assets/Sprites/Startscreen");
+            background = content.Load<Texture2D>("Assets/Sprites/CR4VE_Ambigramm");
+            gDevice = CR4VE.Game1.graphics;
         }
         #endregion
 
@@ -42,11 +47,29 @@ namespace CR4VE.GameLogic.GameStates
                 starttime = gameTime.TotalGameTime.TotalMilliseconds;
                 firstupdate = false;
             }
-            // nach 2 Sek Wechsel in das Hauptmenue
-            if ((gameTime.TotalGameTime.TotalMilliseconds - starttime) > 2000)
+
+            //Fadingeffekte
+            //Alphawert 255 => komplett transparent
+            //Alphawert 0 => nicht transparent
+            if (cr4veColor.A < 180)
             {
-                return Game1.EGameState.MainMenu;
+                cr4veColor.A += 1;
             }
+            else if (cr4veColor.A >= 180)
+            {
+                cr4veColor = new Color(255, 255, 255, 0);
+            }
+            if (cr4veColor.A == 0)
+                countForBlink++;
+
+            if(countForBlink == 3)
+                return Game1.EGameState.MainMenu;
+
+            //// nach 3 Sek Wechsel in das Hauptmenue
+            //if ((gameTime.TotalGameTime.TotalMilliseconds - starttime) > 3000)
+            //{
+            //    return Game1.EGameState.MainMenu;
+            //}
             return Game1.EGameState.StartScreen;
         }
         #endregion
@@ -55,7 +78,8 @@ namespace CR4VE.GameLogic.GameStates
         public void Draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
             spriteBatch.Begin();
-            spriteBatch.Draw(background, new Vector2(Camera2D.WorldRectangle.X, Camera2D.WorldRectangle.Y), new Rectangle((int)Camera2D.Position2D.X, (int)Camera2D.Position2D.Y, 800, 600), Color.White);
+            gDevice.GraphicsDevice.Clear(Color.White);
+            spriteBatch.Draw(background, gDevice.GraphicsDevice.Viewport.Bounds,cr4veColor);
             spriteBatch.End();
         }
         #endregion
