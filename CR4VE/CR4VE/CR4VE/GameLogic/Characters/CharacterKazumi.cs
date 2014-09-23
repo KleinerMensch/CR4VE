@@ -30,6 +30,7 @@ namespace CR4VE.GameLogic.Characters
         bool enemyHit = false;
         bool enemyHitByMelee = false;
         bool listContainsClaws = false;
+        public bool soundPlayed = false;
         #endregion
 
         #region Properties
@@ -202,12 +203,21 @@ namespace CR4VE.GameLogic.Characters
                         {
                             attackList.Remove(attackList[i]);
                             if (attackList.Count == 0)
+                            {
                                 launchedRanged = false;
+                                soundPlayed = false;
+                            }
                             break;
                         }
                         else
                         {
                             launchedRanged = true;
+                            if (!soundPlayed)
+                            {
+                                Sounds.fireball.Play();
+
+                                soundPlayed = true;
+                            }
 
                             #region enemyList1
                             foreach (Enemy enemy in Singleplayer.currentMaps[Singleplayer.activeIndex1].EnemyList)
@@ -224,7 +234,10 @@ namespace CR4VE.GameLogic.Characters
                                     if (enemyHit)
                                     {
                                         if (attackList.Count == 0)
+                                        {
                                             launchedRanged = false;
+                                            soundPlayed = false;
+                                        }
                                         attackList.Remove(attackList[i]);
                                     }
                                 }
@@ -245,7 +258,10 @@ namespace CR4VE.GameLogic.Characters
                                     if (enemyHit)
                                     {
                                         if (attackList.Count == 0)
+                                        {
                                             launchedRanged = false;
+                                            soundPlayed = false;
+                                        }
                                         attackList.Remove(attackList[i]);
                                     }
                                 }
