@@ -153,8 +153,7 @@ namespace CR4VE
             this.multiPlayer = new Multiplayer();
             this.arena = new Arena();
             this.singlePlayer = new Singleplayer();
-            this.startScreen = new StartScreen();
-            
+            this.startScreen = new StartScreen();            
         }
 
 
@@ -180,7 +179,7 @@ namespace CR4VE
 
             // Gamestate am Anfang
             // zum Testen jeweiligen GameState einsetzen
-            this.GameState = EGameState.Singleplayer;
+            this.GameState = EGameState.MainMenu;
         }
 
 

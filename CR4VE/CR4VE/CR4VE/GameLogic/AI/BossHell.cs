@@ -60,6 +60,7 @@ namespace CR4VE.GameLogic.AI
             #region Handling Death Of Boss
             if (Arena.seraphinBossHUD.isDead)
             {
+                Sounds.SeraphinScream.Play();
                 this.model = Arena.cont.Load<Model>("Assets/Models/Players/skull");
                 this.boundary = new BoundingBox(Vector3.Zero, Vector3.Zero);
                 this.viewingDirection = new Vector3(0, 0, 1);

@@ -12,7 +12,6 @@ using CR4VE.GameLogic.Characters;
 
 namespace CR4VE.GameLogic.GameStates
 {
-    // besser: uebergeordnete PlayMode Klasse fuer Single- und Multiplayer !
     class Multiplayer : GameStateInterface
     {
         #region Attribute
@@ -20,13 +19,13 @@ namespace CR4VE.GameLogic.GameStates
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        public static Character player1;
-        public static Character player2;
-        public static Character player3;
-        public static Character player4;
+        //Player parameters
+        public static Character player1, player2, player3, player4;
+        public static Character[] players;
 
         public static float blickWinkelPlayer1;
 
+        //Terrain
         public static Entity terrain;
         public static Entity lava;
         #endregion
@@ -44,10 +43,38 @@ namespace CR4VE.GameLogic.GameStates
 
             CameraArena.Initialize(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
 
-            player1 = new CharacterKazumi(new Vector3(0, -12.5f, 0), "Kazumi", content);
+            #region player models
+            for (int i = 0; i < 4; i++)
+            {
+                switch (players[i].CharacterType)
+                {
+                    case "Fractus":
+                        {
+                            players[i] = new CharacterFractus(new Vector3(0, -12.5f, 0), "Fractus", content);
+                        } break;
 
+                    case "Kazumi":
+                        {
+                            players[i] = new CharacterKazumi(new Vector3(0, -12.5f, 0), "Kazumi", content);
+                        } break;
+
+                    case "Ophelia":
+                        {
+                            players[i] = new CharacterOphelia(new Vector3(0, -12.5f, 0), "Ophelia", content);
+                        } break;
+
+                    case "Seraphin":
+                        {
+                            players[i] = new CharacterSeraphin(new Vector3(0, -12.5f, 0), "Seraphin", content);
+                        } break;
+
+                    default: { } break;
+                }
+            }
+            #endregion
+
+            //Terrain
             terrain = new Entity(new Vector3(4, -20, -5), "Terrain/arena_hell", content);
-
             lava = new Entity(new Vector3(0, -50, -30), "Terrain/lavafloor", content);
             
             //fuer Attacken wichtig

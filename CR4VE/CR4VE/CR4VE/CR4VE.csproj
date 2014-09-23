@@ -83,7 +83,6 @@
   <ItemGroup>
     <Compile Include="GameBase\Camera\Camera2D.cs" />
     <Compile Include="GameBase\Camera\CameraArena.cs" />
-    <Compile Include="GameBase\HeadUpDisplay\CameraMenu.cs" />
     <Compile Include="GameBase\HeadUpDisplay\BossCrystalHUD.cs" />
     <Compile Include="GameBase\HeadUpDisplay\BossHellHUD.cs" />
     <Compile Include="GameBase\HeadUpDisplay\FractusHUD.cs" />
