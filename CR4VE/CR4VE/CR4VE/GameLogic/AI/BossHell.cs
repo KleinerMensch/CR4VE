@@ -155,7 +155,7 @@ namespace CR4VE.GameLogic.AI
                             break;
                         if (seraphinsWhip.boundary.Intersects(Arena.player.boundary))
                         {
-                            //Arena.opheliaHud.healthLeft -= 1;
+                            Arena.opheliaHud.healthLeft -= 5;
                             playerHitByMelee = true;
                             Console.WriteLine("Boss hit Player by MeleeAttack");
                         }

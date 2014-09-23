@@ -69,9 +69,12 @@ namespace CR4VE.GameLogic.GameStates
             lava = new Entity(new Vector3(0, -110, -30), "Terrain/lavafloor", content);
 
             //moveable Entities
-            player = new CharacterOphelia(startPos, "Ophelia", content); //Ophelia
+            //player = new CharacterOphelia(startPos, "Ophelia", content); //Ophelia
+            player = new CharacterKazumi(startPos, "Kazumi", content); //Kazumi
+
+            //reset mana
             CharacterOphelia.manaLeft = 3;
-            //player = new CharacterKazumi(startPos, "Kazumi", content); //Kazumi
+            CharacterKazumi.manaLeft = 3;
             
             BoundingBox playerBound = new BoundingBox(player.Position + new Vector3(-2.5f, -9, -2.5f), player.Position + new Vector3(2.5f, 9, 2.5f));
             player.Boundary = playerBound;
@@ -79,8 +82,8 @@ namespace CR4VE.GameLogic.GameStates
 
             #region Loading AI
             //Boss je nachdem, wer der Player ist
-            boss = new BossHell(new Vector3(60, 0, 0), "Kazumi", content);
-            boss.boundary = new BoundingBox(boss.position + new Vector3(-2.5f, -9, -2.5f), boss.position + new Vector3(2.5f, 9, 2.5f));
+            boss = new BossCrystal(new Vector3(60, 0, 0), "Kazumi", content);
+            boss.boundary = new BoundingBox(boss.position + new Vector3(-4f, -9, -2.5f), boss.position + new Vector3(4f, 9, 2.5f));
             rangeOfMeleeFromBoss = new BoundingSphere(player.position, 4);
             #endregion
 

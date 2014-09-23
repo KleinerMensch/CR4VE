@@ -25,11 +25,12 @@ namespace CR4VE.GameLogic.Characters
 
         TimeSpan timeSpan = TimeSpan.FromMilliseconds(270);
 
-        Vector3 offset = new Vector3(12, 12, 12);
+        Vector3 offset = new Vector3(3, 3, 3);
         float speedDoppel = 1;
         bool enemyHit = false;
         bool enemyHitByMelee = false;
         bool listContainsSpeer = false;
+        float speerRotation = 0;
         #endregion
 
         #region inherited Constructors
@@ -57,6 +58,7 @@ namespace CR4VE.GameLogic.Characters
             #endregion
 
             #region Update Melee By Characterposition
+            speerRotation += 0.15f;
             if (launchedMelee)
             {
                 #region Singleplayer
@@ -64,7 +66,7 @@ namespace CR4VE.GameLogic.Characters
                 {
                     speerPosition = this.Position + viewingDirection * offset;
                     speer = new Entity(speerPosition, "OpheliasSpeer", Singleplayer.cont);
-                    speer.boundary = new BoundingBox(this.position + new Vector3(-12f, -2.5f, -2.5f) + viewingDirection * offset, this.position + new Vector3(12f, 2.5f, 2.5f) + viewingDirection * offset);
+                    speer.boundary = new BoundingBox(speerPosition + new Vector3(-9f, -6f, -4f), speerPosition + new Vector3(9f, 6f, 4f));
                     
                     if (!listContainsSpeer)
                     {
@@ -116,8 +118,8 @@ namespace CR4VE.GameLogic.Characters
                 else if (Game1.currentState.Equals(Game1.EGameState.Arena))
                 {
                     speerPosition = this.Position + viewingDirection * offset;
-                    speer = new Entity(speerPosition, "5x5x5Box1", Arena.cont);
-                    speer.boundary = new BoundingBox(speerPosition + new Vector3(-2.5f, -2.5f, -2.5f), speerPosition + new Vector3(2.5f, 2.5f, 2.5f));
+                    speer = new Entity(speerPosition, "OpheliasSpeer", Arena.cont);
+                    speer.boundary = new BoundingBox(speerPosition + new Vector3(-9f, -6f, -2.5f), speerPosition + new Vector3(9f, 6f, 2.5f));
 
                     if (!listContainsSpeer)
                     {
@@ -148,8 +150,8 @@ namespace CR4VE.GameLogic.Characters
                 else if (Game1.currentState.Equals(Game1.EGameState.Multiplayer))
                 {
                     speerPosition = this.Position + viewingDirection * offset;
-                    speer = new Entity(speerPosition, "5x5x5Box1", Multiplayer.cont);
-                    speer.boundary = new BoundingBox(speerPosition + new Vector3(-2.5f, -2.5f, -2.5f), speerPosition + new Vector3(2.5f, 2.5f, 2.5f));
+                    speer = new Entity(speerPosition, "OpheliasSpeer", Multiplayer.cont);
+                    speer.boundary = new BoundingBox(speerPosition + new Vector3(-6f, -6f, -4f), speerPosition + new Vector3(10f, 6f, 4f));
 
                     if (!listContainsSpeer)
                     {
@@ -379,6 +381,7 @@ namespace CR4VE.GameLogic.Characters
             launchedMelee = true;
             timeSpan = TimeSpan.FromMilliseconds(270);
             enemyHitByMelee = false;
+            speerRotation = 0;
             //Rest wird in der Update berechnet
         }
 
@@ -405,7 +408,7 @@ namespace CR4VE.GameLogic.Characters
                 {
                     Entity doppelgaenger = new Entity(this.position, "Players/Ophelia", Arena.cont);
                     doppelgaenger.viewingDirection = viewingDirection;
-                    doppelgaenger.boundary = new BoundingBox(this.position + new Vector3(-2.5f, -9f, -2.5f), this.position + new Vector3(2.5f, 9f, 2.5f));
+                    doppelgaenger.boundary = new BoundingBox(this.position + new Vector3(-1f, -9f, -6f), this.position + new Vector3(1f, 9f, 6f));
                     attackList.Add(doppelgaenger);
                 }
                 #endregion
@@ -414,7 +417,7 @@ namespace CR4VE.GameLogic.Characters
                 {
                     Entity doppelgaenger = new Entity(this.position, "Players/Ophelia", Multiplayer.cont);
                     doppelgaenger.viewingDirection = viewingDirection;
-                    doppelgaenger.boundary = new BoundingBox(this.position + new Vector3(-2.5f, -9f, -2.5f), this.position + new Vector3(2.5f, 9f, 2.5f));
+                    doppelgaenger.boundary = new BoundingBox(this.position + new Vector3(-1f, -9f, -6f), this.position + new Vector3(1f, 9f, 6f));
                     attackList.Add(doppelgaenger);
                 }
                 #endregion
@@ -434,8 +437,8 @@ namespace CR4VE.GameLogic.Characters
                 #region Singleplayer
                 if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
                 {
-                    holyThunder = new Entity(this.Position, "10x10x10Box1", Singleplayer.cont);
-                    holyThunder.boundary = new BoundingBox(this.position + new Vector3(-20, -3, -20), this.position + new Vector3(20, 3, 20));
+                    holyThunder = new Entity(this.Position, "OpheliasAoE", Singleplayer.cont);
+                    holyThunder.boundary = new BoundingBox(this.position + new Vector3(-20, -10, -20), this.position + new Vector3(20, 40, 20));
                     aoeList.Add(holyThunder);
 
                     #region enemyList1
@@ -469,8 +472,8 @@ namespace CR4VE.GameLogic.Characters
                 #region Arena
                 else if (Game1.currentState.Equals(Game1.EGameState.Arena))
                 {
-                    holyThunder = new Entity(this.Position, "10x10x10Box1", Arena.cont);
-                    holyThunder.boundary = new BoundingBox(this.position + new Vector3(-20, -3, -20), this.position + new Vector3(20, 3, 20));
+                    holyThunder = new Entity(this.Position, "OpheliasAoE", Arena.cont);
+                    holyThunder.boundary = new BoundingBox(this.position + new Vector3(-20, -10, -20), this.position + new Vector3(20, 60, 20));
                     aoeList.Add(holyThunder);
 
                     foreach (Entity opheliasHolyThunder in aoeList)
@@ -486,8 +489,8 @@ namespace CR4VE.GameLogic.Characters
                 #region Multiplayer
                 else if (Game1.currentState.Equals(Game1.EGameState.Multiplayer))
                 {
-                    holyThunder = new Entity(this.Position, "10x10x10Box1", Multiplayer.cont);
-                    holyThunder.boundary = new BoundingBox(this.position + new Vector3(-20, -3, -20), this.position + new Vector3(20, 3, 20));
+                    holyThunder = new Entity(this.Position, "OpheliasAoE", Multiplayer.cont);
+                    holyThunder.boundary = new BoundingBox(this.position + new Vector3(-20, -10, -20), this.position + new Vector3(20, 60, 20));
                     aoeList.Add(holyThunder);
 
                     foreach (Entity opheliasHolyThunder in aoeList)
@@ -512,14 +515,15 @@ namespace CR4VE.GameLogic.Characters
                 {
                     foreach (Entity opheliaSpeer in meleeAttackList)
                     {
-                        opheliaSpeer.drawIn2DWorld(new Vector3(0.02f, 0.02f, 0.02f), 0, 0, MathHelper.ToRadians(-90) * viewingDirection.X);
+                        opheliaSpeer.drawIn2DWorld(new Vector3(0.02f, 0.02f, 0.02f), 0, 0, MathHelper.ToRadians(-45) * viewingDirection.X * speerRotation);
                     }
                 }
                 if (Game1.currentState.Equals(Game1.EGameState.Arena) || Game1.currentState.Equals(Game1.EGameState.Multiplayer))
                 {
                     foreach (Entity opheliaSpeer in meleeAttackList)
                     {
-                        opheliaSpeer.drawInArena(new Vector3(1, 1, 1), 0, 0, 0);
+                        float speerBlickwinkelXZ = (float)Math.Atan2(-viewingDirection.Z, viewingDirection.X);
+                        opheliaSpeer.drawInArena(new Vector3(0.02f, 0.02f, 0.02f), 0, MathHelper.ToRadians(90) + speerBlickwinkelXZ, MathHelper.ToRadians(-45) * speerRotation*viewingDirection.X);
                     }
                 }
             }
