@@ -16,7 +16,6 @@ Content\Assets\Sprites\KazumiPower_LeftTail.xnb
 Content\Assets\Sprites\KazumiPower_MiddleTail.xnb
 Content\Assets\Sprites\KazumiPower_RightTail.xnb
 Content\Assets\Skybox\cube_hell.xnb
-Content\Assets\Skybox\black.xnb
 Content\Assets\Sprites\SeraphinHPBar.xnb
 Content\Assets\Sprites\SeraphinPower_LeftEye.xnb
 Content\Assets\Sprites\SeraphinPower_LowerEye.xnb
@@ -52,9 +51,6 @@ Content\Assets\Sprites\popup_tutorial2.xnb
 Content\Assets\Sprites\popup_tutorial3.xnb
 Content\Assets\Sprites\popup_tutorial4.xnb
 Content\Assets\Sprites\popup_tutorial5.xnb
-Content\Assets\Sprites\CR4VE_Ambigramm.xnb
-Content\Assets\Models\Ophelia\Maps\kazumi_tail_texture.xnb
-Content\Assets\Ophelia\Maps\kazumi_tail_texture256x256.xnb
 Content\Assets\Fonts\HUDfont.xnb
 Content\Assets\Fonts\GameOverFlo.xnb
 Content\Assets\Models\Enemies\EnemyEye.xnb
@@ -102,16 +98,6 @@ Content\Assets\Models\Enemies\spikes_ceiling.xnb
 Content\Assets\Models\Powerups\powerup_crystal_mana.xnb
 Content\Assets\Models\Players\Kazumi.xnb
 Content\Assets\Models\Checkpoints\checkpoint_crystal.xnb
-Content\Assets\Models\10x10x10Box1.xnb
-Content\Assets\Models\OpheliasAoE.xnb
-Content\Assets\Models\kazumisClaws.xnb
-Content\Assets\Models\kazumisAoE.xnb
-Content\Assets\Models\Terrain\Box33.xnb
-Content\Assets\Models\Terrain\Box20.xnb
-Content\Assets\Models\Terrain\Box21.xnb
-Content\Assets\Models\Terrain\Box22.xnb
-Content\Assets\Models\Terrain\Box23.xnb
-Content\Assets\Models\Terrain\Box24.xnb
 Content\Assets\Effects\Ambient.xnb
 Content\Assets\Effects\DirectLight.xnb
 Content\Assets\Effects\PointLight.xnb
@@ -119,8 +105,6 @@ Content\Assets\Effects\SkyBox.xnb
 Content\Assets\Sounds\CheckpointHell.xnb
 Content\Assets\Sounds\itemCollect.xnb
 Content\Assets\Sounds\scream.xnb
-Content\Assets\Sounds\deathScream.xnb
-Content\Assets\Sounds\Fireball.xnb
 Content\red_eye_0.xnb
 Content\Assets\Models\Powerups\Textures\gold_256x256_0.xnb
 Content\Assets\Models\Terrain\Textures\seamless\lava_bright2_1024x1024_0.xnb
@@ -167,16 +151,35 @@ Content\Assets\Models\Ophelia\Maps\lace_0.xnb
 Content\Assets\Models\Ophelia\Maps\body-cos_0.xnb
 Content\Assets\Models\Ophelia\Maps\mimi_0.xnb
 Content\Assets\Textures\UV Maps\checkpoint_crystal_0.xnb
-Content\Assets\Ophelia\Maps\kazumi_tail_texture256x256_0.xnb
+Content\Assets\Models\Terrain\Box33.xnb
+Content\Assets\Models\Terrain\Box20.xnb
+Content\Assets\Models\Terrain\Box21.xnb
+Content\Assets\Models\Terrain\Box22.xnb
+Content\tileable-icy-and-watery-blue-tex_1.xnb
 Content\Tileable ice on grass ground tex_0.xnb
-Content\tileable-icy-and-watery-blue-tex_0.xnb
 Content\snow_scuffed_ground_1_0.xnb
+Content\Assets\Models\Terrain\Box23.xnb
 Content\Frozen Bubbles_0.xnb
+Content\Assets\Models\Terrain\Box24.xnb
 Content\Snow_0.xnb
+Content\Assets\Sprites\CR4VE_Ambigramm.xnb
+Content\Assets\Models\10x10x10Box1.xnb
+Content\Assets\Models\Ophelia\Maps\kazumi_tail_texture.xnb
+Content\Assets\Ophelia\Maps\kazumi_tail_texture256x256.xnb
+Content\Assets\Models\OpheliasAoE.xnb
+Content\Assets\Models\kazumisClaws.xnb
+Content\Assets\Models\kazumisAoE.xnb
+Content\Assets\Ophelia\Maps\kazumi_tail_texture256x256_0.xnb
+Content\Assets\Sounds\deathScream.xnb
+Content\Assets\Sounds\Fireball.xnb
 Content\Assets\Models\Terrain\Box25.xnb
 Content\Rose Crystal Assortment_0.xnb
 Content\Assets\Models\Terrain\Box26.xnb
 Content\4706_0.xnb
+Content\Assets\Sounds\freezingIce.xnb
+Content\Assets\Sounds\SeraphinScream.xnb
+Content\Assets\Sounds\whip.xnb
+Content\Assets\Sounds\CheckpointCristall.xnb
 Content\Assets\Sprites\Startscreen.png
 Content\Assets\Sprites\ButtonExit.png
 Content\Assets\Sprites\ButtonPlay.png
