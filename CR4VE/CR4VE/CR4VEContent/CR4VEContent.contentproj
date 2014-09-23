@@ -429,6 +429,12 @@
       <Processor>TextureProcessor</Processor>
       <ProcessorParameters_PremultiplyAlpha>False</ProcessorParameters_PremultiplyAlpha>
     </Compile>
+    <Compile Include="Assets\Skybox\black.dds">
+      <Name>black</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_PremultiplyAlpha>False</ProcessorParameters_PremultiplyAlpha>
+    </Compile>
     <Compile Include="Assets\Models\10x10x10Box1.FBX">
       <Name>10x10x10Box1</Name>
       <Importer>FbxImporter</Importer>
@@ -476,16 +482,6 @@
     </Compile>
     <Compile Include="Assets\Models\Terrain\Box24.FBX">
       <Name>Box24</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-    <Compile Include="Assets\Models\Terrain\Box25.FBX">
-      <Name>Box25</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-    <Compile Include="Assets\Models\Terrain\Box26.FBX">
-      <Name>Box26</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
@@ -786,15 +782,11 @@
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Assets\Sounds\SeraphinScream.wav">
       <Name>SeraphinScream</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Assets\Sounds\whip.wav">
       <Name>whip</Name>
       <Importer>WavImporter</Importer>
@@ -802,10 +794,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Sounds\CheckpointCristall.wav">
-      <Name>CheckpointCristall</Name>
-      <Importer>WavImporter</Importer>
-      <Processor>SoundEffectProcessor</Processor>
+    <Compile Include="Assets\Sprites\MainMenu_selection.png">
+      <Name>MainMenu_selection</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

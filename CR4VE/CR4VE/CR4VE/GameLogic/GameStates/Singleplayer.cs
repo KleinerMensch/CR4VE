@@ -37,7 +37,7 @@ namespace CR4VE.GameLogic.GameStates
         //Terrain (Singleplayer)
         public static Tilemap[] gameMaps_hell= new Tilemap[] { };
         public static Tilemap[] gameMaps_crystal = new Tilemap[] { };
-        public static bool isCrystal = true;
+        public static bool isCrystal = false;
         //Terrain (Tutorial)
         public static Tilemap[] tutorialMaps = new Tilemap[] { };
         public static bool isTutorial = false;
@@ -500,9 +500,6 @@ namespace CR4VE.GameLogic.GameStates
                 };
             }
 
-            //Effects
-            //effect_directLight = content.Load<Effect>("Assets/Effects/DirectLight");
-
             //Skybox
             skybox =  new SkyBox(new Vector3(0, 0, -13), "Assets/Skybox/cube_hell", content);
            // skybox2 = new SkyBox(new Vector3(4190, 0, -13), "Assets/Skybox/black", content);
@@ -510,15 +507,22 @@ namespace CR4VE.GameLogic.GameStates
 
             //Player
             ghost = new Character(Vector3.Zero, "skull", content);
-            player = new CharacterKazumi(new Vector3(0, 0, 5), "Kazumi", content, new BoundingBox(new Vector3(-2.5f, -9f, -2.5f), new Vector3(2.5f, 9f, 2.5f)));
-            //player = new CharacterOphelia(new Vector3(0,0,5), "Ophelia", content, new BoundingBox(new Vector3(-2.5f, -9f, -2.5f), new Vector3(2.5f, 9f, 2.5f)));
-            CharacterOphelia.manaLeft = 3;
+
+            if (isCrystal)
+            {
+                player = new CharacterKazumi(new Vector3(0, 0, 5), "Kazumi", content, new BoundingBox(new Vector3(-2.5f, -9f, -2.5f), new Vector3(2.5f, 9f, 2.5f)));
+                hud = new KazumiHUD(cont, graphics);
+                CharacterKazumi.manaLeft = 3;
+            }
+            else
+            {
+                player = new CharacterOphelia(new Vector3(0, 0, 5), "Ophelia", content, new BoundingBox(new Vector3(-2.5f, -9f, -2.5f), new Vector3(2.5f, 9f, 2.5f)));
+                hud = new OpheliaHUD(cont, graphics);
+                CharacterOphelia.manaLeft = 3;
+            }
 
             //Checkpoints (default = Startposition)
             lastCheckpoint = new Checkpoint(Vector3.Zero, "checkpoint_hell", content);
-
-            //HUD
-            hud = new KazumiHUD(cont, graphics);
         }
         #endregion
 
@@ -616,8 +620,8 @@ namespace CR4VE.GameLogic.GameStates
             }
 
             ////DEBUG---------------------------
-            Console.Clear();
-            Console.WriteLine(player.CharacterType);
+            //Console.Clear();
+            //Console.WriteLine(player.CharacterType);
             //Console.WriteLine(isPopup);
             //Console.WriteLine(player.Position);
             ////--------------------------------

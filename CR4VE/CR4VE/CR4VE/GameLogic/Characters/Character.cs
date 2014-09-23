@@ -19,6 +19,8 @@ namespace CR4VE.GameLogic.Characters
         public bool launchedSpecial = false;
 
         public static float manaLeft = 3;
+
+        public float blickWinkel;
         #endregion
 
         #region Properties

@@ -29,6 +29,8 @@ namespace CR4VE.GameLogic.Controls
 
         static GamePadState currGamepad;
         static GamePadState prevGamepad;
+        static GamePadState[] prevGamePads = new GamePadState[4];
+        static GamePadState[] currGamePads = new GamePadState[4];
 
         //Bewegungsparameter
         //(alive)
@@ -36,7 +38,7 @@ namespace CR4VE.GameLogic.Controls
 
         private static bool borderedLeft = false;
         private static bool borderedRight = false;
-        private static bool borderedTop = false;
+        //private static bool borderedTop = false;
         private static bool borderedBottom = false;
         //(ghost)
         private static readonly float ghostDelay = 0.01f;
@@ -74,16 +76,40 @@ namespace CR4VE.GameLogic.Controls
         public static bool fullscreenPossible = false;
         public static int menuPosIndex = 0;
         
-
         private static readonly Vector3[] menuPositions = new Vector3[]
         {
-            new Vector3(0, -238, -10), //Start
-            new Vector3(0, -84, -10), //Singleplayer
-            new Vector3(0, 0, -10), //Multiplayer
-            new Vector3(0, 96, -10), //Options
-            new Vector3(0, 150, -10), //detailed Options
-            new Vector3(0, 235, -10) //more detailed Options
+            new Vector3(0, -238, -10), //Start 0
+            new Vector3(0, -84, -10), //Singleplayer 1
+            new Vector3(0, 0, -10), //Multiplayer 2
+            new Vector3(0, 96, -10), //Options 3
+            new Vector3(0, 150, -10), //detailed Options 4
+            new Vector3(0, 235, -10), //more detailed Options (Multiplayer) 5
+            new Vector3(0, 150, -10) //more detailed Options (Singleplayer) 6
         };
+
+        //Multiplayer
+        private static readonly PlayerIndex[] PlayerIndices = {PlayerIndex.One, PlayerIndex.Two, PlayerIndex.Three, PlayerIndex.Four};
+
+        private static Vector3[] fallVecs;
+        private static double[] startFallTimes;
+        private static bool[] ringOuts;
+        #endregion
+
+        #region Properties
+        public static int ConnectedControllers
+        {
+            get
+            {
+                int result = 0;
+
+                if (GamePad.GetState(PlayerIndex.One).IsConnected) result++;
+                if (GamePad.GetState(PlayerIndex.Two).IsConnected) result++;
+                if (GamePad.GetState(PlayerIndex.Three).IsConnected) result++;
+                if (GamePad.GetState(PlayerIndex.Four).IsConnected) result++;
+
+                return result;
+            }
+        }
         #endregion
 
         #region Methods
@@ -183,7 +209,7 @@ namespace CR4VE.GameLogic.Controls
 
             borderedLeft = false;
             borderedRight = false;
-            borderedTop = false;
+            //borderedTop = false;
             borderedBottom = false;
 
             isJumping = false;
@@ -217,7 +243,7 @@ namespace CR4VE.GameLogic.Controls
 
                 borderedLeft = false;
                 borderedRight = false;
-                borderedTop = false;
+                //borderedTop = false;
                 borderedBottom = false;
 
                 isJumping = false;
@@ -339,7 +365,7 @@ namespace CR4VE.GameLogic.Controls
                 if (Singleplayer.player.handleTerrainCollisionInDirection("up", moveVecPlayer, visibles))
                 {
                     if (temp.Y > 0) temp.Y = 0;
-                    borderedTop = true;
+                    //borderedTop = true;
                 }
                 if (Singleplayer.player.handleTerrainCollisionInDirection("down", moveVecPlayer, visibles))
                 {
@@ -348,7 +374,7 @@ namespace CR4VE.GameLogic.Controls
                     borderedBottom = true;
                 }
 
-                if (moveVecPlayer.Y < 0) borderedTop = false;
+                //if (moveVecPlayer.Y < 0) borderedTop = false;
 
                 if (moveVecPlayer.Y < 0 && temp.Y == 0)
                 {
@@ -493,53 +519,90 @@ namespace CR4VE.GameLogic.Controls
             }
         }
 
+        public static void initializeMultiplayer()
+        { 
+            fallVecs = new Vector3[ConnectedControllers];
+            for (int i = 0; i < ConnectedControllers; i++)
+            {
+                fallVecs[i] = Vector3.Zero;
+            }
+
+            startFallTimes = new double[ConnectedControllers];
+            for (int i = 0; i < ConnectedControllers; i++)
+            {
+                startFallTimes[i] = 0;
+            }
+
+            ringOuts = new bool[ConnectedControllers];
+            for (int i = 0; i < ConnectedControllers; i++)
+            {
+                ringOuts[i] = false;
+            }
+        }
         public static void updateMultiplayer(GameTime gameTime)
         {
-            previousKeyboard = currentKeyboard;
-            currentKeyboard = Keyboard.GetState();
+            Vector3[] moveVecs = new Vector3[ConnectedControllers];
 
-            //Maus wird noch rausgenommen -> soll für den multiplayer nicht benutzbar sein
-            //nur zum Test erstmal drin
-            previousMouseState = currentMouseState;
-            currentMouseState = Mouse.GetState();
-
-            prevGamepad = currGamepad;
-            currGamepad = GamePad.GetState(PlayerIndex.One);
-
-            #region Updating attacks fuer Player1
-            if (leftClick(currentMouseState, previousMouseState) || isClicked(Buttons.X))
+            //get GamePadStates
+            for (int i = 0; i < ConnectedControllers; i++)
             {
-                //Nahangriff
-                Multiplayer.player1.MeleeAttack(gameTime);
+                prevGamePads[i] = currGamePads[i];
+                currGamePads[i] = GamePad.GetState(PlayerIndices[i]);
             }
-            else if (rightClick(currentMouseState, previousMouseState) || isClicked(Buttons.B))
+
+            //calculate move vectors
+            for (int i = 0; i < ConnectedControllers; i++)
             {
-                //Fernangriff
-                Multiplayer.player1.RangedAttack(gameTime);
+                if (!ringOuts[i])
+                    moveVecs[i] = new Vector3(currGamePads[i].ThumbSticks.Left.X, 0, -currGamePads[i].ThumbSticks.Left.Y);
+                else
+                {
+                    double currentTime = gameTime.TotalGameTime.TotalSeconds;
+
+                    double deltaTime = currentTime - startFallTimes[i];
+
+                    fallVecs[i] *= 0.98f;
+
+                    Multiplayer.Players[i].move(new Vector3(fallVecs[i].X, (float)-deltaTime * G/4, fallVecs[i].Z));
+
+                    if (Multiplayer.Players[i].Position.Y < -100)
+                    {
+                        ringOuts[i] = false;
+
+                        //Multiplayer.Players.h.healthLeft = 0;
+
+                        Multiplayer.Players[i].moveTo(Arena.startPos);
+                    }
+                }
             }
-            else if (middleClick(currentMouseState, previousMouseState) || isClicked(Buttons.Y))
+
+            //move characters
+            for (int i = 0; i < ConnectedControllers; i++)
             {
-                //Spezialangriff
-                Multiplayer.player1.SpecialAttack(gameTime);
+                if (!ringOuts[i])
+                    Multiplayer.Players[i].move(moveVecs[i]);
             }
-            #endregion
 
-            Vector3 moveVecPlayer1 = new Vector3(0, 0, 0);
-
-            if (currentKeyboard.IsKeyDown(Keys.W) || currGamepad.IsButtonDown(Buttons.LeftThumbstickUp) || currGamepad.IsButtonDown(Buttons.DPadUp)) moveVecPlayer1 += new Vector3(0, 0, -accel);
-            if (currentKeyboard.IsKeyDown(Keys.A) || currGamepad.IsButtonDown(Buttons.LeftThumbstickLeft) || currGamepad.IsButtonDown(Buttons.DPadLeft)) moveVecPlayer1 += new Vector3(-accel, 0, 0);
-            if (currentKeyboard.IsKeyDown(Keys.S) || currGamepad.IsButtonDown(Buttons.LeftThumbstickDown) || currGamepad.IsButtonDown(Buttons.DPadDown)) moveVecPlayer1 += new Vector3(0, 0, accel);
-            if (currentKeyboard.IsKeyDown(Keys.D) || currGamepad.IsButtonDown(Buttons.LeftThumbstickRight) || currGamepad.IsButtonDown(Buttons.DPadRight)) moveVecPlayer1 += new Vector3(accel, 0, 0);
-
-            if (moveVecPlayer1 != Vector3.Zero)
+            //check for ring outs
+            for (int i = 0; i < ConnectedControllers; i++)
             {
-                Vector3 recentPlayerPosition = Multiplayer.player1.Position;
-                moveVecPlayer1.Normalize();
-                Multiplayer.player1.move(moveVecPlayer1);
+                if (!Multiplayer.Players[i].Boundary.Intersects(Multiplayer.arenaBound) && !ringOuts[i])
+                {
+                    fallVecs[i] = moveVecs[i];
 
-                Multiplayer.player1.viewingDirection = Multiplayer.player1.Position - recentPlayerPosition;
-                Multiplayer.blickWinkelPlayer1 = (float)Math.Atan2(-Multiplayer.player1.viewingDirection.Z, Multiplayer.player1.viewingDirection.X);
+                    startFallTimes[i] = gameTime.TotalGameTime.TotalSeconds;
+
+                    ringOuts[i] = true;
+                }
             }
+
+            //DEBUG-----------------------------------------
+            Console.Clear();
+            for (int i = 0; i < ConnectedControllers; i++)
+            {
+                Console.WriteLine(GameControls.ringOuts[i]);
+            }
+            //----------------------------------------------
         }
 
         public static void updateArena(GameTime gameTime)
@@ -643,8 +706,8 @@ namespace CR4VE.GameLogic.Controls
             currGamepad = GamePad.GetState(PlayerIndex.One);
 
             
-            //Up- and Down movement
-            if (menuPosIndex != 0 && menuPosIndex != 4)
+            #region Up- and Down movement
+            if (menuPosIndex != 0 && menuPosIndex != 4 && menuPosIndex != 5)
             {
                 if ((currentKeyboard.IsKeyDown(Keys.Down) || currGamepad.IsButtonDown(Buttons.DPadDown)) && !isMenuMoving)
                 {
@@ -663,19 +726,20 @@ namespace CR4VE.GameLogic.Controls
                     moveVecSword = menuPositions[menuPosIndex] - MainMenu.sword.position;
                 }
             }
-
+            
             if (isMenuMoving)
                 if ((MainMenu.sword.Position - menuPositions[menuPosIndex]).Length() >= 0.01f)
                     MainMenu.sword.move(moveVecSword * 0.025f);
                 else
                     isMenuMoving = false;
+            #endregion
 
             //special cases (Start, Option, Optiondetails)
             if (!isMenuMoving)
             {
                 switch (menuPosIndex)
                 {
-                    //Press Start
+                    #region Start
                     case 0:
                         if ((isClicked(Keys.Enter) || isClicked(Buttons.Start)) && !isMenuMoving)
                         {
@@ -686,8 +750,9 @@ namespace CR4VE.GameLogic.Controls
                             moveVecSword = (menuPositions[menuPosIndex] - MainMenu.sword.position) * 0.5f;
                         }
                         break;
-                    
-                    //Singleplayer
+                    #endregion
+
+                    #region Singleplayer
                     case 1:
                         //toggle tutorial
                         if ((isClicked(Keys.Left) || isClicked(Keys.Right) || 
@@ -695,16 +760,30 @@ namespace CR4VE.GameLogic.Controls
                             Singleplayer.isTutorial = !Singleplayer.isTutorial;
 
                         if ((isClicked(Keys.Enter) || isClicked(Buttons.A)) && !isMenuMoving)
-                            return Game1.EGameState.Singleplayer;
-                        break;
+                        {
+                            menuPosIndex = 6;
 
-                    //Multiplayer
+                            isMenuMoving = true;
+                            
+                            moveVecSword = menuPositions[menuPosIndex] - MainMenu.sword.position;
+                        }
+                        break;
+                    #endregion
+
+                    #region Multiplayer
                     case 2:
-                        /*if ((isClicked(Keys.Enter) || isClicked(Buttons.A)) && !isMoving)
-                            return Game1.EGameState.Arena;*/
-                        break;
+                        if ((isClicked(Keys.Enter) || isClicked(Buttons.A)) && !isMenuMoving)
+                        {
+                            menuPosIndex = 5;
 
-                    //Options
+                            isMenuMoving = true;
+
+                            moveVecSword = menuPositions[menuPosIndex] - MainMenu.sword.position;
+                        }
+                        break;
+                    #endregion
+
+                    #region Options
                     case 3:
                         if ((isClicked(Keys.Enter) || isClicked(Buttons.A)) && !isMenuMoving)
                         {
@@ -715,8 +794,9 @@ namespace CR4VE.GameLogic.Controls
                             moveVecSword = menuPositions[menuPosIndex] - MainMenu.sword.position;
                         }
                         break;
+                    #endregion
 
-                    //Options Details
+                    #region detailed Options
                     case 4:
                         //move routine
                         if ((isClicked(Keys.Escape) || isClicked(Buttons.B)) && !isMenuMoving)
@@ -727,7 +807,7 @@ namespace CR4VE.GameLogic.Controls
 
                             moveVecSword = menuPositions[menuPosIndex] - MainMenu.sword.position;
                         }
-
+                        
                         //change resolution
                         if (isClicked(Keys.Left) || isClicked(Buttons.DPadLeft))
                         {
@@ -744,6 +824,84 @@ namespace CR4VE.GameLogic.Controls
                             CameraMenu.updateResolution();
                         }
                         break;
+                    #endregion
+
+                    #region more detailed options (Multiplayer)
+                    case 5:
+                        {
+                            if (isClicked(Keys.Escape))
+                            {
+                                MainMenu.ResetMultiplayerSelection();
+
+                                menuPosIndex = 2;
+
+                                isMenuMoving = true;
+
+                                moveVecSword = menuPositions[menuPosIndex] - MainMenu.sword.position;
+                            }
+
+                            #region Character Selection
+                            //toggle player1 slot
+                            if (isClicked(Keys.NumPad1))
+                            {
+                                MainMenu.select1Index = (int) MathHelper.Clamp((MainMenu.select1Index + 1) % 5, 1, 4);
+                                MainMenu.MPSelection[0] = MainMenu.playableChars[MainMenu.select1Index];
+                            }
+
+                            //toggle player2 slot
+                            if (isClicked(Keys.NumPad2))
+                            {
+                                MainMenu.select2Index = (int)MathHelper.Clamp((MainMenu.select2Index + 1) % 5, 1, 4);
+                                MainMenu.MPSelection[1] = MainMenu.playableChars[MainMenu.select2Index];
+                            }
+
+                            //toggle player3 slot
+                            if (isClicked(Keys.NumPad3))
+                            {
+                                MainMenu.select3Index = (int)MathHelper.Clamp((MainMenu.select3Index + 1) % 5, 1, 4);
+                                MainMenu.MPSelection[2] = MainMenu.playableChars[MainMenu.select3Index];
+                            }
+
+                            //toggle player4 slot
+                            if (isClicked(Keys.NumPad4))
+                            {
+                                MainMenu.select4Index = (int)MathHelper.Clamp((MainMenu.select4Index + 1) % 5, 1, 4);
+                                MainMenu.MPSelection[3] = MainMenu.playableChars[MainMenu.select4Index];
+                            }
+                            #endregion
+
+                            if (isClicked(Keys.Enter))
+                                return Game1.EGameState.Multiplayer;
+
+                        } break;
+                    #endregion
+
+                    #region more detailed options (Singleplayer)
+                    case 6:
+                        if (!isMenuMoving)
+                        {
+                            //get back
+                            if (isClicked(Keys.Escape) || isClicked(Buttons.B))
+                            {
+                                menuPosIndex = 1;
+
+                                isMenuMoving = true;
+
+                                moveVecSword = menuPositions[menuPosIndex] - MainMenu.sword.position;
+                            }
+
+                            //toggle levels
+                            if ((isClicked(Keys.Right) || isClicked(Buttons.DPadRight)) && Singleplayer.isCrystal)
+                                Singleplayer.isCrystal = !Singleplayer.isCrystal;
+                            else if ((isClicked(Keys.Left) || isClicked(Buttons.DPadLeft)) && !Singleplayer.isCrystal)
+                                Singleplayer.isCrystal = !Singleplayer.isCrystal;
+
+                            //start Singleplayer
+                            if (isClicked(Keys.Enter) || isClicked(Buttons.A))
+                                return Game1.EGameState.Singleplayer;
+                        }
+                        break;
+                    #endregion
                 }
             }
             
