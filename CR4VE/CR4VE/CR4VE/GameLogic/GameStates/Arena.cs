@@ -38,7 +38,8 @@ namespace CR4VE.GameLogic.GameStates
         public Vector3 scaleForBossFractus = new Vector3(0.03f, 0.03f, 0.03f);
         public Vector3 scaleForBossSeraphin = new Vector3(0.75f, 0.75f, 0.75f);
 
-        public static readonly Vector3 startPos = new Vector3(0, -12.5f, 0);
+        //da bounding box vom player 18einheiten hoch ist und arenafloor.y.max bei -15 liegt
+        public static readonly Vector3 startPos = new Vector3(0, -6f, 0);
 
         public static float blickWinkel;
         public static float blickwinkelBoss;
@@ -69,12 +70,14 @@ namespace CR4VE.GameLogic.GameStates
             lava = new Entity(new Vector3(0, -110, -30), "Terrain/lavafloor", content);
 
             //moveable Entities
+            player = new CharacterOphelia(startPos, "Ophelia", content);
             //player = new CharacterOphelia(startPos, "Ophelia", content); //Ophelia
-            player = new CharacterKazumi(startPos, "Kazumi", content); //Kazumi
+            //player = new Character(startPos, "Kazumi", content); //Kazumi
 
             //reset mana
             CharacterOphelia.manaLeft = 3;
             CharacterKazumi.manaLeft = 3;
+            //CharacterSeraphin.manaLeft = 120; //zum test vom laser
             
             BoundingBox playerBound = new BoundingBox(player.Position + new Vector3(-2.5f, -9, -2.5f), player.Position + new Vector3(2.5f, 9, 2.5f));
             player.Boundary = playerBound;
@@ -82,8 +85,8 @@ namespace CR4VE.GameLogic.GameStates
 
             #region Loading AI
             //Boss je nachdem, wer der Player ist
-            boss = new BossCrystal(new Vector3(60, 0, 0), "Kazumi", content);
-            boss.boundary = new BoundingBox(boss.position + new Vector3(-4f, -9, -2.5f), boss.position + new Vector3(4f, 9, 2.5f));
+            boss = new BossHell(new Vector3(60, 0, 0), "Kazumi", content);
+            boss.boundary = new BoundingBox(boss.position + new Vector3(-4f, -12, -4f), boss.position + new Vector3(4f, 12, 4f));
             rangeOfMeleeFromBoss = new BoundingSphere(player.position, 4);
             #endregion
 

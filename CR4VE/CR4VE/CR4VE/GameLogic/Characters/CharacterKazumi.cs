@@ -349,27 +349,27 @@ namespace CR4VE.GameLogic.Characters
                 #region Singleplayer
                 if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
                 {
-                    Entity fireBall = new Entity(this.position, "Enemies/skull", Singleplayer.cont);
+                    Entity fireBall = new Entity(this.position, "kazumisFireball", Singleplayer.cont);
                     fireBall.viewingDirection = viewingDirection;
-                    fireBall.boundary = new BoundingBox(this.position + new Vector3(-3, -3, -3), this.position + new Vector3(3, 3, 3));
+                    fireBall.boundary = new BoundingBox(this.position + new Vector3(-3, -6, -3), this.position + new Vector3(3, 6, 3));
                     attackList.Add(fireBall);
                 }
                 #endregion
                 #region Arena
                 else if (Game1.currentState.Equals(Game1.EGameState.Arena))
                 {
-                    Entity fireBall = new Entity(this.position, "Enemies/skull", Arena.cont);
+                    Entity fireBall = new Entity(this.position, "kazumisFireball", Arena.cont);
                     fireBall.viewingDirection = viewingDirection;
-                    fireBall.boundary = new BoundingBox(this.position + new Vector3(-3, -3, -3), this.position + new Vector3(3, 3, 3));
+                    fireBall.boundary = new BoundingBox(this.position + new Vector3(-2, -6, -5f), this.position + new Vector3(2, 6, 5f));
                     attackList.Add(fireBall);
                 }
                 #endregion
                 #region Multiplayer
                 else if (Game1.currentState.Equals(Game1.EGameState.Multiplayer))
                 {
-                    Entity fireBall = new Entity(this.position, "Enemies/skull", Multiplayer.cont);
+                    Entity fireBall = new Entity(this.position, "kazumisFireball", Multiplayer.cont);
                     fireBall.viewingDirection = viewingDirection;
-                    fireBall.boundary = new BoundingBox(this.position + new Vector3(-3, -3, -3), this.position + new Vector3(3, 3, 3));
+                    fireBall.boundary = new BoundingBox(this.position + new Vector3(-2, -6, -5f), this.position + new Vector3(2, 6, 5f));
                     attackList.Add(fireBall);
                 }
                 #endregion
@@ -389,8 +389,8 @@ namespace CR4VE.GameLogic.Characters
                 #region Singleplayer
                 if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
                 {
-                    danceOfFireFox = new Entity(this.Position, "10x10x10Box1", Singleplayer.cont);
-                    danceOfFireFox.boundary = new BoundingBox(this.position + new Vector3(-20, -3, -20), this.position + new Vector3(20, 3, 20));
+                    danceOfFireFox = new Entity(this.Position, "kazumisAoE", Singleplayer.cont);
+                    danceOfFireFox.boundary = new BoundingBox(this.position + new Vector3(-20, -10, -20), this.position + new Vector3(20, 40, 20));
                     aoeList.Add(danceOfFireFox);
 
                     #region enemyList1
@@ -425,7 +425,7 @@ namespace CR4VE.GameLogic.Characters
                 else if (Game1.currentState.Equals(Game1.EGameState.Arena))
                 {
                     danceOfFireFox = new Entity(this.Position, "kazumisAoE", Arena.cont);
-                    danceOfFireFox.boundary = new BoundingBox(this.position + new Vector3(-20, -3, -20), this.position + new Vector3(20, 3, 20));
+                    danceOfFireFox.boundary = new BoundingBox(this.position + new Vector3(-20, -10, -20), this.position + new Vector3(20, 60, 20));
                     aoeList.Add(danceOfFireFox);
 
                     foreach (Entity kazumisDanceOfFirefox in aoeList)
@@ -441,8 +441,8 @@ namespace CR4VE.GameLogic.Characters
                 #region Multiplayer
                 else if (Game1.currentState.Equals(Game1.EGameState.Multiplayer))
                 {
-                    danceOfFireFox = new Entity(this.Position, "10x10x10Box1", Multiplayer.cont);
-                    danceOfFireFox.boundary = new BoundingBox(this.position + new Vector3(-20, -3, -20), this.position + new Vector3(20, 3, 20));
+                    danceOfFireFox = new Entity(this.Position, "kazumisAoE", Multiplayer.cont);
+                    danceOfFireFox.boundary = new BoundingBox(this.position + new Vector3(-20, -10, -20), this.position + new Vector3(20, 60, 20));
                     aoeList.Add(danceOfFireFox);
 
                     foreach (Entity kazumisDanceOfFirefox in aoeList)
@@ -487,7 +487,7 @@ namespace CR4VE.GameLogic.Characters
                 {
                     foreach (Entity ball in attackList)
                     {
-                        ball.drawIn2DWorld(new Vector3(0.02f, 0.02f, 0.02f), 0, MathHelper.ToRadians(90) * ball.viewingDirection.X, 0);
+                        ball.drawIn2DWorld(new Vector3(0.6f, 0.6f, 0.6f), 0, MathHelper.ToRadians(90) * ball.viewingDirection.X, 0);
                     }
                 }
                 if (Game1.currentState.Equals(Game1.EGameState.Arena) || Game1.currentState.Equals(Game1.EGameState.Multiplayer))
@@ -495,7 +495,7 @@ namespace CR4VE.GameLogic.Characters
                     foreach (Entity ball in attackList)
                     {
                         float ballBlickwinkel = (float)Math.Atan2(-ball.viewingDirection.Z, ball.viewingDirection.X);
-                        ball.drawInArena(new Vector3(0.02f, 0.02f, 0.02f), 0, MathHelper.ToRadians(90) + ballBlickwinkel, 0);
+                        ball.drawInArena(new Vector3(0.35f, 0.35f, 0.35f), 0, MathHelper.ToRadians(90) + ballBlickwinkel, 0);
                     }
                 }
             }

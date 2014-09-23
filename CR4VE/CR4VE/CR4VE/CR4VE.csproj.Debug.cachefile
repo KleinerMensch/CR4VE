@@ -160,6 +160,12 @@ Content\Assets\Models\Ophelia\Maps\kazumi_tail_texture.xnb
 Content\Assets\Ophelia\Maps\kazumi_tail_texture256x256.xnb
 Content\Assets\Ophelia\Maps\kazumi_tail_texture256x256_0.xnb
 Content\Assets\Models\kazumisAoE.xnb
+Content\Assets\Ophelia\Maps\fire_1024x1024.xnb
+Content\Assets\Ophelia\Maps\fire_1024x1024_0.xnb
+Content\Assets\Models\kazumisFireball.xnb
+Content\Assets\Models\seraphinsLaser.xnb
+Content\Assets\Ophelia\Maps\Lasertextur_1024x1024.xnb
+Content\Assets\Ophelia\Maps\Lasertextur_1024x1024_0.xnb
 Content\Assets\Sprites\Startscreen.png
 Content\Assets\Sprites\ButtonExit.png
 Content\Assets\Sprites\ButtonPlay.png

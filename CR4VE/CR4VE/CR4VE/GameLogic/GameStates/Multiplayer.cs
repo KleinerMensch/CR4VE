@@ -44,7 +44,8 @@ namespace CR4VE.GameLogic.GameStates
 
             CameraArena.Initialize(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
 
-            player1 = new CharacterKazumi(new Vector3(0, -12.5f, 0), "Kazumi", content);
+            player1 = new CharacterSeraphin(new Vector3(0, -12.5f, 0), "Kazumi", content);
+            CharacterSeraphin.manaLeft = 27;
 
             terrain = new Entity(new Vector3(4, -20, -5), "Terrain/arena_hell", content);
 
