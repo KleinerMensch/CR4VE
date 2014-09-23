@@ -8,3 +8,4 @@ C:\Users\Maria\Desktop\CR4VE\CR4VE\CR4VE\CR4VEContent\obj\x86\Debug\CR4VEContent
 C:\Users\user\Desktop\Cr4ve_sopro\CR4VE\CR4VE\CR4VE\CR4VEContent\obj\x86\Debug\CR4VEContent.contentprojResolveAssemblyReference.cache
 C:\Users\user\Desktop\albino_cr4ve\CR4VE\CR4VE\CR4VE\CR4VEContent\obj\x86\Debug\CR4VEContent.contentprojResolveAssemblyReference.cache
 C:\Users\user\Desktop\albino_cr4ve\Neuer Ordner\CR4VE\CR4VE\CR4VE\CR4VEContent\obj\x86\Debug\CR4VEContent.contentprojResolveAssemblyReference.cache
+C:\Users\user\Desktop\albino_cr4ve\cr4vefinal\CR4VE\CR4VE\CR4VE\CR4VEContent\obj\x86\Debug\CR4VEContent.contentprojResolveAssemblyReference.cache

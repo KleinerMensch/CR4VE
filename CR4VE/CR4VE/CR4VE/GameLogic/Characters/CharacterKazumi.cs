@@ -23,7 +23,7 @@ namespace CR4VE.GameLogic.Characters
 
         Vector3 currentCharacterPosition;
         Vector3 clawsPosition;
-        Vector3 offset = new Vector3(8,8,8);
+        Vector3 offset = new Vector3(4,4,4);
 
         float speed = 1;
 
@@ -63,8 +63,8 @@ namespace CR4VE.GameLogic.Characters
                 if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
                 {
                     clawsPosition = this.Position + viewingDirection * offset;
-                    claws = new Entity(clawsPosition, "5x5x5Box1", Singleplayer.cont);
-                    claws.boundary = new BoundingBox(clawsPosition + new Vector3(-8f, -2.5f, -2.5f), clawsPosition + new Vector3(8f, 2.5f, 2.5f));
+                    claws = new Entity(clawsPosition, "kazumisClaws", Singleplayer.cont);
+                    claws.boundary = new BoundingBox(clawsPosition + new Vector3(-3f, -6f, -4f), clawsPosition + new Vector3(3f, 6f, 4f));
 
                     if (!listContainsClaws)
                     {
@@ -116,7 +116,7 @@ namespace CR4VE.GameLogic.Characters
                 else if (Game1.currentState.Equals(Game1.EGameState.Arena))
                 {
                     clawsPosition = this.position + viewingDirection * offset;
-                    claws = new Entity(clawsPosition, "5x5x5Box1", Arena.cont);
+                    claws = new Entity(clawsPosition, "kazumisClaws", Arena.cont);
                     claws.boundary = new BoundingBox(clawsPosition + new Vector3(-2.5f, -2.5f, -2.5f), clawsPosition + new Vector3(2.5f, 2.5f, 2.5f));
                     
                     if (!listContainsClaws)
@@ -148,7 +148,7 @@ namespace CR4VE.GameLogic.Characters
                 else if (Game1.currentState.Equals(Game1.EGameState.Multiplayer))
                 {
                     clawsPosition = this.position + viewingDirection * offset;
-                    claws = new Entity(clawsPosition, "5x5x5Box1", Multiplayer.cont);
+                    claws = new Entity(clawsPosition, "kazumisClaws", Multiplayer.cont);
                     claws.boundary = new BoundingBox(clawsPosition + new Vector3(-2.5f, -2.5f, -2.5f), clawsPosition + new Vector3(2.5f, 2.5f, 2.5f));
 
                     if (!listContainsClaws)
@@ -424,7 +424,7 @@ namespace CR4VE.GameLogic.Characters
                 #region Arena
                 else if (Game1.currentState.Equals(Game1.EGameState.Arena))
                 {
-                    danceOfFireFox = new Entity(this.Position, "10x10x10Box1", Arena.cont);
+                    danceOfFireFox = new Entity(this.Position, "kazumisAoE", Arena.cont);
                     danceOfFireFox.boundary = new BoundingBox(this.position + new Vector3(-20, -3, -20), this.position + new Vector3(20, 3, 20));
                     aoeList.Add(danceOfFireFox);
 
@@ -467,14 +467,15 @@ namespace CR4VE.GameLogic.Characters
                 {
                     foreach (Entity claw in meleeAttackList)
                     {
-                        claw.drawIn2DWorld(new Vector3(1, 1, 1), 0, 0, MathHelper.ToRadians(90) * viewingDirection.X);
+                        claw.drawIn2DWorld(new Vector3(0.75f, 0.75f, 0.75f), 0, viewingDirection.X, 0);
                     }
                 }
                 if (Game1.currentState.Equals(Game1.EGameState.Arena) || Game1.currentState.Equals(Game1.EGameState.Multiplayer))
                 {
                     foreach (Entity claw in meleeAttackList)
                     {
-                        claw.drawInArena(new Vector3(1, 1, 1), 0, 0, 0);
+                        float clawBlickwinkel = (float)Math.Atan2(-viewingDirection.Z, viewingDirection.X);
+                        claw.drawInArena(new Vector3(0.5f, 0.5f, 0.5f), 0, MathHelper.ToRadians(90) + clawBlickwinkel, 0);
                     }
                 }
             }
