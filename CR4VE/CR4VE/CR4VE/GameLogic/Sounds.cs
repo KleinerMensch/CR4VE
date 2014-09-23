@@ -17,6 +17,7 @@ namespace CR4VE.GameLogic
         public static SoundEffect scream;
         public static SoundEffect collectSound;
         public static SoundEffect checkpointHell;
+        public static SoundEffect fireball;
         #endregion
 
         #region Properties
@@ -26,9 +27,10 @@ namespace CR4VE.GameLogic
 
         public static void Initialize(ContentManager content) 
         {
-            scream = content.Load<SoundEffect>("Assets/Sounds/scream");
+            scream = content.Load<SoundEffect>("Assets/Sounds/deathScream");
             collectSound = content.Load<SoundEffect>("Assets/Sounds/itemCollect");
             checkpointHell = content.Load<SoundEffect>("Assets/Sounds/CheckpointHell");
+            fireball = content.Load<SoundEffect>("Assets/Sounds/Fireball");
 
         }
 

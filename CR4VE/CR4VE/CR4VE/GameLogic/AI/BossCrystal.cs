@@ -136,7 +136,7 @@ namespace CR4VE.GameLogic.AI
                             break;
                         if (fractusShield.boundary.Intersects(Arena.player.boundary))
                         {
-                            Arena.kazumiHud.healthLeft -= 1;
+                            Arena.kazumiHud.healthLeft -= 5;
                             playerHitByMelee = true;
                             Console.WriteLine("Fractus hit Player by crystalShield");
                         }

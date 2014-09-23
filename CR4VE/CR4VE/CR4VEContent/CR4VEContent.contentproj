@@ -440,6 +440,21 @@
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
+    <Compile Include="Assets\Models\OpheliasAoE.FBX">
+      <Name>OpheliasAoE</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\kazumisClaws.FBX">
+      <Name>kazumisClaws</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\kazumisAoE.FBX">
+      <Name>kazumisAoE</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
     <Compile Include="Assets\Models\Terrain\Box33.FBX">
       <Name>Box33</Name>
       <Importer>FbxImporter</Importer>
@@ -753,6 +768,20 @@
   <ItemGroup>
     <Compile Include="Assets\Sprites\CR4VE_Ambigramm.jpg">
       <Name>CR4VE_Ambigramm</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Models\Ophelia\Maps\kazumi_tail_texture.jpg">
+      <Name>kazumi_tail_texture</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Ophelia\Maps\kazumi_tail_texture256x256.jpg">
+      <Name>kazumi_tail_texture256x256</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
