@@ -21,6 +21,10 @@ namespace CR4VE.GameLogic.Characters
         public static float manaLeft = 3;
         #endregion
 
+        #region Properties
+        public virtual String CharacterType { get; set; }
+        #endregion
+
         #region inherited Constructors
         //base ist fuer Vererbungskram
         public Character() : base() { }

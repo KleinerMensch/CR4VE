@@ -18,6 +18,7 @@ namespace CR4VE.GameLogic.Characters
         public static new float manaLeft = 3;
         public static List<Entity> crystalList = new List<Entity>();
         public List<Entity> meleeAttackList = new List<Entity>();
+
         Entity crystalShield;
         BoundingSphere rangeOfFlyingCrystals;
         Enemy nearestEnemy = new Enemy();
@@ -30,6 +31,13 @@ namespace CR4VE.GameLogic.Characters
         bool enemyHit = false;
         bool enemyHitByMelee = false;
         bool listContainsCrystalShield = false;
+        #endregion
+
+        #region Properties
+        public override String CharacterType
+        {
+            get { return "Fractus"; }
+        }
         #endregion
 
         #region inherited Constructors

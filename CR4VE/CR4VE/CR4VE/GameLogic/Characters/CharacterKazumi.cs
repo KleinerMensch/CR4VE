@@ -33,6 +33,13 @@ namespace CR4VE.GameLogic.Characters
         public bool soundPlayed = false;
         #endregion
 
+        #region Properties
+        public override String CharacterType
+        {
+            get { return "Kazumi"; }
+        }
+        #endregion
+
         #region inherited Constructors
         //base ist fuer Vererbungskram
         public CharacterKazumi() : base() { }

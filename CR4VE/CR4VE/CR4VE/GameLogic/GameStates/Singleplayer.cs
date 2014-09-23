@@ -595,9 +595,9 @@ namespace CR4VE.GameLogic.GameStates
             }
 
             ////DEBUG---------------------------
-            //Console.Clear();
-            //Console.WriteLine(tutIndex);
-            ////Console.WriteLine(isPopup);
+            Console.Clear();
+            Console.WriteLine(player.CharacterType);
+            //Console.WriteLine(isPopup);
             //Console.WriteLine(player.Position);
             ////--------------------------------
 
