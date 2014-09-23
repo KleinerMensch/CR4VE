@@ -436,6 +436,7 @@ namespace CR4VE.GameLogic.Controls
 
             return Game1.EGameState.Singleplayer;
         }
+
         public static void updateTutorial()
         {
             //check for index change
@@ -497,8 +498,31 @@ namespace CR4VE.GameLogic.Controls
             previousKeyboard = currentKeyboard;
             currentKeyboard = Keyboard.GetState();
 
+            //Maus wird noch rausgenommen -> soll für den multiplayer nicht benutzbar sein
+            //nur zum Test erstmal drin
+            previousMouseState = currentMouseState;
+            currentMouseState = Mouse.GetState();
+
             prevGamepad = currGamepad;
             currGamepad = GamePad.GetState(PlayerIndex.One);
+
+            #region Updating attacks fuer Player1
+            if (leftClick(currentMouseState, previousMouseState) || isClicked(Buttons.X))
+            {
+                //Nahangriff
+                Multiplayer.player1.MeleeAttack(gameTime);
+            }
+            else if (rightClick(currentMouseState, previousMouseState) || isClicked(Buttons.B))
+            {
+                //Fernangriff
+                Multiplayer.player1.RangedAttack(gameTime);
+            }
+            else if (middleClick(currentMouseState, previousMouseState) || isClicked(Buttons.Y))
+            {
+                //Spezialangriff
+                Multiplayer.player1.SpecialAttack(gameTime);
+            }
+            #endregion
 
             Vector3 moveVecPlayer1 = new Vector3(0, 0, 0);
 
@@ -507,7 +531,15 @@ namespace CR4VE.GameLogic.Controls
             if (currentKeyboard.IsKeyDown(Keys.S) || currGamepad.IsButtonDown(Buttons.LeftThumbstickDown) || currGamepad.IsButtonDown(Buttons.DPadDown)) moveVecPlayer1 += new Vector3(0, 0, accel);
             if (currentKeyboard.IsKeyDown(Keys.D) || currGamepad.IsButtonDown(Buttons.LeftThumbstickRight) || currGamepad.IsButtonDown(Buttons.DPadRight)) moveVecPlayer1 += new Vector3(accel, 0, 0);
 
-            Multiplayer.player1.move(moveVecPlayer1);
+            if (moveVecPlayer1 != Vector3.Zero)
+            {
+                Vector3 recentPlayerPosition = Multiplayer.player1.Position;
+                moveVecPlayer1.Normalize();
+                Multiplayer.player1.move(moveVecPlayer1);
+
+                Multiplayer.player1.viewingDirection = Multiplayer.player1.Position - recentPlayerPosition;
+                Multiplayer.blickWinkelPlayer1 = (float)Math.Atan2(-Multiplayer.player1.viewingDirection.Z, Multiplayer.player1.viewingDirection.X);
+            }
         }
 
         public static void updateArena(GameTime gameTime)

@@ -423,6 +423,23 @@
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
+    <Compile Include="Assets\Skybox\cube_hell.dds">
+      <Name>cube_hell</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_PremultiplyAlpha>False</ProcessorParameters_PremultiplyAlpha>
+    </Compile>
+    <Compile Include="Assets\Skybox\black.dds">
+      <Name>black</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_PremultiplyAlpha>False</ProcessorParameters_PremultiplyAlpha>
+    </Compile>
+    <Compile Include="Assets\Models\10x10x10Box1.FBX">
+      <Name>10x10x10Box1</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
     <None Include="Assets\Text\SaveGame.txt">
       <Name>SaveGame</Name>
     </None>
@@ -675,6 +692,13 @@
     </Compile>
     <Compile Include="Assets\Sprites\popup_tutorial5.png">
       <Name>popup_tutorial5</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Sprites\CR4VE_Ambigramm.jpg">
+      <Name>CR4VE_Ambigramm</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

@@ -78,7 +78,7 @@ namespace CR4VE.GameLogic.GameStates
         #region Update
         public Game1.EGameState Update(GameTime gameTime)
         {
-            //get next Gamestate based on player input
+            //get next GameState based on player input
             Game1.EGameState nextState = GameControls.updateMainMenu();
 
             GameControls.updateVibration(gameTime);
@@ -122,6 +122,36 @@ namespace CR4VE.GameLogic.GameStates
                         }
                     } break;
 
+                //Singleplayer
+                case 1:
+                    {
+                        if (!GameControls.isMenuMoving)
+                        {
+                            spriteBatch.DrawString(font, "Enter/A - Continue", new Vector2(0, 0), Color.White);
+                            spriteBatch.DrawString(font, "Down - Navigate", new Vector2(0, 25), Color.White);
+                        }
+                    } break;
+
+                //Multiplayer
+                case 2:
+                    {
+                        if (!GameControls.isMenuMoving)
+                        {
+                            spriteBatch.DrawString(font, "Enter/A - Continue", new Vector2(0, 0), Color.White);
+                            spriteBatch.DrawString(font, "Up/Down - Navigate", new Vector2(0, 25), Color.White);
+                        }
+                    } break;
+
+                //Options
+                case 3:
+                    {
+                        if (!GameControls.isMenuMoving)
+                        {
+                            spriteBatch.DrawString(font, "Enter/A - Continue", new Vector2(0, 0), Color.White);
+                            spriteBatch.DrawString(font, "Up - Navigate", new Vector2(0, 25), Color.White);                            
+                        }
+                    } break;
+
                 //more detailed options
                 case 4:
                     {
@@ -137,6 +167,9 @@ namespace CR4VE.GameLogic.GameStates
                                 spriteBatch.DrawString(font, "Fullscreen:", fontPos_fullscreen, Color.Gray);
                                 spriteBatch.DrawString(font, "(select 1280 x 720 first)", fontPos_fullscreen + new Vector2(0, 50), Color.Gray);
                             }
+
+                            spriteBatch.DrawString(font, "ESC/B - Get Back", new Vector2(0, 0), Color.White);
+                            spriteBatch.DrawString(font, "Left/Right - Toggle", new Vector2(0, 25), Color.White);
 
                             spriteBatch.DrawString(font, "Resolution:", fontPos_resolution, Color.White);
                             spriteBatch.DrawString(font, resolutionString, fontPos_resolutionValue, Color.White);

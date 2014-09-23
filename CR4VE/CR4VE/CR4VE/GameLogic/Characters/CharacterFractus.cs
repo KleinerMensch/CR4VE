@@ -17,15 +17,19 @@ namespace CR4VE.GameLogic.Characters
         #region Attributes
         public static new float manaLeft = 3;
         public static List<Entity> crystalList = new List<Entity>();
-        Entity crystalShield, crystals;
+        public List<Entity> meleeAttackList = new List<Entity>();
+        Entity crystalShield;
+        BoundingSphere rangeOfFlyingCrystals;
         Enemy nearestEnemy = new Enemy();
 
         TimeSpan timeSpanForHealthAbsorbingCrystals = TimeSpan.FromSeconds(10);
         TimeSpan timeSpan = TimeSpan.FromMilliseconds(270);
 
-        Vector3 currentViewingDirection;
+        Vector3 currentCharacterPosition;
         float speed = 1;
         bool enemyHit = false;
+        bool enemyHitByMelee = false;
+        bool listContainsCrystalShield = false;
         #endregion
 
         #region inherited Constructors
@@ -39,56 +43,174 @@ namespace CR4VE.GameLogic.Characters
         public override void Update(GameTime time)
         {
             #region Timeupdate for DrawAttacks
-            // Decrements the timespan
             timeSpan -= time.ElapsedGameTime;
-            // If the timespan is equal or smaller time "0"
             if (timeSpan <= TimeSpan.Zero)
             {
                 timeSpan = TimeSpan.FromMilliseconds(270);
-                attackList.Remove(crystalShield);
+                meleeAttackList.Clear();
+
                 launchedMelee = false;
+                listContainsCrystalShield = false;
             }
             #endregion
 
-            #region Update Crystals From Rangedattack
+            #region Update Melee By Characterposition
+            if (launchedMelee)
+            {
+                #region Singleplayer
+                if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
+                {
+                    crystalShield = new Entity(this.position, "5x5x5Box1", Singleplayer.cont);
+                    crystalShield.boundary = new BoundingBox(this.position + new Vector3(-10, -3, -10), this.position + new Vector3(10, 3, 10));
+
+                    if (!listContainsCrystalShield)
+                    {
+                        meleeAttackList.Add(crystalShield);
+                        listContainsCrystalShield = true;
+                    }
+                    else
+                    {
+                        meleeAttackList.Clear();
+                        meleeAttackList.Add(crystalShield);
+                    }
+
+                    #region enemyList1
+                    foreach (Enemy enemy in Singleplayer.currentMaps[Singleplayer.activeIndex1].EnemyList)
+                    {
+                        foreach (Entity fractusShield in meleeAttackList)
+                        {
+                            if (enemyHitByMelee)
+                                break;
+                            if (fractusShield.boundary.Intersects(enemy.boundary))
+                            {
+                                enemy.hp -= 1;
+                                enemyHitByMelee = true;
+                                Console.WriteLine("Fractus hit enemy by crystalShield");
+                            }
+                        }
+                    }
+                    #endregion
+                    #region enemyList2
+                    foreach (Enemy enemy in Singleplayer.currentMaps[Singleplayer.activeIndex2].EnemyList)
+                    {
+                        foreach (Entity fractusShield in meleeAttackList)
+                        {
+                            if (enemyHitByMelee)
+                                break;
+                            if (fractusShield.boundary.Intersects(enemy.boundary))
+                            {
+                                enemy.hp -= 1;
+                                enemyHitByMelee = true;
+                                Console.WriteLine("Fractus hit enemy by crystalShield");
+                            }
+                        }
+                    }
+                    #endregion
+                }
+                #endregion
+                #region Arena
+                else if (Game1.currentState.Equals(Game1.EGameState.Arena))
+                {
+                    crystalShield = new Entity(this.position, "5x5x5Box1", Arena.cont);
+                    crystalShield.boundary = new BoundingBox(this.position + new Vector3(-10, -3, -10), this.position + new Vector3(10, 3, 10));
+                    
+                    if (!listContainsCrystalShield)
+                    {
+                        meleeAttackList.Add(crystalShield);
+                        listContainsCrystalShield = true;
+                    }
+                    else
+                    {
+                        meleeAttackList.Clear();
+                        meleeAttackList.Add(crystalShield);
+                    }
+
+                    foreach (Entity fractusShield in meleeAttackList)
+                    {
+                        if (enemyHitByMelee)
+                            break;
+                        if (fractusShield.boundary.Intersects(Arena.boss.boundary))
+                        {
+                            Arena.kazumiHud.healthLeft -= 1;
+                            enemyHitByMelee = true;
+                            Console.WriteLine("Fractus hit Boss by crystalShield");
+                        }
+                    }
+                }
+                #endregion
+                #region Multiplayer
+                else if (Game1.currentState.Equals(Game1.EGameState.Multiplayer))
+                {
+                    crystalShield = new Entity(this.position, "5x5x5Box1", Multiplayer.cont);
+                    crystalShield.boundary = new BoundingBox(this.position + new Vector3(-10, -3, -10), this.position + new Vector3(10, 3, 10));
+
+                    if (!listContainsCrystalShield)
+                    {
+                        meleeAttackList.Add(crystalShield);
+                        listContainsCrystalShield = true;
+                    }
+                    else
+                    {
+                        meleeAttackList.Clear();
+                        meleeAttackList.Add(crystalShield);
+                    }
+
+                    foreach (Entity fractusShield in meleeAttackList)
+                    {
+                        if (enemyHitByMelee)
+                            break;
+                        //if (fractusShield.boundary.Intersects(Multiplayer.playerX.boundary))
+                        //{
+                        //    Multiplayer.playerXHud.healthLeft -= 1;
+                        //    enemyHitByMelee = true;
+                        //    Console.WriteLine("Fractus hit PlayerX by crystalShield");
+                        //}
+                    }
+                }
+                #endregion
+            }
+            #endregion
+
+            #region Update Flying Crystals From Rangedattack
             if (launchedRanged)
             {
                 #region Singleplayer
                 if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
                 {
-                    crystals.position += speed * currentViewingDirection;
-                    crystals.boundary.Min += speed * currentViewingDirection;
-                    crystals.boundary.Max += speed * currentViewingDirection;
-
-                    //Kristalle verschwinden nach 50 Einheiten oder wenn sie mit etwas kollidiert
-                    if (crystals.position != this.position + 50 * currentViewingDirection)
+                    for (int i = 0; i < attackList.Count; i++)
                     {
-                        launchedSpecial = true;
-                        if (enemyHit)
+                        //Kristalle fliegen nach vorn
+                        attackList[i].move(speed * attackList[i].viewingDirection);
+
+                        //Laser verschwindet nach 50 Einheiten oder wenn er mit etwas kollidiert
+                        if (!attackList[i].boundary.Intersects(rangeOfFlyingCrystals))
                         {
-                            launchedRanged = false;
-                            attackList.Remove(crystals);
+                            attackList.Remove(attackList[i]);
+                            if (attackList.Count == 0)
+                                launchedRanged = false;
+                            break;
                         }
                         else
                         {
+                            launchedRanged = true;
+
                             #region enemyList1
                             foreach (Enemy enemy in Singleplayer.currentMaps[Singleplayer.activeIndex1].EnemyList)
                             {
-                                if (enemyHit)
+                                if (attackList.Count > 0)
                                 {
-                                    launchedRanged = false;
-                                    attackList.Remove(crystals);
-                                }
-                                else
-                                {
-                                    foreach (Entity fractusCrystals in attackList)
+                                    if (attackList[i].boundary.Intersects(enemy.boundary))
                                     {
-                                        if (fractusCrystals.boundary.Intersects(enemy.boundary))
-                                        {
-                                            enemy.hp -= 2;
-                                            enemyHit = true;
-                                            Console.WriteLine("Fractus hit enemy by RangedAttack");
-                                        }
+                                        enemy.hp -= 2;
+                                        enemyHit = true;
+                                        Console.WriteLine("Fractus hit enemy by RangedAttack");
+                                    }
+                                    //verschwindet auch bei Kollision mit Gegner
+                                    if (enemyHit)
+                                    {
+                                        if (attackList.Count == 0)
+                                            launchedRanged = false;
+                                        attackList.Remove(attackList[i]);
                                     }
                                 }
                             }
@@ -96,79 +218,103 @@ namespace CR4VE.GameLogic.Characters
                             #region enemyList2
                             foreach (Enemy enemy in Singleplayer.currentMaps[Singleplayer.activeIndex2].EnemyList)
                             {
-                                if (enemyHit)
+                                if (attackList.Count > 0)
                                 {
-                                    launchedRanged = false;
-                                    attackList.Remove(crystals);
-                                }
-                                else
-                                {
-                                    foreach (Entity fractusCrystals in attackList)
+                                    if (attackList[i].boundary.Intersects(enemy.boundary))
                                     {
-                                        if (fractusCrystals.boundary.Intersects(enemy.boundary))
-                                        {
-                                            enemy.hp -= 2;
-                                            enemyHit = true;
-                                            Console.WriteLine("Fractus hit enemy by RangedAttack");
-                                        }
+                                        enemy.hp -= 2;
+                                        enemyHit = true;
+                                        Console.WriteLine("Fractus hit enemy by RangedAttack");
+                                    }
+                                    //verschwindet auch bei Kollision mit Gegner
+                                    if (enemyHit)
+                                    {
+                                        if (attackList.Count == 0)
+                                            launchedRanged = false;
+                                        attackList.Remove(attackList[i]);
                                     }
                                 }
                             }
                             #endregion
                         }
+                        enemyHit = false;
                     }
-                    else
-                    {
-                        launchedRanged = false;
-                        attackList.Remove(crystals);
-                    }
-                    enemyHit = false;
                 }
                 #endregion
                 #region Arena
                 else if (Game1.currentState.Equals(Game1.EGameState.Arena))
                 {
-                    crystals.position += speed * currentViewingDirection;
-                    crystals.boundary.Min += speed * currentViewingDirection;
-                    crystals.boundary.Max += speed * currentViewingDirection;
-
-                    //Laser verschwindet nach 50 Einheiten oder wenn er mit etwas kollidiert
-                    if (crystals.position != this.position + 50 * currentViewingDirection)
+                    for (int i = 0; i < attackList.Count; i++)
                     {
-                        launchedRanged = true;
-                        if (enemyHit)
+                        //Kristalle fliegen nach vorn
+                        attackList[i].move(speed * attackList[i].viewingDirection);
+
+                        //Laser verschwindet nach 50 Einheiten oder wenn er mit etwas kollidiert
+                        if (!attackList[i].boundary.Intersects(rangeOfFlyingCrystals))
                         {
-                            launchedRanged = false;
-                            attackList.Remove(crystals);
+                            attackList.Remove(attackList[i]);
+                            if (attackList.Count == 0)
+                                launchedRanged = false;
+                            break;
                         }
                         else
                         {
+                            launchedRanged = true;
+
+                            if (attackList[i].boundary.Intersects(Arena.boss.boundary))
+                            {
+                                Arena.kazumiHud.healthLeft -= 3;
+                                enemyHit = true;
+                                Console.WriteLine("Fractus hit Player by SpecialAttack");
+                            }
+                            //verschwindet auch bei Kollision mit Gegner
                             if (enemyHit)
                             {
-                                launchedRanged = false;
-                                attackList.Remove(crystals);
+                                if (attackList.Count == 0)
+                                    launchedRanged = false;
+                                attackList.Remove(attackList[i]);
                             }
-                            else
-                            {
-                                foreach (Entity fractusCrystals in attackList)
-                                {
-                                    if (fractusCrystals.boundary.Intersects(Arena.player.boundary))
-                                    {
-                                        //Arena.kazumiHud.healthLeft -= 3;
-                                        enemyHit = true;
-                                        Console.WriteLine("Fractus hit Player by SpecialAttack");
-                                    }
-                                }
-                            }
-
                         }
+                        enemyHit = false;
                     }
-                    else
+                }
+                #endregion
+                #region Multiplayer
+                else if (Game1.currentState.Equals(Game1.EGameState.Multiplayer))
+                {
+                    for (int i = 0; i < attackList.Count; i++)
                     {
-                        launchedRanged = false;
-                        attackList.Remove(crystals);
+                        //Kristalle fliegen nach vorn
+                        attackList[i].move(speed * attackList[i].viewingDirection);
+
+                        //Laser verschwindet nach 50 Einheiten oder wenn er mit etwas kollidiert
+                        if (!attackList[i].boundary.Intersects(rangeOfFlyingCrystals))
+                        {
+                            attackList.Remove(attackList[i]);
+                            if (attackList.Count == 0)
+                                launchedRanged = false;
+                            break;
+                        }
+                        else
+                        {
+                            launchedRanged = true;
+
+                            //if (attackList[i].boundary.Intersects(Multiplayer.playerX.boundary))
+                            //{
+                            //    Multiplayer.playerXHud.healthLeft -= 3;
+                            //    enemyHit = true;
+                            //    Console.WriteLine("Fractus hit PlayerX by SpecialAttack");
+                            //}
+                            //verschwindet auch bei Kollision mit Gegner
+                            if (enemyHit)
+                            {
+                                if (attackList.Count == 0)
+                                    launchedRanged = false;
+                                attackList.Remove(attackList[i]);
+                            }
+                        }
+                        enemyHit = false;
                     }
-                    enemyHit = false;
                 }
                 #endregion
             }
@@ -176,17 +322,16 @@ namespace CR4VE.GameLogic.Characters
 
             #region Update HealthAbsorbingCrystals From Specialattack
             #region Removing Crystals After Defined Time
-            // Decrements the timespan
             timeSpanForHealthAbsorbingCrystals -= time.ElapsedGameTime;
-            // If the timespan is equal or smaller time "0"
             if (timeSpanForHealthAbsorbingCrystals <= TimeSpan.Zero && crystalList.Count > 0)
             {
-                // Remove the object from list
                 crystalList.RemoveAt(0);
                 // Re initializes the timespan for the next time
                 // minion vanishes after 10 seconds
                 timeSpanForHealthAbsorbingCrystals = TimeSpan.FromSeconds(10);
-                launchedSpecial = false;
+
+                if(crystalList.Count == 0)
+                    launchedSpecial = false;
             }
             #endregion
 
@@ -245,15 +390,35 @@ namespace CR4VE.GameLogic.Characters
                     foreach (Entity healthAbsorbingCrystal in crystalList)
                     {
                         //absorbs health of nearest enemy if enemy is in range of effect
-                        if ((healthAbsorbingCrystal.position - Arena.player.position).Length() < 50 /*&& Arena.kazumiHud.healthleft > 0*/)
+                        if ((healthAbsorbingCrystal.position - Arena.boss.position).Length() < 15 && Arena.kazumiHud.healthLeft > 0)
                         {
-                            //Console.WriteLine(Arena.kazumiHud.healthleft + " Fractus hit enemy by SpecialAttack");
-                            //Arena.kazumiHud.healthleft -= 0.01f;
+                            Console.WriteLine(" Fractus hit enemy by SpecialAttack");
+                            Arena.kazumiHud.healthLeft -= 1;
 
                             //transfers health to Fractus in Arena
-                            //if (Arena.fractusBossHud.trialsLeft <= 3 && Arena.fractusBossHud.healthLeft < Arena.fractusBossHud.fullHealth)
-                            //    Arena.fractusBossHud.healthLeft += (int)(Arena.fractusBossHud.fullHealth * 0.01f);
+                            if (Arena.fractusBossHUD.trialsLeft <= 3 && Arena.fractusBossHUD.healthLeft < Arena.fractusBossHUD.fullHealth)
+                                Arena.fractusBossHUD.healthLeft += (int)(Arena.fractusBossHUD.fullHealth * 0.01f);
                         }
+                    }
+                }
+                #endregion
+                #region Multiplayer
+                else if (Game1.currentState.Equals(Game1.EGameState.Multiplayer))
+                {
+                    crystal.boundary = new BoundingBox(crystal.position + new Vector3(-2, -2, -2), crystal.position + new Vector3(2, 2, 2));
+
+                    foreach (Entity healthAbsorbingCrystal in crystalList)
+                    {
+                        ////absorbs health of nearest enemy if enemy is in range of effect
+                        //if ((healthAbsorbingCrystal.position - nearestPlayer).Length() < 15 && nearestPlayerHud.healthLeft > 0)
+                        //{
+                        //    Console.WriteLine(" Fractus hit nearestPlayer by SpecialAttack");
+                        //    nearestPlayerHud.healthLeft -= 1;
+
+                        //    //transfers health to Fractus in Arena
+                        //    if (Multiplayer.fractusHUD.trialsLeft <= 3 && Multiplayer.fractusHUD.healthLeft < Multiplayer.fractusHUD.fullHealth)
+                        //        Multiplayer.fractusHUD.healthLeft += (int)(Multiplayer.fractusHUD.fullHealth * 0.01f);
+                        //}
                     }
                 }
                 #endregion
@@ -265,59 +430,8 @@ namespace CR4VE.GameLogic.Characters
         {
             launchedMelee = true;
             timeSpan = TimeSpan.FromMilliseconds(270);
-
-            #region Singleplayer
-            if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
-            {
-                crystalShield = new Entity(this.position, "5x5x5Box1", Singleplayer.cont);
-                crystalShield.boundary = new BoundingBox(this.position + new Vector3(-10, -3, -10), this.position + new Vector3(10, 3, 10));
-                attackList.Add(crystalShield);
-
-                #region enemyList1
-                foreach (Enemy enemy in Singleplayer.currentMaps[Singleplayer.activeIndex1].EnemyList)
-                {
-                    foreach (Entity fractusShield in attackList)
-                    {
-                        if (fractusShield.boundary.Intersects(enemy.boundary))
-                        {
-                            enemy.hp -= 1;
-                            Console.WriteLine("Fractus hit enemy by crystalShield");
-                        }
-                    }
-                }
-                #endregion
-                #region enemyList2
-                foreach (Enemy enemy in Singleplayer.currentMaps[Singleplayer.activeIndex2].EnemyList)
-                {
-                    foreach (Entity fractusShield in attackList)
-                    {
-                        if (fractusShield.boundary.Intersects(enemy.boundary))
-                        {
-                            enemy.hp -= 1;
-                            Console.WriteLine("Fractus hit enemy by crystalShield");
-                        }
-                    }
-                }
-                #endregion
-            }
-            #endregion
-            #region Arena
-            else if (Game1.currentState.Equals(Game1.EGameState.Arena))
-            {
-                crystalShield = new Entity(this.position, "5x5x5Box1", Arena.cont);
-                crystalShield.boundary = new BoundingBox(this.position + new Vector3(-10, -3, -10), this.position + new Vector3(10, 3, 10));
-                attackList.Add(crystalShield);
-
-                foreach (Entity fractusShield in attackList)
-                {
-                    if (fractusShield.boundary.Intersects(Arena.player.boundary))
-                    {
-                        //Arena.kazumiHud.healthLeft -= 1;
-                        Console.WriteLine("Fractus hit Player by crystalShield");
-                    }
-                }
-            }
-            #endregion
+            enemyHitByMelee = false;
+            //Rest wird in der Update berechnet
         }
 
         public override void RangedAttack(GameTime time)
@@ -326,25 +440,38 @@ namespace CR4VE.GameLogic.Characters
             {
                 manaLeft -= 1;
                 launchedRanged = true;
+                currentCharacterPosition = this.Position;
+                rangeOfFlyingCrystals = new BoundingSphere(currentCharacterPosition, 50);
 
                 #region Singleplayer
                 if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
                 {
-                    currentViewingDirection = Singleplayer.player.viewingDirection;
-                    crystals = new Entity(this.position, "Enemies/skull", Singleplayer.cont);
-                    crystals.boundary = new BoundingBox(this.position + new Vector3(-3, -3, -3), this.position + new Vector3(3, 3, 3));
-                    attackList.Add(crystals);
+                    Entity flyingCrystals = new Entity(this.position, "Enemies/skull", Singleplayer.cont);
+                    flyingCrystals.viewingDirection = viewingDirection;
+                    flyingCrystals.boundary = new BoundingBox(this.position + new Vector3(-3, -3, -3), this.position + new Vector3(3, 3, 3));
+                    attackList.Add(flyingCrystals);
                 }
                 #endregion
                 #region Arena
                 else if (Game1.currentState.Equals(Game1.EGameState.Arena))
                 {
-                    currentViewingDirection = Arena.player.viewingDirection;
-                    crystals = new Entity(this.position, "Enemies/skull", Arena.cont);
-                    crystals.boundary = new BoundingBox(this.position + new Vector3(-3, -3, -3), this.position + new Vector3(3, 3, 3));
-                    attackList.Add(crystals);
+                    Entity flyingCrystals = new Entity(this.position, "Enemies/skull", Arena.cont);
+                    flyingCrystals.viewingDirection = viewingDirection;
+                    flyingCrystals.boundary = new BoundingBox(this.position + new Vector3(-3, -3, -3), this.position + new Vector3(3, 3, 3));
+                    attackList.Add(flyingCrystals);
                 }
                 #endregion
+                #region Multiplayer
+                else if (Game1.currentState.Equals(Game1.EGameState.Multiplayer))
+                {
+                    Entity flyingCrystals = new Entity(this.position, "Enemies/skull", Multiplayer.cont);
+                    flyingCrystals.viewingDirection = viewingDirection;
+                    flyingCrystals.boundary = new BoundingBox(this.position + new Vector3(-3, -3, -3), this.position + new Vector3(3, 3, 3));
+                    attackList.Add(flyingCrystals);
+                }
+                #endregion
+
+                //Rest wird in der Update berechnet
             }
         }
 
@@ -368,6 +495,14 @@ namespace CR4VE.GameLogic.Characters
                     crystalList.Add(new Entity(this.position, "Enemies/enemySpinningNoAnim", CR4VE.GameLogic.GameStates.Arena.cont));
                 }
                 #endregion
+                #region Multiplayer
+                else if (Game1.currentState.Equals(Game1.EGameState.Multiplayer))
+                {
+                    crystalList.Add(new Entity(this.position, "Enemies/enemySpinningNoAnim", CR4VE.GameLogic.GameStates.Multiplayer.cont));
+                }
+                #endregion
+
+                //Rest wird in der Update berechnet
 
                 //mehr als 2 Kristalle nicht moeglich
                 if (crystalList.Count > 2)
@@ -381,18 +516,39 @@ namespace CR4VE.GameLogic.Characters
             if (launchedMelee)
             {
                 if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
-                    crystalShield.drawIn2DWorld(new Vector3(1, 1, 1), 0, 0, 0);
-                if (Game1.currentState.Equals(Game1.EGameState.Arena))
-                    crystalShield.drawInArena(new Vector3(1, 1, 1), 0, 0, 0);
+                {
+                    foreach (Entity shield in meleeAttackList)
+                    {
+                        shield.drawIn2DWorld(new Vector3(1, 1, 1), 0, 0, 0);
+                    }
+                }
+                if (Game1.currentState.Equals(Game1.EGameState.Arena) || Game1.currentState.Equals(Game1.EGameState.Multiplayer))
+                {
+                    foreach (Entity shield in meleeAttackList)
+                    {
+                        shield.drawInArena(new Vector3(1, 1, 1), 0, 0, 0);
+                    }
+                }
             }
             #endregion
             #region DrawRanged
             if (launchedRanged)
             {
                 if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
-                    crystals.drawIn2DWorld(new Vector3(0.01f, 0.01f, 0.01f), 0, MathHelper.ToRadians(90) * this.viewingDirection.X, 0);
-                if (Game1.currentState.Equals(Game1.EGameState.Arena))
-                    crystals.drawInArena(new Vector3(0.01f, 0.01f, 0.01f), 0, MathHelper.ToRadians(90) + Arena.blickWinkel, 0);
+                {
+                    foreach (Entity fractusCrystals in attackList)
+                    {
+                        fractusCrystals.drawIn2DWorld(new Vector3(0.01f, 0.01f, 0.01f), 0, MathHelper.ToRadians(90) * this.viewingDirection.X, 0);
+                    }
+                }
+                if (Game1.currentState.Equals(Game1.EGameState.Arena) || Game1.currentState.Equals(Game1.EGameState.Multiplayer))
+                {
+                    foreach (Entity fractusCrystals in attackList)
+                    {
+                        float crystalBlickwinkel = (float)Math.Atan2(-fractusCrystals.viewingDirection.Z, fractusCrystals.viewingDirection.X);
+                        fractusCrystals.drawInArena(new Vector3(0.01f, 0.01f, 0.01f), 0, MathHelper.ToRadians(90) + crystalBlickwinkel, 0);
+                    }
+                }
             }
             #endregion
             #region DrawSpecial
@@ -408,7 +564,7 @@ namespace CR4VE.GameLogic.Characters
                 }
                 #endregion
                 #region Arena
-                else if (Game1.currentState.Equals(Game1.EGameState.Arena))
+                else if (Game1.currentState.Equals(Game1.EGameState.Arena) || Game1.currentState.Equals(Game1.EGameState.Multiplayer))
                 {
                     foreach (Entity crystal in crystalList)
                     {

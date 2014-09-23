@@ -15,20 +15,24 @@ namespace CR4VE.GameLogic.AI
     {
         #region Attributes
         public new static List<Entity> crystalList = new List<Entity>();
-        Entity crystalShield, crystals;
-        Vector3 currentViewingDirection;
+        public new List<Entity> meleeAttackList = new List<Entity>();
+        Entity crystalShield;
         Vector3 currentCharacterPosition;
-        public static Vector3 scaleForDrawMethod = new Vector3(0.03f, 0.03f, 0.03f);
-        float speed = 1;
-        float moveSpeed = -0.2f;
+        BoundingSphere rangeOfFlyingCrystals;
+
+        float flyingSpeed = 10;
+        float moveSpeed = 0.2f;
+
         bool playerHit = false;
+        bool playerHitByMelee = false;
+        bool listContainsCrystalShield = false;
 
         private static readonly TimeSpan meleeAttackTimer = TimeSpan.FromSeconds(1);
         private static readonly TimeSpan rangedAttackTimer = TimeSpan.FromSeconds(2);
         private static readonly TimeSpan specialAttackTimer = TimeSpan.FromSeconds(3);
 
         private TimeSpan timeSpanForHealthAbsorbingCrystals = TimeSpan.FromSeconds(10);
-        TimeSpan timeSpanForResettingMana = TimeSpan.FromSeconds(15);
+        private TimeSpan timeSpanForResettingMana = TimeSpan.FromSeconds(15);
         private TimeSpan timeSpan = TimeSpan.FromMilliseconds(270);
         private TimeSpan lastAttack;
         #endregion
@@ -47,7 +51,6 @@ namespace CR4VE.GameLogic.AI
             {
                 this.model = Arena.cont.Load<Model>("Assets/Models/Players/skull");
                 this.boundary = new BoundingBox(Vector3.Zero, Vector3.Zero);
-                scaleForDrawMethod = new Vector3(0.05f, 0.05f, 0.05f);
                 this.viewingDirection = new Vector3(0, 0, 1);
 
                 #region Destroy Attacks When Boss Is Dead
@@ -62,7 +65,9 @@ namespace CR4VE.GameLogic.AI
             #region Boss while living
             else
             {
+                //boss is always looking at player
                 viewingDirection = Arena.player.Position - this.Position;
+                viewingDirection.Normalize();
                 Arena.blickwinkelBoss = (float)Math.Atan2(-Arena.boss.viewingDirection.Z, Arena.boss.viewingDirection.X);
 
                 #region UpdateContinuesFromBoss
@@ -81,14 +86,14 @@ namespace CR4VE.GameLogic.AI
                 #endregion
 
                 #region Timeupdate for DrawAttacks
-                // Decrements the timespan
                 timeSpan -= time.ElapsedGameTime;
-                // If the timespan is equal or smaller time "0"
                 if (timeSpan <= TimeSpan.Zero)
                 {
                     timeSpan = TimeSpan.FromMilliseconds(270);
-                    attackList.Remove(crystalShield);
+                    meleeAttackList.Clear();
+
                     launchedMelee = false;
+                    listContainsCrystalShield = false;
                 }
                 #endregion
 
@@ -96,72 +101,56 @@ namespace CR4VE.GameLogic.AI
                 if (!Arena.sphere.Intersects(this.boundary))
                 {
                     Vector3 playerPos = Arena.player.position;
-                    Vector3 direction = this.position - playerPos;
+                    Vector3 direction = playerPos - this.position;
                     float distance = direction.Length();
 
                     if (distance < 100)
                     {
                         direction.Normalize();
                         direction = moveSpeed * direction;
-                        this.viewingDirection = direction;
-                        Arena.blickwinkelBoss = (float)Math.Atan2(-Arena.boss.viewingDirection.Z, Arena.boss.viewingDirection.X);
                         this.move(direction);
                     }
                 }
                 #endregion
 
                 #region UpdateMelee
-                if (lastAttack + meleeAttackTimer < time.TotalGameTime && Arena.rangeOfMeleeFromBoss.Intersects(this.boundary))
+                if (launchedMelee)
                 {
-                    this.MeleeAttack(time);
-                }
-                #endregion
-
-                #region Update Crystals From Rangedattack
-                if (launchedRanged)
-                {
-                    crystals.move(speed * currentViewingDirection);
-
-                    //Laser verschwindet nach 50 Einheiten oder wenn er mit etwas kollidiert
-                    if (crystals.position != currentCharacterPosition + 50 * currentViewingDirection)
+                    crystalShield = new Entity(this.position, "5x5x5Box1", Arena.cont);
+                    crystalShield.boundary = new BoundingBox(this.position + new Vector3(-10, -3, -10), this.position + new Vector3(10, 3, 10));
+                    
+                    if (!listContainsCrystalShield)
                     {
-                        launchedRanged = true;
-                        if (playerHit)
-                        {
-                            launchedRanged = false;
-                            attackList.Remove(crystals);
-                        }
-                        else
-                        {
-                            if (playerHit)
-                            {
-                                launchedRanged = false;
-                                attackList.Remove(crystals);
-                            }
-                            else
-                            {
-                                foreach (Entity fractusCrystals in attackList)
-                                {
-                                    if (fractusCrystals.boundary.Intersects(Arena.player.boundary))
-                                    {
-                                        //Arena.kazumiHud.healthLeft -= 3;
-                                        playerHit = true;
-                                        Console.WriteLine("Fractus hit Player by RangedAttack");
-                                    }
-                                }
-                            }
-
-                        }
+                        meleeAttackList.Add(crystalShield);
+                        listContainsCrystalShield = true;
                     }
                     else
                     {
-                        launchedRanged = false;
-                        attackList.Remove(crystals);
+                        meleeAttackList.Clear();
+                        meleeAttackList.Add(crystalShield);
                     }
-                    playerHit = false;
+
+                    foreach (Entity fractusShield in meleeAttackList)
+                    {
+                        if (playerHitByMelee)
+                            break;
+                        if (fractusShield.boundary.Intersects(Arena.player.boundary))
+                        {
+                            Arena.kazumiHud.healthLeft -= 1;
+                            playerHitByMelee = true;
+                            Console.WriteLine("Fractus hit Player by crystalShield");
+                        }
+                    }
+                }
+                //launching melee when player gets too near
+                if (lastAttack + meleeAttackTimer < time.TotalGameTime && Arena.rangeOfMeleeFromBoss.Intersects(this.boundary))
+                {
+                    this.MeleeAttack(time);
+                    lastAttack = time.TotalGameTime;
                 }
                 #endregion
 
+                #region Spawning SpecialAttack
                 #region Update HealthAbsorbingCrystals From Specialattack
                 #region Removing Crystals After Defined Time
                 timeSpanForHealthAbsorbingCrystals -= time.ElapsedGameTime;
@@ -171,7 +160,8 @@ namespace CR4VE.GameLogic.AI
                     // Re initializes the timespan for the next time
                     // minion vanishes after 10 seconds
                     timeSpanForHealthAbsorbingCrystals = TimeSpan.FromSeconds(10);
-                    launchedSpecial = false;
+                    if (crystalList.Count == 0)
+                        launchedSpecial = false;
                 }
                 #endregion
 
@@ -181,23 +171,22 @@ namespace CR4VE.GameLogic.AI
 
                     foreach (Entity healthAbsorbingCrystal in crystalList)
                     {
-                        if ((healthAbsorbingCrystal.position - Arena.player.position).Length() < 20 /*&& Arena.kazumiHud.healthleft > 0*/)
+                        if ((healthAbsorbingCrystal.position - Arena.player.position).Length() < 20 && Arena.kazumiHud.healthLeft > 0)
                         {
-                            Console.WriteLine(/*Arena.kazumiHud.healthleft +*/ " Fractus hit enemy by SpecialAttack");
-                            //Arena.kazumiHud.healthleft -= 0.01f;
+                            Console.WriteLine(" Fractus hit enemy by SpecialAttack");
+                            Arena.kazumiHud.healthLeft -= 1;
 
                             //transfers health to Fractus in Arena
-                            //if (Arena.fractusBossHud.trialsLeft <= 3 && Arena.fractusBossHud.healthLeft < Arena.fractusBossHud.fullHealth)
-                            //    Arena.fractusBossHud.healthLeft += (int)(Arena.fractusBossHud.fullHealth * 0.01f);
+                            if (Arena.fractusBossHUD.trialsLeft <= 3 && Arena.fractusBossHUD.healthLeft < Arena.fractusBossHUD.fullHealth)
+                                Arena.fractusBossHUD.healthLeft += (int)(Arena.fractusBossHUD.fullHealth * 0.01f);
                         }
                     }
                 }
                 #endregion
 
-                #region Spawning SpecialAttack
                 if (manaLeft >= 1.5f && crystalList.Count == 0)
                 {
-                    if ((lastAttack + lastAttack + lastAttack) + specialAttackTimer < time.TotalGameTime)
+                    if (lastAttack + specialAttackTimer < time.TotalGameTime)
                     {
                         this.SpecialAttack(time);
                         lastAttack = time.TotalGameTime;
@@ -207,6 +196,44 @@ namespace CR4VE.GameLogic.AI
                 #endregion
 
                 #region Spawning RangedAttack
+                #region Update Crystals From Rangedattack
+                if (launchedRanged)
+                {
+                    for (int i = 0; i < attackList.Count; i++)
+                    {
+                        //Kristalle fliegen nach vorn
+                        attackList[i].move(flyingSpeed * attackList[i].viewingDirection);
+
+                        //Laser verschwindet nach 50 Einheiten oder wenn er mit etwas kollidiert
+                        if (!attackList[i].boundary.Intersects(rangeOfFlyingCrystals))
+                        {
+                            attackList.Remove(attackList[i]);
+                            if (attackList.Count == 0)
+                                launchedRanged = false;
+                            break;
+                        }
+                        else
+                        {
+                            launchedRanged = true;
+
+                            if (attackList[i].boundary.Intersects(Arena.player.boundary))
+                            {
+                                Arena.kazumiHud.healthLeft -= 3;
+                                playerHit = true;
+                                Console.WriteLine("Fractus hit Player by RangedAttack");
+                            }
+                            //verschwindet auch bei Kollision mit Gegner
+                            if (playerHit)
+                            {
+                                if (attackList.Count == 0)
+                                    launchedRanged = false;
+                                attackList.Remove(attackList[i]);
+                            }
+                        }
+                        playerHit = false;
+                    }
+                }
+                #endregion
                 if (manaLeft > 0 && lastAttack + rangedAttackTimer < time.TotalGameTime)
                 {
                     this.RangedAttack(time);
@@ -222,19 +249,7 @@ namespace CR4VE.GameLogic.AI
         {
             launchedMelee = true;
             timeSpan = TimeSpan.FromMilliseconds(270);
-            Vector3 crystalShieldPosition = this.position;
-            crystalShield = new Entity(this.position, "5x5x5Box1", Arena.cont);
-            crystalShield.boundary = new BoundingBox(this.position + new Vector3(-10, -3, -10), this.position + new Vector3(10, 3, 10));
-            attackList.Add(crystalShield);
-
-            foreach (Entity fractusShield in attackList)
-            {
-                if (fractusShield.boundary.Intersects(Arena.player.boundary))
-                {
-                    //Arena.kazumiHud.healthLeft -= 1;
-                    Console.WriteLine("Fractus hit Player by crystalShield");
-                }
-            }
+            playerHitByMelee = false;
         }
 
         public override void RangedAttack(GameTime time)
@@ -243,13 +258,13 @@ namespace CR4VE.GameLogic.AI
             {
                 manaLeft -= 1;
                 launchedRanged = true;
-
                 currentCharacterPosition = this.Position;
-                this.viewingDirection = Arena.player.Position - this.position;
-                currentViewingDirection = this.viewingDirection;
-                crystals = new Entity(this.position, "Enemies/skull", Arena.cont);
-                crystals.boundary = new BoundingBox(this.position + new Vector3(-3, -3, -3), this.position + new Vector3(3, 3, 3));
-                attackList.Add(crystals);
+                rangeOfFlyingCrystals = new BoundingSphere(currentCharacterPosition, 50);
+
+                Entity flyingCrystals = new Entity(this.position, "Enemies/skull", Arena.cont);
+                flyingCrystals.viewingDirection = viewingDirection;
+                flyingCrystals.boundary = new BoundingBox(this.position + new Vector3(-3, -3, -3), this.position + new Vector3(3, 3, 3));
+                attackList.Add(flyingCrystals);
             }
         }
 
@@ -274,13 +289,20 @@ namespace CR4VE.GameLogic.AI
             #region DrawMelee
             if (launchedMelee)
             {
-                crystalShield.drawInArena(new Vector3(1, 1, 1), 0, 0, 0);
+                foreach (Entity shield in meleeAttackList)
+                {
+                    shield.drawInArena(new Vector3(1, 1, 1), 0, 0, 0);
+                }
             }
             #endregion
             #region DrawRanged
             if (launchedRanged)
             {
-                crystals.drawInArena(new Vector3(0.01f, 0.01f, 0.01f), 0, MathHelper.ToRadians(90), 0);
+                foreach (Entity fractusCrystals in attackList)
+                {
+                    float crystalBlickwinkel = (float)Math.Atan2(-fractusCrystals.viewingDirection.Z, fractusCrystals.viewingDirection.X);
+                    fractusCrystals.drawInArena(new Vector3(0.01f, 0.01f, 0.01f), 0, MathHelper.ToRadians(90) + crystalBlickwinkel, 0);
+                }
             }
             #endregion
             #region DrawSpecial
