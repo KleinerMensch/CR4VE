@@ -650,7 +650,7 @@ namespace CR4VE.GameLogic.GameStates
             }
             
             //SkyBox
-            skybox.Drawsky( new Vector3(200f, 50f, -2.5f), 0, 0, 0);
+            skybox.Drawsky( new Vector3(50f, 50f, -3.5f), 0, 0, 0);
           //  skybox2.Drawsky(new Vector3(200f, 50f, -2.5f), 0, 0, 0);
 
             #region Enemies
