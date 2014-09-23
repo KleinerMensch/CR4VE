@@ -68,6 +68,7 @@ namespace CR4VE.GameLogic.GameStates
         private static Texture2D[] tutSprites;
         public static int tutIndex;
         public static bool tutStop;
+        public static Texture2D background;
         #endregion
 
         #region Konstruktor
@@ -483,11 +484,12 @@ namespace CR4VE.GameLogic.GameStates
 
             //Skybox
             skybox =  new SkyBox(new Vector3(0, 0, -13), "Assets/Skybox/cube_hell", content);
-            skybox2 = new SkyBox(new Vector3(4190, 0, -13), "Assets/Skybox/black", content);
+           // skybox2 = new SkyBox(new Vector3(4190, 0, -13), "Assets/Skybox/black", content);
+            background = content.Load<Texture2D>("Assets/Sprites/stone");
 
             //Player
             ghost = new Character(Vector3.Zero, "skull", content);
-            player = new CharacterKazumi(new Vector3(0, 0, 5), "Kazumi", content, new BoundingBox(new Vector3(-2.5f, -9f, -2.5f), new Vector3(2.5f, 9f, 2.5f)));
+            player = new CharacterKazumi(new Vector3(0, 0, 5), "kazumi", content, new BoundingBox(new Vector3(-2.5f, -9f, -2.5f), new Vector3(2.5f, 9f, 2.5f)));
           //  player = new CharacterOphelia(new Vector3(0,0,5), "Ophelia", content, new BoundingBox(new Vector3(-2.5f, -9f, -2.5f), new Vector3(2.5f, 9f, 2.5f)));
             CharacterOphelia.manaLeft = 3;
 
@@ -617,13 +619,13 @@ namespace CR4VE.GameLogic.GameStates
 
             #region filling world rectangle
             //width and height for spriteBatch rectangle needed to draw background texture
-            /*Vector2 drawPos = new Vector2(Camera2D.WorldRectangle.X, Camera2D.WorldRectangle.Y);
+            Vector2 drawPos = Camera2D.transform2D(new Vector2(100, 0));
             int drawRecWidth = graphics.PreferredBackBufferWidth;
             int drawRecHeight = graphics.PreferredBackBufferHeight;
             
-            Rectangle drawRec = new Rectangle((int)Camera2D.Position2D.X, (int)Camera2D.Position2D.Y, drawRecWidth, drawRecHeight);*/
+            Rectangle drawRec = new Rectangle((int)Camera2D.Position2D.X, (int)Camera2D.Position2D.Y, drawRecWidth, drawRecHeight);
 
-            //spriteBatch.Draw(background, drawPos, drawRec, Color.White);
+            spriteBatch.Draw(background, drawPos, drawRec, Color.White);
             #endregion
 
             spriteBatch.End();
@@ -646,10 +648,10 @@ namespace CR4VE.GameLogic.GameStates
                 player.drawIn2DWorld(new Vector3(0.02f, 0.02f, 0.02f), 0, MathHelper.ToRadians(90) * player.viewingDirection.X, 0);
                 player.DrawAttacks();
             }
-
+            
             //SkyBox
-            skybox.Drawsky(new Vector3(4000f, 50f, -2.5f), 0, 0, 0);
-            skybox2.Drawsky(new Vector3(200f, 50f, -2.5f), 0, 0, 0);
+            skybox.Drawsky( new Vector3(200f, 50f, -2.5f), 0, 0, 0);
+          //  skybox2.Drawsky(new Vector3(200f, 50f, -2.5f), 0, 0, 0);
 
             #region Enemies
             foreach (Enemy e in currentMaps[activeIndex1].EnemyList)
