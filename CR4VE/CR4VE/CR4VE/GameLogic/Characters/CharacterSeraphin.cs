@@ -37,6 +37,13 @@ namespace CR4VE.GameLogic.Characters
         bool listContainsAlgaWhip = false;
         #endregion
 
+        #region Properties
+        public override String CharacterType
+        {
+            get { return "Seraphin"; }
+        }
+        #endregion
+
         #region inherited Constructors
         //base ist fuer Vererbungskram
         public CharacterSeraphin() : base() { }

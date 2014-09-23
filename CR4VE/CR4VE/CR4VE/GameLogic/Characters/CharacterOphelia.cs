@@ -33,6 +33,13 @@ namespace CR4VE.GameLogic.Characters
         float speerRotation = 0;
         #endregion
 
+        #region Properties
+        public override String CharacterType
+        {
+            get { return "Ophelia"; }
+        }
+        #endregion
+
         #region inherited Constructors
         //base ist fuer Vererbungskram
         public CharacterOphelia() : base() { }
