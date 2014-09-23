@@ -16,6 +16,7 @@ namespace CR4VE.GameBase.HeadUpDisplay
         #region Attributes
         private Texture2D kazumiContinue, kazumiHealthContainer, kazumiPowerLeftTail, kazumiPowerMiddleTail, kazumiPowerRightTail;
         private Vector2 kazumiContinue1Position, kazumiContinue2Position, kazumiContinue3Position, kazumiHealthContainerPosition;
+        public bool soundPlayedWater = false;
         #endregion
 
         #region inherited Constructor
@@ -38,6 +39,12 @@ namespace CR4VE.GameBase.HeadUpDisplay
             kazumiContinue1Position = new Vector2(kazumiHealthContainerPosition.X - kazumiContinue.Width * continueSpriteScale, graphics.PreferredBackBufferHeight - kazumiContinue.Height * continueSpriteScale - yOffset);
             kazumiContinue2Position = new Vector2(kazumiContinue1Position.X - kazumiContinue.Width*continueSpriteScale, graphics.PreferredBackBufferHeight - kazumiContinue.Height * continueSpriteScale - yOffset);
             kazumiContinue3Position = new Vector2(kazumiContinue2Position.X - kazumiContinue.Width * continueSpriteScale, graphics.PreferredBackBufferHeight - kazumiContinue.Height * continueSpriteScale - yOffset);
+
+            //set parameters
+            this.healthLeft = fullHealth;
+
+            this.isBurning = false;
+            this.isSwimming = false;
         }
 
         public override void UpdateMana()
@@ -98,10 +105,21 @@ namespace CR4VE.GameBase.HeadUpDisplay
 
         public override void UpdateHealth()
         {
+            
             if (Game1.currentState == Game1.EGameState.Singleplayer)
             {
                 int ai1 = Singleplayer.activeIndex1;
                 int ai2 = Singleplayer.activeIndex2;
+                
+
+                if (isSwimming)
+                {
+                    this.healthLeft -= (int)(Singleplayer.hud.fullHealth * 0.003);
+                    
+                }
+
+                if (isBurning)
+                    this.healthLeft -= (int)(Singleplayer.hud.fullHealth * 0.01);
 
                 #region active Tilemap1
                 for (int i = 0; i < Singleplayer.currentMaps[ai1].PowerupList.Count; i++)

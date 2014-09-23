@@ -30,6 +30,17 @@ namespace CR4VE.GameLogic.Characters
         bool enemyHit = false;
         bool enemyHitByMelee = false;
         bool listContainsClaws = false;
+        public bool soundPlayed = false;
+        public bool soundPlayedRanged = false;
+        public bool soundPlayedEnemy = false;
+        public bool soundPlayedSpecial = false;
+        #endregion
+
+        #region Properties
+        public override String CharacterType
+        {
+            get { return "Kazumi"; }
+        }
         #endregion
 
         #region inherited Constructors
@@ -89,6 +100,13 @@ namespace CR4VE.GameLogic.Characters
                             {
                                 enemy.hp -= 1;
                                 enemyHitByMelee = true;
+                                soundPlayedEnemy = false;
+                                if (!soundPlayedEnemy)
+                                {
+                                    Sounds.punch.Play();
+
+                                    soundPlayedEnemy = true;
+                                }
                                 Console.WriteLine("Kazumi hit enemy by MeleeAttack");
                             }
                         }
@@ -105,6 +123,13 @@ namespace CR4VE.GameLogic.Characters
                             {
                                 enemy.hp -= 1;
                                 enemyHitByMelee = true;
+                                soundPlayedEnemy = false;
+                                if (!soundPlayedEnemy)
+                                {
+                                    Sounds.punch.Play();
+
+                                    soundPlayedEnemy = true;
+                                }
                                 Console.WriteLine("Kazumi hit enemy by MeleeAttack");
                             }
                         }
@@ -195,12 +220,22 @@ namespace CR4VE.GameLogic.Characters
                         {
                             attackList.Remove(attackList[i]);
                             if (attackList.Count == 0)
+                            {
                                 launchedRanged = false;
+                                soundPlayedRanged = false;
+                            }
                             break;
                         }
                         else
                         {
                             launchedRanged = true;
+
+                            if (!soundPlayedRanged)
+                            {
+                                Sounds.fireball.Play();
+
+                                soundPlayedRanged = true;
+                            }
 
                             #region enemyList1
                             foreach (Enemy enemy in Singleplayer.currentMaps[Singleplayer.activeIndex1].EnemyList)
@@ -211,13 +246,23 @@ namespace CR4VE.GameLogic.Characters
                                     {
                                         enemy.hp -= 2;
                                         enemyHit = true;
+                                        soundPlayedEnemy = false;
+                                        if (!soundPlayedEnemy)
+                                        {
+                                            Sounds.punch.Play();
+
+                                            soundPlayedEnemy = true;
+                                        }
                                         Console.WriteLine("Kazumi hit enemy by RangedAttack");
                                     }
                                     //verschwindet auch bei Kollision mit Gegner
                                     if (enemyHit)
                                     {
                                         if (attackList.Count == 0)
+                                        {
                                             launchedRanged = false;
+                                            soundPlayedRanged = false;
+                                        }
                                         attackList.Remove(attackList[i]);
                                     }
                                 }
@@ -232,13 +277,23 @@ namespace CR4VE.GameLogic.Characters
                                     {
                                         enemy.hp -= 2;
                                         enemyHit = true;
+                                        soundPlayedEnemy = false;
+                                        if (!soundPlayedEnemy)
+                                        {
+                                            Sounds.punch.Play();
+
+                                            soundPlayedEnemy = true;
+                                        }
                                         Console.WriteLine("Kazumi hit enemy by RangedAttack");
                                     }
                                     //verschwindet auch bei Kollision mit Gegner
                                     if (enemyHit)
                                     {
                                         if (attackList.Count == 0)
+                                        {
                                             launchedRanged = false;
+                                            soundPlayedRanged = false;
+                                        }
                                         attackList.Remove(attackList[i]);
                                     }
                                 }
@@ -262,12 +317,22 @@ namespace CR4VE.GameLogic.Characters
                         {
                             attackList.Remove(attackList[i]);
                             if (attackList.Count == 0)
+                            {
                                 launchedRanged = false;
+                                soundPlayedRanged = false;
+                            }
                             break;
                         }
                         else
                         {
                             launchedRanged = true;
+
+                            if (!soundPlayedRanged)
+                            {
+                                Sounds.fireball.Play();
+
+                                soundPlayedRanged = true;
+                            }
 
                             if (attackList[i].boundary.Intersects(Arena.boss.boundary))
                             {
@@ -279,7 +344,10 @@ namespace CR4VE.GameLogic.Characters
                             if (enemyHit)
                             {
                                 if (attackList.Count == 0)
+                                {
                                     launchedRanged = false;
+                                    soundPlayedRanged = false;
+                                }
                                 attackList.Remove(attackList[i]);
                             }
                         }
@@ -300,12 +368,22 @@ namespace CR4VE.GameLogic.Characters
                         {
                             attackList.Remove(attackList[i]);
                             if (attackList.Count == 0)
+                            {
                                 launchedRanged = false;
+                                soundPlayedRanged = false;
+                            }
                             break;
                         }
                         else
                         {
                             launchedRanged = true;
+
+                            if (!soundPlayedRanged)
+                            {
+                                Sounds.fireball.Play();
+
+                                soundPlayedRanged = true;
+                            }
 
                             //if (attackList[i].boundary.Intersects(Multiplayer.playerX.boundary))
                             //{
@@ -317,7 +395,10 @@ namespace CR4VE.GameLogic.Characters
                             if (enemyHit)
                             {
                                 if (attackList.Count == 0)
+                                {
                                     launchedRanged = false;
+                                    soundPlayedRanged = false;
+                                }
                                 attackList.Remove(attackList[i]);
                             }
                         }
@@ -334,6 +415,13 @@ namespace CR4VE.GameLogic.Characters
             launchedMelee = true;
             timeSpan = TimeSpan.FromMilliseconds(270);
             enemyHitByMelee = false;
+            soundPlayed = false;
+            if (!soundPlayed)
+            {
+                Sounds.claws.Play();
+
+                soundPlayed = true;
+            }
             //Rest wird in der Update berechnet
         }
 
@@ -384,6 +472,13 @@ namespace CR4VE.GameLogic.Characters
             {
                 manaLeft -= 2;
                 launchedSpecial = true;
+                soundPlayedSpecial = false;
+                if (!soundPlayedSpecial)
+                {
+                    Sounds.fireball.Play();
+
+                    soundPlayedSpecial = true;
+                }
                 timeSpan = TimeSpan.FromMilliseconds(270);
 
                 #region Singleplayer
@@ -401,6 +496,14 @@ namespace CR4VE.GameLogic.Characters
                             if (kazumisDanceOfFirefox.boundary.Intersects(enemy.boundary))
                             {
                                 enemy.hp -= 3;
+                                soundPlayedEnemy = false;
+                                soundPlayedSpecial = false;
+                                if (!soundPlayedEnemy)
+                                {
+                                    Sounds.punch.Play();
+
+                                    soundPlayedEnemy = true;
+                                }
                                 Console.WriteLine("Kazumi hit enemy by AoE");
                             }
                         }
@@ -414,6 +517,14 @@ namespace CR4VE.GameLogic.Characters
                             if (kazumisDanceOfFirefox.boundary.Intersects(enemy.boundary))
                             {
                                 enemy.hp -= 3;
+                                soundPlayedEnemy = false;
+                                soundPlayedSpecial = false;
+                                if (!soundPlayedEnemy)
+                                {
+                                    Sounds.punch.Play();
+
+                                    soundPlayedEnemy = true;
+                                }
                                 Console.WriteLine("Kazumi hit enemy by AoE");
                             }
                         }
@@ -433,6 +544,7 @@ namespace CR4VE.GameLogic.Characters
                         if (kazumisDanceOfFirefox.boundary.Intersects(Arena.boss.boundary))
                         {
                             Arena.fractusBossHUD.healthLeft -= 50;
+                            soundPlayedSpecial = false;
                             Console.WriteLine("Kazumi hit Boss by AoE");
                         }
                     }

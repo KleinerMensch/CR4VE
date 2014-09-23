@@ -31,6 +31,16 @@ namespace CR4VE.GameLogic.Characters
         bool enemyHitByMelee = false;
         bool listContainsSpeer = false;
         float speerRotation = 0;
+        public bool soundPlayed = false;
+        public bool soundPlayedSpecial = false;
+        public bool soundPlayedEnemy = false;
+        #endregion
+
+        #region Properties
+        public override String CharacterType
+        {
+            get { return "Ophelia"; }
+        }
         #endregion
 
         #region inherited Constructors
@@ -53,6 +63,7 @@ namespace CR4VE.GameLogic.Characters
 
                 launchedMelee = false;
                 launchedSpecial = false;
+                soundPlayedSpecial = false;
                 listContainsSpeer = false;
             }
             #endregion
@@ -61,6 +72,7 @@ namespace CR4VE.GameLogic.Characters
             speerRotation += 0.15f;
             if (launchedMelee)
             {
+                
                 #region Singleplayer
                 if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
                 {
@@ -91,6 +103,13 @@ namespace CR4VE.GameLogic.Characters
                             {
                                 enemy.hp -= 1;
                                 enemyHitByMelee = true;
+                                soundPlayedEnemy = false;
+                                if (!soundPlayedEnemy)
+                                {
+                                    Sounds.punch.Play();
+
+                                    soundPlayedEnemy = true;
+                                }
                                 Console.WriteLine("Ophelia hit enemy by MeleeAttack");
                             }
                         }
@@ -107,6 +126,13 @@ namespace CR4VE.GameLogic.Characters
                             {
                                 enemy.hp -= 1;
                                 enemyHitByMelee = true;
+                                soundPlayedEnemy = false;
+                                if (!soundPlayedEnemy)
+                                {
+                                    Sounds.punch.Play();
+
+                                    soundPlayedEnemy = true;
+                                }
                                 Console.WriteLine("Ophelia hit enemy by MeleeAttack");
                             }
                         }
@@ -236,6 +262,13 @@ namespace CR4VE.GameLogic.Characters
                                     {
                                         enemy.hp -= 2;
                                         enemyHit = true;
+                                        soundPlayedEnemy = false;
+                                        if (!soundPlayedEnemy)
+                                        {
+                                            Sounds.punch.Play();
+
+                                            soundPlayedEnemy = true;
+                                        }
                                         Console.WriteLine("Ophelia hit enemy by RangedAttack");
                                     }
                                     if (enemyHit)
@@ -256,6 +289,13 @@ namespace CR4VE.GameLogic.Characters
                                     {
                                         enemy.hp -= 2;
                                         enemyHit = true;
+                                        soundPlayedEnemy = false;
+                                        if (!soundPlayedEnemy)
+                                        {
+                                            Sounds.punch.Play();
+
+                                            soundPlayedEnemy = true;
+                                        }
                                         Console.WriteLine("Ophelia hit enemy by RangedAttack");
                                     }
                                     if (enemyHit)
@@ -382,6 +422,13 @@ namespace CR4VE.GameLogic.Characters
             timeSpan = TimeSpan.FromMilliseconds(270);
             enemyHitByMelee = false;
             speerRotation = 0;
+            soundPlayed = false;
+            if (!soundPlayed)
+            {
+                Sounds.spear.Play();
+
+                soundPlayed = true;
+            }
             //Rest wird in der Update berechnet
         }
 
@@ -432,6 +479,13 @@ namespace CR4VE.GameLogic.Characters
             {
                 manaLeft -= 2;
                 launchedSpecial = true;
+                if (!soundPlayedSpecial)
+                {
+                    Sounds.thunder.Play();
+
+                    soundPlayedSpecial = true;
+                }
+                
                 timeSpan = TimeSpan.FromMilliseconds(270);
 
                 #region Singleplayer
@@ -440,6 +494,7 @@ namespace CR4VE.GameLogic.Characters
                     holyThunder = new Entity(this.Position, "OpheliasAoE", Singleplayer.cont);
                     holyThunder.boundary = new BoundingBox(this.position + new Vector3(-20, -10, -20), this.position + new Vector3(20, 40, 20));
                     aoeList.Add(holyThunder);
+                    
 
                     #region enemyList1
                     foreach (Enemy enemy in Singleplayer.currentMaps[Singleplayer.activeIndex1].EnemyList)
@@ -449,6 +504,14 @@ namespace CR4VE.GameLogic.Characters
                             if (opheliasHolyThunder.boundary.Intersects(enemy.boundary))
                             {
                                 enemy.hp -= 3;
+                                soundPlayedSpecial = false;
+                                soundPlayedEnemy = false;
+                                if (!soundPlayedEnemy)
+                                {
+                                    Sounds.punch.Play();
+
+                                    soundPlayedEnemy = true;
+                                }
                                 Console.WriteLine("Ophelia hit enemy by AoE");
                             }
                         }
@@ -462,6 +525,14 @@ namespace CR4VE.GameLogic.Characters
                             if (opheliasHolyThunder.boundary.Intersects(enemy.boundary))
                             {
                                 enemy.hp -= 3;
+                                soundPlayedSpecial = false;
+                                soundPlayedEnemy = false;
+                                if (!soundPlayedEnemy)
+                                {
+                                    Sounds.punch.Play();
+
+                                    soundPlayedEnemy = true;
+                                }
                                 Console.WriteLine("Ophelia hit enemy by AoE");
                             }
                         }
@@ -481,6 +552,7 @@ namespace CR4VE.GameLogic.Characters
                         if (opheliasHolyThunder.boundary.Intersects(Arena.boss.boundary))
                         {
                             Arena.seraphinBossHUD.healthLeft -= 50;
+                            soundPlayedSpecial = false;
                             Console.WriteLine("Ophelia hit Boss by AoE");
                         }
                     }

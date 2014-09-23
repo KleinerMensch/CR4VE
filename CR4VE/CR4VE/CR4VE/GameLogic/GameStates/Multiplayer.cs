@@ -12,7 +12,6 @@ using CR4VE.GameLogic.Characters;
 
 namespace CR4VE.GameLogic.GameStates
 {
-    // besser: uebergeordnete PlayMode Klasse fuer Single- und Multiplayer !
     class Multiplayer : GameStateInterface
     {
         #region Attribute
@@ -20,15 +19,22 @@ namespace CR4VE.GameLogic.GameStates
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        public static Character player1;
-        public static Character player2;
-        public static Character player3;
-        public static Character player4;
+        //Player parameters        
+        private static Character[] playerArray;
 
-        public static float blickWinkelPlayer1;
+        //Terrain
+        public static readonly BoundingBox arenaFloorBox = new BoundingBox(new Vector3(-54, -25, -65), new Vector3(63, -15, 53));
+        public static readonly BoundingSphere arenaBound = new BoundingSphere(new Vector3(5, -20, -8), 60f);
 
         public static Entity terrain;
         public static Entity lava;
+        #endregion
+
+        #region Properties
+        public static Character[] Players
+        { 
+            get { return playerArray; } 
+        }
         #endregion
 
         #region Konstruktor
@@ -44,15 +50,47 @@ namespace CR4VE.GameLogic.GameStates
 
             CameraArena.Initialize(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
 
-            player1 = new CharacterSeraphin(new Vector3(0, -12.5f, 0), "Kazumi", content);
-            CharacterSeraphin.manaLeft = 27;
+            #region player models
+            playerArray = new Character[GameControls.ConnectedControllers];
 
-            terrain = new Entity(new Vector3(4, -20, -5), "Terrain/arena_hell", content);
+            for (int i = 0; i < GameControls.ConnectedControllers; i++)
+            {
+                switch (MainMenu.MPSelection[i])
+                {
+                    case "Fractus":
+                        {
+                            playerArray[i] = new CharacterFractus(new Vector3(0, -12.5f, 10), "Fractus", content);
+                        } break;
 
-            lava = new Entity(new Vector3(0, -50, -30), "Terrain/lavafloor", content);
+                    case "Kazumi":
+                        {
+                            playerArray[i] = new CharacterKazumi(new Vector3(0, -12.5f, -10), "Kazumi", content);
+                        } break;
+
+                    case "Ophelia":
+                        {
+                            playerArray[i] = new CharacterOphelia(new Vector3(-10, -12.5f, 0), "Ophelia", content);
+                        } break;
+
+                    case "Seraphin":
+                        {
+                            playerArray[i] = new CharacterSeraphin(new Vector3(10, -12.5f, 0), "albino", content);
+                        } break;
+
+                    default: { } break;
+                }
+            }
+            #endregion
+
+            //Terrain
+            terrain = new Entity(new Vector3(5, -20, -10), "Terrain/arena_hell", content);
+            lava = new Entity(new Vector3(0, -110, -30), "Terrain/lavafloor", content);
             
             //fuer Attacken wichtig
             cont = content;
+
+            //Controls
+            GameControls.initializeMultiplayer();
         }
         #endregion
 
@@ -61,8 +99,6 @@ namespace CR4VE.GameLogic.GameStates
         {
             GameControls.updateMultiplayer(gameTime);
 
-            player1.Update(gameTime);
-
             return Game1.EGameState.Multiplayer;
         }
         #endregion
@@ -70,20 +106,32 @@ namespace CR4VE.GameLogic.GameStates
         #region Draw
         public void Draw(GameTime gameTime)
         {
+            #region 3D Objects
             //terrain
             lava.drawInArena(new Vector3(1, 1, 1), 0, 0, 0);
-
             terrain.drawInArena(new Vector3(0.4f, 0.4f, 0.4f), 0, MathHelper.ToRadians(30), 0);
 
             //players
-            player1.drawInArena(new Vector3(0.02f, 0.02f, 0.02f), 0, MathHelper.ToRadians(90) + blickWinkelPlayer1, 0);
-            player1.DrawAttacks();
+            for (int i = 0; i < GameControls.ConnectedControllers; i++)
+            {
+                Multiplayer.Players[i].drawInArena(new Vector3(0.02f, 0.02f, 0.02f), 0, MathHelper.ToRadians(90) + Multiplayer.Players[i].blickWinkel, 0);
+                Multiplayer.Players[i].DrawAttacks();
+            }
+            #endregion            
         }
         #endregion
 
         public void Unload()
         {
-            //throw new NotImplementedException();
+            for (int i = 0; i < 4; i++)
+			{
+			    MainMenu.MPSelection[i] = "none";
+			}
+
+            for (int i = 0; i < GameControls.ConnectedControllers; i++)
+            {
+                playerArray[i] = null;
+            }
         }
 
         public void Dispose()

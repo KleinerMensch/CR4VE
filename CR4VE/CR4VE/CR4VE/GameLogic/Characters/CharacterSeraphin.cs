@@ -40,6 +40,13 @@ namespace CR4VE.GameLogic.Characters
         //bool listContainsLaser = false;
         #endregion
 
+        #region Properties
+        public override String CharacterType
+        {
+            get { return "Seraphin"; }
+        }
+        #endregion
+
         #region inherited Constructors
         //base ist fuer Vererbungskram
         public CharacterSeraphin() : base() { }

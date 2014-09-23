@@ -20,6 +20,7 @@ namespace CR4VE.GameLogic.AI
         float rotationX = 0.4f;
         float rotationY = MathHelper.ToRadians(0);
         bool checkedStartpositionOnce = false;
+        
         #endregion
 
         #region Properties
@@ -78,6 +79,7 @@ namespace CR4VE.GameLogic.AI
             if (Singleplayer.player.boundary.Intersects(this.boundary))
             {
                 Singleplayer.hud.healthLeft -= (int)(Singleplayer.hud.fullHealth * 0.01);
+                
             }
         }
 

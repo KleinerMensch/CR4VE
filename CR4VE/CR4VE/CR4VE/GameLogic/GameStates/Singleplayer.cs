@@ -35,10 +35,12 @@ namespace CR4VE.GameLogic.GameStates
         SkyBox skybox2;
 
         //Terrain (Singleplayer)
-        public static Tilemap[] gameMaps = new Tilemap[] { };
+        public static Tilemap[] gameMaps_hell= new Tilemap[] { };
+        public static Tilemap[] gameMaps_crystal = new Tilemap[] { };
+        public static bool isCrystal = false;
         //Terrain (Tutorial)
         public static Tilemap[] tutorialMaps = new Tilemap[] { };
-        public static bool isTutorial = true;
+        public static bool isTutorial = false;
 
         //TileMap parameters
         public static Tilemap[] currentMaps;
@@ -66,6 +68,7 @@ namespace CR4VE.GameLogic.GameStates
         private static Texture2D[] tutSprites;
         public static int tutIndex;
         public static bool tutStop;
+        public static Texture2D background;
         #endregion
 
         #region Konstruktor
@@ -136,6 +139,7 @@ namespace CR4VE.GameLogic.GameStates
             #endregion
 
             //Main Game
+            #region Höllenlevel
             #region layout1
             int[,] layout1 = new int[,] {
         
@@ -339,18 +343,103 @@ namespace CR4VE.GameLogic.GameStates
             {13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13},
             {13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13}};
             #endregion
+            #endregion
+
+            #region Kristallevel
+
+            #region layout1
+            int[,] crystal1 = new int[,] {
+           { 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+           { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+           { 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+           { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1},
+           { 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 3, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 3, 3, 3, 3, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 3, 0, 0, 0},
+           { 3, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0, 0, 4, 4, 3, 3, 3, 3, 3, 4, 4, 3, 1, 0, 0, 0, 0, 1, 1, 3, 3, 3, 0, 0, 0},
+           { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 1, 3, 1, 1, 1, 3, 4, 4, 3, 4, 4, 3, 3, 3, 3, 0, 4, 4, 4, 3, 3, 3, 3, 3, 4, 4, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 0, 0, 1, 0},
+           { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 3, 4, 4, 3, 3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 4, 4, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 4, 0, 0, 0},
+           { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 3, 4, 4, 3, 3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 4, 4, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 4, 4, 0, 0},
+           { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 3, 4, 4, 3, 3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 4, 4, 3, 3, 3, 3, 4, 4, 3, 3, 3, 4, 4, 4, 4, 4},
+           { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 3, 4, 4, 3, 3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 4, 4, 3, 3, 3, 3, 4, 4, 3, 3, 4, 4, 4, 9, 9, 9},
+           { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 3, 4, 4, 3, 3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 4, 4, 3, 3, 3, 3, 4, 4, 3, 4, 4, 4, 4, 9, 0, 0},
+           { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 3, 4, 4, 3, 3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 4, 4, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 9, 0, 0},
+           { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 3, 4, 4, 3, 3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 4, 4, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 9, 9, 9},
+           { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 3, 4, 4, 3, 3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 4, 4, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4},
+           { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 3, 4, 4, 3, 3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 4, 4, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4},
+           { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 3, 4, 4, 3, 3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 4, 4, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4},
+           { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 3, 4, 4, 3, 3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 4, 4, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4} };
+            #endregion
+
+            #region layout2
+            int[,] crystal2 = new int[,] {
+           { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+           { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+           { 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+           { 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+           { 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 3, 3, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 4, 3, 3, 3, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
+           { 0, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 4, 4, 3, 3,22, 3, 3, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 3, 1, 0, 0, 0, 0},
+           { 0, 0, 9, 9, 9, 9, 9, 9, 9, 9, 9, 0, 0, 0, 0, 0, 1, 3, 1, 1, 1, 3, 4, 4, 3, 1, 1, 0, 0, 0, 0, 0, 1, 1, 4,22,22,22,22, 3, 3, 3, 1, 1, 1, 1, 1, 1, 3, 3,22, 3, 1, 1, 1, 1},
+           { 0, 0, 0, 9, 9, 9, 9, 9, 9, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 4, 4, 3, 3, 3, 1, 1, 0, 0, 0, 1, 4, 4, 4,22,22,22,22, 3, 3, 3, 3, 3, 3, 3, 3,22,22,22,22,22,22,22,22},
+           { 9, 0, 0, 0, 9, 9, 9, 9, 0, 0, 0, 0, 0, 9, 9, 9, 9, 9, 3, 3, 3, 3, 4, 4, 3, 3, 3, 3, 3, 1, 1, 1, 4, 4, 4, 4, 4,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22},
+           { 9, 9, 0, 0, 0, 0, 0, 0, 0, 0, 9, 9, 0, 0, 0, 0, 0, 9, 9, 3, 3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22},
+           { 9, 0, 0, 0, 0, 0, 0, 0, 0, 9, 9, 9, 0, 0, 0, 0, 0, 9, 9, 9, 3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4,22,22, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
+           { 0, 0, 0, 0, 0, 0, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 3, 3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4,22, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
+           { 0, 0, 0, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 3, 3, 3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
+           { 9, 9, 9, 4, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 3, 3, 3, 3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
+           { 4, 4, 4, 4, 4, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 3, 3, 3, 3, 3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
+           { 4, 4, 4, 4, 4, 4, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 3, 3, 3, 3, 3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
+           { 4, 4, 4, 4, 4, 4, 4, 9, 9, 9, 9, 9, 9, 9, 9, 9, 3, 3, 3, 3, 3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3}};
+            #endregion
+
+            #region layout3
+            int[,] crystal3 = new int[,] {
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,22, 0, 0, 0,22, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,22,22,22,22, 0, 0, 0, 0, 0,22, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0,20, 0, 0, 0, 0, 0, 0, 0, 0,20,20,20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,20, 0, 0,22,22, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,20,20,20,20, 0, 0, 0, 0, 0,20,20,20,20,20,20, 0, 0, 0, 0, 0, 0, 0, 0, 0,23,22,23, 0, 0,22, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+           {22, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0,20,20,22,22,22,22,20,20,20,20,20,20,20,20,20,20,20,20, 0, 0,20, 0, 0,20, 0,23, 4,22, 4,23, 0,22,22, 0, 0, 0,20, 0, 0, 0,20, 0, 0, 0, 0,20, 0, 0,20},
+           {22,22,22, 1, 1, 1, 0, 0, 0, 0,20,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,23,23,22,23,23,22,23, 4, 4,22, 4, 4,23,22,22,22, 0,23,23,23,23,23,23,23, 0, 0, 0,23,23,23,23},
+           {22,22,22,22,22,22, 1, 0,20,20,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22, 4, 4,22, 4, 4,22, 4, 4, 4,22, 4, 4, 4,22,23,23,23,23, 4, 4, 4, 4, 4,23,23,23,23,23, 4, 4, 4},
+           {22,22,22,22,22,22,22,20,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22, 4, 4,22, 4, 4,22, 4, 4, 4,22, 4, 4, 4,22, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4},
+           {22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4,23,23, 3,23,23,22, 3, 4, 4,22, 3, 4, 4,22, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4}};
+            #endregion
+
+            #region layout4
+            int[,] crystal4 = new int[,] {
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,22,22},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,22, 0, 0,22, 0, 0,22, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,22,22,22},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,22, 0, 0, 0,22,22,22,22,22,22,22,22,22,22, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,22,22,22,22},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,22, 0, 0,22,22,22, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,22, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,22,22,22,22,22},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0,22,22,22,22,22,22,22,22,22, 0,22,22,22,22,22,22,22,22,22,22, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,22, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,22,94,94,94,94,94,94, 0, 0,22,22,22,22, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,22, 0, 0, 0, 0, 0, 0},
+            {0, 0,22,22, 0, 0,22,22,22, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,26,22, 0, 0,22,22, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,20, 0, 0, 0, 0, 0, 0, 0, 0, 0,26, 0, 0, 0,26,26,22, 0, 0, 0,22, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+           {20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,20,20,20, 0, 0, 0, 0, 0, 0, 0,26,26,26, 0,26,26,26,22,26, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,20, 0, 0, 0,20, 0, 0, 0, 0,20, 0, 0,20},
+           {23,23,23,23, 0, 0, 0,23, 0, 0,20,20,20,20,20, 0, 0, 0,22,22,22,22,22,22,22,22,22,22,22,26,26, 0, 0, 0,20, 0,20,20,20, 0, 0, 0,22,22, 0, 0,23,23,23,23,23,23,23, 0, 0, 0,23,23,23,23},
+           { 4,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,22,23,23,23,22,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23},
+           { 4, 4,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23, 4, 4, 4, 4, 4, 4, 4, 4,23,23,23,23,23,23,23,23,23,23,23,22,23,23,23,22,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23},
+           { 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23}};
+            #endregion
+
+            #region layout5
+            int[,] crystal5 = new int[,] {
+                 {}};
+            #endregion
+            #endregion
 
             int boxSize = 10;
-
+            #region tutorial_layouts_generate
             //Arrays of generated Tilemaps
             tutorialMaps = new Tilemap[]
             {
                 Tilemap.Generate(tutorialLayout1, boxSize, new Vector3(-80, 0, 0)),
                 Tilemap.Generate(tutorialLayout2, boxSize, new Vector3(480, 0, 0)),
             };
+            #endregion
 
-            gameMaps = new Tilemap[]
-            {   //Höhlenlevel
+            #region hölle_layouts_generate
+            gameMaps_hell = new Tilemap[]
+            {   //Höllenlevel
                 Tilemap.Generate(layout1, boxSize, new Vector3(-80, 0, 0)),
                 Tilemap.Generate(layout2, boxSize, new Vector3(510, 10, 0)),
                 Tilemap.Generate(layout3, boxSize, new Vector3(1030, -60, 0)),
@@ -362,12 +451,27 @@ namespace CR4VE.GameLogic.GameStates
                 Tilemap.Generate(layout9, boxSize, new Vector3(-80,0,-10)),
           
             };
+            #endregion
+
+            #region crystal_layouts_generate
+            //Kristallevel
+            gameMaps_crystal = new Tilemap[]
+            {
+                //Tilemap.Generate(crystal1, boxSize, new Vector3(-80, 0, 0)),
+          //      Tilemap.Generate(crystal2, boxSize, new Vector3(0,0, 0)),// (480)
+               Tilemap.Generate(crystal3, boxSize, new Vector3(0, 0, 0)),//1040
+               Tilemap.Generate(crystal4, boxSize, new Vector3(600,30, 0)), //600
+                Tilemap.Generate(crystal5, boxSize, new Vector3(3000,30, 0)),
+            };
+            #endregion
 
             //get active Tilemaps
             if (isTutorial)
                 currentMaps = tutorialMaps;
+            else if (isCrystal)
+                currentMaps = gameMaps_crystal;
             else
-                currentMaps = gameMaps;
+                currentMaps = gameMaps_hell;
 
             //set start indices
             activeIndex1 = 0;
@@ -396,24 +500,29 @@ namespace CR4VE.GameLogic.GameStates
                 };
             }
 
-            //Effects
-            //effect_directLight = content.Load<Effect>("Assets/Effects/DirectLight");
-
             //Skybox
             skybox =  new SkyBox(new Vector3(0, 0, -13), "Assets/Skybox/cube_hell", content);
-            skybox2 = new SkyBox(new Vector3(4190, 0, -13), "Assets/Skybox/black", content);
+           // skybox2 = new SkyBox(new Vector3(4190, 0, -13), "Assets/Skybox/black", content);
+            background = content.Load<Texture2D>("Assets/Sprites/stone");
 
             //Player
             ghost = new Character(Vector3.Zero, "skull", content);
-            player = new CharacterKazumi(new Vector3(0, 0, 5), "Kazumi", content, new BoundingBox(new Vector3(-2.5f, -9f, -2.5f), new Vector3(2.5f, 9f, 2.5f)));
-            //player = new CharacterOphelia(new Vector3(0,0,5), "Ophelia", content, new BoundingBox(new Vector3(-2.5f, -9f, -2.5f), new Vector3(2.5f, 9f, 2.5f)));
-            CharacterOphelia.manaLeft = 3;
+
+            if (isCrystal)
+            {
+                player = new CharacterKazumi(new Vector3(0, 0, 5), "Kazumi", content, new BoundingBox(new Vector3(-2.5f, -9f, -2.5f), new Vector3(2.5f, 9f, 2.5f)));
+                hud = new KazumiHUD(cont, graphics);
+                CharacterKazumi.manaLeft = 3;
+            }
+            else
+            {
+                player = new CharacterOphelia(new Vector3(0, 0, 5), "Ophelia", content, new BoundingBox(new Vector3(-2.5f, -9f, -2.5f), new Vector3(2.5f, 9f, 2.5f)));
+                hud = new OpheliaHUD(cont, graphics);
+                CharacterOphelia.manaLeft = 3;
+            }
 
             //Checkpoints (default = Startposition)
             lastCheckpoint = new Checkpoint(Vector3.Zero, "checkpoint_hell", content);
-
-            //HUD
-            hud = new KazumiHUD(cont, graphics);
         }
         #endregion
 
@@ -512,8 +621,8 @@ namespace CR4VE.GameLogic.GameStates
 
             ////DEBUG---------------------------
             //Console.Clear();
-            //Console.WriteLine(tutIndex);
-            ////Console.WriteLine(isPopup);
+            //Console.WriteLine(player.CharacterType);
+            //Console.WriteLine(isPopup);
             //Console.WriteLine(player.Position);
             ////--------------------------------
 
@@ -535,13 +644,13 @@ namespace CR4VE.GameLogic.GameStates
 
             #region filling world rectangle
             //width and height for spriteBatch rectangle needed to draw background texture
-            /*Vector2 drawPos = new Vector2(Camera2D.WorldRectangle.X, Camera2D.WorldRectangle.Y);
+            Vector2 drawPos = Camera2D.transform2D(new Vector2(100, 0));
             int drawRecWidth = graphics.PreferredBackBufferWidth;
             int drawRecHeight = graphics.PreferredBackBufferHeight;
             
-            Rectangle drawRec = new Rectangle((int)Camera2D.Position2D.X, (int)Camera2D.Position2D.Y, drawRecWidth, drawRecHeight);*/
+            Rectangle drawRec = new Rectangle((int)Camera2D.Position2D.X, (int)Camera2D.Position2D.Y, drawRecWidth, drawRecHeight);
 
-            //spriteBatch.Draw(background, drawPos, drawRec, Color.White);
+            spriteBatch.Draw(background, drawPos, drawRec, Color.White);
             #endregion
 
             spriteBatch.End();
@@ -564,10 +673,10 @@ namespace CR4VE.GameLogic.GameStates
                 player.drawIn2DWorld(new Vector3(0.02f, 0.02f, 0.02f), 0, MathHelper.ToRadians(90) * player.viewingDirection.X, 0);
                 player.DrawAttacks();
             }
-
+            
             //SkyBox
-            skybox.Drawsky(new Vector3(4000f, 50f, -2.5f), 0, 0, 0);
-            skybox2.Drawsky(new Vector3(200f, 50f, -2.5f), 0, 0, 0);
+            skybox.Drawsky( new Vector3(1000f, 50f, -2.5f), 0, 0, 0);
+          //  skybox2.Drawsky(new Vector3(200f, 50f, -2.5f), 0, 0, 0);
 
             #region Enemies
             foreach (Enemy e in currentMaps[activeIndex1].EnemyList)
@@ -620,7 +729,7 @@ namespace CR4VE.GameLogic.GameStates
         public void Unload()
         {
             //empty entity lists
-            foreach (Tilemap tm in gameMaps)
+            foreach (Tilemap tm in gameMaps_hell)
             {
                 tm.CheckpointList.Clear();
                 tm.EnemyList.Clear();
@@ -628,6 +737,13 @@ namespace CR4VE.GameLogic.GameStates
                 tm.TileList.Clear();
             }
             foreach (Tilemap tm in tutorialMaps)
+            {
+                tm.CheckpointList.Clear();
+                tm.EnemyList.Clear();
+                tm.PowerupList.Clear();
+                tm.TileList.Clear();
+            }
+            foreach (Tilemap tm in gameMaps_crystal)
             {
                 tm.CheckpointList.Clear();
                 tm.EnemyList.Clear();
