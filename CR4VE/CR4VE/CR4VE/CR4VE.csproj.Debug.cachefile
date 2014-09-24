@@ -102,7 +102,6 @@ Content\Assets\Models\Powerups\powerup_crystal_mana.xnb
 Content\Assets\Models\Players\Kazumi.xnb
 Content\Assets\Models\Checkpoints\checkpoint_crystal.xnb
 Content\Assets\Models\10x10x10Box1.xnb
-Content\Assets\Models\OpheliasAoE.xnb
 Content\Assets\Models\kazumisClaws.xnb
 Content\Assets\Models\kazumisAoE.xnb
 Content\Assets\Models\Terrain\Box33.xnb
@@ -183,7 +182,6 @@ Content\Assets\Sounds\punch.xnb
 Content\Assets\Sounds\water.xnb
 Content\Assets\Models\Terrain\Box25.xnb
 Content\Assets\Models\Terrain\Box26.xnb
-Content\Rose Crystal Assortment_0.xnb
 Content\4706_0.xnb
 Content\Assets\Sprites\MainMenu_selection.xnb
 Content\Assets\Ophelia\Maps\fire_1024x1024_0.xnb
@@ -192,6 +190,13 @@ Content\Assets\Sounds\minions.xnb
 Content\Assets\Models\Terrain\Box21.xnb
 Content\Assets\Sounds\GoldCave.xnb
 Content\tileable-icy-and-watery-blue-tex_0.xnb
+Content\Assets\Models\OpheliasAoE.xnb
+Content\Assets\Models\Terrain\Box27.xnb
+Content\Assets\Models\Terrain\Box28.xnb
+Content\Assets\Models\Maps\gold_1024x1024_1.xnb
+Content\tileable-icy-and-watery-blue-tex_1.xnb
+Content\Rainbow Shards_0.xnb
+Content\4706_1.xnb
 Content\Assets\Sprites\Startscreen.png
 Content\Assets\Sprites\ButtonExit.png
 Content\Assets\Sprites\ButtonPlay.png
