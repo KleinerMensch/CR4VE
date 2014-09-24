@@ -119,6 +119,9 @@ Content\Assets\Sounds\itemCollect.xnb
 Content\Assets\Sounds\scream.xnb
 Content\Assets\Sounds\deathScream.xnb
 Content\Assets\Sounds\Fireball.xnb
+Content\Assets\Sounds\freezingIce.xnb
+Content\Assets\Sounds\SeraphinScream.xnb
+Content\Assets\Sounds\whip.xnb
 Content\red_eye_0.xnb
 Content\Assets\Models\Powerups\Textures\gold_256x256_0.xnb
 Content\Assets\Models\Terrain\Textures\seamless\lava_bright2_1024x1024_0.xnb
@@ -170,31 +173,25 @@ Content\Tileable ice on grass ground tex_0.xnb
 Content\snow_scuffed_ground_1_0.xnb
 Content\Frozen Bubbles_0.xnb
 Content\Snow_0.xnb
-Content\Assets\Sounds\freezingIce.xnb
-Content\Assets\Sounds\SeraphinScream.xnb
-Content\Assets\Sounds\whip.xnb
-Content\Assets\Sprites\MainMenu_selection.xnb
 Content\Assets\Sounds\CheckpointCristall.xnb
-Content\Assets\Sounds\claws.xnb
+Content\Assets\Sounds\thunder.xnb
 Content\Assets\Sounds\laser.xnb
+Content\Assets\Sounds\spear.xnb
+Content\Assets\Sounds\claws.xnb
 Content\Assets\Sounds\mainMenu.xnb
 Content\Assets\Sounds\punch.xnb
-Content\Assets\Sounds\spear.xnb
-Content\Assets\Sounds\thunder.xnb
 Content\Assets\Sounds\water.xnb
 Content\Assets\Models\Terrain\Box25.xnb
 Content\Assets\Models\Terrain\Box26.xnb
 Content\Rose Crystal Assortment_0.xnb
 Content\4706_0.xnb
-Content\Assets\Ophelia\Maps\fire_1024x1024.xnb
-Content\Assets\Ophelia\Maps\Lasertextur_1024x1024.xnb
 Content\Assets\Sprites\MainMenu_selection.xnb
-Content\Assets\Models\kazumisFireball.xnb
-Content\Assets\Models\seraphinsLaser.xnb
 Content\Assets\Ophelia\Maps\fire_1024x1024_0.xnb
-Content\Assets\Ophelia\Maps\Lasertextur_1024x1024_0.xnb
 Content\Assets\Sounds\spawn.xnb
 Content\Assets\Sounds\minions.xnb
+Content\Assets\Models\Terrain\Box21.xnb
+Content\Assets\Sounds\GoldCave.xnb
+Content\tileable-icy-and-watery-blue-tex_0.xnb
 Content\Assets\Sprites\Startscreen.png
 Content\Assets\Sprites\ButtonExit.png
 Content\Assets\Sprites\ButtonPlay.png

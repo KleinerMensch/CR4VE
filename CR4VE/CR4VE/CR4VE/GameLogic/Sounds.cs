@@ -32,6 +32,7 @@ namespace CR4VE.GameLogic
         public static SoundEffect water;
         public static SoundEffect spawn;
         public static SoundEffect minionsFraktus;
+        public static SoundEffect goldCave;
  
         #endregion
 
@@ -57,6 +58,7 @@ namespace CR4VE.GameLogic
             water = content.Load<SoundEffect>("Assets/Sounds/water");
             spawn = content.Load<SoundEffect>("Assets/Sounds/spawn");
             minionsFraktus = content.Load<SoundEffect>("Assets/Sounds/minions");
+            goldCave = content.Load<SoundEffect>("Assets/Sounds/GoldCave");
             
         }
 
