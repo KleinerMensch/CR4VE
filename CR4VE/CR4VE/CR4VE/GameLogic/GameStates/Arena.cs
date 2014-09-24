@@ -198,12 +198,14 @@ namespace CR4VE.GameLogic.GameStates
             if (Singleplayer.isCrystal)
             {
                 kazumiHud.Draw(spriteBatch);
-                fractusBossHUD.Draw(spriteBatch);
+                if(!fractusBossHUD.isDead)
+                    fractusBossHUD.Draw(spriteBatch);
             }
             else
             {
                 opheliaHud.Draw(spriteBatch);
-                seraphinBossHUD.Draw(spriteBatch);
+                if(!seraphinBossHUD.isDead)
+                    seraphinBossHUD.Draw(spriteBatch);
             }
 
             spriteBatch.End();

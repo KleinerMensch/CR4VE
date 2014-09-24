@@ -1,5 +1,6 @@
 ﻿using CR4VE.GameBase.Objects;
 using CR4VE.GameLogic.AI;
+using CR4VE.GameLogic.Controls;
 using CR4VE.GameLogic.GameStates;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -180,7 +181,7 @@ namespace CR4VE.GameLogic.Characters
                 {
                     speerPosition = this.Position + viewingDirection * offset;
                     speer = new Entity(speerPosition, "OpheliasSpeer", Multiplayer.cont);
-                    speer.boundary = new BoundingBox(speerPosition + new Vector3(-6f, -6f, -4f), speerPosition + new Vector3(10f, 6f, 4f));
+                    speer.boundary = new BoundingBox(speerPosition + new Vector3(-9f, -6f, -2.5f), speerPosition + new Vector3(9, 6f, 2.5f));
 
                     if (!listContainsSpeer)
                     {
@@ -198,12 +199,15 @@ namespace CR4VE.GameLogic.Characters
                     {
                         if (enemyHitByMelee)
                             break;
-                        //if (opheliaSpeer.boundary.Intersects(Multiplayer.playerX.boundary))
-                        //{
-                        //    Console.WriteLine("Ophelia hit Boss By Melee");
-                        //    Multiplayer.playerXHUD.healthLeft -= 5;
-                        //    enemyHitByMelee = true;
-                        //}
+                        for (int i = 0; i < GameControls.ConnectedControllers; i++)
+                        {
+                            if (opheliaSpeer.boundary.Intersects(Multiplayer.Players[i].boundary) && Multiplayer.Players[i].CharacterType != "Ophelia")
+                            {
+                                enemyHitByMelee = true;
+                                Console.WriteLine("Ophelia hit " + Multiplayer.Players[i] + " by Melee");
+                                Multiplayer.hudArray[i].healthLeft -= 5;
+                            }
+                        }
                     }
                 }
                 #endregion
@@ -434,13 +438,15 @@ namespace CR4VE.GameLogic.Characters
 
                                 soundPlayedRanged = true;
                             }
-
-                            //if (attackList[i].boundary.Intersects(Multiplayer.playerX.boundary))
-                            //{
-                            //    Multiplayer.playerXHUD.healthLeft -= 40;
-                            //    enemyHit = true;
-                            //    Console.WriteLine("Ophelia hit PlayerX by RangedAttack");
-                            //}
+                            for (int j = 0; j < GameControls.ConnectedControllers; j++)
+                            {
+                                if (attackList[i].boundary.Intersects(Multiplayer.Players[j].boundary) && Multiplayer.Players[j].CharacterType != "Ophelia")
+                                {
+                                    enemyHit = true;
+                                    Console.WriteLine("Ophelia hit " + Multiplayer.Players[j] + " by Ranged");
+                                    Multiplayer.hudArray[j].healthLeft -= 40;
+                                }
+                            }
                             //verschwindet auch bei Kollision mit Gegner
                             if (enemyHit)
                             {
@@ -612,11 +618,13 @@ namespace CR4VE.GameLogic.Characters
 
                     foreach (Entity opheliasHolyThunder in aoeList)
                     {
-                        //if (opheliasHolyThunder.boundary.Intersects(Multiplayer.playerX.boundary))
-                        //{
-                        //    Multiplayer.playerXHUD.healthLeft -= 50;
-                        //    Console.WriteLine("Ophelia hit PlayerX by AoE");
-                        //}
+                        for (int i = 0; i < GameControls.ConnectedControllers; i++){
+                            if (opheliasHolyThunder.boundary.Intersects(Multiplayer.Players[i].boundary) && Multiplayer.Players[i].CharacterType != "Ophelia")
+                            {
+                                Console.WriteLine("Ophelia hit " + Multiplayer.Players[i] + " by AoE");
+                                Multiplayer.hudArray[i].healthLeft -= 50;
+                            }
+                        }
                     }
                 }
                 #endregion

@@ -1,6 +1,7 @@
 ﻿using CR4VE.GameBase.HeadUpDisplay;
 using CR4VE.GameBase.Objects;
 using CR4VE.GameLogic.AI;
+using CR4VE.GameLogic.Controls;
 using CR4VE.GameLogic.GameStates;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
@@ -22,6 +23,8 @@ namespace CR4VE.GameLogic.Characters
         Entity crystalShield;
         BoundingSphere rangeOfFlyingCrystals;
         Enemy nearestEnemy = new Enemy();
+        Character nearestCharacter = new Character();
+        HUD nearestCharacterHUD;
 
         TimeSpan timeSpanForHealthAbsorbingCrystals = TimeSpan.FromSeconds(10);
         TimeSpan timeSpan = TimeSpan.FromMilliseconds(270);
@@ -172,12 +175,15 @@ namespace CR4VE.GameLogic.Characters
                     {
                         if (enemyHitByMelee)
                             break;
-                        //if (fractusShield.boundary.Intersects(Multiplayer.playerX.boundary))
-                        //{
-                        //    Multiplayer.playerXHud.healthLeft -= 1;
-                        //    enemyHitByMelee = true;
-                        //    Console.WriteLine("Fractus hit PlayerX by crystalShield");
-                        //}
+                        for (int i = 0; i < GameControls.ConnectedControllers; i++)
+                        {
+                            if (fractusShield.boundary.Intersects(Multiplayer.Players[i].boundary) && Multiplayer.Players[i].CharacterType != "Fractus")
+                            {
+                                Multiplayer.hudArray[i].healthLeft -= 5;
+                                enemyHitByMelee = true;
+                                Console.WriteLine("Fractus hit " + Multiplayer.Players[i] + " by crystalShield");
+                            }
+                        }
                     }
                 }
                 #endregion
@@ -285,7 +291,7 @@ namespace CR4VE.GameLogic.Characters
 
                             if (attackList[i].boundary.Intersects(Arena.boss.boundary))
                             {
-                                Arena.kazumiHud.healthLeft -= 3;
+                                Arena.kazumiHud.healthLeft -= 40;
                                 enemyHit = true;
                                 Console.WriteLine("Fractus hit Player by SpecialAttack");
                             }
@@ -333,13 +339,15 @@ namespace CR4VE.GameLogic.Characters
 
                                 soundPlayedRanged = true;
                             }
-
-                            //if (attackList[i].boundary.Intersects(Multiplayer.playerX.boundary))
-                            //{
-                            //    Multiplayer.playerXHud.healthLeft -= 3;
-                            //    enemyHit = true;
-                            //    Console.WriteLine("Fractus hit PlayerX by SpecialAttack");
-                            //}
+                            for (int j = 0; j < GameControls.ConnectedControllers; j++)
+                            {
+                                if (attackList[i].boundary.Intersects(Multiplayer.Players[j].boundary) && Multiplayer.Players[j].CharacterType != "Fractus")
+                                {
+                                    Multiplayer.hudArray[j].healthLeft -= 40;
+                                    enemyHit = true;
+                                    Console.WriteLine("Fractus hit " + Multiplayer.Players[i] + " by Ranged");
+                                }
+                            }
                             //verschwindet auch bei Kollision mit Gegner
                             if (enemyHit)
                             {
@@ -445,18 +453,45 @@ namespace CR4VE.GameLogic.Characters
                 {
                     crystal.boundary = new BoundingBox(crystal.position + new Vector3(-2, -2, -2), crystal.position + new Vector3(2, 2, 2));
 
+                    float minDistance = float.MaxValue;
+
+                    //calculating nearest enemy
+
+                    for (int i = 0; i < GameControls.ConnectedControllers; i++)
+                    {
+                        if (Multiplayer.Players[i].CharacterType != "Fractus")
+                        {
+                            float distance = (crystal.position - Multiplayer.Players[i].position).Length();
+                            if (distance < minDistance)
+                            {
+                                minDistance = distance;
+                                nearestCharacter = Multiplayer.Players[i];
+                                nearestCharacterHUD = Multiplayer.hudArray[i];
+                            }
+                        }
+                    }
+
                     foreach (Entity healthAbsorbingCrystal in crystalList)
                     {
                         ////absorbs health of nearest enemy if enemy is in range of effect
-                        //if ((healthAbsorbingCrystal.position - nearestPlayer).Length() < 15 && nearestPlayerHud.healthLeft > 0)
-                        //{
-                        //    Console.WriteLine(" Fractus hit nearestPlayer by SpecialAttack");
-                        //    nearestPlayerHud.healthLeft -= 1;
+                        for (int i = 0; i < GameControls.ConnectedControllers; i++)
+                        {
+                            if ((healthAbsorbingCrystal.position - nearestCharacter.position).Length() < 15 && nearestCharacterHUD.healthLeft > 0)
+                            {
+                                Console.WriteLine(" Fractus hit nearestPlayer by SpecialAttack");
+                                nearestCharacterHUD.healthLeft -= 1;
 
-                        //    //transfers health to Fractus in Arena
-                        //    if (Multiplayer.fractusHUD.trialsLeft <= 3 && Multiplayer.fractusHUD.healthLeft < Multiplayer.fractusHUD.fullHealth)
-                        //        Multiplayer.fractusHUD.healthLeft += (int)(Multiplayer.fractusHUD.fullHealth * 0.01f);
-                        //}
+                                //transfers health to Fractus in Multiplayer
+                                for (int j = 0; j < GameControls.ConnectedControllers; j++)
+                                {
+                                    if (Multiplayer.Players[j].CharacterType == "Fractus")
+                                    {
+                                        if (Multiplayer.hudArray[j].trialsLeft <= 3 && Multiplayer.hudArray[j].healthLeft < Multiplayer.hudArray[j].fullHealth)
+                                            Multiplayer.hudArray[j].healthLeft += (int)(Multiplayer.hudArray[j].fullHealth * 0.01f);
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
                 #endregion
@@ -491,7 +526,7 @@ namespace CR4VE.GameLogic.Characters
                 #region Singleplayer
                 if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
                 {
-                    Entity flyingCrystals = new Entity(this.position, "Enemies/skull", Singleplayer.cont);
+                    Entity flyingCrystals = new Entity(this.position, "fractusCrystals", Singleplayer.cont);
                     flyingCrystals.viewingDirection = viewingDirection;
                     flyingCrystals.boundary = new BoundingBox(this.position + new Vector3(-3, -3, -3), this.position + new Vector3(3, 3, 3));
                     attackList.Add(flyingCrystals);
@@ -509,7 +544,7 @@ namespace CR4VE.GameLogic.Characters
                 #region Multiplayer
                 else if (Game1.currentState.Equals(Game1.EGameState.Multiplayer))
                 {
-                    Entity flyingCrystals = new Entity(this.position, "Enemies/skull", Multiplayer.cont);
+                    Entity flyingCrystals = new Entity(this.position, "fractusCrystals", Multiplayer.cont);
                     flyingCrystals.viewingDirection = viewingDirection;
                     flyingCrystals.boundary = new BoundingBox(this.position + new Vector3(-3, -9, -3), this.position + new Vector3(3, 9, 3));
                     attackList.Add(flyingCrystals);
