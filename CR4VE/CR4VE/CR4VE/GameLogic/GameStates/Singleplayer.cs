@@ -549,15 +549,8 @@ namespace CR4VE.GameLogic.GameStates
 
             //Skybox
             skybox =  new SkyBox(new Vector3(0, 0, -13), "Assets/Skybox/cube_hell", content);
-<<<<<<< HEAD
-           // skybox2 = new SkyBox(new Vector3(4190, 0, -13), "Assets/Skybox/black", content);
-            background = content.Load<Texture2D>("Assets/Skybox/Skybox-Right");
-            background2 = content.Load<Texture2D>("Assets/Skybox/Skybox-Back");
-            background3 = content.Load<Texture2D>("Assets/Skybox/Skybox-Left");
-            background4 = content.Load<Texture2D>("Assets/Skybox/Skybox-Front");
-=======
-            background = content.Load<Texture2D>("Assets/Sprites/stone");
->>>>>>> d774428c112ea4a57108618df2011cda9d958212
+           background = content.Load<Texture2D>("Assets/Sprites/stone");
+
 
             //Player
             ghost = new Character(Vector3.Zero, "skull", content);
