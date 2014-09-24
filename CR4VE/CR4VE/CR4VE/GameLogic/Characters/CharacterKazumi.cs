@@ -1,5 +1,6 @@
 ﻿using CR4VE.GameBase.Objects;
 using CR4VE.GameLogic.AI;
+using CR4VE.GameLogic.Controls;
 using CR4VE.GameLogic.GameStates;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -144,7 +145,7 @@ namespace CR4VE.GameLogic.Characters
                 {
                     clawsPosition = this.position + viewingDirection * offset;
                     claws = new Entity(clawsPosition, "kazumisClaws", Arena.cont);
-                    claws.boundary = new BoundingBox(clawsPosition + new Vector3(-2.5f, -2.5f, -2.5f), clawsPosition + new Vector3(2.5f, 2.5f, 2.5f));
+                    claws.boundary = new BoundingBox(clawsPosition + new Vector3(-2.5f, -6f, -2.5f), clawsPosition + new Vector3(2.5f, 2.5f, 2.5f));
                     
                     if (!listContainsClaws)
                     {
@@ -176,7 +177,7 @@ namespace CR4VE.GameLogic.Characters
                 {
                     clawsPosition = this.position + viewingDirection * offset;
                     claws = new Entity(clawsPosition, "kazumisClaws", Multiplayer.cont);
-                    claws.boundary = new BoundingBox(clawsPosition + new Vector3(-2.5f, -2.5f, -2.5f), clawsPosition + new Vector3(2.5f, 2.5f, 2.5f));
+                    claws.boundary = new BoundingBox(clawsPosition + new Vector3(-2.5f, -6f, -2.5f), clawsPosition + new Vector3(2.5f, 6f, 2.5f));
 
                     if (!listContainsClaws)
                     {
@@ -194,12 +195,15 @@ namespace CR4VE.GameLogic.Characters
                     {
                         if (enemyHitByMelee)
                             break;
-                        //if (kazumisClaws.boundary.Intersects(Multiplayer.playerX.boundary))
-                        //{
-                        //    Multiplayer.playerXHUD.healthLeft -= 5;
-                        //    enemyHitByMelee = true;
-                        //    Console.WriteLine("Kazumi hit PlayerX by MeleeAttack");
-                        //}
+                        for (int i = 0; i < GameControls.ConnectedControllers; i++)
+                        {
+                            if (kazumisClaws.boundary.Intersects(Multiplayer.Players[i].boundary) && Multiplayer.Players[i].CharacterType != "Kazumi")
+                            {
+                                enemyHitByMelee = true;
+                                Console.WriteLine("Kazumi hit " + Multiplayer.Players[i] + " by MeleeAttack");
+                                Multiplayer.hudArray[i].healthLeft -= 5;
+                            }
+                        }
                     }
                 }
                 #endregion
@@ -386,13 +390,15 @@ namespace CR4VE.GameLogic.Characters
 
                                 soundPlayedRanged = true;
                             }
-
-                            //if (attackList[i].boundary.Intersects(Multiplayer.playerX.boundary))
-                            //{
-                            //    Multiplayer.playerXHUD.healthLeft -= 40;
-                            //    enemyHit = true;
-                            //    Console.WriteLine("Kazumi hit PlayerX by RangedAttack");
-                            //}
+                            for (int j = 0; j < GameControls.ConnectedControllers; j++)
+                            {
+                                if (attackList[i].boundary.Intersects(Multiplayer.Players[j].boundary) && Multiplayer.Players[j].CharacterType != "Kazumi")
+                                {
+                                    enemyHit = true;
+                                    Console.WriteLine("Kazumi hit "+ Multiplayer.Players[j] +" by RangedAttack");
+                                    Multiplayer.hudArray[j].healthLeft -= 40;
+                                }
+                            }
                             //verschwindet auch bei Kollision mit Gegner
                             if (enemyHit)
                             {
@@ -561,11 +567,14 @@ namespace CR4VE.GameLogic.Characters
 
                     foreach (Entity kazumisDanceOfFirefox in aoeList)
                     {
-                        //if (kazumisDanceOfFirefox.boundary.Intersects(Multiplayer.playerX.boundary))
-                        //{
-                        //    Multiplayer.playerXHUD.healthLeft -= 50;
-                        //    Console.WriteLine("Kazumi hit Boss by AoE");
-                        //}
+                        for (int i = 0; i < GameControls.ConnectedControllers; i++)
+                        {
+                            if (kazumisDanceOfFirefox.boundary.Intersects(Multiplayer.Players[i].boundary) && Multiplayer.Players[i].CharacterType != "Kazumi")
+                            {
+                                Console.WriteLine("Kazumi hit " + Multiplayer.Players[i] + " by Special");
+                                Multiplayer.hudArray[i].healthLeft -= 50;
+                            }
+                        }
                     }
                 }
                 #endregion
@@ -589,7 +598,7 @@ namespace CR4VE.GameLogic.Characters
                     foreach (Entity claw in meleeAttackList)
                     {
                         float clawBlickwinkel = (float)Math.Atan2(-viewingDirection.Z, viewingDirection.X);
-                        claw.drawInArena(new Vector3(0.5f, 0.5f, 0.5f), 0, MathHelper.ToRadians(90) + clawBlickwinkel, 0);
+                        claw.drawInArena(new Vector3(0.6f, 0.6f, 0.6f), 0, MathHelper.ToRadians(90) + clawBlickwinkel, 0);
                     }
                 }
             }

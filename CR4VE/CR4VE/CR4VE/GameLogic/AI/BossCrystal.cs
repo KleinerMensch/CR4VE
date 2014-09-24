@@ -62,7 +62,9 @@ namespace CR4VE.GameLogic.AI
                 launchedMelee = false;
                 launchedRanged = false;
                 launchedSpecial = false;
-                attackList.RemoveRange(0, attackList.Count);
+                attackList.Clear();
+                meleeAttackList.Clear();
+                crystalList.Clear();
                 #endregion
             }
             #endregion

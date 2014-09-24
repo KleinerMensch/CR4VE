@@ -494,8 +494,23 @@
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
-    <Compile Include="Assets\Models\Terrain\Box28.FBX">
-      <Name>Box28</Name>
+    <Compile Include="Assets\Models\seraphinsWhip.FBX">
+      <Name>seraphinsWhip</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\seraphinsLaser.FBX">
+      <Name>seraphinsLaser</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\fractusCrystalShield.FBX">
+      <Name>fractusCrystalShield</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\fractusCrystals.FBX">
+      <Name>fractusCrystals</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
@@ -873,13 +888,6 @@
   <ItemGroup>
     <Compile Include="Assets\Sounds\GoldCave.wav">
       <Name>GoldCave</Name>
-      <Importer>WavImporter</Importer>
-      <Processor>SoundEffectProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Assets\Sounds\crystalBackground.wav">
-      <Name>crystalBackground</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
     </Compile>
