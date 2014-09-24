@@ -26,6 +26,8 @@ namespace CR4VE.GameLogic.GameStates
         //Terrain
         static Entity terrain;
         public static Entity lava;
+        public static Effect lava_effect;
+        public static Texture2D texture;
 
         //Arena Boundaries
         public static readonly BoundingBox arenaFloorBox = new BoundingBox(new Vector3(-54, -25, -65), new Vector3(63, -15, 53));
@@ -68,6 +70,7 @@ namespace CR4VE.GameLogic.GameStates
 
             //BoundingBox lavaBound = new BoundingBox(new Vector3(), new Vector3());
             lava = new Entity(new Vector3(0, -110, -30), "Terrain/lavafloor", content);
+           
 
             //moveable Entities
             if (Singleplayer.isCrystal)

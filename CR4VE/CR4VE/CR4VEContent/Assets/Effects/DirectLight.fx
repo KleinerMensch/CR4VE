@@ -9,13 +9,14 @@ float4 DirectionalColor = float4(1,1,1,1);
 float DirectionalIntensity = 0.50;
 float3 DirectionalLightDir = float3(-1,-1,1);
 
- //texture ModelTexture;
+// Texture ModelTexture;
 //sampler2D textureSampler = sampler_state {
-//	Texture = (ModelTexture);
+//	texture = <ModelTexture>;
 //	MagFilter = Linear;
 //	MinFilter = Linear;
-//	AdressU = Clamp;
-//	AdressV = Clamp;
+//	MipFiler = Linear;
+//	AdressU = Mirror;
+//	AdressV = Mirror;
 //};
 
 // TODO: add effect parameters here.
@@ -34,7 +35,7 @@ struct VertexShaderOutput
 {
     float4 Position : POSITION0;
 	float3 Normal   : TEXCOORD0;
-	//float2 TextureCoordinate : TEXCOORD1;
+	/*float2 TextureCoordinate : TEXCOORD0;*/
 	
 	
 
@@ -52,7 +53,8 @@ VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
     output.Position = mul(viewPosition, Projection);
 
 	output.Normal = normalize(mul(input.Normal, World)); //normale wird in das welt-koordinaten-system überführt und normalisiert
-	//output.TextureCoordinate = input.TextureCoordinate;
+	float4 VertexPosition = mul(input.Position, World);
+	//output.TextureCoordinate = VertexPosition - Camera2D;
 
 
     // TODO: add your vertex shader code here.
