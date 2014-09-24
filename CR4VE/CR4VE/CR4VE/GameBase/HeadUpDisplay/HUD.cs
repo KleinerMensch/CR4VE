@@ -80,6 +80,20 @@ namespace CR4VE.GameBase.HeadUpDisplay
                     trialsLeft -= 1;
                 }
             }
+            else if (Game1.currentState.Equals(Game1.EGameState.Multiplayer))
+            {
+                if (healthLeft <= 0 && trialsLeft > 0)
+                {
+                    trialsLeft -= 1;
+
+                    //refill health
+                    healthLeft = fullHealth;
+                }
+                else if (healthLeft <= 0 && trialsLeft == 0)
+                {
+                    trialsLeft -= 1;
+                }
+            }
 
             if (trialsLeft < 0)
                 isDead = true;

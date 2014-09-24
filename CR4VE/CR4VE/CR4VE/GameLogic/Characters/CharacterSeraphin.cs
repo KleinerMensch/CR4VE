@@ -1,5 +1,6 @@
 ﻿using CR4VE.GameBase.Objects;
 using CR4VE.GameLogic.AI;
+using CR4VE.GameLogic.Controls;
 using CR4VE.GameLogic.GameStates;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -25,12 +26,10 @@ namespace CR4VE.GameLogic.Characters
         Vector3 dir;
         float distance;
 
-        Vector3 currentViewingDirection;
         Vector3 currentCharacterPosition;
         Vector3 algaWhipPosition;
         Vector3 offset = new Vector3(8,8,8);
         Vector3 laserOffset = new Vector3(25, 25, 25);
-        float currentBlickwinkel;
         float speed = 1;
         float whipRotation = 0;
         float moveSpeed = 0.2f;
@@ -167,7 +166,7 @@ namespace CR4VE.GameLogic.Characters
                 else if (Game1.currentState.Equals(Game1.EGameState.Multiplayer))
                 {
                     algaWhipPosition = this.position + viewingDirection * offset;
-                    algaWhip = new Entity(algaWhipPosition, "5x5x5Box1", Multiplayer.cont);
+                    algaWhip = new Entity(algaWhipPosition, "seraphinsWhip", Multiplayer.cont);
                     algaWhip.viewingDirection = viewingDirection;
                     algaWhip.boundary = new BoundingBox(algaWhipPosition + new Vector3(-4f, -4f, -4f), algaWhipPosition + new Vector3(4f, 4f, 4f));
 
@@ -186,12 +185,16 @@ namespace CR4VE.GameLogic.Characters
                     {
                         if (enemyHitByMelee)
                             break;
-                        //if (seraphinsWhip.boundary.Intersects(Multiplayer.playerX.boundary))
-                        //{
-                        //    Multiplayer.playerXHud.healthLeft -= 1;
-                        //    enemyHitByMelee = true;
-                        //    Console.WriteLine("Seraphin hit PlayerX by MeleeAttack");
-                        //}
+                        for (int i = 0; i < GameControls.ConnectedControllers; i++)
+                        {
+                            if (seraphinsWhip.boundary.Intersects(Multiplayer.Players[i].boundary) && Multiplayer.Players[i].CharacterType != "Seraphin")
+                            {
+                                enemyHitByMelee = true;
+                                Console.WriteLine("Seraphin hit "+ Multiplayer.Players[i] + " by MeleeAttack");
+                                Multiplayer.hudArray[i].healthLeft -= 5;
+
+                            }
+                        }
                     }
                 }
                 #endregion
@@ -298,17 +301,37 @@ namespace CR4VE.GameLogic.Characters
                 {
                     minion.boundary = new BoundingBox(minion.position + new Vector3(-2, -2, -2), minion.position + new Vector3(2, 2, 2));
 
-                    //Vector3 direction = Multiplayer.playerX - minion.position;
-                    //direction.Normalize();
-                    //direction = moveSpeed * direction;
-                    //minion.viewingDirection = direction;
-                    //minion.move(direction);
+                    Vector3 direction = new Vector3(0, 0, 0);
+                    float minDistance = float.MaxValue;
 
-                    //if (minion.boundary.Intersects(Multiplayer.playerX.boundary))
-                    //{
-                    //    Arena.opheliaHud.healthLeft -= 1;
-                    //    Console.WriteLine("Seraphin hit Multiplayer.playerX by RangedAttack");
-                    //}
+                    //calculating which player ist next to it
+                    for (int i = 0; i < GameControls.ConnectedControllers; i++)
+                    {
+                        if (Multiplayer.Players[i].CharacterType != "Seraphin")
+                        {
+                            dir = Multiplayer.Players[i].position - minion.position;
+                            distance = dir.Length();
+                            if (distance < minDistance)
+                            {
+                                direction = dir;
+                                minDistance = distance;
+                            }
+                        }
+                    }
+
+                    direction.Normalize();
+                    direction = moveSpeed * direction;
+                    minion.viewingDirection = direction;
+                    minion.move(direction);
+
+                    for (int j = 0; j < GameControls.ConnectedControllers; j++)
+                    {
+                        if (minion.boundary.Intersects(Multiplayer.Players[j].boundary) && Multiplayer.Players[j].CharacterType != "Seraphin")
+                        {
+                            Multiplayer.hudArray[j].healthLeft -= 1;
+                            Console.WriteLine("Seraphin hit " + Multiplayer.Players[j] + " by RangedAttack");
+                        }
+                    }
                 }
                 #endregion
             }
@@ -478,12 +501,15 @@ namespace CR4VE.GameLogic.Characters
                         {
                             launchedSpecial = true;
 
-                            //if (attackList[i].boundary.Intersects(Multiplayer.playerX.boundary))
-                            //{
-                            //    Multiplayer.playerXHud.healthLeft -= 40;
-                            //    enemyHit = true;
-                            //    Console.WriteLine("Seraphin hit PlayerX by SpecialAttack");
-                            //}
+                            for (int j = 0; j < GameControls.ConnectedControllers; j++)
+                            {
+                                if (attackList[i].boundary.Intersects(Multiplayer.Players[j].boundary) && Multiplayer.Players[j].CharacterType != "Seraphin")
+                                {
+                                    Multiplayer.hudArray[j].healthLeft -= 50;
+                                    enemyHit = true;
+                                    Console.WriteLine("Seraphin hit " + Multiplayer.Players[i] + " by SpecialAttack");
+                                }
+                            }
                             //verschwindet auch bei Kollision
                             if (enemyHit)
                             {
@@ -686,7 +712,7 @@ namespace CR4VE.GameLogic.Characters
                 {
                     foreach (Entity lazer in attackList)
                     {
-                        lazer.drawIn2DWorld(new Vector3(0.01f, 0.01f, 0.01f), 0, MathHelper.ToRadians(90) * lazer.viewingDirection.X, 0);
+                        lazer.drawIn2DWorld(new Vector3(1f, 1f, 1f), 0, MathHelper.ToRadians(90) * lazer.viewingDirection.X, 0);
                     }
                 }
                 if (Game1.currentState.Equals(Game1.EGameState.Arena) || Game1.currentState.Equals(Game1.EGameState.Multiplayer))

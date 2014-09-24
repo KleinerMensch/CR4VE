@@ -114,7 +114,7 @@ namespace CR4VE.GameBase.Objects.Terrain
                         case 87:
                             {
                                 Vector3 position = start + new Vector3(x * size, -y * size, 0);
-                                BoundingBox boundary = new BoundingBox(position + new Vector3(-size*11 / 2, -size*7 / 2, -size / 2), position + new Vector3(size*11 / 2, size*2 / 2, size / 2));
+                                BoundingBox boundary = new BoundingBox(position + new Vector3(-size*11 / 2, -size*7 / 2, -size / 2), position + new Vector3(size*13 / 2, size*2 / 2, size / 2));
 
                                 Singleplayer.GoldSoundTrigger = new Entity(position, "5x5x5Box1", Singleplayer.cont, boundary);
                             } break;

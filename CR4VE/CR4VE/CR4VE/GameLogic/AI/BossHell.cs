@@ -79,6 +79,7 @@ namespace CR4VE.GameLogic.AI
                 launchedSpecial = false;
                 attackList.Clear();
                 meleeAttackList.Clear();
+                minionList.Clear();
                 #endregion
             }
             #endregion

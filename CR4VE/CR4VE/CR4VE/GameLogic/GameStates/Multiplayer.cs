@@ -9,6 +9,7 @@ using CR4VE.GameBase.Camera;
 using CR4VE.GameBase.Objects;
 using CR4VE.GameLogic.Controls;
 using CR4VE.GameLogic.Characters;
+using CR4VE.GameBase.HeadUpDisplay;
 
 namespace CR4VE.GameLogic.GameStates
 {
@@ -21,6 +22,7 @@ namespace CR4VE.GameLogic.GameStates
 
         //Player parameters        
         private static Character[] playerArray;
+        public static HUD[] hudArray;
 
         //Terrain
         public static readonly BoundingBox arenaFloorBox = new BoundingBox(new Vector3(-54, -25, -65), new Vector3(63, -15, 53));
@@ -52,6 +54,7 @@ namespace CR4VE.GameLogic.GameStates
 
             #region player models
             playerArray = new Character[GameControls.ConnectedControllers];
+            hudArray = new HUD[GameControls.ConnectedControllers];
 
             for (int i = 0; i < GameControls.ConnectedControllers; i++)
             {
@@ -59,22 +62,26 @@ namespace CR4VE.GameLogic.GameStates
                 {
                     case "Fractus":
                         {
-                            playerArray[i] = new CharacterFractus(new Vector3(0, -12.5f, 10), "Fractus", content);
+                            playerArray[i] = new CharacterFractus(new Vector3(0, -12.5f, 10), "Fractus", content,new BoundingBox(new Vector3(0, -12.5f, 10)+ new Vector3(-2.5f, -9, -2.5f), new Vector3(0, -12.5f, 10)+ new Vector3(2.5f, 9, 2.5f)));
+                            hudArray[i] = new FractusHUD(content, graphics);
                         } break;
 
                     case "Kazumi":
                         {
-                            playerArray[i] = new CharacterKazumi(new Vector3(0, -12.5f, -10), "Kazumi", content);
+                            playerArray[i] = new CharacterKazumi(new Vector3(0, -12.5f, -10), "Kazumi", content, new BoundingBox(new Vector3(0, -12.5f, -10) + new Vector3(-2.5f, -9, -2.5f), new Vector3(0, -12.5f, -10) + new Vector3(2.5f, 9, 2.5f)));
+                            hudArray[i] = new KazumiHUD(content, graphics);
                         } break;
 
                     case "Ophelia":
                         {
-                            playerArray[i] = new CharacterOphelia(new Vector3(-10, -12.5f, 0), "Ophelia", content);
+                            playerArray[i] = new CharacterOphelia(new Vector3(-10, -12.5f, 0), "Ophelia", content, new BoundingBox(new Vector3(-10, -12.5f, 0) + new Vector3(-2.5f, -9, -2.5f), new Vector3(-10, -12.5f, 0) + new Vector3(2.5f, 9, 2.5f)));
+                            hudArray[i] = new OpheliaHUD(content, graphics);
                         } break;
 
                     case "Seraphin":
                         {
-                            playerArray[i] = new CharacterSeraphin(new Vector3(10, -12.5f, 0), "albino", content);
+                            playerArray[i] = new CharacterSeraphin(new Vector3(10, -12.5f, 0), "albino", content, new BoundingBox(new Vector3(10, -12.5f, 0) + new Vector3(-2.5f, -9, -2.5f), new Vector3(10, -12.5f, 0) + new Vector3(2.5f, 9, 2.5f)));
+                            hudArray[i] = new SeraphinHUD(content, graphics);
                         } break;
 
                     default: { } break;
@@ -102,7 +109,14 @@ namespace CR4VE.GameLogic.GameStates
             //Players
             for (int i = 0; i < GameControls.ConnectedControllers; i++)
             {
-                Multiplayer.Players[i].Update(gameTime);
+                if (!hudArray[i].isDead)
+                {
+                    Multiplayer.Players[i].Update(gameTime);
+                    hudArray[i].Update();
+                    hudArray[i].UpdateHealth();
+                    hudArray[i].UpdateLiquidPositionByResolution();
+                    hudArray[i].UpdateMana();
+                }
             }
 
             return Game1.EGameState.Multiplayer;
@@ -120,10 +134,13 @@ namespace CR4VE.GameLogic.GameStates
             //players
             for (int i = 0; i < GameControls.ConnectedControllers; i++)
             {
-                if (Players[i].CharacterType == "Seraphin")
+                if (Players[i].CharacterType == "Seraphin" && !hudArray[i].isDead)
                     Multiplayer.Players[i].drawInArena(new Vector3(1f, 1f, 1f), 0, MathHelper.ToRadians(90) + Multiplayer.Players[i].blickWinkel, 0);
                 else
-                    Multiplayer.Players[i].drawInArena(new Vector3(0.02f, 0.02f, 0.02f), 0, MathHelper.ToRadians(90) + Multiplayer.Players[i].blickWinkel, 0);
+                {
+                    if (!hudArray[i].isDead)
+                        Multiplayer.Players[i].drawInArena(new Vector3(0.02f, 0.02f, 0.02f), 0, MathHelper.ToRadians(90) + Multiplayer.Players[i].blickWinkel, 0);
+                }
                 
                 Multiplayer.Players[i].DrawAttacks();
             }
@@ -131,12 +148,13 @@ namespace CR4VE.GameLogic.GameStates
 
             #region HUDs
             spriteBatch.Begin();
-
-            /*for (int i = 0; i < GameControls.ConnectedControllers; i++)
+            for (int i = 0; i < GameControls.ConnectedControllers; i++)
             {
-                Multiplayer.Players[i].HUD.Draw();
-            }*/
-
+                if (!hudArray[i].isDead)
+                {
+                    hudArray[i].Draw(spriteBatch);
+                }
+            }
             spriteBatch.End();
 
             //GraphicsDevice auf default setzen
