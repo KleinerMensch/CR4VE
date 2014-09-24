@@ -480,19 +480,19 @@ namespace CR4VE.GameBase.Objects
                //beleuchtung x,y,z 
                    // effect.EnableDefaultLighting();
                     effect.LightingEnabled = true;
-                    effect.AmbientLightColor = new Vector3(0.8f, 0.8f, 0.8f);
-                    effect.DiffuseColor = new Vector3(1f, 1f, 1f);
-                    effect.SpecularColor = new Vector3(1f, 1f, 1f);
-                    effect.SpecularPower = 40.0f;
+                    effect.AmbientLightColor = new Vector3(0.6f, 0.6f, 0.6f);
+                    effect.DiffuseColor = new Vector3(1.5f, 1.5f, 1.5f);
+                    effect.SpecularColor = new Vector3(2f, 2f, 2f);
+                    effect.SpecularPower = 60.0f;
                     effect.Alpha = 0.4f;
-
+                   // Vector3 lightPos0 = new Vector3(-50, 50, 50);
                     if (effect.LightingEnabled)
                     {
                         effect.DirectionalLight0.Enabled = true; 
                         if (effect.DirectionalLight0.Enabled)
                         {
                             // richtung x
-                            effect.DirectionalLight0.DiffuseColor = new Vector3(0.8f, 0.8f, 0.8f); 
+                            effect.DirectionalLight0.DiffuseColor = new Vector3(0.4f, 0.4f, 0.4f); 
                             effect.DirectionalLight0.Direction = Vector3.Normalize(new Vector3(1, 0, 0));
                             effect.DirectionalLight0.SpecularColor = Vector3.One;
                         }
@@ -501,18 +501,18 @@ namespace CR4VE.GameBase.Objects
                         if (effect.DirectionalLight1.Enabled)
                         {
                             // richtung y
-                            effect.DirectionalLight1.DiffuseColor = new Vector3(0.8f, 0.8f, 0.8f);
-                            effect.DirectionalLight1.Direction = Vector3.Normalize(new Vector3(0, -1, 0));
-                            effect.DirectionalLight1.SpecularColor = Vector3.One;
+                            effect.DirectionalLight1.DiffuseColor = new Vector3(0.7f, 0.6f, 0.6f);
+                            effect.DirectionalLight1.Direction = Vector3.Normalize(new Vector3(0, -1, -1));
+                            effect.DirectionalLight1.SpecularColor = new Vector3(0.6f ,0.5f, 0.5f);
                         }
 
                         effect.DirectionalLight2.Enabled = true;
                         if (effect.DirectionalLight2.Enabled)
                         {
                             // richtung y,z
-                            effect.DirectionalLight2.DiffuseColor = new Vector3(0.5f, 0.5f, 0.5f);
+                            effect.DirectionalLight2.DiffuseColor = new Vector3(0.8f, 0.7f, 0.7f);
                             effect.DirectionalLight2.Direction = Vector3.Normalize(new Vector3(0, -1, -1));
-                            effect.DirectionalLight2.SpecularColor = Vector3.One;
+                            effect.DirectionalLight2.SpecularColor = new Vector3(0.8f, 0.6f, 0.6f); ;
                         }
                     }
                 }
@@ -541,49 +541,49 @@ namespace CR4VE.GameBase.Objects
                     Vector3 lightPos0 = new Vector3(-50, -50, 50);
 
                     // Beleuchtung x,y,z
-                    effect.EnableDefaultLighting();
-                    //effect.LightingEnabled = true;
-                    //effect.AmbientLightColor = new Vector3(0.8f, 0.8f, 0.8f);
-                    //effect.DiffuseColor = new Vector3(1f, 1f, 1f);
-                    //effect.SpecularColor = new Vector3(1f, 1f, 1f);
-                    //effect.SpecularPower = 40.0f;
-                    //effect.Alpha = 0.4f;
+                  //  effect.EnableDefaultLighting();
+                    effect.LightingEnabled = true;
+                    effect.AmbientLightColor = new Vector3(0.8f, 0.8f, 0.8f);
+                    effect.DiffuseColor = new Vector3(1f, 1f, 1f);
+                    effect.SpecularColor = new Vector3(1f, 1f, 1f);
+                    effect.SpecularPower = 40.0f;
+                    effect.Alpha = 0.4f;
 
 
-                    //if (effect.LightingEnabled)
-                    //{
-                    //    effect.DirectionalLight0.Enabled = true; 
-                    //    if (effect.DirectionalLight0.Enabled)
-                    //    {
-                    //        // richtung x
-                    //        effect.DirectionalLight0.DiffuseColor = new Vector3(0.8f, 0.8f, 0.8f); 
-                    //        effect.DirectionalLight0.Direction = Vector3.Normalize(new Vector3(1, 0, 0));
-                    //        effect.DirectionalLight0.SpecularColor = Vector3.One;
-                    //    }
+                    if (effect.LightingEnabled)
+                    {
+                        effect.DirectionalLight0.Enabled = true; 
+                        if (effect.DirectionalLight0.Enabled)
+                        {
+                            // richtung x
+                            effect.DirectionalLight0.DiffuseColor = new Vector3(0.8f, 0.8f, 0.8f); 
+                            effect.DirectionalLight0.Direction = Vector3.Normalize(new Vector3(1, 0, 0));
+                            effect.DirectionalLight0.SpecularColor = Vector3.One;
+                        }
 
-                    //    effect.DirectionalLight1.Enabled = true;
-                    //    if (effect.DirectionalLight1.Enabled)
-                    //    {
-                    //        // richtung y
-                    //        effect.DirectionalLight1.DiffuseColor = new Vector3(0.8f, 0.8f, 0.8f);
-                    //        effect.DirectionalLight1.Direction = Vector3.Normalize(new Vector3(0, -1, 0));
-                    //        effect.DirectionalLight1.SpecularColor = Vector3.One;
-                    //    }
+                        effect.DirectionalLight1.Enabled = true;
+                        if (effect.DirectionalLight1.Enabled)
+                        {
+                            // richtung y
+                            effect.DirectionalLight1.DiffuseColor = new Vector3(0.8f, 0.8f, 0.8f);
+                            effect.DirectionalLight1.Direction = Vector3.Normalize(new Vector3(0, -1, 0));
+                            effect.DirectionalLight1.SpecularColor = Vector3.One;
+                        }
 
-                    //    effect.DirectionalLight2.Enabled = true;
-                    //    if (effect.DirectionalLight2.Enabled)
-                    //    {
-                    //        // richtung z +y
-                    //        effect.DirectionalLight2.DiffuseColor = new Vector3(0.5f, 0.5f, 0.5f);
-                    //        effect.DirectionalLight2.Direction = Vector3.Normalize(new Vector3(0, -1, -1));
-                    //        effect.DirectionalLight2.SpecularColor = Vector3.One;
-                    //        }
-                    //    }
-                    //}
+                        effect.DirectionalLight2.Enabled = true;
+                        if (effect.DirectionalLight2.Enabled)
+                        {
+                            // richtung z +y
+                            effect.DirectionalLight2.DiffuseColor = new Vector3(0.5f, 0.5f, 0.5f);
+                            effect.DirectionalLight2.Direction = Vector3.Normalize(new Vector3(0, -1, -1));
+                            effect.DirectionalLight2.SpecularColor = Vector3.One;
+                            }
+                        }
+                    }
                     mesh.Draw();
                 }
             }
-        }
+        
 
         //zeichnet 3D Objekt in Bezug auf die Arenakamera
         public void drawInArenaWithoutBones(Vector3 scale, float rotX, float rotY, float rotZ)
@@ -667,11 +667,11 @@ namespace CR4VE.GameBase.Objects
                     
                     //Beleuchtung
                     //effect.EnableDefaultLighting();
-                    effect.AmbientLightColor = new Vector3(0.8f, 0.8f, 0.8f);
-                    effect.DiffuseColor = new Vector3(1f, 1f, 1f);
-                    effect.SpecularColor = new Vector3(1f, 1f, 1f);
-                    effect.SpecularPower = 60.0f;
-                    effect.Alpha = 1f;
+                    effect.AmbientLightColor = new Vector3(1f, 0.8f, 0.8f);
+                    effect.DiffuseColor = new Vector3(1f, 0.9f, 0.9f);
+                    effect.SpecularColor = new Vector3(1f, 0.9f, 0.9f);
+                    effect.SpecularPower = 70.0f;
+                    effect.Alpha = 0.6f;
 
                     effect.LightingEnabled = true;
                     if (effect.LightingEnabled)
@@ -682,7 +682,7 @@ namespace CR4VE.GameBase.Objects
                             // richtung x
                             effect.DirectionalLight0.DiffuseColor = new Vector3(0.9f, 0.7f, 0.7f); 
                             effect.DirectionalLight0.Direction = Vector3.Normalize(new Vector3(1, 1, 0));
-                            effect.DirectionalLight0.SpecularColor = Vector3.One;
+                            effect.DirectionalLight0.SpecularColor = new Vector3(0.9f, 0.8f, 0.8f);
                         }
 
                         effect.DirectionalLight1.Enabled = true;
@@ -690,17 +690,17 @@ namespace CR4VE.GameBase.Objects
                         {
                             // richtung y
                             effect.DirectionalLight1.DiffuseColor = new Vector3(1f, 0.8f, 0.8f);
-                            effect.DirectionalLight1.Direction = Vector3.Normalize(new Vector3(0, -1, 0));
-                            effect.DirectionalLight1.SpecularColor = Vector3.One;
+                            effect.DirectionalLight1.Direction = Vector3.Normalize(new Vector3(0, -1, -1));
+                            effect.DirectionalLight1.SpecularColor = new Vector3(1f,0.8f,0.8f);
                         }
 
                         effect.DirectionalLight2.Enabled = true;
                         if (effect.DirectionalLight2.Enabled)
                         {
                             // richtung z+y
-                            effect.DirectionalLight2.DiffuseColor = new Vector3(0.3f, 0.3f, 0.3f);
+                            effect.DirectionalLight2.DiffuseColor = new Vector3(1f, 0.8f, 0.8f);
                             effect.DirectionalLight2.Direction = Vector3.Normalize(new Vector3(0, -1, -1));
-                            effect.DirectionalLight2.SpecularColor = Vector3.One;
+                            effect.DirectionalLight2.SpecularColor = new Vector3(1, 0.8f, 0.8f);
                         }
                     }
                 }
@@ -722,11 +722,12 @@ namespace CR4VE.GameBase.Objects
         //    {
         //        foreach (ModelMeshPart part in mesh.MeshParts)
         //        {
-        //            part.Effect = Singleplayer.effect_directLight;
-        //            Singleplayer.effect_directLight.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * world);
-        //            Singleplayer.effect_directLight.Parameters["View"].SetValue(Camera2D.ViewMatrix);
-        //            Singleplayer.effect_directLight.Parameters["Projection"].SetValue(Camera2D.ProjectionMatrix);
-        //            //Singleplayer.effect.Parameters["ModelTexture"].SetValue(texture);
+        //            part.Effect = Arena.lava_effect;
+        //             Arena.lava_effect.Parameters["World"].SetValue(transforms[mesh.ParentBone.Index] * world);
+        //             Arena.lava_effect.Parameters["View"].SetValue(Camera2D.ViewMatrix);
+        //             Arena.lava_effect.Parameters["Projection"].SetValue(Camera2D.ProjectionMatrix);
+        //             Arena.lava_effect.Parameters["ModelTexture"].SetValue(texture);
+
 
 
         //        }

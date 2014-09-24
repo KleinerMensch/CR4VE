@@ -62,7 +62,6 @@ Content\Assets\Models\Terrain\10x10x10Box1.xnb
 Content\Assets\Models\Players\sphereD5.xnb
 Content\Assets\Models\Enemies\enemySpinningAnim.xnb
 Content\Assets\Models\Powerups\powerup_hell_health.xnb
-Content\Assets\Models\Terrain\lavafloor.xnb
 Content\Assets\Models\Terrain\arena_hell.xnb
 Content\Assets\Models\Terrain\Box1.xnb
 Content\Assets\Models\Terrain\Box3.xnb
@@ -107,11 +106,8 @@ Content\Assets\Sounds\itemCollect.xnb
 Content\Assets\Sounds\scream.xnb
 Content\red_eye_0.xnb
 Content\Assets\Models\Powerups\Textures\gold_256x256_0.xnb
-Content\Assets\Models\Terrain\Textures\seamless\lava_bright2_1024x1024_0.xnb
 Content\Assets\Models\Terrain\Textures\rock_dark4_2048x2048_0.xnb
 Content\Assets\Models\Terrain\UV Maps\hell_altar_silver2_0.xnb
-Content\grass_grass_0105_02_preview_0.xnb
-Content\Dirt cracked 00 seamless_0.xnb
 Content\WaterSurface.png4fbdf4a2-e7ef-4d_0.xnb
 Content\ground_0.xnb
 Content\Dirt 1_0.xnb
@@ -197,6 +193,16 @@ Content\Assets\Sounds\spawn.xnb
 Content\Assets\Sounds\minions.xnb
 Content\Assets\Sounds\GoldCave.xnb
 Content\Assets\Ophelia\Maps\fire_1024x1024_0.xnb
+Content\Assets\Models\Terrain\lavafloor.xnb
+Content\Assets\Models\Terrain\Textures\seamless\lava_bright2_1024x1024_1.xnb
+Content\Assets\Models\Terrain\Box29.xnb
+Content\Rainbow Shards_1.xnb
+Content\Assets\Models\Terrain\Box30.xnb
+Content\Mandarin Garnet_0.xnb
+Content\Assets\Models\Terrain\Box31.xnb
+Content\Light Wall_0.xnb
+Content\dirt_ground_texture__tileable____0.xnb
+Content\(GRASS 4) seamless turf lawn gre_0.xnb
 Content\Assets\Sprites\Startscreen.png
 Content\Assets\Sprites\ButtonExit.png
 Content\Assets\Sprites\ButtonPlay.png
