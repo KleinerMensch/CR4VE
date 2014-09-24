@@ -655,7 +655,7 @@ namespace CR4VE.GameBase.Objects
 
             Matrix world = Matrix.CreateScale(scale) * rotation * translation;
 
-            Vector3 lightPos0 = new Vector3(-50,-50,50);
+            //Vector3 lightPos0 = new Vector3(-50,-50,50);
 
             foreach (ModelMesh mesh in this.model.Meshes)
             {

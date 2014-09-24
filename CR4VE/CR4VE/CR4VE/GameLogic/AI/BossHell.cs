@@ -68,7 +68,7 @@ namespace CR4VE.GameLogic.AI
                     soundPlayed = true;
                 }
 
-                this.model = Arena.cont.Load<Model>("Assets/Models/Players/skull");
+                this.model = Arena.cont.Load<Model>("Assets/Models/Checkpoints/skull");
                 this.boundary = new BoundingBox(Vector3.Zero, Vector3.Zero);
                 this.viewingDirection = new Vector3(0, 0, 1);
 
