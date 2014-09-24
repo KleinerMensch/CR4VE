@@ -70,15 +70,9 @@ namespace CR4VE.GameLogic.GameStates
         public static int tutIndex;
         public static bool tutStop;
         public static Texture2D background;
-<<<<<<< HEAD
-        
-=======
-        public static Texture2D background2;
-        public static Texture2D background3;
-        public static Texture2D background4;
 
         private bool soundPlayedGold = false;
->>>>>>> cd21c35c14d9d20a972d7fc2a189b429abc5508b
+
         #endregion
 
         #region Konstruktor
