@@ -26,7 +26,7 @@ namespace CR4VE.GameLogic.Characters
         Character nearestCharacter = new Character();
         HUD nearestCharacterHUD;
 
-        TimeSpan timeSpanForHealthAbsorbingCrystals = TimeSpan.FromSeconds(10);
+        TimeSpan timeSpanForHealthAbsorbingCrystals = TimeSpan.FromSeconds(4);
         TimeSpan timeSpan = TimeSpan.FromMilliseconds(270);
 
         Vector3 currentCharacterPosition;
@@ -373,8 +373,8 @@ namespace CR4VE.GameLogic.Characters
             {
                 crystalList.RemoveAt(0);
                 // Re initializes the timespan for the next time
-                // minion vanishes after 10 seconds
-                timeSpanForHealthAbsorbingCrystals = TimeSpan.FromSeconds(10);
+                // minion vanishes after 4 seconds
+                timeSpanForHealthAbsorbingCrystals = TimeSpan.FromSeconds(4);
 
                 if(crystalList.Count == 0)
                     launchedSpecial = false;
@@ -561,7 +561,7 @@ namespace CR4VE.GameLogic.Characters
             {
                 manaLeft -= 1.5f;
                 launchedSpecial = true;
-                timeSpanForHealthAbsorbingCrystals = TimeSpan.FromSeconds(10);
+                timeSpanForHealthAbsorbingCrystals = TimeSpan.FromSeconds(4);
                 soundPlayedSpecial = false;
                 if (!soundPlayedSpecial)
                 {

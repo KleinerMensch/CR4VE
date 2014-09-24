@@ -135,7 +135,7 @@ namespace CR4VE.GameLogic.GameStates
             for (int i = 0; i < GameControls.ConnectedControllers; i++)
             {
                 if (Players[i].CharacterType == "Seraphin" && !hudArray[i].isDead)
-                    Multiplayer.Players[i].drawInArena(new Vector3(1f, 1f, 1f), 0, MathHelper.ToRadians(90) + Multiplayer.Players[i].blickWinkel, 0);
+                    Multiplayer.Players[i].drawInArena(new Vector3(0.35f, 0.35f, 0.35f), 0, MathHelper.ToRadians(90) + Multiplayer.Players[i].blickWinkel, 0);
                 else
                 {
                     if (!hudArray[i].isDead)

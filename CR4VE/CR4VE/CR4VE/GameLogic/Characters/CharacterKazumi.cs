@@ -201,7 +201,7 @@ namespace CR4VE.GameLogic.Characters
                             {
                                 enemyHitByMelee = true;
                                 Console.WriteLine("Kazumi hit " + Multiplayer.Players[i] + " by MeleeAttack");
-                                Multiplayer.hudArray[i].healthLeft -= 5;
+                                Multiplayer.hudArray[i].healthLeft -= 6;
                             }
                         }
                     }
