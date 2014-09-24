@@ -579,6 +579,10 @@ namespace CR4VE.GameLogic.GameStates
         #region Update
         public Game1.EGameState Update(GameTime gameTime)
         {
+            if (Singleplayer.isCrystal)
+            {
+                Sounds.crystalBG.Play();
+            }
             //Viewport Culling
             visibles = Tilemap.getVisibleTiles(currentMaps);
                         
@@ -683,12 +687,16 @@ namespace CR4VE.GameLogic.GameStates
                 Initialize(cont);
             }
             if(player.Boundary.Intersects(GoldSoundTrigger.Boundary)){
+                soundPlayedGold = false;
                 if(!soundPlayedGold){
-                    Sounds.goldCave.Play();
-
+                    Sounds.cave.Play();
+                
                     soundPlayedGold = true;
                 }
-
+            }
+            if (!player.Boundary.Intersects(GoldSoundTrigger.Boundary))
+            {
+                Sounds.cave.Stop();
             }
             //notwendiger Rueckgabewert
             if (player.Boundary.Intersects(ArenaKey.Boundary))
