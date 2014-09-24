@@ -32,7 +32,6 @@ namespace CR4VE.GameLogic.GameStates
 
         //sky
         SkyBox skybox;
-        SkyBox skybox2;
 
         //Terrain (Singleplayer)
         public static Tilemap[] gameMaps_hell= new Tilemap[] { };
@@ -50,6 +49,7 @@ namespace CR4VE.GameLogic.GameStates
         public static List<Tile> visibles;
 
         public static Entity ArenaKey;
+        public static Entity TutorialExit;
 
         //Player
         public static Character ghost;
@@ -133,7 +133,7 @@ namespace CR4VE.GameLogic.GameStates
            { 0, 0, 0, 0, 0, 0, 0, 0, 3,13,13,13,13,13,14,14,13,13,13,13,13,13,14,14,13,13,13,13,18,18,18,16,16,18,18,16,16,16,18,18,18,18,18,18,18,18,18,18,15, 0, 0, 0,19, 0, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13,13},
            { 0, 0, 0, 0, 0, 0, 0, 0, 3,13,13,13,13,13,14,14,13,13,13,13,13,13,14,14,13,13,13,13,13,18,18,16,16,18,18,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13},
            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,13,13,14,14,13,13,13,13,13,13,18,16,16,18,18,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16, 0, 0, 0,19, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13},
-           { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,14,14,13,13,13,13,13,13,13,16,16,18,18,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,13,13,13,13,13,13},
+           { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,14,14,13,13,13,13,13,13,13,16,16,18,18,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16, 0, 0, 0, 0, 0, 0, 0, 0, 0,89,13,13,13,13,13,13},
            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,14,14,13,13,13,13,13,13,13,16,16,18,18,16,16,16,16,18,18,18,18,16,16,16,16,16,16,16,16,16,16, 0, 0, 0,15,15,15,15, 0,13,13,13,13,13,13,13},
            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,14,14,13,13,18,18,18,18,18,16,16,18,18,16,16,16,16,18,18,18,18,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,13,13,13,13,13,13,13},
            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,16,16,16, 16,16,16,16,16,16,16,16,16,16,16,16,13,13,13,13,13,13,13,13},
@@ -549,11 +549,15 @@ namespace CR4VE.GameLogic.GameStates
 
             //Skybox
             skybox =  new SkyBox(new Vector3(0, 0, -13), "Assets/Skybox/cube_hell", content);
+<<<<<<< HEAD
            // skybox2 = new SkyBox(new Vector3(4190, 0, -13), "Assets/Skybox/black", content);
             background = content.Load<Texture2D>("Assets/Skybox/Skybox-Right");
             background2 = content.Load<Texture2D>("Assets/Skybox/Skybox-Back");
             background3 = content.Load<Texture2D>("Assets/Skybox/Skybox-Left");
             background4 = content.Load<Texture2D>("Assets/Skybox/Skybox-Front");
+=======
+            background = content.Load<Texture2D>("Assets/Sprites/stone");
+>>>>>>> d774428c112ea4a57108618df2011cda9d958212
 
             //Player
             ghost = new Character(Vector3.Zero, "skull", content);
@@ -676,11 +680,18 @@ namespace CR4VE.GameLogic.GameStates
             //Console.WriteLine(player.Position);
             ////--------------------------------
 
+            if (isTutorial && player.Boundary.Intersects(TutorialExit.Boundary))
+            {
+                isTutorial = false;
+
+                Initialize(cont);
+            }
+
             //notwendiger Rueckgabewert
             if (player.Boundary.Intersects(ArenaKey.Boundary))
                 return Game1.EGameState.Arena;
             else
-                return Game1.EGameState.Singleplayer;
+                return Game1.EGameState.Singleplayer;            
         }
         #endregion
 
@@ -729,7 +740,6 @@ namespace CR4VE.GameLogic.GameStates
             
             //SkyBox
             skybox.Drawsky( new Vector3(1000f, 50f, -2.5f), 0, 0, 0);
-          //  skybox2.Drawsky(new Vector3(200f, 50f, -2.5f), 0, 0, 0);
 
             #region Enemies
             foreach (Enemy e in currentMaps[activeIndex1].EnemyList)
@@ -742,9 +752,12 @@ namespace CR4VE.GameLogic.GameStates
             }
             #endregion
 
-            //Arenakey
+            //ArenaKey & TutorialExit
             if (ArenaKey.Position.X - player.Position.X < 100)
                 ArenaKey.drawIn2DWorld(new Vector3(0.03f, 0.03f, 0.03f), 0, 0, 0);
+
+            if (isTutorial && TutorialExit.Position.X - player.Position.X < 100)
+                TutorialExit.drawIn2DWorld(new Vector3(0.03f, 0.03f, 0.03f), 0, 0, 0);
             #endregion
 
             #region HUD

@@ -38,7 +38,8 @@ namespace CR4VE.GameLogic.GameStates
         public Vector3 scaleForBossFractus = new Vector3(0.03f, 0.03f, 0.03f);
         public Vector3 scaleForBossSeraphin = new Vector3(0.75f, 0.75f, 0.75f);
 
-        public static readonly Vector3 startPos = new Vector3(0, -12.5f, 0);
+        //da bounding box vom player 18einheiten hoch ist und arenafloor.y.max bei -15 liegt
+        public static readonly Vector3 startPos = new Vector3(0, -6f, 0);
 
         public static float blickWinkel;
         public static float blickwinkelBoss;
@@ -76,7 +77,7 @@ namespace CR4VE.GameLogic.GameStates
             }
             else
             {
-                player = new CharacterOphelia(startPos, "Ophelia", content); //Ophelia
+                player = new CharacterSeraphin(startPos, "Ophelia", content); //Ophelia
                 CharacterOphelia.manaLeft = 3;
             }
 
@@ -86,8 +87,8 @@ namespace CR4VE.GameLogic.GameStates
 
             #region Loading AI
             //Boss je nachdem, wer der Player ist
-            boss = new BossHell(new Vector3(60, 0, 0), "Kazumi", content);
-            boss.boundary = new BoundingBox(boss.position + new Vector3(-4f, -9, -2.5f), boss.position + new Vector3(4f, 9, 2.5f));
+            boss = new BossCrystal(new Vector3(60, 0, 0), "Kazumi", content);
+            boss.boundary = new BoundingBox(boss.position + new Vector3(-4f, -12, -4f), boss.position + new Vector3(4f, 12, 4f));
             rangeOfMeleeFromBoss = new BoundingSphere(player.position, 4);
             #endregion
 

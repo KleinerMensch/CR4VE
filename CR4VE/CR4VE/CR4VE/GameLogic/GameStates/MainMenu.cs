@@ -91,6 +91,7 @@ namespace CR4VE.GameLogic.GameStates
             //Entities
             sword = new Entity(new Vector3(0, -238f, -10), "mainmenu_sword", content);
 
+            //Sounds
             Sounds.Initialize(content);
 
             //Multiplayer character selection
@@ -101,7 +102,9 @@ namespace CR4VE.GameLogic.GameStates
         #region Update
         public Game1.EGameState Update(GameTime gameTime)
         {
+            //Background music
             Sounds.menu.Play();
+
             //get next GameState based on player input
             Game1.EGameState nextState = GameControls.updateMainMenu();
 
@@ -139,6 +142,9 @@ namespace CR4VE.GameLogic.GameStates
             #region Sprites (background)
             spriteBatch.Begin();
 
+            int H = Game1.graphics.PreferredBackBufferHeight;
+            int W = Game1.graphics.PreferredBackBufferWidth;
+
             graphics.Clear(Color.Black);
             
             #region Fonts
@@ -160,8 +166,8 @@ namespace CR4VE.GameLogic.GameStates
                     {
                         if (!GameControls.isMenuMoving)
                         {
-                            spriteBatch.DrawString(font, "Enter/A - Continue", new Vector2(0, 0), Color.White);
-                            spriteBatch.DrawString(font, "Down - Navigate", new Vector2(0, 25), Color.White);
+                            spriteBatch.DrawString(font, "Enter/A - Continue", new Vector2(font.MeasureString(" ").X, H - font.MeasureString("E").Y), Color.White);
+                            spriteBatch.DrawString(font, "Down - Navigate", new Vector2(W - font.MeasureString("Down - Navigate ").X, H - font.MeasureString("D").Y), Color.White);
                         }
                     } break;
                 #endregion
@@ -171,8 +177,8 @@ namespace CR4VE.GameLogic.GameStates
                     {
                         if (!GameControls.isMenuMoving)
                         {
-                            spriteBatch.DrawString(font, "Enter/A - Continue", new Vector2(0, 0), Color.White);
-                            spriteBatch.DrawString(font, "Up/Down - Navigate", new Vector2(0, 25), Color.White);
+                            spriteBatch.DrawString(font, "Enter/A - Continue", new Vector2(font.MeasureString(" ").X, H - font.MeasureString("E").Y), Color.White);
+                            spriteBatch.DrawString(font, "Up/Down - Navigate", new Vector2(W - font.MeasureString("Up/Down - Navigate ").X, H - font.MeasureString("D").Y), Color.White);
                         }
                     } break;
                 #endregion
@@ -182,8 +188,8 @@ namespace CR4VE.GameLogic.GameStates
                     {
                         if (!GameControls.isMenuMoving)
                         {
-                            spriteBatch.DrawString(font, "Enter/A - Continue", new Vector2(0, 0), Color.White);
-                            spriteBatch.DrawString(font, "Up - Navigate", new Vector2(0, 25), Color.White);                            
+                            spriteBatch.DrawString(font, "Enter/A - Continue", new Vector2(font.MeasureString(" ").X, H - font.MeasureString("E").Y), Color.White);
+                            spriteBatch.DrawString(font, "Up - Navigate", new Vector2(W - font.MeasureString("Up - Navigate ").X, H - font.MeasureString("D").Y), Color.White);                            
                         }
                     } break;
                 #endregion
@@ -204,8 +210,8 @@ namespace CR4VE.GameLogic.GameStates
                                 spriteBatch.DrawString(font, "(select 1280 x 720 first)", fontPos_fullscreen + new Vector2(0, 50), Color.Gray);
                             }
 
-                            spriteBatch.DrawString(font, "ESC/B - Get Back", new Vector2(0, 0), Color.White);
-                            spriteBatch.DrawString(font, "Left/Right - Toggle", new Vector2(0, 25), Color.White);
+                            spriteBatch.DrawString(font, "ESC/B - Get Back", new Vector2(font.MeasureString(" ").X, H - font.MeasureString("E").Y), Color.White);
+                            spriteBatch.DrawString(font, "Left/Right - Toggle", new Vector2(W - font.MeasureString("Left/Right - Toggle ").X, H - font.MeasureString("L").Y), Color.White);
 
                             spriteBatch.DrawString(font, "Resolution:", fontPos_resolution, Color.White);
                             spriteBatch.DrawString(font, resolutionString, fontPos_resolutionValue, Color.White);
@@ -224,18 +230,31 @@ namespace CR4VE.GameLogic.GameStates
                                 {
                                     case 0:
                                         spriteBatch.DrawString(font, playableChars[select1Index], fontPos_MPPlayer1, Color.White);
+
+                                        int x1 = (int)font.MeasureString(" ").X;
+                                        spriteBatch.DrawString(font, "Player 1", new Vector2(x1, 0), Color.White);
                                         break;
 
                                     case 1:
                                         spriteBatch.DrawString(font, playableChars[select2Index], fontPos_MPPlayer2, Color.White);
+
+                                        int x2 = Game1.graphics.PreferredBackBufferWidth - (int) font.MeasureString("Player 2 ").X;
+                                        spriteBatch.DrawString(font, "Player 2", new Vector2(x2, 0), Color.White);
                                         break;
 
                                     case 2:
                                         spriteBatch.DrawString(font, playableChars[select3Index], fontPos_MPPlayer3, Color.White);
+
+                                        int y3 = Game1.graphics.PreferredBackBufferHeight;
+                                        spriteBatch.DrawString(font, "Player 3", new Vector2(0, y3), Color.White);
                                         break;
 
                                     case 3:
                                         spriteBatch.DrawString(font, playableChars[select4Index], fontPos_MPPlayer4, Color.White);
+
+                                        int x4 = Game1.graphics.PreferredBackBufferWidth - (int)font.MeasureString("Player 4 ").X;
+                                        int y4 = Game1.graphics.PreferredBackBufferHeight - (int)font.MeasureString("Player 4").Y;
+                                        spriteBatch.DrawString(font, "Player 4", new Vector2(x4, y4), Color.White);
                                         break;
                                 }
                             }
@@ -279,7 +298,7 @@ namespace CR4VE.GameLogic.GameStates
             #region Fonts
             switch (GameControls.menuPosIndex)
             {
-                //Singleplayer
+                #region Singleplayer
                 case 1:
                     {
                         if (!GameControls.isMenuMoving)
@@ -288,6 +307,39 @@ namespace CR4VE.GameLogic.GameStates
                             spriteBatch.DrawString(font, "< " + Singleplayer.isTutorial.ToString() + " >", fontPos_tutorialValue, Color.White);
                         }
                     } break;
+                #endregion
+
+                #region more detailed options (Multiplayer)
+                case 5:
+                    {
+                        if (!GameControls.isMenuMoving)
+                        {
+                            Vector2 pos1 = new Vector2(W / 2 - font.MeasureString("RB - Next Character").X / 2, H - font.MeasureString("RB - Next Character").Y);
+                            Vector2 pos2 = new Vector2(W / 2 - font.MeasureString("ENTER - Start Game").X / 2, H - font.MeasureString("ENTER - Start Game").Y - 25);
+                            Vector2 pos3 = new Vector2(W / 2 - font.MeasureString("ESC - Back").X / 2, H - font.MeasureString("ESC - Back").Y - 50);
+
+                            spriteBatch.DrawString(font, "RB - Next Character", pos1, Color.White);
+                            spriteBatch.DrawString(font, "ENTER - Start Game", pos2, Color.White);
+                            spriteBatch.DrawString(font, "ESC - Back", pos3, Color.White);
+                        }
+                    } break;
+                #endregion
+
+                #region more detailed options (Singleplayer)
+                case 6:
+                    {
+                        if (!GameControls.isMenuMoving)
+                        {
+                            Vector2 pos1 = new Vector2(W / 2 - font.MeasureString("Left/Right - Choose Level").X / 2, 0);
+                            Vector2 pos2 = new Vector2(W / 2 - font.MeasureString("ENTER/A - Start Game").X / 2, 25);
+                            Vector2 pos3 = new Vector2(W / 2 - font.MeasureString("ESC/B - Back").X / 2, 50);
+
+                            spriteBatch.DrawString(font, "Left/Right - Choose Level", pos1, Color.White);
+                            spriteBatch.DrawString(font, "ENTER/A - Start Game", pos2, Color.White);
+                            spriteBatch.DrawString(font, "ESC/B - Back", pos3, Color.White);
+                        }
+                    } break;
+                #endregion
             }
             #endregion
 
@@ -308,6 +360,25 @@ namespace CR4VE.GameLogic.GameStates
 
 
         #region Help Methods
+        public static bool checkMultiplayerConditions()
+        { 
+            for (int i = 0; i < GameControls.ConnectedControllers; i++)
+			{
+			    if (MPSelection[i] == "none")
+                    return false;
+                else
+                {
+                    for (int j = 0; j < GameControls.ConnectedControllers; j++)
+			        {
+                        if (MPSelection[i] == MPSelection[j] && i != j)
+                            return false;
+			        }                    
+                }
+			}
+
+            return true;
+        }
+
         public static void ResetMultiplayerSelection()
         {
             select1Index = 0;

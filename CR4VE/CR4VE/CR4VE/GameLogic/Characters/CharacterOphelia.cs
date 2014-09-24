@@ -31,9 +31,12 @@ namespace CR4VE.GameLogic.Characters
         bool enemyHitByMelee = false;
         bool listContainsSpeer = false;
         float speerRotation = 0;
-        public bool soundPlayed = false;
-        public bool soundPlayedSpecial = false;
-        public bool soundPlayedEnemy = false;
+
+        //Sounds
+        private bool soundPlayed = false;
+        private bool soundPlayedSpecial = false;
+        private bool soundPlayedRanged = false;
+        private bool soundPlayedEnemy = false;
         #endregion
 
         #region Properties
@@ -246,12 +249,23 @@ namespace CR4VE.GameLogic.Characters
                         {
                             attackList.Remove(attackList[i]);
                             if (attackList.Count == 0)
+                            {
                                 launchedRanged = false;
+                                soundPlayedRanged = false;
+                            }
+
                             break;
                         }
                         else
                         {
                             launchedRanged = true;
+                            
+                            if (!soundPlayedRanged)
+                            {
+                                Sounds.spawn.Play();
+
+                                soundPlayedRanged = true;
+                            }
 
                             #region enemyList1
                             foreach (Enemy enemy in Singleplayer.currentMaps[Singleplayer.activeIndex1].EnemyList)
@@ -274,7 +288,10 @@ namespace CR4VE.GameLogic.Characters
                                     if (enemyHit)
                                     {
                                         if (attackList.Count == 0)
+                                        {
                                             launchedRanged = false;
+                                            soundPlayedRanged = false;
+                                        }
                                         attackList.Remove(attackList[i]);
                                     }
                                 }
@@ -301,7 +318,10 @@ namespace CR4VE.GameLogic.Characters
                                     if (enemyHit)
                                     {
                                         if (attackList.Count == 0)
+                                        {
                                             launchedRanged = false;
+                                            soundPlayedRanged = false;
+                                        }
                                         attackList.Remove(attackList[i]);
                                     }
                                 }
@@ -348,13 +368,22 @@ namespace CR4VE.GameLogic.Characters
                         if (!attackList[i].boundary.Intersects(rangeOfDoppelgaenger))
                         {
                             attackList.Remove(attackList[i]);
-                            if(attackList.Count == 0)
+                            if (attackList.Count == 0)
+                            {
                                 launchedRanged = false;
+                                soundPlayedRanged = false;
+                            }
                             break;
                         }
                         else
                         {
                             launchedRanged = true;
+                            if (!soundPlayedRanged)
+                            {
+                                Sounds.spawn.Play();
+
+                                soundPlayedRanged = true;
+                            }
 
                             if (attackList[i].boundary.Intersects(Arena.boss.boundary))
                             {
@@ -366,7 +395,10 @@ namespace CR4VE.GameLogic.Characters
                             if (enemyHit)
                             {
                                 if (attackList.Count == 0)
+                                {
                                     launchedRanged = false;
+                                    soundPlayedRanged = false;
+                                }
                                 attackList.Remove(attackList[i]);
                             }
                         }
@@ -387,12 +419,21 @@ namespace CR4VE.GameLogic.Characters
                         {
                             attackList.Remove(attackList[i]);
                             if (attackList.Count == 0)
+                            {
                                 launchedRanged = false;
+                                soundPlayedRanged = false;
+                            }
                             break;
                         }
                         else
                         {
                             launchedRanged = true;
+                            if (!soundPlayedRanged)
+                            {
+                                Sounds.spawn.Play();
+
+                                soundPlayedRanged = true;
+                            }
 
                             //if (attackList[i].boundary.Intersects(Multiplayer.playerX.boundary))
                             //{
@@ -404,7 +445,10 @@ namespace CR4VE.GameLogic.Characters
                             if (enemyHit)
                             {
                                 if (attackList.Count == 0)
+                                {
                                     launchedRanged = false;
+                                    soundPlayedRanged = false;
+                                }
                                 attackList.Remove(attackList[i]);
                             }
                         }
@@ -440,6 +484,7 @@ namespace CR4VE.GameLogic.Characters
                 launchedRanged = true;
                 currentCharacterPosition = this.Position;
                 rangeOfDoppelgaenger = new BoundingSphere(currentCharacterPosition, 50);
+                
 
                 #region Singleplayer
                 if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
