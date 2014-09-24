@@ -20,6 +20,7 @@ namespace CR4VE.GameBase.Objects
         private String type;
 
         private bool soundPlayed = false;
+        private bool soundPlayedCrystal = false;
         #endregion
 
         #region Constructor
@@ -56,7 +57,15 @@ namespace CR4VE.GameBase.Objects
                     SaveGame.setHellReset(this.Position);
                 }
                 else
+                {
+                    if (!soundPlayedCrystal)
+                    {
+                        Sounds.checkpointCrystal.Play();
+
+                        soundPlayedCrystal = true;
+                    }
                     SaveGame.setCrystalReset(this.Position);
+                }
 
                
             }
