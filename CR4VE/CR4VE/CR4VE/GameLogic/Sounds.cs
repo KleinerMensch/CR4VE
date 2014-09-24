@@ -29,9 +29,14 @@ namespace CR4VE.GameLogic
         public static SoundEffect mainMenu;
         public static SoundEffectInstance menu;
         public static SoundEffect punch;
-        public static SoundEffect water;
+        public static SoundEffect waterSound;
+        public static SoundEffectInstance water;
         public static SoundEffect spawn;
         public static SoundEffect minionsFraktus;
+        public static SoundEffect goldCave;
+        public static SoundEffectInstance cave;
+        public static SoundEffect crystalBackground;
+        public static SoundEffectInstance crystalBG;
  
         #endregion
 
@@ -54,9 +59,17 @@ namespace CR4VE.GameLogic
             menu = mainMenu.CreateInstance();
             menu.IsLooped = true;
             punch = content.Load<SoundEffect>("Assets/Sounds/punch");
-            water = content.Load<SoundEffect>("Assets/Sounds/water");
+            waterSound = content.Load<SoundEffect>("Assets/Sounds/water");
+            water = waterSound.CreateInstance();
             spawn = content.Load<SoundEffect>("Assets/Sounds/spawn");
             minionsFraktus = content.Load<SoundEffect>("Assets/Sounds/minions");
+            goldCave = content.Load<SoundEffect>("Assets/Sounds/GoldCave");
+            cave = goldCave.CreateInstance();
+            //cave.IsLooped = true;
+            crystalBackground = content.Load<SoundEffect>("Assets/Sounds/crystalBackground");
+            crystalBG = crystalBackground.CreateInstance();
+            crystalBG.Volume = 0.05f;
+            crystalBG.IsLooped = true;
             
         }
 

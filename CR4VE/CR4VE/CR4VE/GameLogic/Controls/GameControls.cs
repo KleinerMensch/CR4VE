@@ -725,13 +725,13 @@ namespace CR4VE.GameLogic.Controls
             }
             #endregion
 
-            //DEBUG-----------------------------------------
-            Console.Clear();
-            for (int i = 0; i < ConnectedControllers; i++)
-            {
-                Console.WriteLine(Multiplayer.Players[i].viewingDirection);
-            }
-            //----------------------------------------------
+            ////DEBUG-----------------------------------------
+            //Console.Clear();
+            //for (int i = 0; i < ConnectedControllers; i++)
+            //{
+            //    Console.WriteLine(Multiplayer.Players[i].viewingDirection);
+            //}
+            ////----------------------------------------------
         }
         
         //Menus

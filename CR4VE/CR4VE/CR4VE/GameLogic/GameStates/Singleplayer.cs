@@ -50,6 +50,7 @@ namespace CR4VE.GameLogic.GameStates
 
         public static Entity ArenaKey;
         public static Entity TutorialExit;
+        public static Entity GoldSoundTrigger;
 
         //Player
         public static Character ghost;
@@ -69,7 +70,15 @@ namespace CR4VE.GameLogic.GameStates
         public static int tutIndex;
         public static bool tutStop;
         public static Texture2D background;
+<<<<<<< HEAD
         
+=======
+        public static Texture2D background2;
+        public static Texture2D background3;
+        public static Texture2D background4;
+
+        private bool soundPlayedGold = false;
+>>>>>>> cd21c35c14d9d20a972d7fc2a189b429abc5508b
         #endregion
 
         #region Konstruktor
@@ -278,7 +287,7 @@ namespace CR4VE.GameLogic.GameStates
            { 12, 0, 0,12,12,12,12,12,12,12,12,12,12,12, 0,12,12,12,12,12,12, 0, 0,12,12, 0, 0, 0, 0, 0,12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,13,13, 0, 0,13,13,13,13,13},
            { 12,12,12,12,12,12,12,12,12,12,12,12,12, 0, 0, 0, 0, 0, 0, 0,12,12,12,12,12,12, 0, 0,12,12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,13,13, 0,13,13,13,13,13,13},
            { 11,11,11,11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,12,12,12,12,12, 0, 0,12,12, 0, 0, 0, 0,95,95,95,95, 0, 0, 0, 0, 0, 0, 0,95,95,95, 0, 0, 0,13,13, 0, 0,13,13,13,13,13},
-           { 11,11,11,11,11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,12,12,12,12,12,12,12,12, 0, 0,12,12,12, 0, 0,95,95,12,12,12,12,95,95,95,95,95,95,95,12,12,12,95,95,95,13,13, 0, 0,13,13,13,13,13},
+           { 11,11,11,11,11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 87, 0, 0,12,12,12,12,12,12,12,12, 0, 0,12,12,12, 0, 0,95,95,12,12,12,12,95,95,95,95,95,95,95,12,12,12,95,95,95,13,13, 0, 0,13,13,13,13,13},
            { 11,11,11,11,11,11, 0, 0,12, 0,96, 0, 0, 0, 0, 0,12,12,12,12,12,12,12,12, 0, 0, 0,12,12,12,95,95,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,13,13,13, 0,13,13,13,13,13},
            { 11,11,11,11,11,11,11, 0, 0,12,12,12, 0, 0,98, 0, 0,12,12,12,12,12, 0, 0, 0, 0,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,13,13, 0, 0,13,13,13,13,13},
            { 11,11,11,11,11,11,11,11, 0, 0, 0, 0, 0, 0,11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,13,13, 0, 0,13,13,13,13, 0},
@@ -615,6 +624,10 @@ namespace CR4VE.GameLogic.GameStates
         #region Update
         public Game1.EGameState Update(GameTime gameTime)
         {
+            if (Singleplayer.isCrystal)
+            {
+                Sounds.crystalBG.Play();
+            }
             //Viewport Culling
             visibles = Tilemap.getVisibleTiles(currentMaps);
                         
@@ -718,7 +731,18 @@ namespace CR4VE.GameLogic.GameStates
 
                 Initialize(cont);
             }
-
+            if(player.Boundary.Intersects(GoldSoundTrigger.Boundary)){
+                soundPlayedGold = false;
+                if(!soundPlayedGold){
+                    Sounds.cave.Play();
+                
+                    soundPlayedGold = true;
+                }
+            }
+            if (!player.Boundary.Intersects(GoldSoundTrigger.Boundary))
+            {
+                Sounds.cave.Stop();
+            }
             //notwendiger Rueckgabewert
             if (player.Boundary.Intersects(ArenaKey.Boundary))
                 return Game1.EGameState.Arena;

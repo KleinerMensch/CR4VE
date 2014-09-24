@@ -17,6 +17,7 @@ namespace CR4VE.GameBase.HeadUpDisplay
         private Texture2D opheliaContinue, opheliaHealthContainer, opheliaPower;
         private Vector2 opheliaContinue1Position, opheliaContinue2Position, opheliaContinue3Position, opheliaHealthContainerPosition;
         public Color opheliaPowerColor;
+        public bool soundPlayedWater = false;
         #endregion
 
         #region inherited Constructor
@@ -193,7 +194,20 @@ namespace CR4VE.GameBase.HeadUpDisplay
 
                 //calculate damage by environment
                 if (isSwimming)
+                {
                     this.healthLeft -= (int)(Singleplayer.hud.fullHealth * 0.003);
+                    soundPlayedWater = false;
+                    if (!soundPlayedWater)
+                    {
+                        Sounds.water.Play();
+
+                        soundPlayedWater = true;
+                    }
+                }
+                if (!isSwimming)
+                {
+                    Sounds.water.Stop();
+                }
 
                 if (isBurning)
                     this.healthLeft -= (int)(Singleplayer.hud.fullHealth * 0.01);

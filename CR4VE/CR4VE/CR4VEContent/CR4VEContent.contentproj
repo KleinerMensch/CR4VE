@@ -439,7 +439,6 @@
       <Name>OpheliasAoE</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
-      <ProcessorParameters_PremultiplyTextureAlpha>False</ProcessorParameters_PremultiplyTextureAlpha>
     </Compile>
     <Compile Include="Assets\Models\kazumisClaws.FBX">
       <Name>kazumisClaws</Name>
@@ -481,26 +480,6 @@
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
-    <Compile Include="Assets\Models\Terrain\Box26.FBX">
-      <Name>Box26</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-    <Compile Include="Assets\Models\Terrain\Box27.FBX">
-      <Name>Box27</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-    <Compile Include="Assets\Models\Terrain\Box25.FBX">
-      <Name>Box25</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-    <Compile Include="Assets\Models\Terrain\Box28.FBX">
-      <Name>Box28</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
     <Compile Include="Assets\Models\Terrain\Box25.FBX">
       <Name>Box25</Name>
       <Importer>FbxImporter</Importer>
@@ -508,6 +487,31 @@
     </Compile>
     <Compile Include="Assets\Models\Terrain\Box26.FBX">
       <Name>Box26</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\kazumisFireball.FBX">
+      <Name>kazumisFireball</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\seraphinsWhip.FBX">
+      <Name>seraphinsWhip</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\seraphinsLaser.FBX">
+      <Name>seraphinsLaser</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\fractusCrystalShield.FBX">
+      <Name>fractusCrystalShield</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\fractusCrystals.FBX">
+      <Name>fractusCrystals</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>

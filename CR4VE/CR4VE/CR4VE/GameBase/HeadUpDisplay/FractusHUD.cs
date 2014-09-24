@@ -41,7 +41,6 @@ namespace CR4VE.GameBase.HeadUpDisplay
 
         public override void UpdateMana()
         {
-            Console.WriteLine(CharacterFractus.manaLeft);
             #region Singleplayer
             if (Game1.currentState == Game1.EGameState.Singleplayer)
             {
