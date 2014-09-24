@@ -438,6 +438,7 @@
       <Name>OpheliasAoE</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
+      <ProcessorParameters_PremultiplyTextureAlpha>False</ProcessorParameters_PremultiplyTextureAlpha>
     </Compile>
     <Compile Include="Assets\Models\kazumisClaws.FBX">
       <Name>kazumisClaws</Name>
@@ -476,6 +477,26 @@
     </Compile>
     <Compile Include="Assets\Models\Terrain\Box24.FBX">
       <Name>Box24</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\Terrain\Box26.FBX">
+      <Name>Box26</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\Terrain\Box27.FBX">
+      <Name>Box27</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\Terrain\Box25.FBX">
+      <Name>Box25</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\Terrain\Box28.FBX">
+      <Name>Box28</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
