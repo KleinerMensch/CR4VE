@@ -89,7 +89,7 @@ namespace CR4VE.GameLogic.GameStates
             //fuer Attacken wichtig
             cont = content;
 
-            //Controls
+            //Control parameters
             GameControls.initializeMultiplayer();
         }
         #endregion
@@ -98,6 +98,12 @@ namespace CR4VE.GameLogic.GameStates
         public Game1.EGameState Update(GameTime gameTime)
         {
             GameControls.updateMultiplayer(gameTime);
+
+            //Players
+            for (int i = 0; i < GameControls.ConnectedControllers; i++)
+            {
+                Multiplayer.Players[i].Update(gameTime);
+            }
 
             return Game1.EGameState.Multiplayer;
         }
@@ -117,7 +123,22 @@ namespace CR4VE.GameLogic.GameStates
                 Multiplayer.Players[i].drawInArena(new Vector3(0.02f, 0.02f, 0.02f), 0, MathHelper.ToRadians(90) + Multiplayer.Players[i].blickWinkel, 0);
                 Multiplayer.Players[i].DrawAttacks();
             }
-            #endregion            
+            #endregion
+
+            #region HUDs
+            spriteBatch.Begin();
+
+            /*for (int i = 0; i < GameControls.ConnectedControllers; i++)
+            {
+                Multiplayer.Players[i].h
+            }*/
+
+            spriteBatch.End();
+
+            //GraphicsDevice auf default setzen
+            graphics.GraphicsDevice.BlendState = BlendState.Opaque;
+            graphics.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+            #endregion
         }
         #endregion
 

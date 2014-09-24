@@ -120,12 +120,10 @@ namespace CR4VE.GameLogic.Controls
         {
             return currentKeyboard.IsKeyDown(key);
         }
-
         public static bool isClicked(Keys key)
         {
             return currentKeyboard.IsKeyDown(key) && previousKeyboard.IsKeyUp(key);
         }
-
         public static bool isReleased(Keys key)
         {
             return currentKeyboard.IsKeyUp(key) && previousKeyboard.IsKeyDown(key);
@@ -154,11 +152,14 @@ namespace CR4VE.GameLogic.Controls
         {
             return currGamepad.IsButtonDown(button) && prevGamepad.IsButtonUp(button);
         }
+        public static bool isClicked(Buttons button, int playerIndex)
+        {
+            return currGamePads[playerIndex].IsButtonDown(button) && prevGamePads[playerIndex].IsButtonUp(button);
+        }
         public static bool isReleased(Buttons button)
         {
             return currGamepad.IsButtonUp(button) && prevGamepad.IsButtonDown(button);
         }
-        #endregion
 
         public static bool isReduced(Game1.EGameState state)
         {
@@ -179,6 +180,7 @@ namespace CR4VE.GameLogic.Controls
 
             return false;
         }
+        #endregion
 
         //update methods
         public static void updateVibration(GameTime gameTime)
@@ -197,6 +199,7 @@ namespace CR4VE.GameLogic.Controls
             }          
         }
 
+        //Singleplayer
         public static void initializeSingleplayer()
         {
             moveVecGhost = Vector3.Zero;
@@ -519,92 +522,6 @@ namespace CR4VE.GameLogic.Controls
             }
         }
 
-        public static void initializeMultiplayer()
-        { 
-            fallVecs = new Vector3[ConnectedControllers];
-            for (int i = 0; i < ConnectedControllers; i++)
-            {
-                fallVecs[i] = Vector3.Zero;
-            }
-
-            startFallTimes = new double[ConnectedControllers];
-            for (int i = 0; i < ConnectedControllers; i++)
-            {
-                startFallTimes[i] = 0;
-            }
-
-            ringOuts = new bool[ConnectedControllers];
-            for (int i = 0; i < ConnectedControllers; i++)
-            {
-                ringOuts[i] = false;
-            }
-        }
-        public static void updateMultiplayer(GameTime gameTime)
-        {
-            Vector3[] moveVecs = new Vector3[ConnectedControllers];
-
-            //get GamePadStates
-            for (int i = 0; i < ConnectedControllers; i++)
-            {
-                prevGamePads[i] = currGamePads[i];
-                currGamePads[i] = GamePad.GetState(PlayerIndices[i]);
-            }
-
-            //calculate move vectors
-            for (int i = 0; i < ConnectedControllers; i++)
-            {
-                if (!ringOuts[i])
-                    moveVecs[i] = new Vector3(currGamePads[i].ThumbSticks.Left.X, 0, -currGamePads[i].ThumbSticks.Left.Y);
-                else
-                {
-                    double currentTime = gameTime.TotalGameTime.TotalSeconds;
-
-                    double deltaTime = currentTime - startFallTimes[i];
-
-                    fallVecs[i] *= 0.98f;
-
-                    Multiplayer.Players[i].move(new Vector3(fallVecs[i].X, (float)-deltaTime * G/4, fallVecs[i].Z));
-
-                    if (Multiplayer.Players[i].Position.Y < -100)
-                    {
-                        ringOuts[i] = false;
-
-                        //Multiplayer.Players.h.healthLeft = 0;
-
-                        Multiplayer.Players[i].moveTo(Arena.startPos);
-                    }
-                }
-            }
-
-            //move characters
-            for (int i = 0; i < ConnectedControllers; i++)
-            {
-                if (!ringOuts[i])
-                    Multiplayer.Players[i].move(moveVecs[i]);
-            }
-
-            //check for ring outs
-            for (int i = 0; i < ConnectedControllers; i++)
-            {
-                if (!Multiplayer.Players[i].Boundary.Intersects(Multiplayer.arenaBound) && !ringOuts[i])
-                {
-                    fallVecs[i] = moveVecs[i];
-
-                    startFallTimes[i] = gameTime.TotalGameTime.TotalSeconds;
-
-                    ringOuts[i] = true;
-                }
-            }
-
-            //DEBUG-----------------------------------------
-            Console.Clear();
-            for (int i = 0; i < ConnectedControllers; i++)
-            {
-                Console.WriteLine(GameControls.ringOuts[i]);
-            }
-            //----------------------------------------------
-        }
-
         public static void updateArena(GameTime gameTime)
         {
             if (ringOut)
@@ -615,7 +532,7 @@ namespace CR4VE.GameLogic.Controls
 
                 fallVecPlayer *= 0.98f;
 
-                Arena.player.move(new Vector3(fallVecPlayer.X, (float) -deltaTime * G/4, fallVecPlayer.Z));
+                Arena.player.move(new Vector3(fallVecPlayer.X, (float)-deltaTime * G / 4, fallVecPlayer.Z));
 
                 if (Arena.player.Position.Y < -100)
                 {
@@ -623,7 +540,7 @@ namespace CR4VE.GameLogic.Controls
 
                     Arena.opheliaHud.healthLeft = 0;
 
-                    Arena.player.moveTo(Arena.startPos);                    
+                    Arena.player.moveTo(Arena.startPos);
                 }
             }
             else
@@ -694,9 +611,130 @@ namespace CR4VE.GameLogic.Controls
 
                     ringOut = true;
                 }
-            }            
+            }
         }
 
+        //Multiplayer
+        public static void initializeMultiplayer()
+        { 
+            fallVecs = new Vector3[ConnectedControllers];
+            for (int i = 0; i < ConnectedControllers; i++)
+            {
+                fallVecs[i] = Vector3.Zero;
+            }
+
+            startFallTimes = new double[ConnectedControllers];
+            for (int i = 0; i < ConnectedControllers; i++)
+            {
+                startFallTimes[i] = 0;
+            }
+
+            ringOuts = new bool[ConnectedControllers];
+            for (int i = 0; i < ConnectedControllers; i++)
+            {
+                ringOuts[i] = false;
+            }
+        }
+        public static void updateMultiplayer(GameTime gameTime)
+        {
+            Vector3[] moveVecs = new Vector3[ConnectedControllers];
+
+            //get GamePadStates
+            for (int i = 0; i < ConnectedControllers; i++)
+            {
+                prevGamePads[i] = currGamePads[i];
+                currGamePads[i] = GamePad.GetState(PlayerIndices[i]);
+            }
+
+            #region calculate move vectors
+            for (int i = 0; i < ConnectedControllers; i++)
+            {
+                if (!ringOuts[i])
+                {
+                    moveVecs[i] = new Vector3(currGamePads[i].ThumbSticks.Left.X, 0, -currGamePads[i].ThumbSticks.Left.Y);
+                }
+                else
+                {
+                    double currentTime = gameTime.TotalGameTime.TotalSeconds;
+
+                    double deltaTime = currentTime - startFallTimes[i];
+
+                    fallVecs[i] *= 0.98f;
+
+                    Multiplayer.Players[i].move(new Vector3(fallVecs[i].X, (float)-deltaTime * G / 4, fallVecs[i].Z));
+
+                    if (Multiplayer.Players[i].Position.Y < -100)
+                    {
+                        ringOuts[i] = false;
+
+                        //Multiplayer.Players.h.healthLeft = 0;
+
+                        Multiplayer.Players[i].moveTo(Arena.startPos);
+                    }
+                }
+            }
+            #endregion
+
+            //move characters
+            for (int i = 0; i < ConnectedControllers; i++)
+            {
+                Vector3 recentPlayerPosition = Multiplayer.Players[i].Position;
+
+                if (!ringOuts[i])
+                    Multiplayer.Players[i].move(moveVecs[i]);
+
+                if (moveVecs[i] != new Vector3(0, 0, 0))
+                {   
+                    Multiplayer.Players[i].viewingDirection = Multiplayer.Players[i].Position - recentPlayerPosition;
+                    Multiplayer.Players[i].blickWinkel = (float)Math.Atan2(-Multiplayer.Players[i].viewingDirection.Z, Multiplayer.Players[i].viewingDirection.X);
+                }
+            }
+
+            #region check for ring outs
+            for (int i = 0; i < ConnectedControllers; i++)
+            {
+                if (!Multiplayer.Players[i].Boundary.Intersects(Multiplayer.arenaBound) && !ringOuts[i])
+                {
+                    fallVecs[i] = moveVecs[i];
+
+                    startFallTimes[i] = gameTime.TotalGameTime.TotalSeconds;
+
+                    ringOuts[i] = true;
+                }
+            }
+            #endregion
+
+            #region attacks
+            for (int i = 0; i < ConnectedControllers; i++)
+            {
+                if (isClicked(Buttons.X, i))
+                {
+                    //Nahangriff
+                    Multiplayer.Players[i].MeleeAttack(gameTime);
+                }
+                else if (isClicked(Buttons.B, i))
+                {
+                    //Fernangriff
+                    Multiplayer.Players[i].RangedAttack(gameTime);
+                }
+                else if (isClicked(Buttons.Y, i))
+                {
+                    //Spezialangriff
+                    Multiplayer.Players[i].SpecialAttack(gameTime);
+                }
+            }
+            #endregion
+
+            //DEBUG-----------------------------------------
+            Console.Clear();
+            for (int i = 0; i < ConnectedControllers; i++)
+            {
+                Console.WriteLine(Multiplayer.Players[i].viewingDirection);
+            }
+            //----------------------------------------------
+        }
+        
+        //Menus
         public static Game1.EGameState updateMainMenu()
         {
             previousKeyboard = currentKeyboard;
@@ -841,38 +879,44 @@ namespace CR4VE.GameLogic.Controls
                             }
 
                             #region Character Selection
+                            //get GamePadStates
+                            for (int i = 0; i < ConnectedControllers; i++)
+                            {
+                                prevGamePads[i] = currGamePads[i];
+                                currGamePads[i] = GamePad.GetState(PlayerIndices[i]);
+                            }
+
                             //toggle player1 slot
-                            if (isClicked(Keys.NumPad1))
+                            if (isClicked(Buttons.RightShoulder, 0))
                             {
                                 MainMenu.select1Index = (int) MathHelper.Clamp((MainMenu.select1Index + 1) % 5, 1, 4);
                                 MainMenu.MPSelection[0] = MainMenu.playableChars[MainMenu.select1Index];
                             }
 
                             //toggle player2 slot
-                            if (isClicked(Keys.NumPad2))
+                            if (isClicked(Buttons.RightShoulder, 1))
                             {
                                 MainMenu.select2Index = (int)MathHelper.Clamp((MainMenu.select2Index + 1) % 5, 1, 4);
                                 MainMenu.MPSelection[1] = MainMenu.playableChars[MainMenu.select2Index];
                             }
 
                             //toggle player3 slot
-                            if (isClicked(Keys.NumPad3))
+                            if (isClicked(Buttons.RightShoulder, 2))
                             {
                                 MainMenu.select3Index = (int)MathHelper.Clamp((MainMenu.select3Index + 1) % 5, 1, 4);
                                 MainMenu.MPSelection[2] = MainMenu.playableChars[MainMenu.select3Index];
                             }
 
                             //toggle player4 slot
-                            if (isClicked(Keys.NumPad4))
+                            if (isClicked(Buttons.RightShoulder, 3))
                             {
                                 MainMenu.select4Index = (int)MathHelper.Clamp((MainMenu.select4Index + 1) % 5, 1, 4);
                                 MainMenu.MPSelection[3] = MainMenu.playableChars[MainMenu.select4Index];
                             }
                             #endregion
 
-                            if (isClicked(Keys.Enter))
+                            if (isClicked(Keys.Enter) && MainMenu.checkMultiplayerConditions())
                                 return Game1.EGameState.Multiplayer;
-
                         } break;
                     #endregion
 
