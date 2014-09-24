@@ -29,12 +29,15 @@ namespace CR4VE.GameLogic.Characters
         Vector3 currentCharacterPosition;
         Vector3 algaWhipPosition;
         Vector3 offset = new Vector3(8,8,8);
+        Vector3 laserOffset = new Vector3(25, 25, 25);
         float currentBlickwinkel;
         float speed = 1;
         float moveSpeed = 0.2f;
         bool enemyHit = false;
         bool enemyHitByMelee = false;
+        //bool enemyHitByLaser = false;
         bool listContainsAlgaWhip = false;
+        //bool listContainsLaser = false;
         #endregion
 
         #region Properties
@@ -126,6 +129,7 @@ namespace CR4VE.GameLogic.Characters
                 {
                     algaWhipPosition = this.position + viewingDirection * offset;
                     algaWhip = new Entity(algaWhipPosition, "5x5x5Box1", Arena.cont);
+                    algaWhip.viewingDirection = viewingDirection;
                     algaWhip.boundary = new BoundingBox(algaWhipPosition + new Vector3(-2.5f, -2.5f, -2.5f), algaWhipPosition + new Vector3(2.5f, 2.5f, 2.5f));
 
                     if (!listContainsAlgaWhip)
@@ -157,6 +161,7 @@ namespace CR4VE.GameLogic.Characters
                 {
                     algaWhipPosition = this.position + viewingDirection * offset;
                     algaWhip = new Entity(algaWhipPosition, "5x5x5Box1", Multiplayer.cont);
+                    algaWhip.viewingDirection = viewingDirection;
                     algaWhip.boundary = new BoundingBox(algaWhipPosition + new Vector3(-2.5f, -2.5f, -2.5f), algaWhipPosition + new Vector3(2.5f, 2.5f, 2.5f));
 
                     if (!listContainsAlgaWhip)
@@ -308,6 +313,7 @@ namespace CR4VE.GameLogic.Characters
                 #region Singleplayer
                 if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
                 {
+                    #region alt
                     for (int i = 0; i < attackList.Count; i++)
                     {
                         //Laser schießt nach vorn
@@ -370,11 +376,13 @@ namespace CR4VE.GameLogic.Characters
                         }
                         enemyHit = false;
                     }
+                    #endregion
                 }
                 #endregion
                 #region Arena
                 else if (Game1.currentState.Equals(Game1.EGameState.Arena))
                 {
+                    #region alt
                     for (int i = 0; i < attackList.Count; i++)
                     {
                         //Laser schießt nach vorn
@@ -409,11 +417,43 @@ namespace CR4VE.GameLogic.Characters
                         }
                         enemyHit = false;
                     }
+                    #endregion
+                    #region anderer ansatz
+                    /*laserPosition = this.position;
+                    laser = new Entity(laserPosition, "seraphinsLaser", Arena.cont);
+                    laser.viewingDirection = this.viewingDirection;
+                    laser.boundary = new BoundingBox(laserPosition + new Vector3(-50, -3f, -3f), laserPosition + new Vector3(50, -3f, -3f));
+
+                    if (!listContainsLaser)
+                    {
+                        attackList.Add(laser);
+                        listContainsLaser = true;
+                    }
+                    else
+                    {
+                        attackList.Clear();
+                        attackList.Add(laser);
+                    }
+
+                    foreach (Entity seraphinsLaser in attackList)
+                    {
+                        if (enemyHitByLaser)
+                            break;
+                        if (seraphinsLaser.boundary.Intersects(Arena.boss.boundary))
+                        {
+                            Arena.opheliaHud.healthLeft -= 1;
+                            enemyHitByLaser = true;
+                            Console.WriteLine("Seraphin hit Boss by Laser");
+                            Console.WriteLine(this.position + " " + Arena.boss.position + "" + seraphinsLaser.position);
+                        }
+                    }*/
+                    #endregion
                 }
                 #endregion
                 #region Multiplayer
                 else if (Game1.currentState.Equals(Game1.EGameState.Multiplayer))
                 {
+                    #region alt
                     for (int i = 0; i < attackList.Count; i++)
                     {
                         //Laser schießt nach vorn
@@ -448,6 +488,36 @@ namespace CR4VE.GameLogic.Characters
                         }
                         enemyHit = false;
                     }
+                    #endregion
+                    #region anderer ansatz -> bounding box leider falsch aligned
+                    /*laserPosition = this.position + viewingDirection * offset;
+                    laser = new Entity(laserPosition, "seraphinsLaser", Multiplayer.cont);
+                    laser.viewingDirection = this.viewingDirection;
+                    laser.boundary = new BoundingBox(laserPosition + new Vector3(-3, -3, -3), laserPosition + new Vector3(3, 3, 3));
+
+                    if (!listContainsLaser)
+                    {
+                        attackList.Add(laser);
+                        listContainsLaser = true;
+                    }
+                    else
+                    {
+                        attackList.Clear();
+                        attackList.Add(laser);
+                    }
+
+                    foreach (Entity seraphinsLaser in attackList)
+                    {
+                        if (enemyHitByLaser)
+                            break;
+                        //if (seraphinsWhip.boundary.Intersects(Multiplayer.playerX.boundary))
+                        //{
+                        //    Multiplayer.playerXHud.healthLeft -= 1;
+                        //    enemyHitByLaser = true;
+                        //    Console.WriteLine("Seraphin hit PlayerX by MeleeAttack");
+                        //}
+                    }*/
+                    #endregion
                 }
                 #endregion
             }
@@ -498,18 +568,19 @@ namespace CR4VE.GameLogic.Characters
         public override void SpecialAttack(GameTime time)
         {
             //Laser kann nur bei vollem Mana benutzt werden
-            if (manaLeft == 3)
+            if (manaLeft >= 3)
             {
                 manaLeft -= 3;
                 launchedSpecial = true;
                 currentCharacterPosition = this.Position;
+                //timeSpan = TimeSpan.FromMilliseconds(270);
                 rangeOfLaser = new BoundingSphere(currentCharacterPosition, 50);
 
                 #region Singleplayer
                 if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
                 {
-                    Entity laser = new Entity(this.position, "Enemies/skull", Singleplayer.cont);
-                    laser.viewingDirection = viewingDirection;
+                    Entity laser = new Entity(this.position, "seraphinsLaser", Singleplayer.cont);
+                    laser.viewingDirection = this.viewingDirection;
                     laser.boundary = new BoundingBox(this.position + new Vector3(-3, -3, -3), this.position + new Vector3(3, 3, 3));
                     attackList.Add(laser);
                 }
@@ -517,7 +588,7 @@ namespace CR4VE.GameLogic.Characters
                 #region Arena
                 else if (Game1.currentState.Equals(Game1.EGameState.Arena))
                 {
-                    Entity laser = new Entity(this.position, "Enemies/skull", Arena.cont);
+                    Entity laser = new Entity(this.position, "seraphinsLaser", Arena.cont);
                     laser.viewingDirection = this.viewingDirection;
                     laser.boundary = new BoundingBox(this.position + new Vector3(-3, -3, -3), this.position + new Vector3(3, 3, 3));
                     attackList.Add(laser);
@@ -526,7 +597,7 @@ namespace CR4VE.GameLogic.Characters
                 #region Multiplayer
                 else if (Game1.currentState.Equals(Game1.EGameState.Multiplayer))
                 {
-                    Entity laser = new Entity(this.position, "Enemies/skull", Multiplayer.cont);
+                    Entity laser = new Entity(this.position, "seraphinsLaser", Multiplayer.cont);
                     laser.viewingDirection = this.viewingDirection;
                     laser.boundary = new BoundingBox(this.position + new Vector3(-3, -3, -3), this.position + new Vector3(3, 3, 3));
                     attackList.Add(laser);
@@ -553,6 +624,7 @@ namespace CR4VE.GameLogic.Characters
                 {
                     foreach (Entity whip in meleeAttackList)
                     {
+                        float whipBlickwinkel = (float)Math.Atan2(-whip.viewingDirection.Z, whip.viewingDirection.X);
                         whip.drawInArena(new Vector3(1, 1, 1), 0, 0, 0);
                     }
                 }
@@ -594,7 +666,7 @@ namespace CR4VE.GameLogic.Characters
                     foreach (Entity lazer in attackList)
                     {
                         float laserBlickwinkel = (float)Math.Atan2(-lazer.viewingDirection.Z, lazer.viewingDirection.X);
-                        lazer.drawInArena(new Vector3(0.01f, 0.01f, 0.01f), 0, MathHelper.ToRadians(90) + laserBlickwinkel, 0);
+                        lazer.drawInArena(new Vector3(1f, 1f, 1f), 0, MathHelper.ToRadians(90) + laserBlickwinkel, 0);
                     }
                 }
             }

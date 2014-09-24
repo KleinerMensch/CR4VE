@@ -30,11 +30,7 @@ namespace CR4VE.GameLogic
         public static SoundEffect water;
         #endregion
 
-        #region Properties
-        #endregion
-
         #region Methods
-
         public static void Initialize(ContentManager content) 
         {
             scream = content.Load<SoundEffect>("Assets/Sounds/deathScream");
@@ -54,15 +50,10 @@ namespace CR4VE.GameLogic
             water = content.Load<SoundEffect>("Assets/Sounds/water");
         }
 
-        public static void PlaySound(SoundEffect sound)
+        /*public static void PlaySound(SoundEffect sound)
         {
             sound.Play();
-        }
-
-        public static void Update() 
-        {
-        
-        }
+        }*/
         #endregion
     }
 }
