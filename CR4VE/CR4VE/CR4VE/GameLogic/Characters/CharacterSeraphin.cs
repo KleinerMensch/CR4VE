@@ -32,12 +32,18 @@ namespace CR4VE.GameLogic.Characters
         Vector3 laserOffset = new Vector3(25, 25, 25);
         float currentBlickwinkel;
         float speed = 1;
+        float whipRotation = 0;
         float moveSpeed = 0.2f;
         bool enemyHit = false;
         bool enemyHitByMelee = false;
         //bool enemyHitByLaser = false;
         bool listContainsAlgaWhip = false;
         //bool listContainsLaser = false;
+
+        //Sounds
+        private bool soundPlayed = false;
+        private bool soundPlayedSpecial = false;
+        private bool soundPlayedRanged = false;
         #endregion
 
         #region Properties
@@ -72,6 +78,7 @@ namespace CR4VE.GameLogic.Characters
             #region Update Melee By Characterposition
             if (launchedMelee)
             {
+                whipRotation += 1;
                 #region Singleplayer
                 if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
                 {
@@ -128,9 +135,9 @@ namespace CR4VE.GameLogic.Characters
                 else if (Game1.currentState.Equals(Game1.EGameState.Arena))
                 {
                     algaWhipPosition = this.position + viewingDirection * offset;
-                    algaWhip = new Entity(algaWhipPosition, "5x5x5Box1", Arena.cont);
+                    algaWhip = new Entity(algaWhipPosition, "seraphinsWhip", Arena.cont);
                     algaWhip.viewingDirection = viewingDirection;
-                    algaWhip.boundary = new BoundingBox(algaWhipPosition + new Vector3(-2.5f, -2.5f, -2.5f), algaWhipPosition + new Vector3(2.5f, 2.5f, 2.5f));
+                    algaWhip.boundary = new BoundingBox(algaWhipPosition + new Vector3(-4f, -4f, -4f), algaWhipPosition + new Vector3(4f, 4f, 4f));
 
                     if (!listContainsAlgaWhip)
                     {
@@ -149,7 +156,7 @@ namespace CR4VE.GameLogic.Characters
                             break;
                         if (seraphinsWhip.boundary.Intersects(Arena.boss.boundary))
                         {
-                            Arena.opheliaHud.healthLeft -= 1;
+                            Arena.opheliaHud.healthLeft -= 5;
                             enemyHitByMelee = true;
                             Console.WriteLine("Seraphin hit Boss by MeleeAttack");
                         }
@@ -162,7 +169,7 @@ namespace CR4VE.GameLogic.Characters
                     algaWhipPosition = this.position + viewingDirection * offset;
                     algaWhip = new Entity(algaWhipPosition, "5x5x5Box1", Multiplayer.cont);
                     algaWhip.viewingDirection = viewingDirection;
-                    algaWhip.boundary = new BoundingBox(algaWhipPosition + new Vector3(-2.5f, -2.5f, -2.5f), algaWhipPosition + new Vector3(2.5f, 2.5f, 2.5f));
+                    algaWhip.boundary = new BoundingBox(algaWhipPosition + new Vector3(-4f, -4f, -4f), algaWhipPosition + new Vector3(4f, 4f, 4f));
 
                     if (!listContainsAlgaWhip)
                     {
@@ -526,9 +533,17 @@ namespace CR4VE.GameLogic.Characters
 
         public override void MeleeAttack(GameTime time)
         {
+            whipRotation = 0;
             launchedMelee = true;
             timeSpan = TimeSpan.FromMilliseconds(270);
             enemyHitByMelee = false;
+            soundPlayed = false;
+            if (!soundPlayed)
+            {
+                Sounds.whip.Play();
+
+                soundPlayed = true;
+            }
             //Rest wird in der Update berechnet
         }
 
@@ -539,6 +554,12 @@ namespace CR4VE.GameLogic.Characters
                 manaLeft -= 1;
                 launchedRanged = true;
                 timeSpanForMinions = TimeSpan.FromSeconds(10);
+                soundPlayedRanged = false;
+                if (!soundPlayedRanged) {
+                    Sounds.spawn.Play();
+
+                    soundPlayedRanged = true;
+                }
 
                 #region Singleplayer
                 if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
@@ -568,13 +589,20 @@ namespace CR4VE.GameLogic.Characters
         public override void SpecialAttack(GameTime time)
         {
             //Laser kann nur bei vollem Mana benutzt werden
-            if (manaLeft >= 3)
+            if (manaLeft == 3)
             {
                 manaLeft -= 3;
                 launchedSpecial = true;
                 currentCharacterPosition = this.Position;
                 //timeSpan = TimeSpan.FromMilliseconds(270);
                 rangeOfLaser = new BoundingSphere(currentCharacterPosition, 50);
+                soundPlayedSpecial = false;
+                if (!soundPlayedSpecial)
+                {
+                    Sounds.laser.Play();
+
+                    soundPlayedSpecial = true;
+                }
 
                 #region Singleplayer
                 if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
@@ -590,7 +618,7 @@ namespace CR4VE.GameLogic.Characters
                 {
                     Entity laser = new Entity(this.position, "seraphinsLaser", Arena.cont);
                     laser.viewingDirection = this.viewingDirection;
-                    laser.boundary = new BoundingBox(this.position + new Vector3(-3, -3, -3), this.position + new Vector3(3, 3, 3));
+                    laser.boundary = new BoundingBox(this.position + new Vector3(-5, -6, -5), this.position + new Vector3(5, 6, 5));
                     attackList.Add(laser);
                 }
                 #endregion
@@ -599,7 +627,7 @@ namespace CR4VE.GameLogic.Characters
                 {
                     Entity laser = new Entity(this.position, "seraphinsLaser", Multiplayer.cont);
                     laser.viewingDirection = this.viewingDirection;
-                    laser.boundary = new BoundingBox(this.position + new Vector3(-3, -3, -3), this.position + new Vector3(3, 3, 3));
+                    laser.boundary = new BoundingBox(this.position + new Vector3(-5, -6, -5), this.position + new Vector3(5, 6, 5));
                     attackList.Add(laser);
                 }
                 #endregion
@@ -625,7 +653,7 @@ namespace CR4VE.GameLogic.Characters
                     foreach (Entity whip in meleeAttackList)
                     {
                         float whipBlickwinkel = (float)Math.Atan2(-whip.viewingDirection.Z, whip.viewingDirection.X);
-                        whip.drawInArena(new Vector3(1, 1, 1), 0, 0, 0);
+                        whip.drawInArena(new Vector3(1, 1, 1), 0, MathHelper.ToRadians(90) + whipBlickwinkel, 0);
                     }
                 }
             }

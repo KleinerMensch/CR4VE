@@ -31,8 +31,11 @@ namespace CR4VE.GameLogic.Characters
         bool enemyHit = false;
         bool enemyHitByMelee = false;
         bool listContainsCrystalShield = false;
-        public bool soundPlayed = false;
-        public bool soundPlayedRanged = false;
+
+        //Sounds
+        private bool soundPlayed = false;
+        private bool soundPlayedRanged = false;
+        private bool soundPlayedSpecial = false;
         #endregion
 
         #region Properties
@@ -121,8 +124,8 @@ namespace CR4VE.GameLogic.Characters
                 #region Arena
                 else if (Game1.currentState.Equals(Game1.EGameState.Arena))
                 {
-                    crystalShield = new Entity(this.position, "5x5x5Box1", Arena.cont);
-                    crystalShield.boundary = new BoundingBox(this.position + new Vector3(-10, -3, -10), this.position + new Vector3(10, 3, 10));
+                    crystalShield = new Entity(this.position, "fractusCrystalShield", Arena.cont);
+                    crystalShield.boundary = new BoundingBox(this.position + new Vector3(-5, -9, -5), this.position + new Vector3(5, 9, 5));
                     
                     if (!listContainsCrystalShield)
                     {
@@ -141,7 +144,7 @@ namespace CR4VE.GameLogic.Characters
                             break;
                         if (fractusShield.boundary.Intersects(Arena.boss.boundary))
                         {
-                            Arena.kazumiHud.healthLeft -= 1;
+                            Arena.kazumiHud.healthLeft -= 5;
                             enemyHitByMelee = true;
                             Console.WriteLine("Fractus hit Boss by crystalShield");
                         }
@@ -151,8 +154,8 @@ namespace CR4VE.GameLogic.Characters
                 #region Multiplayer
                 else if (Game1.currentState.Equals(Game1.EGameState.Multiplayer))
                 {
-                    crystalShield = new Entity(this.position, "5x5x5Box1", Multiplayer.cont);
-                    crystalShield.boundary = new BoundingBox(this.position + new Vector3(-10, -3, -10), this.position + new Vector3(10, 3, 10));
+                    crystalShield = new Entity(this.position, "fractusCrystalShield", Multiplayer.cont);
+                    crystalShield.boundary = new BoundingBox(this.position + new Vector3(-5, -9, -5), this.position + new Vector3(5, 9, 5));
 
                     if (!listContainsCrystalShield)
                     {
@@ -497,9 +500,9 @@ namespace CR4VE.GameLogic.Characters
                 #region Arena
                 else if (Game1.currentState.Equals(Game1.EGameState.Arena))
                 {
-                    Entity flyingCrystals = new Entity(this.position, "Enemies/skull", Arena.cont);
+                    Entity flyingCrystals = new Entity(this.position, "fractusCrystals", Arena.cont);
                     flyingCrystals.viewingDirection = viewingDirection;
-                    flyingCrystals.boundary = new BoundingBox(this.position + new Vector3(-3, -3, -3), this.position + new Vector3(3, 3, 3));
+                    flyingCrystals.boundary = new BoundingBox(this.position + new Vector3(-3, -9, -3), this.position + new Vector3(3, 9, 3));
                     attackList.Add(flyingCrystals);
                 }
                 #endregion
@@ -508,7 +511,7 @@ namespace CR4VE.GameLogic.Characters
                 {
                     Entity flyingCrystals = new Entity(this.position, "Enemies/skull", Multiplayer.cont);
                     flyingCrystals.viewingDirection = viewingDirection;
-                    flyingCrystals.boundary = new BoundingBox(this.position + new Vector3(-3, -3, -3), this.position + new Vector3(3, 3, 3));
+                    flyingCrystals.boundary = new BoundingBox(this.position + new Vector3(-3, -9, -3), this.position + new Vector3(3, 9, 3));
                     attackList.Add(flyingCrystals);
                 }
                 #endregion
@@ -524,6 +527,13 @@ namespace CR4VE.GameLogic.Characters
                 manaLeft -= 1.5f;
                 launchedSpecial = true;
                 timeSpanForHealthAbsorbingCrystals = TimeSpan.FromSeconds(10);
+                soundPlayedSpecial = false;
+                if (!soundPlayedSpecial)
+                {
+                    Sounds.spawn.Play();
+
+                    soundPlayedSpecial = true;
+                }
 
                 #region Singleplayer
                 if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
@@ -534,13 +544,13 @@ namespace CR4VE.GameLogic.Characters
                 #region Arena
                 else if (Game1.currentState.Equals(Game1.EGameState.Arena))
                 {
-                    crystalList.Add(new Entity(this.position, "Enemies/enemySpinningNoAnim", CR4VE.GameLogic.GameStates.Arena.cont));
+                    crystalList.Add(new Entity(this.position, "Enemies/enemyShootingNoAnim", CR4VE.GameLogic.GameStates.Arena.cont));
                 }
                 #endregion
                 #region Multiplayer
                 else if (Game1.currentState.Equals(Game1.EGameState.Multiplayer))
                 {
-                    crystalList.Add(new Entity(this.position, "Enemies/enemySpinningNoAnim", CR4VE.GameLogic.GameStates.Multiplayer.cont));
+                    crystalList.Add(new Entity(this.position, "Enemies/enemyShootingNoAnim", CR4VE.GameLogic.GameStates.Multiplayer.cont));
                 }
                 #endregion
 
@@ -561,14 +571,14 @@ namespace CR4VE.GameLogic.Characters
                 {
                     foreach (Entity shield in meleeAttackList)
                     {
-                        shield.drawIn2DWorld(new Vector3(1, 1, 1), 0, 0, 0);
+                        shield.drawIn2DWorld(new Vector3(0.02f, 0.02f, 0.02f), 0, 0, 0);
                     }
                 }
                 if (Game1.currentState.Equals(Game1.EGameState.Arena) || Game1.currentState.Equals(Game1.EGameState.Multiplayer))
                 {
                     foreach (Entity shield in meleeAttackList)
                     {
-                        shield.drawInArena(new Vector3(1, 1, 1), 0, 0, 0);
+                        shield.drawInArena(new Vector3(0.025f, 0.025f, 0.025f), 0, 0, 0);
                     }
                 }
             }
@@ -588,7 +598,7 @@ namespace CR4VE.GameLogic.Characters
                     foreach (Entity fractusCrystals in attackList)
                     {
                         float crystalBlickwinkel = (float)Math.Atan2(-fractusCrystals.viewingDirection.Z, fractusCrystals.viewingDirection.X);
-                        fractusCrystals.drawInArena(new Vector3(0.01f, 0.01f, 0.01f), 0, MathHelper.ToRadians(90) + crystalBlickwinkel, 0);
+                        fractusCrystals.drawInArena(new Vector3(1f, 1f, 1f), 0, MathHelper.ToRadians(90) + crystalBlickwinkel, 0);
                     }
                 }
             }
@@ -610,7 +620,7 @@ namespace CR4VE.GameLogic.Characters
                 {
                     foreach (Entity crystal in crystalList)
                     {
-                        crystal.drawInArena(new Vector3(0.1f, 0.1f, 0.1f), 0, 0, 0);
+                        crystal.drawInArena(new Vector3(0.1f, 0.1f, 0.1f), MathHelper.ToRadians(180), 0, 0);
                     }
                 }
                 #endregion

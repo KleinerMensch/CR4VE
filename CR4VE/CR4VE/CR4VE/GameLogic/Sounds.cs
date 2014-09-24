@@ -17,17 +17,23 @@ namespace CR4VE.GameLogic
         public static SoundEffect scream;
         public static SoundEffect collectSound;
         public static SoundEffect checkpointHell;
+        public static SoundEffect checkpointCrystal;
         public static SoundEffect fireball;
+        public static SoundEffect claws;
         public static SoundEffect freezingIce;
         public static SoundEffect whip;
+        public static SoundEffect laser;
         public static SoundEffect SeraphinScream;
         public static SoundEffect thunder;
         public static SoundEffect spear;
-        public static SoundEffect claws;
         public static SoundEffect mainMenu;
         public static SoundEffectInstance menu;
         public static SoundEffect punch;
         public static SoundEffect water;
+        public static SoundEffect spawn;
+        public static SoundEffect minionsFraktus;
+        public static SoundEffect goldCave;
+ 
         #endregion
 
         #region Methods
@@ -36,9 +42,11 @@ namespace CR4VE.GameLogic
             scream = content.Load<SoundEffect>("Assets/Sounds/deathScream");
             collectSound = content.Load<SoundEffect>("Assets/Sounds/itemCollect");
             checkpointHell = content.Load<SoundEffect>("Assets/Sounds/CheckpointHell");
+            checkpointCrystal = content.Load<SoundEffect>("Assets/Sounds/CheckpointCristall");
             fireball = content.Load<SoundEffect>("Assets/Sounds/Fireball");
             freezingIce = content.Load<SoundEffect>("Assets/Sounds/freezingIce");
             whip = content.Load<SoundEffect>("Assets/Sounds/whip");
+            laser = content.Load<SoundEffect>("Assets/Sounds/laser");
             SeraphinScream = content.Load<SoundEffect>("Assets/Sounds/SeraphinScream");
             thunder = content.Load<SoundEffect>("Assets/Sounds/thunder");
             spear = content.Load<SoundEffect>("Assets/Sounds/spear");
@@ -48,6 +56,10 @@ namespace CR4VE.GameLogic
             menu.IsLooped = true;
             punch = content.Load<SoundEffect>("Assets/Sounds/punch");
             water = content.Load<SoundEffect>("Assets/Sounds/water");
+            spawn = content.Load<SoundEffect>("Assets/Sounds/spawn");
+            minionsFraktus = content.Load<SoundEffect>("Assets/Sounds/minions");
+            goldCave = content.Load<SoundEffect>("Assets/Sounds/GoldCave");
+            
         }
 
         /*public static void PlaySound(SoundEffect sound)

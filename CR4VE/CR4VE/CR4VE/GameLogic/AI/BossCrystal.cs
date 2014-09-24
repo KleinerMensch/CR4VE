@@ -35,6 +35,11 @@ namespace CR4VE.GameLogic.AI
         private TimeSpan timeSpanForResettingMana = TimeSpan.FromSeconds(15);
         private TimeSpan timeSpan = TimeSpan.FromMilliseconds(270);
         private TimeSpan lastAttack;
+
+        private bool soundPlayed = false;
+        private bool soundPlayedRanged = false;
+        private bool soundPlayedSpecial = false;
+        private bool soundPlayedMinions = false;
         #endregion
 
         #region inherited Constructors
@@ -116,8 +121,8 @@ namespace CR4VE.GameLogic.AI
                 #region UpdateMelee
                 if (launchedMelee)
                 {
-                    crystalShield = new Entity(this.position, "5x5x5Box1", Arena.cont);
-                    crystalShield.boundary = new BoundingBox(this.position + new Vector3(-10, -3, -10), this.position + new Vector3(10, 3, 10));
+                    crystalShield = new Entity(this.position, "fractusCrystalShield", Arena.cont);
+                    crystalShield.boundary = new BoundingBox(this.position + new Vector3(-5, -9, -5), this.position + new Vector3(5, 9, 5));
                     
                     if (!listContainsCrystalShield)
                     {
@@ -138,7 +143,7 @@ namespace CR4VE.GameLogic.AI
                         {
                             Arena.kazumiHud.healthLeft -= 5;
                             playerHitByMelee = true;
-                            Console.WriteLine("Fractus hit Player by crystalShield");
+                            Console.WriteLine("Fractus hit Kazumi by crystalShield");
                         }
                     }
                 }
@@ -173,8 +178,14 @@ namespace CR4VE.GameLogic.AI
                     {
                         if ((healthAbsorbingCrystal.position - Arena.player.position).Length() < 20 && Arena.kazumiHud.healthLeft > 0)
                         {
-                            Console.WriteLine(" Fractus hit enemy by SpecialAttack");
+                            Console.WriteLine(" Fractus hit Kazumi by SpecialAttack");
                             Arena.kazumiHud.healthLeft -= 1;
+                            soundPlayedMinions = false;
+                            if (!soundPlayedMinions)
+                            {
+                                Sounds.minionsFraktus.Play();
+                                soundPlayedMinions = true;
+                            }
 
                             //transfers health to Fractus in Arena
                             if (Arena.fractusBossHUD.trialsLeft <= 3 && Arena.fractusBossHUD.healthLeft < Arena.fractusBossHUD.fullHealth)
@@ -184,15 +195,16 @@ namespace CR4VE.GameLogic.AI
                 }
                 #endregion
 
-                if (manaLeft >= 1.5f && crystalList.Count == 0)
-                {
-                    if (lastAttack + specialAttackTimer < time.TotalGameTime)
-                    {
-                        this.SpecialAttack(time);
-                        lastAttack = time.TotalGameTime;
-                        manaLeft -= 1.5f;
-                    }
-                }
+                //if (manaLeft >= 1.5f && crystalList.Count == 0)
+                //{
+                //    if (lastAttack + specialAttackTimer < time.TotalGameTime)
+                //    {
+                //        this.SpecialAttack(time);
+                //        lastAttack = time.TotalGameTime;
+                //        manaLeft -= 1.5f;
+                //    }
+                //}
+                this.SpecialAttack(time);
                 #endregion
 
                 #region Spawning RangedAttack
@@ -218,9 +230,9 @@ namespace CR4VE.GameLogic.AI
 
                             if (attackList[i].boundary.Intersects(Arena.player.boundary))
                             {
-                                Arena.kazumiHud.healthLeft -= 3;
+                                Arena.kazumiHud.healthLeft -= 40;
                                 playerHit = true;
-                                Console.WriteLine("Fractus hit Player by RangedAttack");
+                                Console.WriteLine("Fractus hit Kazumi by RangedAttack");
                             }
                             //verschwindet auch bei Kollision mit Gegner
                             if (playerHit)
@@ -250,6 +262,13 @@ namespace CR4VE.GameLogic.AI
             launchedMelee = true;
             timeSpan = TimeSpan.FromMilliseconds(270);
             playerHitByMelee = false;
+            soundPlayed = false;
+            if (!soundPlayed)
+            {
+                Sounds.freezingIce.Play();
+
+                soundPlayed = true;
+            }
         }
 
         public override void RangedAttack(GameTime time)
@@ -260,10 +279,17 @@ namespace CR4VE.GameLogic.AI
                 launchedRanged = true;
                 currentCharacterPosition = this.Position;
                 rangeOfFlyingCrystals = new BoundingSphere(currentCharacterPosition, 50);
+                soundPlayedRanged = false;
+                if (!soundPlayedRanged)
+                {
+                    Sounds.freezingIce.Play();
 
-                Entity flyingCrystals = new Entity(this.position, "Enemies/skull", Arena.cont);
+                    soundPlayedRanged = true;
+                }
+
+                Entity flyingCrystals = new Entity(this.position, "fractusCrystals", Arena.cont);
                 flyingCrystals.viewingDirection = viewingDirection;
-                flyingCrystals.boundary = new BoundingBox(this.position + new Vector3(-3, -3, -3), this.position + new Vector3(3, 3, 3));
+                flyingCrystals.boundary = new BoundingBox(this.position + new Vector3(-3, -9, -3), this.position + new Vector3(3, 9, 3));
                 attackList.Add(flyingCrystals);
             }
         }
@@ -275,8 +301,15 @@ namespace CR4VE.GameLogic.AI
                 manaLeft -= 1.5f;
                 launchedSpecial = true;
                 timeSpanForHealthAbsorbingCrystals = TimeSpan.FromSeconds(10);
+                soundPlayedSpecial = false;
+                if (!soundPlayedSpecial)
+                {
+                    Sounds.spawn.Play();
 
-                crystalList.Add(new Entity(this.position, "Enemies/enemySpinningNoAnim", CR4VE.GameLogic.GameStates.Arena.cont));
+                    soundPlayedSpecial = true;
+                }
+
+                crystalList.Add(new Entity(this.position, "Enemies/enemyShootingNoAnim", CR4VE.GameLogic.GameStates.Arena.cont));
 
                 //mehr als 2 Kristalle nicht moeglich
                 if (crystalList.Count > 2)
@@ -310,7 +343,7 @@ namespace CR4VE.GameLogic.AI
             {
                 foreach (Entity crystal in crystalList)
                 {
-                    crystal.drawInArena(new Vector3(0.1f, 0.1f, 0.1f), 0, 0, 0);
+                    crystal.drawInArena(new Vector3(0.1f, 0.1f, 0.1f), MathHelper.ToRadians(180), 0, 0);
                 }
             }
             #endregion
