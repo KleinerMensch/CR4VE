@@ -164,7 +164,7 @@ namespace CR4VE.GameLogic.Characters
                             break;
                         if (kazumisClaws.boundary.Intersects(Arena.boss.boundary))
                         {
-                            Arena.seraphinBossHUD.healthLeft -= 5;
+                            Arena.fractusBossHUD.healthLeft -= 5;
                             enemyHitByMelee = true;
                             Console.WriteLine("Kazumi hit Boss by MeleeAttack");
                         }

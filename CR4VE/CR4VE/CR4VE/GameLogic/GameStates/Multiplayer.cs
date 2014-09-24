@@ -106,7 +106,7 @@ namespace CR4VE.GameLogic.GameStates
             }
 
             return Game1.EGameState.Multiplayer;
-        }
+        } 
         #endregion
 
         #region Draw
@@ -120,7 +120,11 @@ namespace CR4VE.GameLogic.GameStates
             //players
             for (int i = 0; i < GameControls.ConnectedControllers; i++)
             {
-                Multiplayer.Players[i].drawInArena(new Vector3(0.02f, 0.02f, 0.02f), 0, MathHelper.ToRadians(90) + Multiplayer.Players[i].blickWinkel, 0);
+                if (Players[i].CharacterType == "Seraphin")
+                    Multiplayer.Players[i].drawInArena(new Vector3(1f, 1f, 1f), 0, MathHelper.ToRadians(90) + Multiplayer.Players[i].blickWinkel, 0);
+                else
+                    Multiplayer.Players[i].drawInArena(new Vector3(0.02f, 0.02f, 0.02f), 0, MathHelper.ToRadians(90) + Multiplayer.Players[i].blickWinkel, 0);
+                
                 Multiplayer.Players[i].DrawAttacks();
             }
             #endregion
@@ -130,7 +134,7 @@ namespace CR4VE.GameLogic.GameStates
 
             /*for (int i = 0; i < GameControls.ConnectedControllers; i++)
             {
-                Multiplayer.Players[i].h
+                Multiplayer.Players[i].HUD.Draw();
             }*/
 
             spriteBatch.End();

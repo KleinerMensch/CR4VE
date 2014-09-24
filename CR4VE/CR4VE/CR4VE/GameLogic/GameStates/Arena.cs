@@ -66,7 +66,7 @@ namespace CR4VE.GameLogic.GameStates
             //Terrain
             terrain = new Entity(new Vector3(5, -20, -10), "Terrain/arena_hell", content);
 
-            BoundingBox lavaBound = new BoundingBox(new Vector3(), new Vector3());
+            //BoundingBox lavaBound = new BoundingBox(new Vector3(), new Vector3());
             lava = new Entity(new Vector3(0, -110, -30), "Terrain/lavafloor", content);
 
             //moveable Entities
@@ -77,7 +77,7 @@ namespace CR4VE.GameLogic.GameStates
             }
             else
             {
-                player = new CharacterSeraphin(startPos, "Ophelia", content); //Ophelia
+                player = new CharacterOphelia(startPos, "Ophelia", content); //Ophelia
                 CharacterOphelia.manaLeft = 3;
             }
 
@@ -87,7 +87,15 @@ namespace CR4VE.GameLogic.GameStates
 
             #region Loading AI
             //Boss je nachdem, wer der Player ist
-            boss = new BossCrystal(new Vector3(60, 0, 0), "Kazumi", content);
+            if (Singleplayer.isCrystal)
+            {
+                boss = new BossCrystal(new Vector3(60, 0, 0), "Kazumi", content);
+            }
+            else
+            {
+                boss = new BossHell(new Vector3(60, 0, 0), "albino", content);
+            }
+
             boss.boundary = new BoundingBox(boss.position + new Vector3(-4f, -12, -4f), boss.position + new Vector3(4f, 12, 4f));
             rangeOfMeleeFromBoss = new BoundingSphere(player.position, 4);
             #endregion
@@ -95,15 +103,20 @@ namespace CR4VE.GameLogic.GameStates
             testBoundingBox = new Entity(boss.position, "5x5x5Box1", content);
             
             #region Initialize and Reset HUD
-            opheliaHud = new OpheliaHUD(content, graphics);
-            opheliaHud.healthLeft = opheliaHud.fullHealth;
-            seraphinBossHUD = new BossHellHUD(content, graphics);
-            seraphinBossHUD.healthLeft = seraphinBossHUD.fullHealth;
-
-            kazumiHud = new KazumiHUD(content, graphics);
-            kazumiHud.healthLeft = kazumiHud.fullHealth;
-            fractusBossHUD = new BossCrystalHUD(content, graphics);
-            fractusBossHUD.healthLeft = fractusBossHUD.fullHealth;
+            if (Singleplayer.isCrystal)
+            {
+                kazumiHud = new KazumiHUD(content, graphics);
+                kazumiHud.healthLeft = kazumiHud.fullHealth;
+                fractusBossHUD = new BossCrystalHUD(content, graphics);
+                fractusBossHUD.healthLeft = fractusBossHUD.fullHealth;                
+            }
+            else
+            {
+                opheliaHud = new OpheliaHUD(content, graphics);
+                opheliaHud.healthLeft = opheliaHud.fullHealth;
+                seraphinBossHUD = new BossHellHUD(content, graphics);
+                seraphinBossHUD.healthLeft = seraphinBossHUD.fullHealth;
+            }            
             #endregion
 
             Sounds.Initialize(content);
@@ -118,33 +131,39 @@ namespace CR4VE.GameLogic.GameStates
 
             player.Update(gameTime);
             sphere.Center = player.position;
-            rangeOfMeleeFromBoss.Center = boss.position;
-
-            boss.Update(gameTime);
+            rangeOfMeleeFromBoss.Center = boss.position;            
 
             testBoundingBox.moveTo(boss.position);
             
             #region HUD
-            opheliaHud.Update();
-            opheliaHud.UpdateLiquidPositionByResolution();
-            opheliaHud.UpdateMana();
-            opheliaHud.UpdateHealth();
-
-            kazumiHud.Update();
-            kazumiHud.UpdateLiquidPositionByResolution();
-            kazumiHud.UpdateMana();
-            kazumiHud.UpdateHealth();
-
-            seraphinBossHUD.Update();
-            seraphinBossHUD.UpdateLiquidPositionByResolution();
-
-            fractusBossHUD.Update();
-            fractusBossHUD.UpdateLiquidPositionByResolution();
-
-            if (opheliaHud.isDead || kazumiHud.isDead)
+            if (Singleplayer.isCrystal)
             {
-                return Game1.EGameState.GameOver;
+                kazumiHud.Update();
+                kazumiHud.UpdateLiquidPositionByResolution();
+                kazumiHud.UpdateMana();
+                kazumiHud.UpdateHealth();
+
+                fractusBossHUD.Update();
+                fractusBossHUD.UpdateLiquidPositionByResolution();
+
+                if (kazumiHud.isDead)
+                    return Game1.EGameState.GameOver;
             }
+            else
+            {
+                opheliaHud.Update();
+                opheliaHud.UpdateLiquidPositionByResolution();
+                opheliaHud.UpdateMana();
+                opheliaHud.UpdateHealth();
+
+                seraphinBossHUD.Update();
+                seraphinBossHUD.UpdateLiquidPositionByResolution();
+
+                if (opheliaHud.isDead)
+                    return Game1.EGameState.GameOver;
+            }
+
+            boss.Update(gameTime);
             #endregion
 
             return Game1.EGameState.Arena;
