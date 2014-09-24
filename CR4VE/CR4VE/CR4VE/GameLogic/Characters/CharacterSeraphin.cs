@@ -39,6 +39,11 @@ namespace CR4VE.GameLogic.Characters
         //bool enemyHitByLaser = false;
         bool listContainsAlgaWhip = false;
         //bool listContainsLaser = false;
+
+        //Sounds
+        private bool soundPlayed = false;
+        private bool soundPlayedSpecial = false;
+        private bool soundPlayedRanged = false;
         #endregion
 
         #region Properties
@@ -532,6 +537,13 @@ namespace CR4VE.GameLogic.Characters
             launchedMelee = true;
             timeSpan = TimeSpan.FromMilliseconds(270);
             enemyHitByMelee = false;
+            soundPlayed = false;
+            if (!soundPlayed)
+            {
+                Sounds.whip.Play();
+
+                soundPlayed = true;
+            }
             //Rest wird in der Update berechnet
         }
 
@@ -542,6 +554,12 @@ namespace CR4VE.GameLogic.Characters
                 manaLeft -= 1;
                 launchedRanged = true;
                 timeSpanForMinions = TimeSpan.FromSeconds(10);
+                soundPlayedRanged = false;
+                if (!soundPlayedRanged) {
+                    Sounds.spawn.Play();
+
+                    soundPlayedRanged = true;
+                }
 
                 #region Singleplayer
                 if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))
@@ -578,6 +596,13 @@ namespace CR4VE.GameLogic.Characters
                 currentCharacterPosition = this.Position;
                 //timeSpan = TimeSpan.FromMilliseconds(270);
                 rangeOfLaser = new BoundingSphere(currentCharacterPosition, 50);
+                soundPlayedSpecial = false;
+                if (!soundPlayedSpecial)
+                {
+                    Sounds.laser.Play();
+
+                    soundPlayedSpecial = true;
+                }
 
                 #region Singleplayer
                 if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))

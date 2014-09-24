@@ -41,11 +41,12 @@ namespace CR4VE.GameLogic.AI
         TimeSpan timeSpanForResettingMana = TimeSpan.FromSeconds(10);
         TimeSpan timeSpan = TimeSpan.FromMilliseconds(270);
         private TimeSpan lastAttack;
-        public bool soundPlayed = false;
+        private bool soundPlayedDeath = false;
+        private bool soundPlayed = false;
+        private bool soundPlayedRanged = false;
+        private bool soundPlayedSpecial = false;
 
-        ////fuer die Minionbewegung (von Maria)
-        //static float rTimer = 10.0f;
-        //static float chaseTimer = 5.0f;
+        
         #endregion
 
         #region inherited Constructors
@@ -61,11 +62,11 @@ namespace CR4VE.GameLogic.AI
             #region Handling Death Of Boss
             if (Arena.seraphinBossHUD.isDead)
             {
-                if (!soundPlayed)
+                if (!soundPlayedDeath)
                 {
                     Sounds.SeraphinScream.Play();
 
-                    soundPlayed = true;
+                    soundPlayedDeath = true;
                 }
 
                 this.model = Arena.cont.Load<Model>("Assets/Models/Players/skull");
@@ -302,6 +303,13 @@ namespace CR4VE.GameLogic.AI
             launchedMelee = true;
             timeSpan = TimeSpan.FromMilliseconds(270);
             playerHitByMelee = false;
+            soundPlayed = false;
+            if (!soundPlayed)
+            {
+                Sounds.whip.Play();
+
+                soundPlayed = true;
+            }
         }
 
         public override void RangedAttack(GameTime time)
@@ -311,6 +319,13 @@ namespace CR4VE.GameLogic.AI
                 manaLeft -= 1;
                 launchedRanged = true;
                 timeSpanForSpawningMinions = TimeSpan.FromSeconds(5);
+                soundPlayedRanged = false;
+                if (!soundPlayedRanged)
+                {
+                    Sounds.spawn.Play();
+
+                    soundPlayedRanged = true;
+                }
 
                 minionList.Add(new Entity(this.position, "Enemies/EnemyEye", CR4VE.GameLogic.GameStates.Arena.cont));
 
@@ -328,6 +343,13 @@ namespace CR4VE.GameLogic.AI
                 launchedSpecial = true;
                 currentCharacterPosition = this.position;
                 rangeOfLaser = new BoundingSphere(currentCharacterPosition, 50);
+                soundPlayedSpecial = false;
+                if (!soundPlayedSpecial)
+                {
+                    Sounds.laser.Play();
+
+                    soundPlayedSpecial = true;
+                }
 
                 Entity laser = new Entity(this.position, "seraphinsLaser", Arena.cont);
                 laser.viewingDirection = this.viewingDirection;
@@ -364,7 +386,7 @@ namespace CR4VE.GameLogic.AI
                 foreach (Entity lazer in attackList)
                 {
                     float laserBlickwinkel = (float)Math.Atan2(-lazer.viewingDirection.Z, lazer.viewingDirection.X);
-                    lazer.drawInArena(new Vector3(0.01f, 0.01f, 0.01f), 0, MathHelper.ToRadians(90) + laserBlickwinkel, 0);
+                    lazer.drawInArena(new Vector3(1f, 1f, 1f), 0, MathHelper.ToRadians(90) + laserBlickwinkel, 0);
                 }
             }
             #endregion

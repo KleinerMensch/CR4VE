@@ -31,8 +31,11 @@ namespace CR4VE.GameLogic.Characters
         bool enemyHit = false;
         bool enemyHitByMelee = false;
         bool listContainsCrystalShield = false;
-        public bool soundPlayed = false;
-        public bool soundPlayedRanged = false;
+
+        //Sounds
+        private bool soundPlayed = false;
+        private bool soundPlayedRanged = false;
+        private bool soundPlayedSpecial = false;
         #endregion
 
         #region Properties
@@ -524,6 +527,13 @@ namespace CR4VE.GameLogic.Characters
                 manaLeft -= 1.5f;
                 launchedSpecial = true;
                 timeSpanForHealthAbsorbingCrystals = TimeSpan.FromSeconds(10);
+                soundPlayedSpecial = false;
+                if (!soundPlayedSpecial)
+                {
+                    Sounds.spawn.Play();
+
+                    soundPlayedSpecial = true;
+                }
 
                 #region Singleplayer
                 if (Game1.currentState.Equals(Game1.EGameState.Singleplayer))

@@ -87,7 +87,7 @@ namespace CR4VE.GameLogic.GameStates
 
             #region Loading AI
             //Boss je nachdem, wer der Player ist
-            boss = new BossHell(new Vector3(60, 0, 0), "albino", content);
+            boss = new BossHell(new Vector3(60, 0, 0), "Kazumi", content);
             boss.boundary = new BoundingBox(boss.position + new Vector3(-4f, -12, -4f), boss.position + new Vector3(4f, 12, 4f));
             rangeOfMeleeFromBoss = new BoundingSphere(player.position, 4);
             #endregion

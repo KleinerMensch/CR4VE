@@ -107,8 +107,19 @@ namespace CR4VE.GameBase.Objects.Terrain
                         //do nothing
                         case 0:
                             break;
+                        #endregion
 
-                        //Arenakey
+                        #region Keys
+                        //SoundTrigger (Gold)
+                        case 87:
+                            {
+                                Vector3 position = start + new Vector3(x * size, -y * size, 0);
+                                BoundingBox boundary = new BoundingBox(position + new Vector3(-size*11 / 2, -size*7 / 2, -size / 2), position + new Vector3(size*11 / 2, size*2 / 2, size / 2));
+
+                                Singleplayer.GoldSoundTrigger = new Entity(position, "5x5x5Box1", Singleplayer.cont, boundary);
+                            } break;
+
+                        //ArenaKey
                         case 88:
                             {
                                 Vector3 position = start + new Vector3(x * size, -y * size, 0);
@@ -117,6 +128,15 @@ namespace CR4VE.GameBase.Objects.Terrain
                                 Singleplayer.ArenaKey = new Entity(position, "OpheliasSpeer", Singleplayer.cont, boundary);
                             }
                             break;
+
+                        //Singleplayerkey
+                        case 89:
+                            {
+                                Vector3 position = start + new Vector3(x * size, -y * size, 0);
+                                BoundingBox boundary = new BoundingBox(position + new Vector3(-size / 2, -size / 2, -size / 2), position + new Vector3(size / 2, size / 2, size / 2));
+
+                                Singleplayer.TutorialExit = new Entity(position, "OpheliasSpeer", Singleplayer.cont, boundary);
+                            } break;
                         #endregion
 
                         #region Enemies
@@ -150,7 +170,7 @@ namespace CR4VE.GameBase.Objects.Terrain
                         //ceiling spikes
                         case 94:
                             {
-                                Vector3 position = start + new Vector3(x * size, -y * size, 0);
+                                Vector3 position = start + new Vector3(x * size, -y * size, 0) + new Vector3(0, size/2, size/2);
                                 BoundingBox boundary = new BoundingBox(position + new Vector3(-size / 2, -size / 2.5f, -size / 2), position + new Vector3(size / 2, 0, size / 2));
                                 
                                 enemies.Add(new Spikes(position, "spikes_ceiling", Singleplayer.cont, boundary));

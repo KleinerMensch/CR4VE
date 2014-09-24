@@ -30,10 +30,12 @@ namespace CR4VE.GameLogic.Characters
         bool enemyHit = false;
         bool enemyHitByMelee = false;
         bool listContainsClaws = false;
-        public bool soundPlayed = false;
-        public bool soundPlayedRanged = false;
-        public bool soundPlayedEnemy = false;
-        public bool soundPlayedSpecial = false;
+
+        //Sounds
+        private bool soundPlayed = false;
+        private bool soundPlayedRanged = false;
+        private bool soundPlayedEnemy = false;
+        private bool soundPlayedSpecial = false;
         #endregion
 
         #region Properties

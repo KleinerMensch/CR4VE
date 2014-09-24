@@ -43,7 +43,7 @@ namespace CR4VE.GameLogic.AI
             if (!isFalling)
                 distance = Math.Abs(this.position.X - Singleplayer.player.position.X);
 
-            if (distance <= 20)
+            if (distance <= 10)
             {
                 isFalling = true;
             }

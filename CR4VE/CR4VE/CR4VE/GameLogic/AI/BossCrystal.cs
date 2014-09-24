@@ -35,6 +35,11 @@ namespace CR4VE.GameLogic.AI
         private TimeSpan timeSpanForResettingMana = TimeSpan.FromSeconds(15);
         private TimeSpan timeSpan = TimeSpan.FromMilliseconds(270);
         private TimeSpan lastAttack;
+
+        private bool soundPlayed = false;
+        private bool soundPlayedRanged = false;
+        private bool soundPlayedSpecial = false;
+        private bool soundPlayedMinions = false;
         #endregion
 
         #region inherited Constructors
@@ -175,6 +180,12 @@ namespace CR4VE.GameLogic.AI
                         {
                             Console.WriteLine(" Fractus hit Kazumi by SpecialAttack");
                             Arena.kazumiHud.healthLeft -= 1;
+                            soundPlayedMinions = false;
+                            if (!soundPlayedMinions)
+                            {
+                                Sounds.minionsFraktus.Play();
+                                soundPlayedMinions = true;
+                            }
 
                             //transfers health to Fractus in Arena
                             if (Arena.fractusBossHUD.trialsLeft <= 3 && Arena.fractusBossHUD.healthLeft < Arena.fractusBossHUD.fullHealth)
@@ -184,15 +195,16 @@ namespace CR4VE.GameLogic.AI
                 }
                 #endregion
 
-                if (manaLeft >= 1.5f && crystalList.Count == 0)
-                {
-                    if (lastAttack + specialAttackTimer < time.TotalGameTime)
-                    {
-                        this.SpecialAttack(time);
-                        lastAttack = time.TotalGameTime;
-                        manaLeft -= 1.5f;
-                    }
-                }
+                //if (manaLeft >= 1.5f && crystalList.Count == 0)
+                //{
+                //    if (lastAttack + specialAttackTimer < time.TotalGameTime)
+                //    {
+                //        this.SpecialAttack(time);
+                //        lastAttack = time.TotalGameTime;
+                //        manaLeft -= 1.5f;
+                //    }
+                //}
+                this.SpecialAttack(time);
                 #endregion
 
                 #region Spawning RangedAttack
@@ -250,6 +262,13 @@ namespace CR4VE.GameLogic.AI
             launchedMelee = true;
             timeSpan = TimeSpan.FromMilliseconds(270);
             playerHitByMelee = false;
+            soundPlayed = false;
+            if (!soundPlayed)
+            {
+                Sounds.freezingIce.Play();
+
+                soundPlayed = true;
+            }
         }
 
         public override void RangedAttack(GameTime time)
@@ -260,6 +279,13 @@ namespace CR4VE.GameLogic.AI
                 launchedRanged = true;
                 currentCharacterPosition = this.Position;
                 rangeOfFlyingCrystals = new BoundingSphere(currentCharacterPosition, 50);
+                soundPlayedRanged = false;
+                if (!soundPlayedRanged)
+                {
+                    Sounds.freezingIce.Play();
+
+                    soundPlayedRanged = true;
+                }
 
                 Entity flyingCrystals = new Entity(this.position, "fractusCrystals", Arena.cont);
                 flyingCrystals.viewingDirection = viewingDirection;
@@ -275,6 +301,13 @@ namespace CR4VE.GameLogic.AI
                 manaLeft -= 1.5f;
                 launchedSpecial = true;
                 timeSpanForHealthAbsorbingCrystals = TimeSpan.FromSeconds(10);
+                soundPlayedSpecial = false;
+                if (!soundPlayedSpecial)
+                {
+                    Sounds.spawn.Play();
+
+                    soundPlayedSpecial = true;
+                }
 
                 crystalList.Add(new Entity(this.position, "Enemies/enemyShootingNoAnim", CR4VE.GameLogic.GameStates.Arena.cont));
 
@@ -310,7 +343,7 @@ namespace CR4VE.GameLogic.AI
             {
                 foreach (Entity crystal in crystalList)
                 {
-                    crystal.drawInArena(new Vector3(0.1f, 0.1f, 0.1f), 0, 0, 0);
+                    crystal.drawInArena(new Vector3(0.1f, 0.1f, 0.1f), MathHelper.ToRadians(180), 0, 0);
                 }
             }
             #endregion
