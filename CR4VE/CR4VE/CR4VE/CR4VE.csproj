@@ -86,7 +86,6 @@
     <Compile Include="GameBase\Camera\CameraMenu.cs" />
     <Compile Include="GameBase\HeadUpDisplay\BossCrystalHUD.cs" />
     <Compile Include="GameBase\HeadUpDisplay\BossHellHUD.cs" />
-    <Compile Include="GameBase\HeadUpDisplay\CameraMenu.cs" />
     <Compile Include="GameBase\HeadUpDisplay\FractusHUD.cs" />
     <Compile Include="GameBase\HeadUpDisplay\HUD.cs" />
     <Compile Include="GameBase\HeadUpDisplay\KazumiHUD.cs" />
