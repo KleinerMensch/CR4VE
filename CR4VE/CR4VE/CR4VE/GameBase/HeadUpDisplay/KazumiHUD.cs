@@ -16,7 +16,7 @@ namespace CR4VE.GameBase.HeadUpDisplay
         #region Attributes
         private Texture2D kazumiContinue, kazumiHealthContainer, kazumiPowerLeftTail, kazumiPowerMiddleTail, kazumiPowerRightTail;
         private Vector2 kazumiContinue1Position, kazumiContinue2Position, kazumiContinue3Position, kazumiHealthContainerPosition;
-        public bool soundPlayedWater = false;
+        private bool soundPlayedWater = false;
         #endregion
 
         #region inherited Constructor
@@ -115,8 +115,19 @@ namespace CR4VE.GameBase.HeadUpDisplay
                 if (isSwimming)
                 {
                     this.healthLeft -= (int)(Singleplayer.hud.fullHealth * 0.003);
-                    
+                    soundPlayedWater = false;
+                    if (!soundPlayedWater)
+                    {
+                        Sounds.water.Play();
+
+                        soundPlayedWater = true;
+                    }
                 }
+                if (!isSwimming)
+                {
+                    Sounds.water.Stop();
+                }
+
 
                 if (isBurning)
                     this.healthLeft -= (int)(Singleplayer.hud.fullHealth * 0.01);
