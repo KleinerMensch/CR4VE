@@ -104,7 +104,6 @@ Content\Assets\Models\Powerups\powerup_crystal_mana.xnb
 Content\Assets\Models\Players\Kazumi.xnb
 Content\Assets\Models\Checkpoints\checkpoint_crystal.xnb
 Content\Assets\Models\10x10x10Box1.xnb
-Content\Assets\Models\OpheliasAoE.xnb
 Content\Assets\Models\kazumisClaws.xnb
 Content\Assets\Models\kazumisAoE.xnb
 Content\Assets\Models\kazumisFireball.xnb
@@ -192,6 +191,19 @@ Content\Assets\Models\Terrain\Box22.xnb
 Content\snow_scuffed_ground_1_0.xnb
 Content\Assets\Models\Terrain\Box20.xnb
 Content\Tileable ice on grass ground tex_0.xnb
+Content\Assets\Models\seraphinsWhip.xnb
+Content\Assets\Models\fractusCrystals.xnb
+Content\Assets\Models\OpheliasAoE.xnb
+Content\Assets\Models\Maps\gold_1024x1024_1.xnb
+Content\Assets\Ophelia\Maps\Blue-Turquoise-Spotted-Glazed-Tilapia-Fish-Leather-Skin.xnb
+Content\Assets\Ophelia\Maps\Blue-Turquoise-Spotted-Glazed-Ti_0.xnb
+Content\Assets\Ophelia\Maps\Rainbow Shards.xnb
+Content\Assets\Models\Ophelia\Maps\EdelsteinTextur.xnb
+Content\Assets\Models\Ophelia\Maps\EdelsteinTextur_0.xnb
+Content\Assets\Ophelia\Maps\Rainbow Shards_0.xnb
+Content\Assets\Models\fractusCrystalShield.xnb
+Content\Assets\Ophelia\Maps\EdelsteinTextur.xnb
+Content\Assets\Ophelia\Maps\EdelsteinTextur_0.xnb
 Content\Assets\Sprites\Startscreen.png
 Content\Assets\Sprites\ButtonExit.png
 Content\Assets\Sprites\ButtonPlay.png

@@ -438,6 +438,7 @@
       <Name>OpheliasAoE</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
+      <ProcessorParameters_PremultiplyTextureAlpha>False</ProcessorParameters_PremultiplyTextureAlpha>
     </Compile>
     <Compile Include="Assets\Models\kazumisClaws.FBX">
       <Name>kazumisClaws</Name>
@@ -491,6 +492,21 @@
     </Compile>
     <Compile Include="Assets\Models\Terrain\Box20.FBX">
       <Name>Box20</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\seraphinsWhip.FBX">
+      <Name>seraphinsWhip</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\fractusCrystals.FBX">
+      <Name>fractusCrystals</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\fractusCrystalShield.FBX">
+      <Name>fractusCrystalShield</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
@@ -857,6 +873,34 @@
       <Name>whip</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Ophelia\Maps\Blue-Turquoise-Spotted-Glazed-Tilapia-Fish-Leather-Skin.jpg">
+      <Name>Blue-Turquoise-Spotted-Glazed-Tilapia-Fish-Leather-Skin</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Ophelia\Maps\Rainbow Shards.jpg">
+      <Name>Rainbow Shards</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Models\Ophelia\Maps\EdelsteinTextur.png">
+      <Name>EdelsteinTextur</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Ophelia\Maps\EdelsteinTextur.png">
+      <Name>EdelsteinTextur</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

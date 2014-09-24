@@ -143,8 +143,9 @@ namespace CR4VE.GameLogic.AI
                 if (launchedMelee)
                 {
                     algaWhipPosition = this.position + viewingDirection * offset;
-                    algaWhip = new Entity(algaWhipPosition, "5x5x5Box1", Arena.cont);
-                    algaWhip.boundary = new BoundingBox(algaWhipPosition + new Vector3(-2.5f, -2.5f, -2.5f), algaWhipPosition + new Vector3(2.5f, 2.5f, 2.5f));
+                    algaWhip = new Entity(algaWhipPosition, "seraphinsWhip", Arena.cont);
+                    algaWhip.viewingDirection = viewingDirection;
+                    algaWhip.boundary = new BoundingBox(algaWhipPosition + new Vector3(-4f, -4f, -4f), algaWhipPosition + new Vector3(4f, 4f, 4f));
 
                     if (!listContainsAlgaWhip)
                     {
@@ -165,7 +166,7 @@ namespace CR4VE.GameLogic.AI
                         {
                             Arena.opheliaHud.healthLeft -= 5;
                             playerHitByMelee = true;
-                            Console.WriteLine("Boss hit Player by MeleeAttack");
+                            Console.WriteLine("Boss hit Ophelia by MeleeAttack");
                         }
                     }
                 }
@@ -228,7 +229,7 @@ namespace CR4VE.GameLogic.AI
                     if (minion.boundary.Intersects(Arena.player.boundary))
                     {
                         Arena.opheliaHud.healthLeft -= 1;
-                        Console.WriteLine("Boss hit enemy by RangedAttack");
+                        Console.WriteLine("Boss hit Ophelia by RangedAttack");
                     }
                 }
 
@@ -269,7 +270,7 @@ namespace CR4VE.GameLogic.AI
                             {
                                 Arena.opheliaHud.healthLeft -= 40;
                                 playerHit = true;
-                                Console.WriteLine("Boss hit Player by SpecialAttack");
+                                Console.WriteLine("Boss hit Ophelia by SpecialAttack");
                             }
                             //verschwindet auch bei Kollision
                             if (playerHit)
@@ -328,9 +329,9 @@ namespace CR4VE.GameLogic.AI
                 currentCharacterPosition = this.position;
                 rangeOfLaser = new BoundingSphere(currentCharacterPosition, 50);
 
-                Entity laser = new Entity(this.position, "Enemies/skull", Arena.cont);
+                Entity laser = new Entity(this.position, "seraphinsLaser", Arena.cont);
                 laser.viewingDirection = this.viewingDirection;
-                laser.boundary = new BoundingBox(this.position + new Vector3(-3, -3, -3), this.position + new Vector3(3, 3, 3));
+                laser.boundary = new BoundingBox(this.position + new Vector3(-5, -6, -5), this.position + new Vector3(5, 6, 5));
                 attackList.Add(laser);
             }
         }
@@ -342,7 +343,8 @@ namespace CR4VE.GameLogic.AI
             {
                 foreach (Entity whip in meleeAttackList)
                 {
-                    whip.drawInArena(new Vector3(1, 1, 1), 0, 0, 0);
+                    float whipBlickwinkel = (float)Math.Atan2(-whip.viewingDirection.Z, whip.viewingDirection.X);
+                    whip.drawInArena(new Vector3(1, 1, 1), 0, MathHelper.ToRadians(90) + whipBlickwinkel, 0);
                 }
             }
             #endregion
