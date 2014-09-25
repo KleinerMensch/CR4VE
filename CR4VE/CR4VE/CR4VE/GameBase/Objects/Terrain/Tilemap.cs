@@ -147,16 +147,22 @@ namespace CR4VE.GameBase.Objects.Terrain
                             {
                                 Vector3 position = start + new Vector3(x * size, -y * size, 0);
                                 BoundingBox boundary = new BoundingBox(position + new Vector3(-3,-3,-3), position + new Vector3(3,3,3));
-
+                                if (Singleplayer.isCrystal)
+                                    enemies.Add(new EnemyShootingCrystal(position, "enemyShootingNoAnim", Singleplayer.cont, boundary));
+                                else
                                 enemies.Add(new EnemyRedEye(position, "EnemyEye", Singleplayer.cont, boundary));
                             } break;
 
                         //EnemySkull
                         case 93:
                             {
+                               
+
                                 Vector3 position = start + new Vector3(x * size, -y * size, 0);
                                 BoundingBox boundary = new BoundingBox(position + new Vector3(-3,-3,-3), position + new Vector3(3,3,3));
-
+                                if (Singleplayer.isCrystal)
+                                    enemies.Add(new EnemySpinningCrystal(position, "enemySpinningNoAnim", Singleplayer.cont, boundary));
+                                else
                                 enemies.Add(new EnemySkull(position, "skull", Singleplayer.cont, boundary));
                             } break;
 
