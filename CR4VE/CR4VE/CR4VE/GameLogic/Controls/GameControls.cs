@@ -522,6 +522,134 @@ namespace CR4VE.GameLogic.Controls
             }
         }
 
+        public static void updateKazumiStory()
+        {
+            if (!Singleplayer.storyIsDisyplayed)
+            {
+                switch (Singleplayer.kazumiStoryIndex)
+                {
+                    case 0:
+                        if (Singleplayer.isCrystal && (isClicked(Keys.E) || isClicked(Buttons.LeftShoulder)))
+                        {
+                            Singleplayer.kazumiStoryIndex += 1;
+                        }
+                        break;
+
+                    case 1:
+                        if (Singleplayer.isCrystal && (isClicked(Keys.E) || isClicked(Buttons.LeftShoulder)))
+                        {
+                            Singleplayer.kazumiStoryIndex += 1;
+                        }
+                        break;
+
+                    case 2:
+                        if (Singleplayer.isCrystal && (isClicked(Keys.E) || isClicked(Buttons.LeftShoulder)))
+                        {
+                            Singleplayer.kazumiStoryIndex += 1;
+                        }
+                        break;
+
+                    case 3:
+                        if (Singleplayer.isCrystal && (isClicked(Keys.E) || isClicked(Buttons.LeftShoulder)))
+                        {
+                            Singleplayer.kazumiStoryIndex += 1;
+                        }
+                        break;
+
+                    case 4:
+                        if (Singleplayer.isCrystal && !Singleplayer.storyIsDisyplayed && (isClicked(Keys.E) || isClicked(Buttons.LeftShoulder)))
+                        {
+                            Singleplayer.storyIsDisyplayed = true;
+                            Singleplayer.kazumiStoryIndex += 1;
+                        }
+                        break;
+                }
+            }
+            //controls while story is open
+            else if (isClicked(Keys.E) || isClicked(Buttons.LeftShoulder))
+            {
+                Singleplayer.storyIsDisyplayed = false;
+            }
+        }
+
+        public static void updateOpheliaStory()
+        {
+            if (!Singleplayer.storyIsDisyplayed)
+            {
+                switch (Singleplayer.opheliaStoryIndex)
+                {
+                    case 0:
+                        if ((isClicked(Keys.E) || isClicked(Buttons.LeftShoulder)))
+                        {
+                            Singleplayer.opheliaStoryIndex += 1;
+                        }
+                        break;
+
+                    case 1:
+                        if ((isClicked(Keys.E) || isClicked(Buttons.LeftShoulder)))
+                        {
+                            Singleplayer.opheliaStoryIndex += 1;
+                        }
+                        break;
+
+                    case 2:
+                        if ((isClicked(Keys.E) || isClicked(Buttons.LeftShoulder)))
+                        {
+                            Singleplayer.opheliaStoryIndex += 1;
+                        }
+                        break;
+
+                    case 3:
+                        if ((isClicked(Keys.E) || isClicked(Buttons.LeftShoulder)))
+                        {
+                            Singleplayer.opheliaStoryIndex += 1;
+                        }
+                        break;
+
+                    case 4:
+                        if ((isClicked(Keys.E) || isClicked(Buttons.LeftShoulder)))
+                        {
+                            Singleplayer.opheliaStoryIndex += 1;
+                        }
+                        break;
+
+                    case 5:
+                        if ((isClicked(Keys.E) || isClicked(Buttons.LeftShoulder)))
+                        {
+                            Singleplayer.opheliaStoryIndex += 1;
+                        }
+                        break;
+
+                    case 6:
+                        if ((isClicked(Keys.E) || isClicked(Buttons.LeftShoulder)))
+                        {
+                            Singleplayer.opheliaStoryIndex += 1;
+                        }
+                        break;
+
+                    case 7:
+                        if ((isClicked(Keys.E) || isClicked(Buttons.LeftShoulder)))
+                        {
+                            Singleplayer.opheliaStoryIndex += 1;
+                        }
+                        break;
+
+                    case 8:
+                        if (!Singleplayer.storyIsDisyplayed && (isClicked(Keys.E) || isClicked(Buttons.LeftShoulder)))
+                        {
+                            Singleplayer.storyIsDisyplayed = true;
+                            Singleplayer.opheliaStoryIndex += 1;
+                        }
+                        break;
+                }
+            }
+            //controls while story is open
+            else if (isClicked(Keys.E) || isClicked(Buttons.LeftShoulder))
+            {
+                Singleplayer.storyIsDisyplayed = false;
+            }
+        }
+
         public static void updateArena(GameTime gameTime)
         {
             if (ringOut)

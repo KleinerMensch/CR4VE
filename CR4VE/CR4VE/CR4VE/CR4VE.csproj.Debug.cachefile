@@ -192,16 +192,7 @@ Content\Assets\Models\Terrain\Box27.xnb
 Content\Assets\Models\Terrain\Box28.xnb
 Content\tileable-icy-and-watery-blue-tex_1.xnb
 Content\4706_1.xnb
-Content\Assets\Sprites\Ophelia_Selection.xnb
-Content\Assets\Sprites\Kazumi_Selection.xnb
-Content\Assets\Sprites\Seraphin_Selection.xnb
-Content\Assets\Sprites\Ophelia_SelectionMP.xnb
-Content\Assets\Sprites\Kazumi_SelectionMP.xnb
 Content\Assets\Sounds\crystalBackground.xnb
-Content\Assets\Sprites\Fractus_Selection.xnb
-Content\Assets\Models\Players\Fractus.xnb
-Content\Assets\Models\Players\rock_dark_0.xnb
-Content\Assets\Models\Players\fractus_skin_0.xnb
 Content\Assets\Models\fractusCrystals.xnb
 Content\Assets\Models\fractusCrystalShield.xnb
 Content\Assets\Models\seraphinsLaser.xnb
@@ -227,6 +218,26 @@ Content\mimi_0.xnb
 Content\kazumi_mask_texture_0.xnb
 Content\Kazumi_Dress_1024x1024_0.xnb
 Content\rsz_kazumi_tail_texture_0.xnb
+Content\Assets\Sprites\KazumisStory\FractusMeteorSepia.xnb
+Content\Assets\Sprites\KazumisStory\KazumiDorfbewohnerSepia.xnb
+Content\Assets\Sprites\KazumisStory\KazumisDorfSepia.xnb
+Content\Assets\Sprites\KazumisStory\KazumiShockedBlack&White.xnb
+Content\Assets\Sprites\KazumisStory\KazumiShockedSepia.xnb
+Content\Assets\Sprites\OpheliasStory\BannmalFußSepia - Kopie.xnb
+Content\Assets\Sprites\OpheliasStory\BannmalFußSepia.xnb
+Content\Assets\Sprites\OpheliasStory\BannmalHalsSepia.xnb
+Content\Assets\Sprites\OpheliasStory\BannmalHandSepia - Kopie.xnb
+Content\Assets\Sprites\OpheliasStory\BannmalHandSepia.xnb
+Content\Assets\Sprites\OpheliasStory\ErwachenAufDerErdeSepia.xnb
+Content\Assets\Sprites\OpheliasStory\FallInDieTiefeSepia.xnb
+Content\Assets\Sprites\OpheliasStory\HarteLandungSepia.xnb
+Content\Assets\Sprites\OpheliasStory\HeiligerArschtrittSepia.xnb
+Content\Assets\Sprites\Fractus_Selection.xnb
+Content\Assets\Sprites\Kazumi_Selection.xnb
+Content\Assets\Sprites\Kazumi_SelectionMP.xnb
+Content\Assets\Sprites\Ophelia_Selection.xnb
+Content\Assets\Sprites\Ophelia_SelectionMP.xnb
+Content\Assets\Sprites\Seraphin_Selection.xnb
 Content\Assets\Sprites\Startscreen.png
 Content\Assets\Sprites\ButtonExit.png
 Content\Assets\Sprites\ButtonPlay.png

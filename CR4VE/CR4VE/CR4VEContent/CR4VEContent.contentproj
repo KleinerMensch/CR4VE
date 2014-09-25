@@ -494,28 +494,8 @@
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
-    <Compile Include="Assets\Models\Terrain\Box27.FBX">
-      <Name>Box27</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-    <Compile Include="Assets\Models\Terrain\Box28.FBX">
-      <Name>Box28</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-    <Compile Include="Assets\Models\Players\Fractus.FBX">
-      <Name>Fractus</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-    <Compile Include="Assets\Models\fractusCrystals.FBX">
-      <Name>fractusCrystals</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-    <Compile Include="Assets\Models\fractusCrystalShield.FBX">
-      <Name>fractusCrystalShield</Name>
+    <Compile Include="Assets\Models\seraphinsWhip.FBX">
+      <Name>seraphinsWhip</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
@@ -524,8 +504,33 @@
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
-    <Compile Include="Assets\Models\seraphinsWhip.FBX">
-      <Name>seraphinsWhip</Name>
+    <Compile Include="Assets\Models\fractusCrystalShield.FBX">
+      <Name>fractusCrystalShield</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\fractusCrystals.FBX">
+      <Name>fractusCrystals</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\Terrain\Box28.FBX">
+      <Name>Box28</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\Terrain\Box27.FBX">
+      <Name>Box27</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\Terrain\Box29.FBX">
+      <Name>Box29</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\Terrain\Box31.FBX">
+      <Name>Box31</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
@@ -902,16 +907,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Sounds\GoldCave.wav">
-      <Name>GoldCave</Name>
-      <Importer>WavImporter</Importer>
-      <Processor>SoundEffectProcessor</Processor>
-    </Compile>
-    <Compile Include="Assets\Sounds\minions.wav">
-      <Name>minions</Name>
-      <Importer>WavImporter</Importer>
-      <Processor>SoundEffectProcessor</Processor>
-    </Compile>
     <Compile Include="Assets\Sounds\spawn.wav">
       <Name>spawn</Name>
       <Importer>WavImporter</Importer>
@@ -919,38 +914,17 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Sprites\Ophelia_Selection.png">
-      <Name>Ophelia_Selection</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
+    <Compile Include="Assets\Sounds\minions.wav">
+      <Name>minions</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Sprites\Kazumi_Selection.png">
-      <Name>Kazumi_Selection</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Assets\Sprites\Seraphin_Selection.png">
-      <Name>Seraphin_Selection</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Assets\Sprites\Ophelia_SelectionMP.png">
-      <Name>Ophelia_SelectionMP</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Assets\Sprites\Kazumi_SelectionMP.png">
-      <Name>Kazumi_SelectionMP</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
+    <Compile Include="Assets\Sounds\GoldCave.wav">
+      <Name>GoldCave</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -961,8 +935,107 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Sprites\KazumisStory\FractusMeteorSepia.jpg">
+      <Name>FractusMeteorSepia</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Sprites\KazumisStory\KazumiDorfbewohnerSepia.jpg">
+      <Name>KazumiDorfbewohnerSepia</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Sprites\KazumisStory\KazumisDorfSepia.jpg">
+      <Name>KazumisDorfSepia</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Sprites\KazumisStory\KazumiShockedBlack&amp;White.jpg">
+      <Name>KazumiShockedBlack&amp;White</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Sprites\KazumisStory\KazumiShockedSepia.jpg">
+      <Name>KazumiShockedSepia</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="Assets\Sprites\Fractus_Selection.png">
       <Name>Fractus_Selection</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Sprites\Kazumi_Selection.png">
+      <Name>Kazumi_Selection</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Sprites\Kazumi_SelectionMP.png">
+      <Name>Kazumi_SelectionMP</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Sprites\Ophelia_Selection.png">
+      <Name>Ophelia_Selection</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Sprites\Ophelia_SelectionMP.png">
+      <Name>Ophelia_SelectionMP</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Sprites\Seraphin_Selection.png">
+      <Name>Seraphin_Selection</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Sprites\OpheliasStory\BannmalFußSepia - Kopie.jpg">
+      <Name>BannmalFußSepia - Kopie</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Sprites\OpheliasStory\BannmalFußSepia.jpg">
+      <Name>BannmalFußSepia</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Sprites\OpheliasStory\BannmalHalsSepia.jpg">
+      <Name>BannmalHalsSepia</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Sprites\OpheliasStory\BannmalHandSepia - Kopie.jpg">
+      <Name>BannmalHandSepia - Kopie</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Sprites\OpheliasStory\BannmalHandSepia.jpg">
+      <Name>BannmalHandSepia</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Sprites\OpheliasStory\ErwachenAufDerErdeSepia.jpg">
+      <Name>ErwachenAufDerErdeSepia</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Sprites\OpheliasStory\FallInDieTiefeSepia.jpg">
+      <Name>FallInDieTiefeSepia</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Sprites\OpheliasStory\HarteLandungSepia.jpg">
+      <Name>HarteLandungSepia</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Sprites\OpheliasStory\HeiligerArschtrittSepia.jpg">
+      <Name>HeiligerArschtrittSepia</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

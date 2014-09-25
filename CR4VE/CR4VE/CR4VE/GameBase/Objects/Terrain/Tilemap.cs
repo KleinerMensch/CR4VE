@@ -203,7 +203,7 @@ namespace CR4VE.GameBase.Objects.Terrain
                                 Vector3 position = start + new Vector3(x * size, -y * size, 0) + new Vector3(0, 4f, 0);
 
                                 if (Singleplayer.isCrystal)
-                                    checkpoints.Add(new Checkpoint(position, "checkpoint_crystal", Singleplayer.cont));
+                                    checkpoints.Add(new Checkpoint(position - new Vector3(0,8,0), "checkpoint_crystal", Singleplayer.cont));
                                 else
                                     checkpoints.Add(new Checkpoint(position, "checkpoint_hell", Singleplayer.cont));
                             } break;

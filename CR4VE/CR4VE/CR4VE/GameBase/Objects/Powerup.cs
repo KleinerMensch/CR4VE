@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using CR4VE.GameLogic.GameStates;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -67,8 +68,11 @@ namespace CR4VE.GameBase.Objects
         {
             if (this.type == "health")
                 this.drawIn2DWorld(new Vector3(0.5f, 0.5f, 0.5f), 0, this.rotatedDegree, 0);
-            else
+
+            else if (!Singleplayer.isCrystal)
                 this.drawIn2DWorld(new Vector3(0.5f, 0.5f, 0.5f), 0, MathHelper.ToRadians(-90), 0);
+            else
+                this.drawIn2DWorld(new Vector3(0.5f, 0.5f, 0.5f), 0, MathHelper.ToRadians(0), 0);
         }
         #endregion
     }
