@@ -583,7 +583,7 @@ namespace CR4VE.GameLogic.GameStates
             //SaveGame
             SaveGame.Reset();
 
-            //Textures
+            #region Tutorial & Story sprites
             menu_pause = content.Load<Texture2D>("Assets/Sprites/menu_pause");
             if (isTutorial)
             {
@@ -623,11 +623,11 @@ namespace CR4VE.GameLogic.GameStates
                     content.Load<Texture2D>("Assets/Sprites/OpheliasStory/BannmalFußSepia"),
                 };
             }
+            #endregion
 
             //Skybox
             skybox =  new SkyBox(new Vector3(0, 0, -13), "Assets/Skybox/cube_hell", content);
             background = content.Load<Texture2D>("Assets/Sprites/stone");
-
 
             //Player
             ghost = new Character(Vector3.Zero, "skull", content);
@@ -656,13 +656,16 @@ namespace CR4VE.GameLogic.GameStates
             if (Singleplayer.isCrystal)
             {
                 Sounds.crystalBG.Play();
-                GameControls.updateKazumiStory();
+
+                if (!Singleplayer.storyIsDisyplayed)
+                    GameControls.updateKazumiStory();
             }
             else
             {
-                GameControls.updateOpheliaStory();
+                if (!Singleplayer.storyIsDisyplayed)
+                    GameControls.updateOpheliaStory();
             }
-            //Console.WriteLine(kazumiStoryIndex);
+            
             //Viewport Culling
             visibles = Tilemap.getVisibleTiles(currentMaps);
                         
@@ -856,6 +859,7 @@ namespace CR4VE.GameLogic.GameStates
 
             hud.Draw(spriteBatch);
 
+            //Tutorial sprites
             if (isTutorial && isPopup)
             {
                 Vector2 popupPos = new Vector2(graphics.PreferredBackBufferWidth / 2 - tutSprites[tutIndex].Bounds.Width / 2,
@@ -872,6 +876,8 @@ namespace CR4VE.GameLogic.GameStates
 
                 spriteBatch.Draw(menu_pause, menuPos, Color.White);
             }
+
+            //Story sprites
             if (isCrystal && !storyIsDisyplayed && !isTutorial)
             {
                 spriteBatch.Draw(kazumiStorySprites[kazumiStoryIndex], graphics.GraphicsDevice.Viewport.Bounds, Color.White);

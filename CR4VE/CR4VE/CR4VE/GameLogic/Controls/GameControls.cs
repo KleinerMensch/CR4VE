@@ -560,7 +560,6 @@ namespace CR4VE.GameLogic.Controls
                         if (Singleplayer.isCrystal && !Singleplayer.storyIsDisyplayed && (isClicked(Keys.E) || isClicked(Buttons.LeftShoulder)))
                         {
                             Singleplayer.storyIsDisyplayed = true;
-                            Singleplayer.kazumiStoryIndex += 1;
                         }
                         break;
                 }
@@ -638,7 +637,6 @@ namespace CR4VE.GameLogic.Controls
                         if (!Singleplayer.storyIsDisyplayed && (isClicked(Keys.E) || isClicked(Buttons.LeftShoulder)))
                         {
                             Singleplayer.storyIsDisyplayed = true;
-                            Singleplayer.opheliaStoryIndex += 1;
                         }
                         break;
                 }
