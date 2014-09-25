@@ -65,9 +65,7 @@ namespace CR4VE.GameBase.Objects
                         soundPlayedCrystal = true;
                     }
                     SaveGame.setCrystalReset(this.Position);
-                }
-
-               
+                }               
             }
         }
 
