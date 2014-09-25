@@ -179,7 +179,7 @@ namespace CR4VE.GameLogic.Characters
                         {
                             if (fractusShield.boundary.Intersects(Multiplayer.Players[i].boundary) && Multiplayer.Players[i].CharacterType != "Fractus")
                             {
-                                Multiplayer.hudArray[i].healthLeft -= 5;
+                                Multiplayer.hudArray[i].healthLeft -= 15;
                                 enemyHitByMelee = true;
                                 Console.WriteLine("Fractus hit " + Multiplayer.Players[i] + " by crystalShield");
                             }

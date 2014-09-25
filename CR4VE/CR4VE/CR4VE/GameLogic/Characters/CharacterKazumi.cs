@@ -165,7 +165,7 @@ namespace CR4VE.GameLogic.Characters
                             break;
                         if (kazumisClaws.boundary.Intersects(Arena.boss.boundary))
                         {
-                            Arena.fractusBossHUD.healthLeft -= 5;
+                            Arena.fractusBossHUD.healthLeft -= 8;
                             enemyHitByMelee = true;
                             Console.WriteLine("Kazumi hit Boss by MeleeAttack");
                         }
@@ -201,7 +201,7 @@ namespace CR4VE.GameLogic.Characters
                             {
                                 enemyHitByMelee = true;
                                 Console.WriteLine("Kazumi hit " + Multiplayer.Players[i] + " by MeleeAttack");
-                                Multiplayer.hudArray[i].healthLeft -= 6;
+                                Multiplayer.hudArray[i].healthLeft -= 8;
                             }
                         }
                     }

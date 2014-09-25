@@ -125,8 +125,6 @@ Content\Assets\Models\Powerups\Textures\gold_256x256_0.xnb
 Content\Assets\Models\Terrain\Textures\seamless\lava_bright2_1024x1024_0.xnb
 Content\Assets\Models\Terrain\Textures\rock_dark4_2048x2048_0.xnb
 Content\Assets\Models\Terrain\UV Maps\hell_altar_silver2_0.xnb
-Content\grass_grass_0105_02_preview_0.xnb
-Content\Dirt cracked 00 seamless_0.xnb
 Content\WaterSurface.png4fbdf4a2-e7ef-4d_0.xnb
 Content\ground_0.xnb
 Content\Dirt 1_0.xnb
@@ -161,10 +159,6 @@ Content\Blue-Turquoise-Spotted-Glazed-Ti_1.xnb
 Content\Assets\Models\Terrain\Textures\spikes2_256x256_0.xnb
 Content\Assets\Models\Enemies\Textures\spikes2_256x256_0.xnb
 Content\Assets\Textures\UV Maps\powerup_crystal_energy_0.xnb
-Content\Assets\Models\Ophelia\Maps\HoernerTextur_0.xnb
-Content\Assets\Models\Ophelia\Maps\lace_0.xnb
-Content\Assets\Models\Ophelia\Maps\body-cos_0.xnb
-Content\Assets\Models\Ophelia\Maps\mimi_0.xnb
 Content\Assets\Textures\UV Maps\checkpoint_crystal_0.xnb
 Content\Assets\Ophelia\Maps\kazumi_tail_texture256x256_0.xnb
 Content\Tileable ice on grass ground tex_0.xnb
@@ -216,6 +210,23 @@ Content\Assets\Ophelia\Maps\Rainbow Shards_0.xnb
 Content\Assets\Ophelia\Maps\EdelsteinTextur_0.xnb
 Content\Assets\Ophelia\Maps\Lasertextur_1024x1024_0.xnb
 Content\Assets\Ophelia\Maps\Blue-Turquoise-Spotted-Glazed-Ti_0.xnb
+Content\(GRASS 4) seamless turf lawn gre_0.xnb
+Content\dirt_ground_texture__tileable____0.xnb
+Content\Assets\Models\Terrain\Box29.xnb
+Content\Assets\Models\Terrain\Box30.xnb
+Content\Assets\Models\Terrain\Box31.xnb
+Content\Rainbow Shards_1.xnb
+Content\Mandarin Garnet_0.xnb
+Content\Light Wall_0.xnb
+Content\HoernerTextur_0.xnb
+Content\trans_0.xnb
+Content\lace_0.xnb
+Content\body-cos_0.xnb
+Content\trans_kazumi_0.xnb
+Content\mimi_0.xnb
+Content\kazumi_mask_texture_0.xnb
+Content\Kazumi_Dress_1024x1024_0.xnb
+Content\rsz_kazumi_tail_texture_0.xnb
 Content\Assets\Sprites\Startscreen.png
 Content\Assets\Sprites\ButtonExit.png
 Content\Assets\Sprites\ButtonPlay.png

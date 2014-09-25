@@ -191,7 +191,7 @@ namespace CR4VE.GameLogic.Characters
                             {
                                 enemyHitByMelee = true;
                                 Console.WriteLine("Seraphin hit "+ Multiplayer.Players[i] + " by MeleeAttack");
-                                Multiplayer.hudArray[i].healthLeft -= 5;
+                                Multiplayer.hudArray[i].healthLeft -= 12;
 
                             }
                         }
