@@ -73,7 +73,10 @@ namespace CR4VE.GameBase.Objects
 
         public void Draw()
         {
-            this.drawIn2DWorld(new Vector3(0.5f, 0.5f, 0.5f), 0, 0, 0);
+            if (type == "hell")
+                this.drawIn2DWorld(new Vector3(0.5f, 0.5f, 0.5f), 0, 0, 0);
+            else
+                this.drawIn2DWorld(new Vector3(3f, 3f, 3f), 0, MathHelper.ToRadians(-90), 0);
         }
         #endregion
     }

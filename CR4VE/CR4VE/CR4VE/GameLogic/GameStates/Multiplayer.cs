@@ -26,7 +26,7 @@ namespace CR4VE.GameLogic.GameStates
 
         //Terrain
         public static readonly BoundingBox arenaFloorBox = new BoundingBox(new Vector3(-54, -25, -65), new Vector3(63, -15, 53));
-        public static readonly BoundingSphere arenaBound = new BoundingSphere(new Vector3(5, -20, -8), 60f);
+        public static readonly BoundingSphere arenaBound = new BoundingSphere(new Vector3(5, -20, -8), 50f);
 
         public static Entity terrain;
         public static Entity lava;
@@ -98,6 +98,9 @@ namespace CR4VE.GameLogic.GameStates
 
             //Control parameters
             GameControls.initializeMultiplayer();
+
+            //Sounds
+            Sounds.menu.Stop();
         }
         #endregion
 
