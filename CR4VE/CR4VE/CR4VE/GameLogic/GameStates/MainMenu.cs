@@ -69,7 +69,7 @@ namespace CR4VE.GameLogic.GameStates
 
             //Sprites
             selection = content.Load<Texture2D>("Assets/Sprites/MainMenu_selection");
-            //selection_Fractus;
+            selection_Fractus = content.Load<Texture2D>("Assets/Sprites/Fractus_Selection");
             selection_Kazumi = content.Load<Texture2D>("Assets/Sprites/Kazumi_SelectionMP");
             selection_Ophelia = content.Load<Texture2D>("Assets/Sprites/Ophelia_SelectionMP");
             selection_Seraphin = content.Load<Texture2D>("Assets/Sprites/Seraphin_Selection");
@@ -339,7 +339,10 @@ namespace CR4VE.GameLogic.GameStates
                                     #region Fractus
                                     case "Fractus":
                                         {
-                                        
+                                            if (i == 0) spriteBatch.Draw(selection_Fractus, new Rectangle(W / 4 - W * 5 / 48, 0, W * 5 / 24, H * 133 / 270), Color.White);
+                                            else if (i == 1) spriteBatch.Draw(selection_Fractus, new Rectangle(W * 3 / 4 - W * 5 / 48, 0, W * 5 / 24, H * 133 / 270), Color.White);
+                                            else if (i == 2) spriteBatch.Draw(selection_Fractus, new Rectangle(W / 4 - W * 5 / 48, H / 2, W * 5 / 24, H * 133 / 270), Color.White);
+                                            else if (i == 3) spriteBatch.Draw(selection_Fractus, new Rectangle(W * 3 / 4 - W * 5 / 48, H / 2, W * 5 / 24, H * 133 / 270), Color.White);
                                         } break;
                                     #endregion
 
