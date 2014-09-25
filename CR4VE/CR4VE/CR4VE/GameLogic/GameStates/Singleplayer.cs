@@ -65,9 +65,14 @@ namespace CR4VE.GameLogic.GameStates
 
         //Textures
         public static bool isPopup;
+        public static bool storyIsDisyplayed;
         private static Texture2D menu_pause;
         private static Texture2D[] tutSprites;
+        private static Texture2D[] kazumiStorySprites;
+        private static Texture2D[] opheliaStorySprites;
         public static int tutIndex;
+        public static int kazumiStoryIndex;
+        public static int opheliaStoryIndex;
         public static bool tutStop;
         public static Texture2D background;
 
@@ -98,6 +103,9 @@ namespace CR4VE.GameLogic.GameStates
             isPopup = false;
             tutIndex = -1;
             tutStop = false;
+            storyIsDisyplayed = false;
+            kazumiStoryIndex = 0;
+            opheliaStoryIndex = 0;
 
             #region Terrain
             //Tutorial
@@ -589,6 +597,33 @@ namespace CR4VE.GameLogic.GameStates
                 };
             }
 
+            if (isCrystal)
+            {
+                kazumiStorySprites = new Texture2D[]
+                {
+                    content.Load<Texture2D>("Assets/Sprites/KazumisStory/KazumisDorfSepia"),
+                    content.Load<Texture2D>("Assets/Sprites/KazumisStory/KazumiDorfbewohnerSepia"),
+                    content.Load<Texture2D>("Assets/Sprites/KazumisStory/FractusMeteorSepia"),
+                    content.Load<Texture2D>("Assets/Sprites/KazumisStory/KazumiShockedSepia"),
+                    content.Load<Texture2D>("Assets/Sprites/KazumisStory/KazumiShockedBlack&White"),
+                };
+            }
+            else
+            {
+                opheliaStorySprites = new Texture2D[]
+                {
+                    content.Load<Texture2D>("Assets/Sprites/OpheliasStory/HeiligerArschtrittSepia"),
+                    content.Load<Texture2D>("Assets/Sprites/OpheliasStory/FallInDieTiefeSepia"),
+                    content.Load<Texture2D>("Assets/Sprites/OpheliasStory/HarteLandungSepia"),
+                    content.Load<Texture2D>("Assets/Sprites/OpheliasStory/ErwachenAufDerErdeSepia"),
+                    content.Load<Texture2D>("Assets/Sprites/OpheliasStory/BannmalHalsSepia"),
+                    content.Load<Texture2D>("Assets/Sprites/OpheliasStory/BannmalHandSepia"),
+                    content.Load<Texture2D>("Assets/Sprites/OpheliasStory/BannmalHandSepia - Kopie"),
+                    content.Load<Texture2D>("Assets/Sprites/OpheliasStory/BannmalFußSepia - Kopie"),
+                    content.Load<Texture2D>("Assets/Sprites/OpheliasStory/BannmalFußSepia"),
+                };
+            }
+
             //Skybox
             skybox =  new SkyBox(new Vector3(0, 0, -13), "Assets/Skybox/cube_hell", content);
             background = content.Load<Texture2D>("Assets/Sprites/stone");
@@ -621,7 +656,13 @@ namespace CR4VE.GameLogic.GameStates
             if (Singleplayer.isCrystal)
             {
                 Sounds.crystalBG.Play();
+                GameControls.updateKazumiStory();
             }
+            else
+            {
+                GameControls.updateOpheliaStory();
+            }
+            Console.WriteLine(kazumiStoryIndex);
             //Viewport Culling
             visibles = Tilemap.getVisibleTiles(currentMaps);
                         
@@ -718,7 +759,6 @@ namespace CR4VE.GameLogic.GameStates
             //Console.WriteLine(isPopup);
             //Console.WriteLine(player.Position);
             ////--------------------------------
-
             if (isTutorial && player.Boundary.Intersects(TutorialExit.Boundary))
             {
                 isTutorial = false;
@@ -810,7 +850,7 @@ namespace CR4VE.GameLogic.GameStates
                 TutorialExit.drawIn2DWorld(new Vector3(0.03f, 0.03f, 0.03f), 0, 0, 0);
             #endregion
 
-            #region HUD
+            #region HUD & other Sprites in Foreground
             spriteBatch.Begin();
 
             hud.Draw(spriteBatch);
@@ -830,6 +870,14 @@ namespace CR4VE.GameLogic.GameStates
                                                 graphics.PreferredBackBufferHeight / 2 - menu_pause.Bounds.Height / 2);
 
                 spriteBatch.Draw(menu_pause, menuPos, Color.White);
+            }
+            if (isCrystal && !storyIsDisyplayed)
+            {
+                spriteBatch.Draw(kazumiStorySprites[kazumiStoryIndex], graphics.GraphicsDevice.Viewport.Bounds, Color.White);
+            }
+            if (!storyIsDisyplayed)
+            {
+                spriteBatch.Draw(opheliaStorySprites[opheliaStoryIndex], graphics.GraphicsDevice.Viewport.Bounds, Color.White);
             }
 
             spriteBatch.End();

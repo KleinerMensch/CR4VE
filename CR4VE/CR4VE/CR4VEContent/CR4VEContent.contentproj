@@ -519,6 +519,21 @@
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
+    <Compile Include="Assets\Models\Terrain\Box27.FBX">
+      <Name>Box27</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\Terrain\Box29.FBX">
+      <Name>Box29</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Models\Terrain\Box31.FBX">
+      <Name>Box31</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
     <None Include="Assets\Text\SaveGame.txt">
       <Name>SaveGame</Name>
     </None>
@@ -902,6 +917,81 @@
       <Name>crystalBackground</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Sprites\KazumisStory\FractusMeteorSepia.jpg">
+      <Name>FractusMeteorSepia</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Sprites\KazumisStory\KazumiDorfbewohnerSepia.jpg">
+      <Name>KazumiDorfbewohnerSepia</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Sprites\KazumisStory\KazumisDorfSepia.jpg">
+      <Name>KazumisDorfSepia</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Sprites\KazumisStory\KazumiShockedBlack&amp;White.jpg">
+      <Name>KazumiShockedBlack&amp;White</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Sprites\KazumisStory\KazumiShockedSepia.jpg">
+      <Name>KazumiShockedSepia</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="Assets\Sprites\OpheliasStory\BannmalFußSepia - Kopie.jpg">
+      <Name>BannmalFußSepia - Kopie</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Sprites\OpheliasStory\BannmalFußSepia.jpg">
+      <Name>BannmalFußSepia</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Sprites\OpheliasStory\BannmalHalsSepia.jpg">
+      <Name>BannmalHalsSepia</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Sprites\OpheliasStory\BannmalHandSepia - Kopie.jpg">
+      <Name>BannmalHandSepia - Kopie</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Sprites\OpheliasStory\BannmalHandSepia.jpg">
+      <Name>BannmalHandSepia</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Sprites\OpheliasStory\ErwachenAufDerErdeSepia.jpg">
+      <Name>ErwachenAufDerErdeSepia</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Sprites\OpheliasStory\FallInDieTiefeSepia.jpg">
+      <Name>FallInDieTiefeSepia</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Sprites\OpheliasStory\HarteLandungSepia.jpg">
+      <Name>HarteLandungSepia</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Assets\Sprites\OpheliasStory\HeiligerArschtrittSepia.jpg">
+      <Name>HeiligerArschtrittSepia</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
