@@ -140,14 +140,7 @@ namespace CR4VE.GameBase.Objects.Terrain
                         #endregion
 
                         #region Enemies
-                         //ice spikes
-                        case 91:
-                                {
-                                Vector3 position = start + new Vector3(x * size, -y * size, 0) + new Vector3(3, -size/2, 5);
-                                BoundingBox boundary = new BoundingBox(position + new Vector3(-size / 2, 0, -size / 2), position + new Vector3(size / 2, size / 8, size / 2));
-                                
-                                tiles.Add(new GroundSpikes("ceiling", position, boundary, Tile.lethalDmg));
-                            } break;
+                      
 
                         //EnemyRedEye
                         case 92:
@@ -213,7 +206,7 @@ namespace CR4VE.GameBase.Objects.Terrain
                             {
                                 Vector3 position = start + new Vector3(x * size, -y * size, 0) + new Vector3(0, 2f, 0);
                                 BoundingBox healthBound = new BoundingBox(position + new Vector3(-3, -3, -3), position + new Vector3(3, 3, 3));
-
+                             
                                 powerups.Add(new Powerup(position, "powerup_hell_health", Singleplayer.cont, healthBound, "health", 150));
                             } break;
 
