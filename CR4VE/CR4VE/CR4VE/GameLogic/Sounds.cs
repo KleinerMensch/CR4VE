@@ -66,17 +66,13 @@ namespace CR4VE.GameLogic
             goldCave = content.Load<SoundEffect>("Assets/Sounds/GoldCave");
             cave = goldCave.CreateInstance();
             //cave.IsLooped = true;
+
+            //background crystal
             crystalBackground = content.Load<SoundEffect>("Assets/Sounds/crystalBackground");
             crystalBG = crystalBackground.CreateInstance();
-            crystalBG.Volume = 0.08f;
-            crystalBG.IsLooped = true;
-            
+            crystalBG.Volume = 0.25f;
+            crystalBG.IsLooped = true;            
         }
-
-        /*public static void PlaySound(SoundEffect sound)
-        {
-            sound.Play();
-        }*/
         #endregion
     }
 }

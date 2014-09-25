@@ -170,7 +170,7 @@ namespace CR4VE.GameLogic.Characters
                         if (opheliaSpeer.boundary.Intersects(Arena.boss.boundary))
                         {
                             Console.WriteLine("Ophelia hit Boss By Melee");
-                            Arena.seraphinBossHUD.healthLeft -= 5;
+                            Arena.seraphinBossHUD.healthLeft -= 10;
                             enemyHitByMelee = true;
                         }
                     }
@@ -205,7 +205,7 @@ namespace CR4VE.GameLogic.Characters
                             {
                                 enemyHitByMelee = true;
                                 Console.WriteLine("Ophelia hit " + Multiplayer.Players[i] + " by Melee");
-                                Multiplayer.hudArray[i].healthLeft -= 5;
+                                Multiplayer.hudArray[i].healthLeft -= 12;
                             }
                         }
                     }

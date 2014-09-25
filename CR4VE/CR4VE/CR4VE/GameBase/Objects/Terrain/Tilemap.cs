@@ -202,8 +202,10 @@ namespace CR4VE.GameBase.Objects.Terrain
                             {
                                 Vector3 position = start + new Vector3(x * size, -y * size, 0) + new Vector3(0, 4f, 0);
 
-                                //spaeter noch nach Leveltyp differenzieren
-                                checkpoints.Add(new Checkpoint(position, "checkpoint_hell", Singleplayer.cont));
+                                if (Singleplayer.isCrystal)
+                                    checkpoints.Add(new Checkpoint(position - new Vector3(0,8,0), "checkpoint_crystal", Singleplayer.cont));
+                                else
+                                    checkpoints.Add(new Checkpoint(position, "checkpoint_hell", Singleplayer.cont));
                             } break;
 
                         //Health Powerup
@@ -212,7 +214,6 @@ namespace CR4VE.GameBase.Objects.Terrain
                                 Vector3 position = start + new Vector3(x * size, -y * size, 0) + new Vector3(0, 2f, 0);
                                 BoundingBox healthBound = new BoundingBox(position + new Vector3(-3, -3, -3), position + new Vector3(3, 3, 3));
 
-                                //spaeter noch nach Leveltyp differenzieren
                                 powerups.Add(new Powerup(position, "powerup_hell_health", Singleplayer.cont, healthBound, "health", 150));
                             } break;
 
@@ -222,8 +223,10 @@ namespace CR4VE.GameBase.Objects.Terrain
                                 Vector3 position = start + new Vector3(x * size, -y * size, 0);
                                 BoundingBox manaBound = new BoundingBox(position + new Vector3(-3, -3, -3), position + new Vector3(3, 3, 3));
 
-                                //spaeter noch nach Leveltyp differenzieren
-                                powerups.Add(new Powerup(position, "powerup_hell_mana", Singleplayer.cont, manaBound, "mana", 1));
+                                if (Singleplayer.isCrystal)
+                                    powerups.Add(new Powerup(position, "powerup_crystal_mana", Singleplayer.cont, manaBound, "mana", 1));
+                                else
+                                    powerups.Add(new Powerup(position, "powerup_hell_mana", Singleplayer.cont, manaBound, "mana", 1));
                             } break;
                         #endregion
                     }

@@ -26,6 +26,8 @@ namespace CR4VE.GameLogic.GameStates
         //Terrain
         static Entity terrain;
         public static Entity lava;
+        public static Effect lava_effect;
+        public static Texture2D texture;
 
         //Arena Boundaries
         public static readonly BoundingBox arenaFloorBox = new BoundingBox(new Vector3(-54, -25, -65), new Vector3(63, -15, 53));
@@ -36,7 +38,7 @@ namespace CR4VE.GameLogic.GameStates
         public static Character boss;
 
         public Vector3 scaleForBossFractus = new Vector3(0.03f, 0.03f, 0.03f);
-        public Vector3 scaleForBossSeraphin = new Vector3(0.75f, 0.75f, 0.75f);
+        public Vector3 scaleForBossSeraphin = new Vector3(0.6f, 0.6f, 0.6f);
 
         //da bounding box vom player 18einheiten hoch ist und arenafloor.y.max bei -15 liegt
         public static readonly Vector3 startPos = new Vector3(0, -6f, 0);
@@ -68,6 +70,7 @@ namespace CR4VE.GameLogic.GameStates
 
             //BoundingBox lavaBound = new BoundingBox(new Vector3(), new Vector3());
             lava = new Entity(new Vector3(0, -110, -30), "Terrain/lavafloor", content);
+           
 
             //moveable Entities
             if (Singleplayer.isCrystal)
@@ -97,7 +100,7 @@ namespace CR4VE.GameLogic.GameStates
             }
 
             boss.boundary = new BoundingBox(boss.position + new Vector3(-4f, -12, -4f), boss.position + new Vector3(4f, 12, 4f));
-            rangeOfMeleeFromBoss = new BoundingSphere(player.position, 4);
+            rangeOfMeleeFromBoss = new BoundingSphere(player.position, 6);
             #endregion
 
             testBoundingBox = new Entity(boss.position, "5x5x5Box1", content);
@@ -131,7 +134,7 @@ namespace CR4VE.GameLogic.GameStates
 
             player.Update(gameTime);
             sphere.Center = player.position;
-            rangeOfMeleeFromBoss.Center = boss.position;            
+            rangeOfMeleeFromBoss.Center = player.position;            
 
             testBoundingBox.moveTo(boss.position);
             
@@ -181,7 +184,14 @@ namespace CR4VE.GameLogic.GameStates
             player.DrawAttacks();
 
             //Boss
-            boss.drawInArena(scaleForBossFractus, 0, MathHelper.ToRadians(90) + blickwinkelBoss, 0);
+            if (Singleplayer.isCrystal)
+            {
+                boss.drawInArena(scaleForBossFractus, 0, MathHelper.ToRadians(90) + blickwinkelBoss, 0);
+            }
+            else
+            {
+                boss.drawInArena(scaleForBossSeraphin, 0, MathHelper.ToRadians(90) + blickwinkelBoss, 0);
+            }
             boss.DrawAttacks();
 
             
