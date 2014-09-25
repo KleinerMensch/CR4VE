@@ -70,39 +70,6 @@ namespace CR4VE.GameLogic.AI
             }
         }
 
-        public override void UpdateArena(GameTime gameTime)
-        {
-            spawn += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            this.move(new Vector3(moveSpeed, 0, 0));
-            if (this.position.X < 50 || this.position.X > 105)
-            {
-                moveSpeed *= -1;
-                viewingDirection.X *= -1;
-                rotationY += MathHelper.ToRadians(180);
-            }
-
-            //updating laserList
-            this.LoadLaser(this.position, Arena.cont);
-
-  
-            if (Arena.player.boundary.Intersects(this.boundary))
-            {
-                Arena.opheliaHud.healthLeft -= (int)(Arena.opheliaHud.fullHealth * 0.01);
-            }
-
-            #region Collision with Laser
-            foreach (Entity laser in laserList)
-            {
-                laser.boundary = new BoundingBox(laser.position + new Vector3(-2, -2, -2), laser.position + new Vector3(2, 2, 2));
-                laser.position.X += laser.viewingDirection.X;
-                if (Arena.player.boundary.Intersects(laser.boundary))
-                {
-                    Arena.opheliaHud.healthLeft -= (int)(Arena.opheliaHud.fullHealth * 0.01);
-                }
-            }
-            #endregion
-        }
-
         public void LoadLaser(Vector3 EyePosition, ContentManager content)
         {
             #region spawning laser

@@ -20,19 +20,21 @@ namespace CR4VE.GameLogic.AI
         Vector3 currentCharacterPosition;
         BoundingSphere rangeOfFlyingCrystals;
 
-        float flyingSpeed = 10;
+        float flyingSpeed = 1;
         float moveSpeed = 0.2f;
+        int rand;
 
         bool playerHit = false;
         bool playerHitByMelee = false;
         bool listContainsCrystalShield = false;
+        bool listContainsMinion = false;
 
         private static readonly TimeSpan meleeAttackTimer = TimeSpan.FromSeconds(1);
         private static readonly TimeSpan rangedAttackTimer = TimeSpan.FromSeconds(2);
         private static readonly TimeSpan specialAttackTimer = TimeSpan.FromSeconds(3);
 
-        private TimeSpan timeSpanForHealthAbsorbingCrystals = TimeSpan.FromSeconds(10);
-        private TimeSpan timeSpanForResettingMana = TimeSpan.FromSeconds(15);
+        private TimeSpan timeSpanForHealthAbsorbingCrystals = TimeSpan.FromSeconds(4);
+        private TimeSpan timeSpanForResettingMana = TimeSpan.FromSeconds(10);
         private TimeSpan timeSpan = TimeSpan.FromMilliseconds(270);
         private TimeSpan lastAttack;
 
@@ -88,7 +90,7 @@ namespace CR4VE.GameLogic.AI
                 if (timeSpanForResettingMana <= TimeSpan.Zero)
                 {
                     manaLeft = 3;
-                    timeSpanForResettingMana = TimeSpan.FromSeconds(15);
+                    timeSpanForResettingMana = TimeSpan.FromSeconds(10);
                 }
                 #endregion
 
@@ -121,10 +123,11 @@ namespace CR4VE.GameLogic.AI
                 #endregion
 
                 #region UpdateMelee
+                #region Calculations for Melee
                 if (launchedMelee)
                 {
                     crystalShield = new Entity(this.position, "fractusCrystalShield", Arena.cont);
-                    crystalShield.boundary = new BoundingBox(this.position + new Vector3(-5, -9, -5), this.position + new Vector3(5, 9, 5));
+                    crystalShield.boundary = new BoundingBox(this.position + new Vector3(-7, -9, -7), this.position + new Vector3(7, 9, 7));
                     
                     if (!listContainsCrystalShield)
                     {
@@ -149,6 +152,8 @@ namespace CR4VE.GameLogic.AI
                         }
                     }
                 }
+                #endregion
+
                 //launching melee when player gets too near
                 if (lastAttack + meleeAttackTimer < time.TotalGameTime && Arena.rangeOfMeleeFromBoss.Intersects(this.boundary))
                 {
@@ -157,59 +162,6 @@ namespace CR4VE.GameLogic.AI
                 }
                 #endregion
 
-                #region Spawning SpecialAttack
-                #region Update HealthAbsorbingCrystals From Specialattack
-                #region Removing Crystals After Defined Time
-                timeSpanForHealthAbsorbingCrystals -= time.ElapsedGameTime;
-                if (timeSpanForHealthAbsorbingCrystals <= TimeSpan.Zero && crystalList.Count > 0)
-                {
-                    crystalList.RemoveAt(0);
-                    // Re initializes the timespan for the next time
-                    // minion vanishes after 10 seconds
-                    timeSpanForHealthAbsorbingCrystals = TimeSpan.FromSeconds(10);
-                    if (crystalList.Count == 0)
-                        launchedSpecial = false;
-                }
-                #endregion
-
-                foreach (Entity crystal in crystalList)
-                {
-                    crystal.boundary = new BoundingBox(crystal.position + new Vector3(-2, -2, -2), crystal.position + new Vector3(2, 2, 2));
-
-                    foreach (Entity healthAbsorbingCrystal in crystalList)
-                    {
-                        if ((healthAbsorbingCrystal.position - Arena.player.position).Length() < 20 && Arena.kazumiHud.healthLeft > 0)
-                        {
-                            Console.WriteLine(" Fractus hit Kazumi by SpecialAttack");
-                            Arena.kazumiHud.healthLeft -= 1;
-                            soundPlayedMinions = false;
-                            if (!soundPlayedMinions)
-                            {
-                                Sounds.minionsFraktus.Play();
-                                soundPlayedMinions = true;
-                            }
-
-                            //transfers health to Fractus in Arena
-                            if (Arena.fractusBossHUD.trialsLeft <= 3 && Arena.fractusBossHUD.healthLeft < Arena.fractusBossHUD.fullHealth)
-                                Arena.fractusBossHUD.healthLeft += (int)(Arena.fractusBossHUD.fullHealth * 0.01f);
-                        }
-                    }
-                }
-                #endregion
-
-                //if (manaLeft >= 1.5f && crystalList.Count == 0)
-                //{
-                //    if (lastAttack + specialAttackTimer < time.TotalGameTime)
-                //    {
-                //        this.SpecialAttack(time);
-                //        lastAttack = time.TotalGameTime;
-                //        manaLeft -= 1.5f;
-                //    }
-                //}
-                this.SpecialAttack(time);
-                #endregion
-
-                #region Spawning RangedAttack
                 #region Update Crystals From Rangedattack
                 if (launchedRanged)
                 {
@@ -248,11 +200,71 @@ namespace CR4VE.GameLogic.AI
                     }
                 }
                 #endregion
-                if (manaLeft > 0 && lastAttack + rangedAttackTimer < time.TotalGameTime)
+
+                #region Update HealthAbsorbingCrystals From Specialattack
+                #region Removing Crystals After Defined Time
+                timeSpanForHealthAbsorbingCrystals -= time.ElapsedGameTime;
+                if (timeSpanForHealthAbsorbingCrystals <= TimeSpan.Zero && crystalList.Count > 0)
+                {
+                    crystalList.RemoveAt(0);
+                    // Re initializes the timespan for the next time
+                    // minion vanishes after 4 seconds
+                    timeSpanForHealthAbsorbingCrystals = TimeSpan.FromSeconds(4);
+                    if (crystalList.Count == 0)
+                        launchedSpecial = false;
+                }
+                #endregion
+
+                foreach (Entity crystal in crystalList)
+                {
+                    crystal.boundary = new BoundingBox(crystal.position + new Vector3(-2, -2, -2), crystal.position + new Vector3(2, 2, 2));
+
+                    foreach (Entity healthAbsorbingCrystal in crystalList)
+                    {
+                        if ((healthAbsorbingCrystal.position - Arena.player.position).Length() < 20 && Arena.kazumiHud.healthLeft > 0)
+                        {
+                            Console.WriteLine(" Fractus hit Kazumi by SpecialAttack");
+                            Arena.kazumiHud.healthLeft -= 1;
+                            soundPlayedMinions = false;
+                            if (!soundPlayedMinions)
+                            {
+                                Sounds.minionsFraktus.Play();
+                                soundPlayedMinions = true;
+                            }
+
+                            //transfers health to Fractus in Arena
+                            if (Arena.fractusBossHUD.trialsLeft <= 3 && Arena.fractusBossHUD.healthLeft < Arena.fractusBossHUD.fullHealth)
+                                Arena.fractusBossHUD.healthLeft += (int)(Arena.fractusBossHUD.fullHealth * 0.01f);
+                        }
+                    }
+                }
+                #endregion
+                //randomwert fuer das spawnen von von ranged oder special
+                Random random = new Random();
+                rand = random.Next(0, 2);
+                #region Spawning SpecialAttack
+                if (manaLeft >= 1.5f && crystalList.Count == 0 && rand == 1)
+                {
+                    if (listContainsCrystalShield)
+                    {
+                        if (!launchedSpecial)
+                        {
+                            listContainsCrystalShield = false;
+                        }
+                    }
+                    else if (lastAttack + specialAttackTimer < time.TotalGameTime)
+                    {
+                        this.SpecialAttack(time);
+                        listContainsCrystalShield = true;
+                        lastAttack = time.TotalGameTime;
+                    }
+                }
+                #endregion
+                #region Spawning RangedAttack
+                if (manaLeft > 0 && lastAttack + rangedAttackTimer < time.TotalGameTime && rand == 0)
                 {
                     this.RangedAttack(time);
                     lastAttack = time.TotalGameTime;
-                    manaLeft -= 1;
                 }
                 #endregion
             }
@@ -298,11 +310,11 @@ namespace CR4VE.GameLogic.AI
 
         public override void SpecialAttack(GameTime time)
         {
-            if (manaLeft >= 1.5f)
+            if (manaLeft >= 1.5f && !listContainsCrystalShield)
             {
                 manaLeft -= 1.5f;
                 launchedSpecial = true;
-                timeSpanForHealthAbsorbingCrystals = TimeSpan.FromSeconds(10);
+                timeSpanForHealthAbsorbingCrystals = TimeSpan.FromSeconds(4);
                 soundPlayedSpecial = false;
                 if (!soundPlayedSpecial)
                 {
@@ -326,7 +338,7 @@ namespace CR4VE.GameLogic.AI
             {
                 foreach (Entity shield in meleeAttackList)
                 {
-                    shield.drawInArena(new Vector3(1, 1, 1), 0, 0, 0);
+                    shield.drawInArena(new Vector3(0.03f, 0.03f, 0.03f), 0, 0, 0);
                 }
             }
             #endregion
@@ -336,7 +348,7 @@ namespace CR4VE.GameLogic.AI
                 foreach (Entity fractusCrystals in attackList)
                 {
                     float crystalBlickwinkel = (float)Math.Atan2(-fractusCrystals.viewingDirection.Z, fractusCrystals.viewingDirection.X);
-                    fractusCrystals.drawInArena(new Vector3(0.01f, 0.01f, 0.01f), 0, MathHelper.ToRadians(90) + crystalBlickwinkel, 0);
+                    fractusCrystals.drawInArena(new Vector3(1f, 1f, 1f), 0, MathHelper.ToRadians(90) + crystalBlickwinkel, 0);
                 }
             }
             #endregion

@@ -14,10 +14,12 @@ namespace CR4VE.GameLogic.AI
     class EnemySpinningCrystal : Enemy
     {
         #region Attributes
+        Vector3 startPosition;
         Random random = new Random();
         float moveSpeed = -0.5f;
         float rotationX = 0.4f;
         float rotationY = MathHelper.ToRadians(-90);
+        bool checkedStartpositionOnce = false;
         #endregion
 
         #region Properties
@@ -40,6 +42,12 @@ namespace CR4VE.GameLogic.AI
 
         public override void UpdateSingleplayer(GameTime gameTime)
         {
+            if (!checkedStartpositionOnce)
+            {
+                startPosition = this.Position;
+                checkedStartpositionOnce = true;
+            }
+
             rotationX -= 0.1f;
 
             Vector3 playerPos = Singleplayer.player.position;
@@ -52,14 +60,7 @@ namespace CR4VE.GameLogic.AI
                 direction = moveSpeed * direction;
                 this.move(direction);
             } else {
-                //noch zu aendern, was passiert, wenn player nicht mehr in der AggroRange
-                this.position.X += moveSpeed;
-                if (this.position.X < 150 || this.position.X > 250)
-                {
-                    moveSpeed *= -1;
-                    rotationX *= -1;
-                    rotationY += MathHelper.ToRadians(180);
-                }
+                //macht nichts, wenn man zu weit weg ist
             }
 
             if (Singleplayer.player.boundary.Intersects(this.boundary))

@@ -20,7 +20,7 @@ namespace CR4VE.GameLogic.Characters
         Entity algaWhip;
         BoundingSphere rangeOfLaser;
 
-        TimeSpan timeSpanForMinions = TimeSpan.FromSeconds(10);
+        TimeSpan timeSpanForMinions = TimeSpan.FromSeconds(3);
         TimeSpan timeSpan = TimeSpan.FromMilliseconds(270);
 
         Vector3 dir;
@@ -209,7 +209,7 @@ namespace CR4VE.GameLogic.Characters
                 minionList.RemoveAt(0);
                 // Re initializes the timespan for the next time
                 // minion vanishes after 10 seconds
-                timeSpanForMinions = TimeSpan.FromSeconds(10);
+                timeSpanForMinions = TimeSpan.FromSeconds(3);
                 launchedRanged = false;
             }
             #endregion
@@ -505,7 +505,7 @@ namespace CR4VE.GameLogic.Characters
                             {
                                 if (attackList[i].boundary.Intersects(Multiplayer.Players[j].boundary) && Multiplayer.Players[j].CharacterType != "Seraphin")
                                 {
-                                    Multiplayer.hudArray[j].healthLeft -= 50;
+                                    Multiplayer.hudArray[j].healthLeft -= 70;
                                     enemyHit = true;
                                     Console.WriteLine("Seraphin hit " + Multiplayer.Players[i] + " by SpecialAttack");
                                 }
@@ -579,7 +579,7 @@ namespace CR4VE.GameLogic.Characters
             {
                 manaLeft -= 1;
                 launchedRanged = true;
-                timeSpanForMinions = TimeSpan.FromSeconds(10);
+                timeSpanForMinions = TimeSpan.FromSeconds(3);
                 soundPlayedRanged = false;
                 if (!soundPlayedRanged) {
                     Sounds.spawn.Play();

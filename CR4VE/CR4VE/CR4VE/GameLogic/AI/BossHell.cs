@@ -32,12 +32,13 @@ namespace CR4VE.GameLogic.AI
         float laserSpeed = 2;
         float moveSpeed = 0.2f;
         float minionSpeed = 0.5f;
+        int rand;
 
         private static readonly TimeSpan meleeAttackTimer = TimeSpan.FromSeconds(1);
         private static readonly TimeSpan rangedAttackTimer = TimeSpan.FromSeconds(2);
         private static readonly TimeSpan specialAttackTimer = TimeSpan.FromSeconds(3);
 
-        TimeSpan timeSpanForSpawningMinions = TimeSpan.FromSeconds(5);
+        TimeSpan timeSpanForSpawningMinions = TimeSpan.FromSeconds(4);
         TimeSpan timeSpanForResettingMana = TimeSpan.FromSeconds(10);
         TimeSpan timeSpan = TimeSpan.FromMilliseconds(270);
         private TimeSpan lastAttack;
@@ -69,7 +70,7 @@ namespace CR4VE.GameLogic.AI
                     soundPlayedDeath = true;
                 }
 
-                this.model = Arena.cont.Load<Model>("Assets/Models/Checkpoints/skull");
+                this.model = Arena.cont.Load<Model>("Assets/Models/Enemies/skull");
                 this.boundary = new BoundingBox(Vector3.Zero, Vector3.Zero);
                 this.viewingDirection = new Vector3(0, 0, 1);
 
@@ -142,6 +143,7 @@ namespace CR4VE.GameLogic.AI
                 }
                 #endregion
 
+                #region Calculating Melee
                 if (launchedMelee)
                 {
                     algaWhipPosition = this.position + viewingDirection * offset;
@@ -172,8 +174,9 @@ namespace CR4VE.GameLogic.AI
                         }
                     }
                 }
+                #endregion
                 //launching melee if player gets too near
-                if (lastAttack + meleeAttackTimer < time.TotalGameTime && Arena.rangeOfMeleeFromBoss.Intersects(Arena.player.Boundary))
+                if (lastAttack + meleeAttackTimer < time.TotalGameTime && Arena.rangeOfMeleeFromBoss.Intersects(this.Boundary))
                 {
                     this.MeleeAttack(time);
                     lastAttack = time.TotalGameTime;
@@ -181,14 +184,14 @@ namespace CR4VE.GameLogic.AI
                 #endregion
 
                 #region Updating Minions from Ranged Attack
-                #region Minions verschwinden nach 10 Sekunden
+                #region Minions verschwinden nach 4 Sekunden
                 timeSpanForSpawningMinions -= time.ElapsedGameTime;
                 if (timeSpanForSpawningMinions <= TimeSpan.Zero && minionList.Count > 0)
                 {
                     minionList.RemoveAt(0);
                     // Re initializes the timespan for the next time
-                    // minion vanishes after 10 seconds
-                    timeSpanForSpawningMinions = TimeSpan.FromSeconds(10);
+                    // minion vanishes after 4 seconds
+                    timeSpanForSpawningMinions = TimeSpan.FromSeconds(4);
                     launchedRanged = false;
                 }
                 #endregion
@@ -234,20 +237,8 @@ namespace CR4VE.GameLogic.AI
                         Console.WriteLine("Boss hit Ophelia by RangedAttack");
                     }
                 }
-
-                //Minion nur gespawned, wenn noch keiner da ist
-                if (manaLeft > 0 && minionList.Count == 0)
-                {
-                    if (lastAttack + lastAttack + rangedAttackTimer < time.TotalGameTime)
-                    {
-                        this.RangedAttack(time);
-                        lastAttack = time.TotalGameTime;
-                        manaLeft -= 1;
-                    }
-                }
                 #endregion
 
-                #region SpecialAttack
                 #region UpdateLaserFromSpecialAttack
                 if (launchedSpecial)
                 {
@@ -288,11 +279,22 @@ namespace CR4VE.GameLogic.AI
                 }
                 #endregion
 
-                if (manaLeft == 3 && lastAttack + specialAttackTimer < time.TotalGameTime)
+                //randomwert fuer das spawnen von von ranged oder special
+                Random random = new Random();
+                rand = random.Next(0, 2);
+                #region Spawning RangedAttack
+                //Minion nur gespawned, wenn noch keiner da ist
+                if (lastAttack + rangedAttackTimer < time.TotalGameTime && manaLeft > 0 && minionList.Count == 0 && rand == 1)
+                {
+                    this.RangedAttack(time);
+                    lastAttack = time.TotalGameTime;
+                }
+                #endregion
+                #region Spawning SpecialAttack
+                if (manaLeft == 3 && lastAttack + specialAttackTimer < time.TotalGameTime && rand == 0)
                 {
                     this.SpecialAttack(time);
                     lastAttack = time.TotalGameTime;
-                    manaLeft -= 3;
                 }
                 #endregion
             }
@@ -319,7 +321,7 @@ namespace CR4VE.GameLogic.AI
             {
                 manaLeft -= 1;
                 launchedRanged = true;
-                timeSpanForSpawningMinions = TimeSpan.FromSeconds(5);
+                timeSpanForSpawningMinions = TimeSpan.FromSeconds(4);
                 soundPlayedRanged = false;
                 if (!soundPlayedRanged)
                 {
